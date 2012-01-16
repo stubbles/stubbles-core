@@ -1,10 +1,18 @@
 <?php
+/**
+ * This file is part of stubbles.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  net\stubbles
+ */
+namespace net\stubbles;
 if (file_exists(__DIR__ . '/vendor/.composer/autoload.php') === false) {
     die('Please run "composer.phar install" first' . "\n");
 }
 
 require __DIR__ . '/vendor/.composer/autoload.php';
-
 /**
  * set internal, input and output encoding
  */
@@ -22,16 +30,8 @@ if (($ctype = getenv('LC_CTYPE')) || ($ctype = setlocale(LC_CTYPE, 0))) {
 }
 /**
  * The bootstrap class takes care of providing all necessary data required in the bootstrap process.
- *
- * @package  stubbles
- * @version  $Id: bootstrap.php 3296 2011-12-19 16:34:36Z mikey $
  */
-/**
- * The bootstrap class takes care of providing all necessary data required in the bootstrap process.
- *
- * @package  stubbles
- */
-class stubBootstrap
+class Bootstrap
 {
     /**
      * list of source pathes
@@ -83,10 +83,8 @@ class stubBootstrap
      */
     public static function run($appClass)
     {
-        self::$project = $project;
-        stubClassLoader::load('net::stubbles::ioc::stubApp');
-        stubApp::createInstance($appClass, __DIR__)
-               ->run();
+        net\stubbles\ioc\App::createInstance($appClass, __DIR__)
+                            ->run();
     }
 }
 ?>
