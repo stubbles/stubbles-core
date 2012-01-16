@@ -1,0 +1,19 @@
+<?php
+/**
+ * This file is part of stubbles.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  net\stubbles
+ */
+namespace net\stubbles\lang\exception;
+/**
+ * An IllegalStateException is thrown when a method has been invoked at an
+ * illegal or inappropriate time.
+ */
+class IllegalStateException extends Exception
+{
+    // nothing to do
+}
+?>
