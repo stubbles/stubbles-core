@@ -90,7 +90,7 @@ class DefaultMode extends BaseObject implements Mode
      * @param   bool    $cacheEnabled
      * @return  Mode
      */
-    public static function newInstance($modeName, $cacheEnabled)
+    public static function create($modeName, $cacheEnabled)
     {
         return new self($modeName, $cacheEnabled);
     }
@@ -106,7 +106,7 @@ class DefaultMode extends BaseObject implements Mode
      */
     public static function prod()
     {
-        return self::newInstance('PROD', Mode::CACHE_ENABLED)
+        return self::create('PROD', Mode::CACHE_ENABLED)
                    ->setExceptionHandler('net\\stubbles\\lang\\errorhandler\\ProdModeExceptionHandler')
                    ->setErrorHandler('net\\stubbles\\lang\\errorhandler\\DefaultErrorHandler');
     }
@@ -122,7 +122,7 @@ class DefaultMode extends BaseObject implements Mode
      */
     public static function test()
     {
-        return self::newInstance('TEST', MODE::CACHE_ENABLED)
+        return self::create('TEST', MODE::CACHE_ENABLED)
                    ->setExceptionHandler('net\\stubbles\\lang\\errorhandler\\DisplayExceptionHandler')
                    ->setErrorHandler('net\\stubbles\\lang\\errorhandler\\DefaultErrorHandler');
     }
@@ -138,7 +138,7 @@ class DefaultMode extends BaseObject implements Mode
      */
     public static function stage()
     {
-        return self::newInstance('STAGE', MODE::CACHE_DISABLED)
+        return self::create('STAGE', MODE::CACHE_DISABLED)
                    ->setExceptionHandler('net\\stubbles\\lang\\errorhandler\\DisplayExceptionHandler');
     }
 
@@ -153,7 +153,7 @@ class DefaultMode extends BaseObject implements Mode
      */
     public static function dev()
     {
-        return self::newInstance('DEV', MODE::CACHE_DISABLED)
+        return self::create('DEV', MODE::CACHE_DISABLED)
                    ->setExceptionHandler('net\\stubbles\\lang\\errorhandler\\DisplayExceptionHandler');
     }
 
