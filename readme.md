@@ -1,7 +1,8 @@
 Stubbles core classes
+=====================
 
-Installation / Usage
---------------------
+Installation from source
+------------------------
 
 1. Download the [`composer.phar`](http://getcomposer.org/composer.phar) executable
 2. Run `git clone https://github.com/stubbles/stubbles-core.git`
