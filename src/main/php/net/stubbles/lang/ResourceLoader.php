@@ -8,6 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang;
+use net\stubbles\Bootstrap;
 use net\stubbles\lang\BaseObject;
 /**
  * Class to load resources from arbitrary locations.
@@ -26,7 +27,7 @@ class ResourceLoader extends BaseObject
     public function getResourceUris($resourceName)
     {
         $uris = array();
-        foreach (\stubBootstrap::getSourcePathes() as $resourcePath) {
+        foreach (Bootstrap::getSourcePathes() as $resourcePath) {
             if (file_exists($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName) === true) {
                 $uris[] = realpath($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName);
             }
