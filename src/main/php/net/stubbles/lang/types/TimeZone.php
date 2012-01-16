@@ -31,7 +31,7 @@ class TimeZone extends BaseObject
      * Time zone can be a string like 'Europe/Berlin', a DateTimeZone instance
      * or null.
      *
-     * @param   string|\DateTimeZone  $timeZone  optional
+     * @param   string|\DateTimeZone  $timeZone  initial timezone handle
      * @throws  IllegalArgumentException
      */
     public function __construct($timeZone = null)
@@ -72,7 +72,7 @@ class TimeZone extends BaseObject
     /**
      * returns offset of the time zone
      *
-     * @param   Date  $date  optional  defaults to current date
+     * @param   Date  $date  defaults to current date
      * @return  string
      */
     public function getOffset(Date $date = null)
@@ -90,7 +90,7 @@ class TimeZone extends BaseObject
      * mode, a date object must be given which is used to determine whether DST
      * or non-DST offset should be returned.
      *
-     * @param   Date  $date  optional  defaults to current date
+     * @param   Date  $date  defaults to current date
      * @return  int
      */
     public function getOffsetInSeconds(Date $date = null)

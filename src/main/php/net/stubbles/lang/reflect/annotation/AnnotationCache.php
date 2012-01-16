@@ -100,7 +100,7 @@ class AnnotationCache
      * @param  int         $target          target of the annotation
      * @param  string      $targetName      name of the target
      * @param  string      $annotationName  name of the annotation
-     * @param  Annotation  $annotation      optional  the annotation to store
+     * @param  Annotation  $annotation      the annotation to store
      */
     public static function put($target, $targetName, $annotationName, Annotation $annotation = null)
     {

@@ -200,7 +200,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
     /**
      * returns a list of all properties
      *
-     * @param   int  $filter  optional  desired property types
+     * @param   int  $filter  desired property types
      * @return  ReflectionProperty[]
      */
     public function getProperties($filter = null)

@@ -34,7 +34,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * constructor
      *
-     * @param  array  $propertyData  optional  the property data
+     * @param  array  $propertyData  the property data
      */
     public function __construct(array $propertyData = array())
     {

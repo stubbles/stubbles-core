@@ -173,7 +173,7 @@ class DefaultMode extends BaseObject implements Mode
      * To register the new exception handler call registerExceptionHandler().
      *
      * @param   string|object  $class       name or instance of exception handler class
-     * @param   string         $methodName  optional  name of exception handler method
+     * @param   string         $methodName  name of exception handler method
      * @return  Mode
      * @throws  IllegalArgumentException
      */
@@ -219,7 +219,7 @@ class DefaultMode extends BaseObject implements Mode
      * To register the new error handler call registerErrorHandler().
      *
      * @param   string|object  $class       name or instance of error handler class
-     * @param   string         $methodName  optional name of error handler method
+     * @param   string         $methodName  name of error handler method
      * @return  Mode
      * @throws  IllegalArgumentException
      */
@@ -272,8 +272,8 @@ class DefaultMode extends BaseObject implements Mode
     /**
      * helper method to create the callback from the handler data
      *
-     * @param   string|object  $class       name or instance of error handler class
-     * @param   string         $methodName  optional name of error handler method
+     * @param   string|object  $class        name or instance of error handler class
+     * @param   string         $methodName   name of error handler method
      * @param   string         $projectPath  path to project
      * @return  callback
      */

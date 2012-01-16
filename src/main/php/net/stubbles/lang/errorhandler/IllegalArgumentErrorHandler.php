@@ -26,9 +26,9 @@ class IllegalArgumentErrorHandler extends BaseObject implements ErrorHandler
      *
      * @param   int     $level    level of the raised error
      * @param   string  $message  error message
-     * @param   string  $file     optional  filename that the error was raised in
-     * @param   int     $line     optional  line number the error was raised at
-     * @param   array   $context  optional  array of every variable that existed in the scope the error was triggered in
+     * @param   string  $file     filename that the error was raised in
+     * @param   int     $line     line number the error was raised at
+     * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error handler is responsible, else false
      */
     public function isResponsible($level, $message, $file = null, $line = null, array $context = array())
@@ -48,9 +48,9 @@ class IllegalArgumentErrorHandler extends BaseObject implements ErrorHandler
      *
      * @param   int     $level    level of the raised error
      * @param   string  $message  error message
-     * @param   string  $file     optional  filename that the error was raised in
-     * @param   int     $line     optional  line number the error was raised at
-     * @param   array   $context  optional  array of every variable that existed in the scope the error was triggered in
+     * @param   string  $file     filename that the error was raised in
+     * @param   int     $line     line number the error was raised at
+     * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error is supressable, else false
      */
     public function isSupressable($level, $message, $file = null, $line = null, array $context = array())
@@ -63,9 +63,9 @@ class IllegalArgumentErrorHandler extends BaseObject implements ErrorHandler
      *
      * @param   int     $level    level of the raised error
      * @param   string  $message  error message
-     * @param   string  $file     optional  filename that the error was raised in
-     * @param   int     $line     optional  line number the error was raised at
-     * @param   array   $context  optional  array of every variable that existed in the scope the error was triggered in
+     * @param   string  $file     filename that the error was raised in
+     * @param   int     $line     line number the error was raised at
+     * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error message should populate $php_errormsg, else false
      * @throws  net\stubbles\lang\exception\IllegalArgumentException
      */

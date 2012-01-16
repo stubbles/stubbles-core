@@ -32,8 +32,8 @@ abstract class Enum extends BaseObject
     /**
      * constructor
      *
-     * @param  string  $name
-     * @param  mixed   $value  optional
+     * @param  string  $name   enum name
+     * @param  mixed   $value  enum value
      */
     protected function __construct($name, $value = null)
     {

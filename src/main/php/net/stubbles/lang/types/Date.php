@@ -47,8 +47,8 @@ class Date extends BaseObject
      *   <li>If no timezone has been given as second parameter, the system's
      *       default timezone is used.</li>
      *
-     * @param   int|string|\DateTime  $dateTime  optional
-     * @param   TimeZone              $timeZone  optional
+     * @param   int|string|\DateTime  $dateTime  initial date
+     * @param   TimeZone              $timeZone  initial timezone
      * @throws  IllegalArgumentException
      */
     public function __construct($dateTime = null, TimeZone $timeZone = null)
@@ -80,7 +80,7 @@ class Date extends BaseObject
     /**
      * returns current date/time
      *
-     * @param   TimeZone  $timeZone  optional
+     * @param   TimeZone  $timeZone  initial timezone
      * @return  Date
      */
     public static function now(TimeZone $timeZone = null)
@@ -257,7 +257,7 @@ class Date extends BaseObject
      * returns formatted date/time string
      *
      * @param   string    $format    format, see http://php.net/date
-     * @param   TimeZone  $timeZone  optional  target time zone of formatted string
+     * @param   TimeZone  $timeZone  target time zone of formatted string
      * @return  string
      */
     public function format($format, TimeZone $timeZone = null)
