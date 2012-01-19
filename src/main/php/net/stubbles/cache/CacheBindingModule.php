@@ -19,25 +19,25 @@ class CacheBindingModule extends BaseObject implements BindingModule
     /**
      * path to cache directory
      *
-     * @var  string
+     * @type  string
      */
     protected $cachePath;
     /**
      * cache strategy to be used
      *
-     * @var  CacheStrategy
+     * @type  CacheStrategy
      */
     protected $cacheStrategy;
     /**
      * provider class for creating the cache container instances
      *
-     * @var  string
+     * @type  string
      */
     protected $cacheContainerProviderClass = 'net\\stubbles\\cache\\CacheProvider';
     /**
      * configure values for default cache strategy
      *
-     * @var  array
+     * @type  array
      */
     protected $defaultStrategyValues       = array('ttl'           => 86400,
                                                    'maxSize'       => -1,
