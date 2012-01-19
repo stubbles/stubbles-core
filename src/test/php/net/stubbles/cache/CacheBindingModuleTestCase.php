@@ -63,15 +63,9 @@ class CacheBindingModuleTestCase extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @var  CacheBindingModule
+     * @type  CacheBindingModule
      */
     protected $cacheBindingModule;
-    /**
-     * binder instance to be used
-     *
-     * @var  stubBinder
-     */
-    protected $binder;
 
     /**
      * set up the test environment
@@ -79,7 +73,6 @@ class CacheBindingModuleTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->cacheBindingModule = new CacheBindingModule(__DIR__);
-        $this->binder             = new Binder();
     }
 
     /**
