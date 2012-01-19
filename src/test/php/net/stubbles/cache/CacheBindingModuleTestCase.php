@@ -19,7 +19,7 @@ class DifferentCacheContainerProvider extends BaseObject implements InjectionPro
     /**
      * cache container to return
      *
-     * @var  CacheContainer
+     * @type  CacheContainer
      */
     public static $cacheContainer;
     /**
