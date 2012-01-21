@@ -8,6 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams;
+use org\bovigo\vfs\vfsStream;
 /**
  * Helper class for the test.
  */
@@ -48,7 +49,12 @@ class ResourceInputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->handle              = fopen(__DIR__ . '/test_read.txt', 'r');
+        $root = vfsStream::setup();
+        vfsStream::newFile('test_read.txt')
+                 ->withContent('foobarbaz
+jjj')
+                 ->at($root);
+        $this->handle              = fopen(vfsStream::url('root/test_read.txt'), 'r');
         $this->resourceInputStream = new TestResourceInputStream($this->handle);
     }
 
