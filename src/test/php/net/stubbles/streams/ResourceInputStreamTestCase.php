@@ -60,7 +60,7 @@ class ResourceInputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidHandleThrowsIllegalArgumentException()
     {
-        $resourceInputStream = new TestResourceInputStream('invalid');
+        new TestResourceInputStream('invalid');
     }
 
     /**

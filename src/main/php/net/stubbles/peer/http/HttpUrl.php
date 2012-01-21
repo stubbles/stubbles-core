@@ -37,7 +37,7 @@ class HttpUrl extends Url implements HttpUrlContainer
      */
     protected function isValid()
     {
-        if (parent::isValid() === false) {
+        if (!parent::isValid()) {
             return false;
         }
 
@@ -58,15 +58,15 @@ class HttpUrl extends Url implements HttpUrlContainer
      */
     public function hasDefaultPort()
     {
-        if ($this->parsedUrl->hasPort() === false) {
+        if (!$this->parsedUrl->hasPort()) {
             return true;
         }
 
-        if ($this->isHttp() === true && $this->parsedUrl->getPort() === Http::PORT) {
+        if ($this->isHttp() && $this->parsedUrl->getPort() === Http::PORT) {
             return true;
         }
 
-        if ($this->isHttps() === true && $this->parsedUrl->getPort() === Http::PORT_SSL) {
+        if ($this->isHttps() && $this->parsedUrl->getPort() === Http::PORT_SSL) {
             return true;
         }
 
@@ -82,7 +82,7 @@ class HttpUrl extends Url implements HttpUrlContainer
     public function getPort($defaultPort = null)
     {
 
-        if ($this->isHttp() === true) {
+        if ($this->isHttp()) {
             return parent::getPort(Http::PORT);
         }
 
@@ -119,7 +119,7 @@ class HttpUrl extends Url implements HttpUrlContainer
      */
     public function toHttp()
     {
-        if ($this->isHttp() === true) {
+        if ($this->isHttp()) {
             return $this;
         }
 
@@ -134,7 +134,7 @@ class HttpUrl extends Url implements HttpUrlContainer
      */
     public function toHttps()
     {
-        if ($this->isHttps() === true) {
+        if ($this->isHttps()) {
             return $this;
         }
 
@@ -171,7 +171,7 @@ class HttpUrl extends Url implements HttpUrlContainer
     {
         return new Socket($this->getHost(),
                           $this->getPort(),
-                          (($this->isHttps() === true) ? ('ssl://') : (null)),
+                          (($this->isHttps()) ? ('ssl://') : (null)),
                           $timeout
         );
     }

@@ -32,7 +32,7 @@ abstract class ResourceOutputStream extends BaseObject implements OutputStream
      */
     protected function setHandle($handle)
     {
-        if (is_resource($handle) === false) {
+        if (!is_resource($handle)) {
             throw new IllegalArgumentException('Handle needs to be a stream resource.');
         }
 

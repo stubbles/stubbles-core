@@ -32,7 +32,7 @@ abstract class ResourceInputStream extends BaseObject implements InputStream
      */
     protected function setHandle($handle)
     {
-        if (is_resource($handle) === false) {
+        if (!is_resource($handle)) {
             throw new IllegalArgumentException('Handle needs to be a stream resource.');
         }
 
@@ -55,7 +55,7 @@ abstract class ResourceInputStream extends BaseObject implements InputStream
 
         $data = @fread($this->handle, $length);
         if (false === $data) {
-            if (@feof($this->handle) === false) {
+            if (!@feof($this->handle)) {
                 throw new IOException('Can not read from input stream.');
             }
 
@@ -81,7 +81,7 @@ abstract class ResourceInputStream extends BaseObject implements InputStream
 
         $data = @fgets($this->handle, $length);
         if (false === $data) {
-            if (@feof($this->handle) === false) {
+            if (!@feof($this->handle)) {
                 throw new IOException('Can not read from input stream.');
             }
 
@@ -99,12 +99,12 @@ abstract class ResourceInputStream extends BaseObject implements InputStream
      */
     public function bytesLeft()
     {
-        if (null === $this->handle || is_resource($this->handle) === false) {
+        if (null === $this->handle || !is_resource($this->handle)) {
             throw new IllegalStateException('Can not read from closed input stream.');
         }
 
         $bytesRead = ftell($this->handle);
-        if (is_int($bytesRead) === false) {
+        if (!is_int($bytesRead)) {
             return 0;
         }
 

@@ -87,7 +87,7 @@ class CacheProvider extends BaseObject implements InjectionProvider
     public function get($name = null)
     {
         $containerName = $this->getContainerName($name);
-        if (isset($this->cacheContainer[$containerName]) === false) {
+        if (!isset($this->cacheContainer[$containerName])) {
             $this->cacheContainer[$containerName] = new FileCacheContainer($this->strategy,
                                                                            $this->getCachePath($name),
                                                                            $this->fileMode

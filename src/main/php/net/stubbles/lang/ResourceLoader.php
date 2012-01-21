@@ -28,7 +28,7 @@ class ResourceLoader extends BaseObject
     {
         $uris = array();
         foreach (Bootstrap::getSourcePathes() as $resourcePath) {
-            if (file_exists($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName) === true) {
+            if (file_exists($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName)) {
                 $uris[] = realpath($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName);
             }
         }

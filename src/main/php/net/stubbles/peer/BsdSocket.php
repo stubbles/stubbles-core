@@ -76,11 +76,11 @@ class BsdSocket extends Socket
      */
     public function setDomain($domain)
     {
-        if (in_array($domain, array_keys(self::$domains)) === false) {
+        if (!in_array($domain, array_keys(self::$domains))) {
             throw new IllegalArgumentException('Domain must be one of AF_INET, AF_INET6 or AF_UNIX.');
         }
 
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             throw new IllegalStateException('Can not change domain on already connected socket.');
         }
 
@@ -108,11 +108,11 @@ class BsdSocket extends Socket
      */
     public function setType($type)
     {
-        if (in_array($type, array_keys(self::$types)) === false) {
+        if (!in_array($type, array_keys(self::$types))) {
             throw new IllegalArgumentException('Type must be one of SOCK_STREAM, SOCK_DGRAM, SOCK_RAW, SOCK_SEQPACKET or SOCK_RDM.');
         }
 
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             throw new IllegalStateException('Can not change type on already connected socket.');
         }
 
@@ -138,7 +138,7 @@ class BsdSocket extends Socket
      */
     public function useTcp()
     {
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             throw new IllegalStateException('Can not change protocol on already connected socket.');
         }
 
@@ -164,7 +164,7 @@ class BsdSocket extends Socket
      */
     public function useUdp()
     {
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             throw new IllegalStateException('Can not change protocol on already connected socket.');
         }
 
@@ -193,13 +193,13 @@ class BsdSocket extends Socket
      */
     public function setOption($level, $name, $value)
     {
-        if (isset($this->options[$level]) === false) {
+        if (!isset($this->options[$level])) {
             $this->options[$level] = array();
         }
 
         $this->options[$level][$name] = $value;
-        if ($this->isConnected() === true) {
-            if (socket_set_option($this->fp, $level, $name, $value) === false) {
+        if ($this->isConnected()) {
+            if (!socket_set_option($this->fp, $level, $name, $value)) {
                 throw new ConnectionException('Failed to set option ' . $name . ' on level ' . $level . ' to value ' . $value);
             }
         }
@@ -217,20 +217,20 @@ class BsdSocket extends Socket
      */
     public function getOption($level, $name)
     {
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             $option = socket_get_option($this->fp, $level, $name);
             if (false === $option) {
                 throw new ConnectionException('Failed to retrieve option ' . $name . ' on level ' . $level);
             }
 
-            if (isset($this->options[$level]) === false) {
+            if (!isset($this->options[$level])) {
                 $this->options[$level] = array();
             }
 
             $this->options[$level][$name] = $option;
         }
 
-        if (isset($this->options[$level]) === true && isset($this->options[$level][$name]) === true) {
+        if (isset($this->options[$level]) && isset($this->options[$level][$name])) {
             return $this->options[$level][$name];
         }
 
@@ -246,7 +246,7 @@ class BsdSocket extends Socket
      */
     public function connect($connectTimeout = 2)
     {
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             return true;
         }
 
@@ -297,7 +297,7 @@ class BsdSocket extends Socket
      */
     public function disconnect()
     {
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             socket_close($this->fp);
         }
 
@@ -395,7 +395,7 @@ class BsdSocket extends Socket
             throw new ConnectionException('Read failed: ' . $this->lastError());
         }
 
-        if (empty($result) === true) {
+        if (empty($result)) {
             $this->eof = true;
             $result = null;
         }

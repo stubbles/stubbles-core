@@ -179,7 +179,7 @@ class DefaultMode extends BaseObject implements Mode
      */
     public function setExceptionHandler($class, $methodName = 'handleException')
     {
-        if (is_string($class) === false && is_object($class) === false) {
+        if (!is_string($class) && !is_object($class)) {
             throw new IllegalArgumentException('Given class must be a class name or a class instance.');
         }
 
@@ -225,7 +225,7 @@ class DefaultMode extends BaseObject implements Mode
      */
     public function setErrorHandler($class, $methodName = 'handle')
     {
-        if (is_string($class) === false && is_object($class) === false) {
+        if (!is_string($class) && !is_object($class)) {
             throw new IllegalArgumentException('Given class must be a class name or a class instance.');
         }
 

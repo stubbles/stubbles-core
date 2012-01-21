@@ -141,12 +141,12 @@ class LogErrorHandler extends BaseObject implements ErrorHandler
     public function handle($level, $message, $file = null, $line = null, array $context = array())
     {
         $logData  = date('Y-m-d H:i:s') . '|' . $level;
-        $logData .= '|' . ((isset(self::$levelStrings[$level]) === true) ? (self::$levelStrings[$level]) : ('unknown'));
+        $logData .= '|' . ((isset(self::$levelStrings[$level])) ? (self::$levelStrings[$level]) : ('unknown'));
         $logData .= '|' . $message;
         $logData .= '|' . $file;
         $logData .= '|' . $line;
         $logDir   = $this->buildLogDir();
-        if (file_exists($logDir) === false) {
+        if (!file_exists($logDir)) {
             mkdir($logDir, $this->filemode, true);
         }
 

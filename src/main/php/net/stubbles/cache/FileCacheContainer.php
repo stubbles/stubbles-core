@@ -43,7 +43,7 @@ class FileCacheContainer extends AbstractCacheContainer implements CacheContaine
      */
     public function __construct(CacheStrategy $strategy, $cacheDirectory, $fileMode = 0700)
     {
-        if (file_exists($cacheDirectory) === false) {
+        if (!file_exists($cacheDirectory)) {
             mkdir($cacheDirectory, $fileMode, true);
         }
 

@@ -36,7 +36,7 @@ class TimeZone extends BaseObject
      */
     public function __construct($timeZone = null)
     {
-        if (is_string($timeZone) === true) {
+        if (is_string($timeZone)) {
             $this->timeZone = @timezone_open($timeZone);
         } elseif (null === $timeZone) {
             $this->timeZone = timezone_open(date_default_timezone_get());
@@ -44,7 +44,7 @@ class TimeZone extends BaseObject
             $this->timeZone = $timeZone;
         }
 
-        if (($this->timeZone instanceof \DateTimeZone) === false) {
+        if (!($this->timeZone instanceof \DateTimeZone)) {
             throw new IllegalArgumentException('Invalid time zone identifier ' . $timeZone);
         }
     }

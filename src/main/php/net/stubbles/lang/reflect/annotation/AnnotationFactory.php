@@ -42,16 +42,16 @@ class AnnotationFactory
      */
     public static function create($comment, $annotationName, $target, $targetName, $fileName)
     {
-        if (AnnotationCache::has($target, $fileName . '::' . $targetName, $annotationName) === true) {
+        if (AnnotationCache::has($target, $fileName . '::' . $targetName, $annotationName)) {
             return AnnotationCache::get($target, $fileName . '::' . $targetName, $annotationName);
         }
 
-        if (AnnotationCache::hasNot($target, $fileName . '::' . $targetName, $annotationName) === true) {
+        if (AnnotationCache::hasNot($target, $fileName . '::' . $targetName, $annotationName)) {
             throw new \ReflectionException('Can not find annotation ' . $annotationName);
         }
 
         $hash = md5($fileName . $comment . $targetName);
-        if (isset(self::$annotations[$hash]) === false) {
+        if (!isset(self::$annotations[$hash])) {
             if (null === self::$parser) {
                 self::$parser = new AnnotationStateParser();
             }
@@ -59,7 +59,7 @@ class AnnotationFactory
             self::$annotations[$hash] = self::$parser->parse($comment);
         }
 
-        if (isset(self::$annotations[$hash][$annotationName]) === false) {
+        if (!isset(self::$annotations[$hash][$annotationName])) {
             // put null into cache to save that the annotation does not exist
             AnnotationCache::put($target, $fileName . '::' . $targetName, $annotationName);
             throw new \ReflectionException('Can not find annotation ' . $annotationName);

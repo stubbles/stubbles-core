@@ -46,7 +46,7 @@ class ModifiableProperties extends Properties
      */
     public static function fromFile($propertiesFile)
     {
-        if (file_exists($propertiesFile) === false || is_readable($propertiesFile) === false) {
+        if (!file_exists($propertiesFile) || !is_readable($propertiesFile)) {
             throw new FileNotFoundException($propertiesFile);
         }
 
@@ -86,7 +86,7 @@ class ModifiableProperties extends Properties
      */
     public function setValue($section, $name, $value)
     {
-        if (isset($this->propertyData[$section]) === false) {
+        if (!isset($this->propertyData[$section])) {
             $this->propertyData[$section] = array();
         }
 

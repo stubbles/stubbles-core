@@ -131,7 +131,7 @@ class Injector extends BaseObject
     {
         $bindingIndex = $this->getIndex();
         if (null !== $name) {
-            if (isset($bindingIndex[$type . '#' . $name]) === true) {
+            if (isset($bindingIndex[$type . '#' . $name])) {
                 return true;
             }
         }
@@ -196,12 +196,12 @@ class Injector extends BaseObject
     {
         $bindingIndex = $this->getIndex();
         if (null !== $name) {
-            if (isset($bindingIndex[$type . '#' . $name]) === true) {
+            if (isset($bindingIndex[$type . '#' . $name])) {
                 return $bindingIndex[$type . '#' . $name];
             }
         }
 
-        if (isset($bindingIndex[$type]) === true) {
+        if (isset($bindingIndex[$type])) {
             return $bindingIndex[$type];
         }
 
@@ -212,12 +212,12 @@ class Injector extends BaseObject
 
         // check for default implementation
         $typeClass = new ReflectionClass($type);
-        if ($typeClass->isInterface() === true && $typeClass->hasAnnotation('ImplementedBy') === true) {
+        if ($typeClass->isInterface() && $typeClass->hasAnnotation('ImplementedBy')) {
             return $this->bind($type)
                         ->to($typeClass->getAnnotation('ImplementedBy')
                                        ->getDefaultImplementation()
                           );
-        } elseif ($typeClass->hasAnnotation('ProvidedBy') === true) {
+        } elseif ($typeClass->hasAnnotation('ProvidedBy')) {
             return $this->bind($type)
                         ->toProviderClass($typeClass->getAnnotation('ProvidedBy')
                                                     ->getProviderClass()
@@ -225,7 +225,7 @@ class Injector extends BaseObject
         }
 
         // try implicit binding
-        if ($typeClass->isInterface() === false) {
+        if (!$typeClass->isInterface()) {
             return $this->bind($type)
                         ->to($typeClass);
         }
@@ -240,7 +240,7 @@ class Injector extends BaseObject
      */
     protected function getIndex()
     {
-        if (empty($this->bindings) === true) {
+        if (empty($this->bindings)) {
             return $this->bindingIndex;
         }
 
@@ -267,17 +267,17 @@ class Injector extends BaseObject
 
         foreach ($class->getMethods() as $method) {
             /* @type  $method  ReflectionMethod */
-            if ($method->isPublic() === false
+            if (!$method->isPublic()
               || $method->getNumberOfParameters() === 0
               || strncmp($method->getName(), '__', 2) === 0
-              || $method->hasAnnotation('Inject') === false) {
+              || !$method->hasAnnotation('Inject')) {
                 continue;
             }
 
             try {
                 $paramValues = $this->getInjectionValuesForMethod($method, $class);
             } catch (BindingException $be) {
-                if ($method->getAnnotation('Inject')->isOptional() === false) {
+                if (!$method->getAnnotation('Inject')->isOptional()) {
                     throw $be;
                 }
 
@@ -299,18 +299,18 @@ class Injector extends BaseObject
     public function getInjectionValuesForMethod(ReflectionMethod $method, BaseReflectionClass $class)
     {
         $paramValues = array();
-        $namedMethod = (($method->hasAnnotation('Named') === true) ? ($method->getAnnotation('Named')->getName()) : (null));
+        $namedMethod = (($method->hasAnnotation('Named')) ? ($method->getAnnotation('Named')->getName()) : (null));
         foreach ($method->getParameters() as $param) {
             /* @type  $param  net\stubbles\lang\reflect\ReflectionParameter */
             $paramClass = $param->getClass();
             $type       = ((null !== $paramClass) ? ($paramClass->getName()) : (ConstantBinding::TYPE));
-            $name       = (($param->hasAnnotation('Named') === true) ? ($param->getAnnotation('Named')->getName()) : ($namedMethod));
-            if ($this->hasExplicitBinding($type, $name) === false && $method->getAnnotation('Inject')->isOptional() === true) {
+            $name       = (($param->hasAnnotation('Named')) ? ($param->getAnnotation('Named')->getName()) : ($namedMethod));
+            if (!$this->hasExplicitBinding($type, $name) && $method->getAnnotation('Inject')->isOptional()) {
                 // Somewhat hackish... throwing an exception here which is catched and ignored in handleInjections()
                 throw new BindingException('Could not find explicit binding for optional injection of type ' . $this->createTypeMessage($type, $name) . ' to complete  ' . $this->createCalledMethodMessage($class, $method, $param, $type));
             }
 
-            if ($this->hasBinding($type, $name) === false) {
+            if (!$this->hasBinding($type, $name)) {
                 $typeMsg = $this->createTypeMessage($type, $name);
                 throw new BindingException('Can not inject into ' . $this->createCalledMethodMessage($class, $method, $param, $type)  . '. No binding for type ' . $typeMsg . ' specified.');
             }
@@ -347,7 +347,7 @@ class Injector extends BaseObject
         $message = $class->getName() . '::' . $method->getName() . '(';
         if (ConstantBinding::TYPE !== $type) {
             $message .= $type . ' ';
-        } elseif ($parameter->isArray() === true) {
+        } elseif ($parameter->isArray()) {
             $message .= 'array ';
         }
 

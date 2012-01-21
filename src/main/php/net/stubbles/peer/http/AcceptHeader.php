@@ -102,15 +102,15 @@ class AcceptHeader extends BaseObject implements \Countable
      */
     public function priorityFor($acceptable)
     {
-        if (isset($this->acceptables[$acceptable]) === false) {
+        if (!isset($this->acceptables[$acceptable])) {
             if ($this->count() === 0) {
                 return 1.0;
-            } elseif (isset($this->acceptables['*/*']) === true) {
+            } elseif (isset($this->acceptables['*/*'])) {
                 return $this->acceptables['*/*'];
             }
 
             list($maintype, $subtype) = explode('/', $acceptable);
-            if (isset($this->acceptables[$maintype . '/*']) === true) {
+            if (isset($this->acceptables[$maintype . '/*'])) {
                 return $this->acceptables[$maintype . '/*'];
             }
 
@@ -141,12 +141,12 @@ class AcceptHeader extends BaseObject implements \Countable
 
         foreach ($acceptables as $acceptable) {
             list($maintype, $subtype) = explode('/', $acceptable);
-            if (isset($this->acceptables[$maintype . '/*']) === true) {
+            if (isset($this->acceptables[$maintype . '/*'])) {
                 return $acceptable;
             }
         }
 
-        if (isset($this->acceptables['*/*']) === true) {
+        if (isset($this->acceptables['*/*'])) {
             return array_shift($acceptables);
         }
 

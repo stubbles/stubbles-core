@@ -190,7 +190,7 @@ class Http extends BaseObject
     public static function getStatusClass($statusCode)
     {
         $class = substr($statusCode, 0, 1);
-        if (isset(self::$statusClass[$class]) === true) {
+        if (isset(self::$statusClass[$class])) {
             return self::$statusClass[$class];
         }
 
@@ -216,11 +216,11 @@ class Http extends BaseObject
      */
     public static function getReasonPhrase($statusCode)
     {
-        if (isset(self::$reasonPhrases[$statusCode]) === false) {
-            throw new IllegalArgumentException('Invalid or unknown HTTP status code ' . $statusCode);
+        if (isset(self::$reasonPhrases[$statusCode])) {
+            return self::$reasonPhrases[$statusCode];
         }
 
-        return self::$reasonPhrases[$statusCode];
+        throw new IllegalArgumentException('Invalid or unknown HTTP status code ' . $statusCode);
     }
 
     /**

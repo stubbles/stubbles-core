@@ -62,7 +62,7 @@ class SocketInputStream extends BaseObject implements InputStream
      */
     public function bytesLeft()
     {
-        if ($this->socket->eof() === true) {
+        if ($this->socket->eof()) {
             return -1;
         }
 

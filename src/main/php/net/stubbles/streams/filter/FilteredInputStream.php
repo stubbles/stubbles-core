@@ -42,9 +42,9 @@ class FilteredInputStream extends AbstractDecoratedInputStream
      */
     public function read($length = 8192)
     {
-        while ($this->inputStream->eof() === false) {
+        while (!$this->inputStream->eof()) {
             $data = $this->inputStream->read($length);
-            if ($this->streamFilter->shouldFilter($data) === false) {
+            if (!$this->streamFilter->shouldFilter($data)) {
                 return $data;
             }
         }
@@ -60,9 +60,9 @@ class FilteredInputStream extends AbstractDecoratedInputStream
      */
     public function readLine($length = 8192)
     {
-        while ($this->inputStream->eof() === false) {
+        while (!$this->inputStream->eof()) {
             $data = $this->inputStream->readLine($length);
-            if ($this->streamFilter->shouldFilter($data) === false) {
+            if (!$this->streamFilter->shouldFilter($data)) {
                 return $data;
             }
         }

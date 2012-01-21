@@ -21,7 +21,7 @@ class ProdModeExceptionHandler extends AbstractExceptionHandler
      */
     protected function createResponseBody(\Exception $exception)
     {
-        if (file_exists($this->projectPath . '/docroot/500.html') === true) {
+        if (file_exists($this->projectPath . '/docroot/500.html')) {
             return file_get_contents($this->projectPath . '/docroot/500.html');
         }
 

@@ -32,7 +32,7 @@ class SingletonBindingScope extends BaseObject implements BindingScope
     public function getInstance(BaseReflectionClass $impl, InjectionProvider $provider)
     {
         $key = $impl->getName();
-        if (isset($this->instances[$key]) === false) {
+        if (!isset($this->instances[$key])) {
             $this->instances[$key] = $provider->get();
         }
 

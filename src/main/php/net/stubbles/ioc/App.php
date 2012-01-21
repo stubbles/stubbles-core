@@ -39,7 +39,7 @@ class App extends BaseObject
      */
     protected static function extractArgs(array $args)
     {
-        if (count($args) === 1 && is_array($args[0]) === true) {
+        if (count($args) === 1 && is_array($args[0])) {
             return $args[0];
         }
 
@@ -76,7 +76,7 @@ class App extends BaseObject
     public static function getBindingsForClass($className, $projectPath, array $argv = null)
     {
         $bindings = array();
-        if (method_exists($className, '__bindings') === true) {
+        if (method_exists($className, '__bindings')) {
             $bindings = call_user_func_array(array($className, '__bindings'), array($projectPath));
         }
 
@@ -114,11 +114,11 @@ class App extends BaseObject
     {
         $binder = new Binder();
         foreach ($bindingModules as $bindingModule) {
-            if (is_string($bindingModule) === true) {
+            if (is_string($bindingModule)) {
                 $bindingModule = new $bindingModule();
             }
 
-            if (($bindingModule instanceof BindingModule) === false) {
+            if (!($bindingModule instanceof BindingModule)) {
                 throw new IllegalArgumentException('Given module class ' . get_class($bindingModule) . ' is not an instance of net\\stubbles\\ioc\\module\\BindingModule');
             }
 

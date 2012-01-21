@@ -42,7 +42,7 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
      */
     public function write($bytes)
     {
-        if ($this->streamFilter->shouldFilter($bytes) === false) {
+        if (!$this->streamFilter->shouldFilter($bytes)) {
             return $this->outputStream->write($bytes);
         }
 
@@ -57,7 +57,7 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
      */
     public function writeLine($bytes)
     {
-        if ($this->streamFilter->shouldFilter($bytes) === false) {
+        if (!$this->streamFilter->shouldFilter($bytes)) {
             return $this->outputStream->writeLine($bytes);
         }
 

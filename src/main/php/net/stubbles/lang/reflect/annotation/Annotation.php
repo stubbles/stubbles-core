@@ -109,7 +109,7 @@ class Annotation extends BaseObject
      */
     public function getValueByName($name)
     {
-        if (isset($this->properties[$name]) === true) {
+        if (isset($this->properties[$name])) {
             return $this->properties[$name];
         }
 
@@ -137,7 +137,7 @@ class Annotation extends BaseObject
      */
     public function  __call($name, $arguments)
     {
-        if (isset($this->properties[$name]) === true) {
+        if (isset($this->properties[$name])) {
             return $this->properties[$name];
         }
 
@@ -182,11 +182,11 @@ class Annotation extends BaseObject
      */
     protected function getProperty($propertyName, $defaultValue)
     {
-        if (count($this->properties) === 1 && isset($this->properties['__value']) === true) {
+        if (count($this->properties) === 1 && isset($this->properties['__value'])) {
             return $this->properties['__value'];
         }
 
-        if (isset($this->properties[$propertyName]) === true) {
+        if (isset($this->properties[$propertyName])) {
             return $this->properties[$propertyName];
         }
 
@@ -201,11 +201,11 @@ class Annotation extends BaseObject
      */
     protected function getBooleanProperty($propertyName)
     {
-        if (count($this->properties) === 1 && isset($this->properties['__value']) === true) {
+        if (count($this->properties) === 1 && isset($this->properties['__value'])) {
             return $this->properties['__value'];
         }
 
-        if (isset($this->properties[$propertyName]) === true) {
+        if (isset($this->properties[$propertyName])) {
             return $this->properties[$propertyName];
         }
 
@@ -221,7 +221,7 @@ class Annotation extends BaseObject
     protected function hasProperty($propertyName)
     {
         if (count($this->properties) === 1
-          && isset($this->properties['__value']) === true
+          && isset($this->properties['__value'])
           && 'value' === $propertyName) {
             return isset($this->properties['__value']);
         }

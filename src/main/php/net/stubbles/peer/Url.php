@@ -46,11 +46,11 @@ class Url extends BaseObject implements UrlContainer
 
         $class = get_called_class();
         $url   = new $class(new ParsedUrl($urlString));
-        if ($url->isValid() === false) {
-            throw new MalformedUrlException('The url ' . $urlString . ' is not a valid url.');
+        if ($url->isValid()) {
+            return $url;
         }
 
-        return $url;
+        throw new MalformedUrlException('The url ' . $urlString . ' is not a valid url.');
     }
 
     /**
@@ -60,7 +60,7 @@ class Url extends BaseObject implements UrlContainer
      */
     protected function isValid()
     {
-        if ($this->parsedUrl->hasScheme() === false) {
+        if (!$this->parsedUrl->hasScheme()) {
             return false;
         }
 
@@ -68,7 +68,7 @@ class Url extends BaseObject implements UrlContainer
             return false;
         }
 
-        if ($this->parsedUrl->hasUser() === true) {
+        if ($this->parsedUrl->hasUser()) {
             if (preg_match('~([@:/])~', $this->parsedUrl->getUser()) != 0) {
                 return false;
             }
@@ -78,10 +78,10 @@ class Url extends BaseObject implements UrlContainer
             }
         }
 
-        if ($this->parsedUrl->hasHost() === true
+        if ($this->parsedUrl->hasHost()
           && preg_match('!^([a-zA-Z0-9\.-]+|\[[^\]]+\])(:([0-9]+))?$!', $this->parsedUrl->getHost()) != 0) {
             return true;
-        } elseif ($this->parsedUrl->hasHost() === false || strlen($this->parsedUrl->getHost()) === 0) {
+        } elseif (!$this->parsedUrl->hasHost() || strlen($this->parsedUrl->getHost()) === 0) {
             return true;
         }
 
@@ -95,13 +95,13 @@ class Url extends BaseObject implements UrlContainer
      */
     public function hasDnsRecord()
     {
-        if ($this->parsedUrl->hasHost() === false) {
+        if (!$this->parsedUrl->hasHost()) {
             return false;
         }
 
-        if ($this->parsedUrl->isLocalHost() === true
-          || checkdnsrr($this->parsedUrl->getHost(), 'ANY') === true
-          || checkdnsrr($this->parsedUrl->getHost(), 'MX') === true) {
+        if ($this->parsedUrl->isLocalHost()
+          || checkdnsrr($this->parsedUrl->getHost(), 'ANY')
+          || checkdnsrr($this->parsedUrl->getHost(), 'MX')) {
             return true;
         }
 
@@ -135,7 +135,7 @@ class Url extends BaseObject implements UrlContainer
      */
     public function asStringWithNonDefaultPort()
     {
-        if ($this->parsedUrl->hasPort() === true && $this->hasDefaultPort() === false) {
+        if ($this->parsedUrl->hasPort() && !$this->hasDefaultPort()) {
             return $this->asString();
         }
 
@@ -160,7 +160,7 @@ class Url extends BaseObject implements UrlContainer
      */
     public function getUser($defaultUser = null)
     {
-        if ($this->parsedUrl->hasUser() === true) {
+        if ($this->parsedUrl->hasUser()) {
             return $this->parsedUrl->getUser();
         }
 
@@ -175,11 +175,11 @@ class Url extends BaseObject implements UrlContainer
      */
     public function getPassword($defaultPassword = null)
     {
-        if ($this->parsedUrl->hasUser() === false) {
+        if (!$this->parsedUrl->hasUser()) {
             return null;
         }
 
-        if ($this->parsedUrl->hasPassword() === true) {
+        if ($this->parsedUrl->hasPassword()) {
             return $this->parsedUrl->getPassword();
         }
 
@@ -214,7 +214,7 @@ class Url extends BaseObject implements UrlContainer
      */
     public function getPort($defaultPort = null)
     {
-        if ($this->parsedUrl->hasPort() === true) {
+        if ($this->parsedUrl->hasPort()) {
             return $this->parsedUrl->getPort();
         }
 

@@ -35,14 +35,14 @@ class FileInputStream extends ResourceInputStream implements Seekable
      */
     public function __construct($file, $mode = 'rb')
     {
-        if (is_string($file) === true) {
+        if (is_string($file)) {
             $fp = @fopen($file, $mode);
             if (false === $fp) {
                 throw new IOException('Can not open file ' . $file . ' with mode ' . $mode);
             }
 
             $this->fileName = $file;
-        } elseif (is_resource($file) === true && get_resource_type($file) === 'stream') {
+        } elseif (is_resource($file) && get_resource_type($file) === 'stream') {
             $fp = $file;
         } else {
             throw new IllegalArgumentException('File must either be a filename or an already opened file/stream resource.');

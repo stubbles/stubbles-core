@@ -33,7 +33,7 @@ class QueryString extends BaseObject
      */
     public function __construct($queryString = null)
     {
-        if (empty($queryString) === false) {
+        if (!empty($queryString)) {
             foreach (explode('&', $queryString) as $param) {
                 $name = $value = null;
                 sscanf($param, "%[^=]=%[^\r]", $name, $value);
@@ -48,7 +48,7 @@ class QueryString extends BaseObject
 
                 if ($start = strpos($name, '[')) {
                   $base = substr($name, 0, $start);
-                  if (isset($this->parameters[$base]) === false) {
+                  if (!isset($this->parameters[$base])) {
                       $this->parameters[$base] = array();
                   }
 
@@ -102,9 +102,9 @@ class QueryString extends BaseObject
     protected function buildQuery($name, $value, $postfix= '')
     {
         $query = '';
-        if (is_array($value) === true) {
+        if (is_array($value)) {
             foreach ($value as $k => $v) {
-                if (is_int($k) === true) {
+                if (is_int($k)) {
                     $query .= $this->buildQuery(null, $v, $postfix . $name.'[]');
                 } else {
                     $query .= $this->buildQuery(null, $v, $postfix . $name . '[' . $k . ']');
@@ -143,7 +143,7 @@ class QueryString extends BaseObject
      */
     public function addParam($name, $value)
     {
-        if (is_array($value) === false && is_scalar($value) === false && null !== $value) {
+        if (!is_array($value) && !is_scalar($value) && null !== $value) {
             throw new IllegalArgumentException('Argument 2 passed to ' . __METHOD__ . '() must be an instance of string, array or any other scalar value.');
         }
 
@@ -159,7 +159,7 @@ class QueryString extends BaseObject
      */
     public function removeParam($name)
     {
-        if (array_key_exists($name, $this->parameters) === true) {
+        if (array_key_exists($name, $this->parameters)) {
             unset($this->parameters[$name]);
         }
 
@@ -186,7 +186,7 @@ class QueryString extends BaseObject
      */
     public function getParam($name, $defaultValue = null)
     {
-        if (array_key_exists($name, $this->parameters) === true) {
+        if (array_key_exists($name, $this->parameters)) {
             return $this->parameters[$name];
         }
 

@@ -64,7 +64,7 @@ class MemoryStreamWrapper extends BaseObject
             return;
         }
 
-        if (stream_wrapper_register(self::SCHEME, __CLASS__) === false) {
+        if (!stream_wrapper_register(self::SCHEME, __CLASS__)) {
             throw new RuntimeException('A handler has already been registered for the ' . self::SCHEME . ' protocol.');
         }
 
@@ -88,7 +88,7 @@ class MemoryStreamWrapper extends BaseObject
                 // break omitted
 
             case 'r+':
-                if (isset(self::$buffer[$this->key]) === false) {
+                if (!isset(self::$buffer[$this->key])) {
                     return false;
                 }
 
@@ -107,7 +107,7 @@ class MemoryStreamWrapper extends BaseObject
                 // break omitted
 
             case 'a+':
-                if (isset(self::$buffer[$this->key]) === false) {
+                if (!isset(self::$buffer[$this->key])) {
                     self::$buffer[$this->key] = '';
                 }
 
@@ -118,7 +118,7 @@ class MemoryStreamWrapper extends BaseObject
                 // break omitted
 
             case 'x+':
-                if (isset(self::$buffer[$this->key]) === true) {
+                if (isset(self::$buffer[$this->key])) {
                     return false;
                 }
 
@@ -127,7 +127,7 @@ class MemoryStreamWrapper extends BaseObject
                 break;
 
             default:
-                if (isset(self::$buffer[$this->key]) === false) {
+                if (!isset(self::$buffer[$this->key])) {
                     self::$buffer[$this->key] = '';
                 }
 
@@ -230,7 +230,7 @@ class MemoryStreamWrapper extends BaseObject
     public function unlink($path)
     {
         $key = self::parsePath($path);
-        if (isset(self::$buffer[$key]) === true) {
+        if (isset(self::$buffer[$key])) {
             unset(self::$buffer[$key]);
             clearstatcache();
             return true;
@@ -267,7 +267,7 @@ class MemoryStreamWrapper extends BaseObject
     {
 
         $key = self::parsePath($path);
-        if (isset(self::$buffer[$key]) === true) {
+        if (isset(self::$buffer[$key])) {
             return array(2      => 0100000,
                          4      => 0,
                          5      => 0,

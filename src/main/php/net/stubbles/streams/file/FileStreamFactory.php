@@ -43,7 +43,7 @@ class FileStreamFactory extends BaseObject implements StreamFactory
      */
     public function createInputStream($source, array $options = array())
     {
-        if (isset($options['filemode']) === true) {
+        if (isset($options['filemode'])) {
             return new FileInputStream($source, $options['filemode']);
         }
 
@@ -59,16 +59,16 @@ class FileStreamFactory extends BaseObject implements StreamFactory
      */
     public function createOutputStream($target, array $options = array())
     {
-        if (isset($options['createDirIfNotExists']) === true && true === $options['createDirIfNotExists']) {
+        if (isset($options['createDirIfNotExists']) && true === $options['createDirIfNotExists']) {
             $dir = dirname($target);
-            if (file_exists($dir) === false) {
-                $filemode = ((isset($options['dirPermissions']) === false) ? ($this->fileMode) : ($options['dirPermissions']));
+            if (!file_exists($dir)) {
+                $filemode = ((!isset($options['dirPermissions'])) ? ($this->fileMode) : ($options['dirPermissions']));
                 mkdir($dir, $filemode, true);
             }
         }
 
-        $filemode = (isset($options['filemode']) === false) ? ('wb') : ($options['filemode']);
-        $delayed  = (isset($options['delayed']) === false) ? (false) : ($options['delayed']);
+        $filemode = (!isset($options['filemode'])) ? ('wb') : ($options['filemode']);
+        $delayed  = (!isset($options['delayed'])) ? (false) : ($options['delayed']);
         return new FileOutputStream($target, $filemode, $delayed);
     }
 }

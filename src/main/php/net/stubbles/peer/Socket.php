@@ -79,7 +79,7 @@ class Socket extends BaseObject
      */
     public function connect($connectTimeout = 2)
     {
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             return true;
         }
 
@@ -106,7 +106,7 @@ class Socket extends BaseObject
      */
     public function disconnect()
     {
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             fclose($this->fp);
             $this->fp = null;
         }
@@ -123,7 +123,7 @@ class Socket extends BaseObject
     public function setTimeout($timeout)
     {
         $this->timeout = $timeout;
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             socket_set_timeout($this->fp, $this->timeout);
         }
 
@@ -140,7 +140,7 @@ class Socket extends BaseObject
      */
     public function read($length = 4096)
     {
-        if ($this->isConnected() === false) {
+        if (!$this->isConnected()) {
             throw new IllegalStateException('Can not read on unconnected socket.');
         }
 
@@ -148,7 +148,7 @@ class Socket extends BaseObject
         if (false === $data) {
             // fgets returns false on eof while feof() returned false before
             // but will now return true
-            if ($this->eof() === true) {
+            if ($this->eof()) {
                 return null;
             }
 
@@ -179,7 +179,7 @@ class Socket extends BaseObject
      */
     public function readBinary($length = 1024)
     {
-        if ($this->isConnected() === false) {
+        if (!$this->isConnected()) {
             throw new IllegalStateException('Can not read on unconnected socket.');
         }
 
@@ -201,7 +201,7 @@ class Socket extends BaseObject
      */
     public function write($data)
     {
-        if ($this->isConnected() === false) {
+        if (!$this->isConnected()) {
             throw new IllegalStateException('Can not write on unconnected socket.');
         }
 
@@ -270,7 +270,7 @@ class Socket extends BaseObject
      */
     public function eof()
     {
-        if ($this->isConnected() === true) {
+        if ($this->isConnected()) {
             return feof($this->fp);
         }
 

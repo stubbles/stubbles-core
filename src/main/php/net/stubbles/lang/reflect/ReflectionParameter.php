@@ -69,7 +69,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     public function hasAnnotation($annotationName)
     {
         $refRoutine = $this->getDeclaringFunction();
-        $targetName = ((is_array($this->routineName) === true) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName));
+        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName));
         return AnnotationFactory::has($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, Annotation::TARGET_PARAM, $targetName, $refRoutine->getFileName());
     }
 
@@ -82,7 +82,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     public function getAnnotation($annotationName)
     {
         $refRoutine = $this->getDeclaringFunction();
-        $targetName = ((is_array($this->routineName) === true) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName));
+        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName));
         return AnnotationFactory::create($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, Annotation::TARGET_PARAM, $targetName, $refRoutine->getFileName());
     }
 
@@ -143,7 +143,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     public function getDeclaringFunction()
     {
         if (null === $this->refRoutine) {
-            if (is_array($this->routineName) === true) {
+            if (is_array($this->routineName)) {
                 $this->refRoutine = new ReflectionMethod($this->routineName[0], $this->routineName[1]);
             } else {
                 $this->refRoutine = new ReflectionFunction($this->routineName);
@@ -160,7 +160,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
      */
     public function getDeclaringClass()
     {
-        if (is_array($this->routineName) === false) {
+        if (!is_array($this->routineName)) {
             return null;
         }
 

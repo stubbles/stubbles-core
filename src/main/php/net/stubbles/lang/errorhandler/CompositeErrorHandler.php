@@ -92,9 +92,9 @@ class CompositeErrorHandler extends BaseObject implements ErrorHandler
     {
         $errorReporting = error_reporting();
         foreach ($this->errorHandlers as $errorHandler) {
-            if ($errorHandler->isResponsible($level, $message, $file, $line, $context) === true) {
+            if ($errorHandler->isResponsible($level, $message, $file, $line, $context)) {
                 // if function/method was called with prepended @ and error is supressable
-                if (0 == $errorReporting && $errorHandler->isSupressable($level, $message, $file, $line, $context) === true) {
+                if (0 == $errorReporting && $errorHandler->isSupressable($level, $message, $file, $line, $context)) {
                     return ErrorHandler::STOP_ERROR_HANDLING;
                 }
 

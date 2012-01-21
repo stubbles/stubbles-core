@@ -144,7 +144,7 @@ class ConstantBinding extends BaseObject implements Binding
 
         if (null != $this->providerClass) {
             $provider = $this->injector->getInstance($this->providerClass);
-            if (($provider instanceof InjectionProvider) === false) {
+            if (!($provider instanceof InjectionProvider)) {
                  throw new BindingException('Configured provider class ' . $this->providerClass . ' for constant ' . $this->name . ' is not an instance of net\stubbles\ioc\InjectionProvider.');
             }
 

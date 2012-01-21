@@ -105,7 +105,7 @@ class AnnotationCache
      */
     public static function put($target, $targetName, $annotationName, Annotation $annotation = null)
     {
-        if (isset(self::$annotations[$target][$targetName]) === false) {
+        if (!isset(self::$annotations[$target][$targetName])) {
             self::$annotations[$target][$targetName] = array();
         }
 
@@ -127,7 +127,7 @@ class AnnotationCache
      */
     public static function remove($target, $targetName, $annotationName)
     {
-        if (isset(self::$annotations[$target][$targetName]) === false || isset(self::$annotations[$target][$targetName][$annotationName]) === false) {
+        if (!isset(self::$annotations[$target][$targetName]) || !isset(self::$annotations[$target][$targetName][$annotationName])) {
             return;
         }
 
@@ -145,11 +145,11 @@ class AnnotationCache
      */
     public static function has($target, $targetName, $annotationName)
     {
-        if (isset(self::$annotations[$target][$targetName]) === false) {
+        if (!isset(self::$annotations[$target][$targetName])) {
             return false;
         }
 
-        if (isset(self::$annotations[$target][$targetName][$annotationName]) === false) {
+        if (!isset(self::$annotations[$target][$targetName][$annotationName])) {
             return false;
         }
 
@@ -187,7 +187,7 @@ class AnnotationCache
      */
     public static function get($target, $targetName, $annotationName)
     {
-        if (self::has($target, $targetName, $annotationName) === true) {
+        if (self::has($target, $targetName, $annotationName)) {
             return unserialize(self::$annotations[$target][$targetName][$annotationName]);
         }
 

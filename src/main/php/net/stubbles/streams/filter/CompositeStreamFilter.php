@@ -42,7 +42,7 @@ class CompositeStreamFilter extends BaseObject implements StreamFilter
     public function shouldFilter($data)
     {
         foreach ($this->streamFilter as $streamFilter) {
-            if ($streamFilter->shouldFilter($data) === true) {
+            if ($streamFilter->shouldFilter($data)) {
                 return true;
             }
         }

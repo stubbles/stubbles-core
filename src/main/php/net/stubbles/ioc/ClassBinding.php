@@ -104,7 +104,7 @@ class ClassBinding extends BaseObject implements Binding
      */
     public function to($impl)
     {
-        if (is_string($impl) === false && ($impl instanceof BaseReflectionClass) === false) {
+        if (!is_string($impl) && !($impl instanceof BaseReflectionClass)) {
             throw new IllegalArgumentException('$impl must be a string or an instance of net\\stubbles\\lang\\reflect\\BaseReflectionClass');
         }
 
@@ -124,7 +124,7 @@ class ClassBinding extends BaseObject implements Binding
      */
     public function toInstance($instance)
     {
-        if (($instance instanceof $this->type) === false) {
+        if (!($instance instanceof $this->type)) {
             throw new IllegalArgumentException('Instance of ' . $this->type . ' expectected, ' . get_class($instance) . ' given.');
         }
 
@@ -225,12 +225,12 @@ class ClassBinding extends BaseObject implements Binding
             return $this->instance;
         }
 
-        if (is_string($this->impl) === true) {
+        if (is_string($this->impl)) {
             $this->impl = new ReflectionClass($this->impl);
         }
 
         if (null === $this->scope) {
-            if ($this->impl->hasAnnotation('Singleton') === true) {
+            if ($this->impl->hasAnnotation('Singleton')) {
                 $this->scope = $this->scopes->getSingletonScope();
             }
         }
@@ -238,7 +238,7 @@ class ClassBinding extends BaseObject implements Binding
         if (null === $this->provider) {
             if (null != $this->providerClass) {
                 $provider = $this->injector->getInstance($this->providerClass);
-                if (($provider instanceof InjectionProvider) === false) {
+                if (!($provider instanceof InjectionProvider)) {
                     throw new BindingException('Configured provider class ' . $this->providerClass . ' for type ' . $this->type . ' is not an instance of net\\stubbles\\ioc\\InjectionProvider.');
                 }
 

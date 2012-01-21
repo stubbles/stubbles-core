@@ -75,9 +75,9 @@ class HeaderList extends BaseObject implements \IteratorAggregate
      */
     public function append($headers)
     {
-        if (is_string($headers) === true) {
+        if (is_string($headers)) {
             $append = self::parse($headers);
-        } elseif (is_array($headers) === true) {
+        } elseif (is_array($headers)) {
             $append = $headers;
         } elseif ($headers instanceof self) {
             $append = $headers->headers;
@@ -99,11 +99,11 @@ class HeaderList extends BaseObject implements \IteratorAggregate
      */
     public function put($key, $value)
     {
-        if (is_string($key) === false) {
+        if (!is_string($key)) {
             throw new IllegalArgumentException('Argument 1 passed to ' . __METHOD__ . ' must be an instance of string.');
         }
 
-        if (is_scalar($value) === false) {
+        if (!is_scalar($value)) {
             throw new IllegalArgumentException('Argument 2 passed to ' . __METHOD__ . ' must be an instance of a scalar value.');
         }
 

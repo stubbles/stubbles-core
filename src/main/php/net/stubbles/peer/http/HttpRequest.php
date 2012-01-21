@@ -100,7 +100,7 @@ class HttpRequest extends BaseObject
      */
     public function post($body, $timeout = 30, $version = Http::VERSION_1_1)
     {
-        if (is_array($body) === true) {
+        if (is_array($body)) {
             $body = $this->transformPostValues($body);
             $this->headers->put('Content-Type', 'application/x-www-form-urlencoded');
         }
@@ -139,7 +139,7 @@ class HttpRequest extends BaseObject
      */
     private function processHeader(OutputStream $out, $method, $version)
     {
-        if (Http::isVersionValid($version) === false) {
+        if (!Http::isVersionValid($version)) {
             throw new IllegalArgumentException("Invalid HTTP version " . $version . ', please use either ' . Http::VERSION_1_0 . ' or ' . Http::VERSION_1_1);
         }
 

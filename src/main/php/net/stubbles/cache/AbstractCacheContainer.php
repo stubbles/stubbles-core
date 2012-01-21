@@ -38,7 +38,7 @@ abstract class AbstractCacheContainer extends BaseObject implements CacheContain
      */
     public function put($key, $data)
     {
-        if ($this->strategy->isCachable($this, $key, $data) === false) {
+        if (!$this->strategy->isCachable($this, $key, $data)) {
             return false;
         }
 
@@ -64,7 +64,7 @@ abstract class AbstractCacheContainer extends BaseObject implements CacheContain
      */
     public function has($key)
     {
-        if ($this->strategy->isExpired($this, $key) === true) {
+        if ($this->strategy->isExpired($this, $key)) {
             return false;
         }
 
@@ -100,7 +100,7 @@ abstract class AbstractCacheContainer extends BaseObject implements CacheContain
      */
     public function get($key)
     {
-        if ($this->strategy->isExpired($this, $key) === true) {
+        if ($this->strategy->isExpired($this, $key)) {
             return null;
         }
 
@@ -125,7 +125,7 @@ abstract class AbstractCacheContainer extends BaseObject implements CacheContain
      */
     public function getSize($key)
     {
-        if ($this->has($key) === true) {
+        if ($this->has($key)) {
             return $this->doGetSize($key);
         }
 
@@ -157,7 +157,7 @@ abstract class AbstractCacheContainer extends BaseObject implements CacheContain
      */
     public function gc()
     {
-        if ($this->strategy->shouldRunGc($this) === true) {
+        if ($this->strategy->shouldRunGc($this)) {
             $this->doGc();
             $this->lastGcRun = time();
         }

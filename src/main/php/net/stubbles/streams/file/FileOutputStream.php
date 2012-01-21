@@ -43,14 +43,14 @@ class FileOutputStream extends ResourceOutputStream
      */
     public function __construct($file, $mode = 'wb', $delayed = false)
     {
-        if (is_string($file) === true) {
+        if (is_string($file)) {
             if (false === $delayed) {
                 $this->setHandle($this->openFile($file, $mode));
             } else {
                 $this->file = $file;
                 $this->mode = $mode;
             }
-        } elseif (is_resource($file) === true && get_resource_type($file) === 'stream') {
+        } elseif (is_resource($file) && get_resource_type($file) === 'stream') {
             $this->setHandle($file);
         } else {
             throw new IllegalArgumentException('File must either be a filename or an already opened file/stream resource.');
@@ -73,7 +73,7 @@ class FileOutputStream extends ResourceOutputStream
      */
     public function write($bytes)
     {
-        if ($this->isFileCreationDelayed() === true) {
+        if ($this->isFileCreationDelayed()) {
             $this->setHandle($this->openFile($this->file, $this->mode));
         }
 

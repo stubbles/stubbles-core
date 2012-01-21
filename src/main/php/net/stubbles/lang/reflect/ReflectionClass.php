@@ -130,9 +130,9 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
         $methods     = parent::getMethods();
         $stubMethods = array();
         foreach ($methods as $method) {
-            if ($methodMatcher->matchesMethod($method) === true) {
+            if ($methodMatcher->matchesMethod($method)) {
                 $stubMethod = new ReflectionMethod($this, $method->getName());
-                if ($methodMatcher->matchesAnnotatableMethod($stubMethod) === true) {
+                if ($methodMatcher->matchesAnnotatableMethod($stubMethod)) {
                     $stubMethods[] = $stubMethod;
                 }
             }
@@ -189,9 +189,9 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
         $properties     = parent::getProperties();
         $stubProperties = array();
         foreach ($properties as $property) {
-            if ($propertyMatcher->matchesProperty($property) === true) {
+            if ($propertyMatcher->matchesProperty($property)) {
                 $stubProperty = new ReflectionProperty($this, $property->getName());
-                if ($propertyMatcher->matchesAnnotatableProperty($stubProperty) === true) {
+                if ($propertyMatcher->matchesAnnotatableProperty($stubProperty)) {
                     $stubProperties[] = $stubProperty;
                 }
             }

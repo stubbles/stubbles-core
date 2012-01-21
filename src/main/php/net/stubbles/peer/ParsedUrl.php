@@ -34,16 +34,16 @@ class ParsedUrl extends BaseObject
      */
     public function __construct($url)
     {
-        $this->url = ((is_array($url) === false) ? (parse_url($url)): ($url));
-        if (isset($this->url['host']) === true) {
+        $this->url = ((!is_array($url)) ? (parse_url($url)): ($url));
+        if (isset($this->url['host'])) {
             $this->url['host'] = strtolower($this->url['host']);
         }
 
-        $this->queryString = new QueryString((isset($this->url['query']) === true) ? ($this->url['query']) : (null));
+        $this->queryString = new QueryString((isset($this->url['query'])) ? ($this->url['query']) : (null));
         // bugfix for a PHP issue: ftp://user:@auxiliary.kl-s.com/
         // will lead to an unset $this->url['pass'] which is wrong
         // due to RFC1738 3.1, it has to be an empty string
-        if (isset($this->url['user']) === true && isset($this->url['pass']) === false && $this->asString() !== $url) {
+        if (isset($this->url['user']) && !isset($this->url['pass']) && $this->asString() !== $url) {
             $this->url['pass'] = '';
         }
     }
@@ -95,19 +95,19 @@ class ParsedUrl extends BaseObject
     protected function createString(\Closure $portCreator)
     {
         $url = $this->getScheme() . '://';
-        if ($this->hasUser() === true) {
+        if ($this->hasUser()) {
             $user = $this->getUser();
-            if ($this->hasPassword() === true) {
+            if ($this->hasPassword()) {
                 $user .= ':' . $this->getPassword();
             }
 
             $url .= $user;
-            if ($this->hasHost() === true) {
+            if ($this->hasHost()) {
                 $url .= '@';
             }
         }
 
-        if ($this->hasHost() === true) {
+        if ($this->hasHost()) {
             $url .= $this->getHost();
             $port = $portCreator($this);
             if (strlen($port) > 0) {
@@ -116,11 +116,11 @@ class ParsedUrl extends BaseObject
         }
 
         $url .= $this->getPath();
-        if ($this->queryString->hasParams() === true) {
+        if ($this->queryString->hasParams()) {
             $url .= '?' . $this->queryString->build();
         }
 
-        if ($this->hasFragment() === true) {
+        if ($this->hasFragment()) {
             $url .= '#' . $this->getFragment();
         }
 
@@ -144,7 +144,7 @@ class ParsedUrl extends BaseObject
      */
     public function getScheme()
     {
-        if (isset($this->url['scheme']) === true) {
+        if (isset($this->url['scheme'])) {
             return $this->url['scheme'];
         }
 
@@ -168,7 +168,7 @@ class ParsedUrl extends BaseObject
      */
     public function getUser()
     {
-        if (isset($this->url['user']) === true) {
+        if (isset($this->url['user'])) {
             return $this->url['user'];
         }
 
@@ -192,7 +192,7 @@ class ParsedUrl extends BaseObject
      */
     public function getPassword()
     {
-        if (isset($this->url['pass']) === true) {
+        if (isset($this->url['pass'])) {
             return $this->url['pass'];
         }
 
@@ -226,7 +226,7 @@ class ParsedUrl extends BaseObject
      */
     public function getHost()
     {
-        if (isset($this->url['host']) === true) {
+        if (isset($this->url['host'])) {
             return $this->url['host'];
         }
 
@@ -250,7 +250,7 @@ class ParsedUrl extends BaseObject
      */
     public function getPort()
     {
-        if (isset($this->url['port']) === true) {
+        if (isset($this->url['port'])) {
             return (int) $this->url['port'];
         }
 
@@ -264,11 +264,11 @@ class ParsedUrl extends BaseObject
      */
     public function getPath()
     {
-        if (isset($this->url['path']) === false) {
-            return null;
+        if (isset($this->url['path'])) {
+            return $this->url['path'];
         }
 
-        return $this->url['path'];
+        return null;
     }
 
     /**
@@ -298,7 +298,7 @@ class ParsedUrl extends BaseObject
      */
     public function getFragment()
     {
-        if (isset($this->url['fragment']) === true) {
+        if (isset($this->url['fragment'])) {
             return $this->url['fragment'];
         }
 

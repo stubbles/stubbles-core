@@ -53,12 +53,12 @@ class Date extends BaseObject
      */
     public function __construct($dateTime = null, TimeZone $timeZone = null)
     {
-        if (is_numeric($dateTime) === true) {
+        if (is_numeric($dateTime)) {
             $this->dateTime = date_create('@' . $dateTime, timezone_open('UTC'));
             if (false !== $this->dateTime) {
                 date_timezone_set($this->dateTime, (null === $timeZone) ? (new \DateTimeZone(date_default_timezone_get())) : ($timeZone->getHandle()));
             }
-        } elseif (is_string($dateTime) === true) {
+        } elseif (is_string($dateTime)) {
             try {
                 if (null === $timeZone) {
                     $this->dateTime = new \DateTime($dateTime);
@@ -72,7 +72,7 @@ class Date extends BaseObject
             $this->dateTime = $dateTime;
         }
 
-        if (($this->dateTime instanceof \DateTime) === false) {
+        if (!($this->dateTime instanceof \DateTime)) {
             throw new IllegalArgumentException('Datetime must be either unix timestamp, well-formed timestamp or instance of DateTime, but was ' . gettype($dateTime) . ' ' . $dateTime);
         }
     }

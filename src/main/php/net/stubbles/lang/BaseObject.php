@@ -119,7 +119,7 @@ abstract class BaseObject implements Object
         $properties      = (array) $object;
         $fixedProperties = array();
         foreach ($properties as $propertyName => $propertyValue) {
-            if (strstr($propertyName, "\0") === false) {
+            if (!strstr($propertyName, "\0")) {
                 $fixedProperties[$propertyName] = $propertyValue;
                 continue;
             }
@@ -201,15 +201,15 @@ abstract class BaseObject implements Object
      */
     private static function _determineType(&$value)
     {
-        if (is_object($value) === false) {
-            if (is_resource($value) === false) {
-                return gettype($value);
-            }
+        if (is_object($value)) {
+            return get_class($value);
+        }
 
+        if (is_resource($value)) {
             return 'resource[' . get_resource_type($value) . ']';
         }
 
-        return get_class($value);
+        return gettype($value);
     }
 }
 ?>

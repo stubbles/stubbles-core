@@ -124,7 +124,7 @@ class HttpResponse extends BaseObject
     public function getStatusCodeClass()
     {
         $this->readHeader();
-        if (empty($this->statusCode) === true) {
+        if (empty($this->statusCode)) {
             return null;
         }
 
@@ -177,7 +177,7 @@ class HttpResponse extends BaseObject
             $this->parseStatusLine($this->inputStream->readLine());
             $headers = '';
             $line    = '';
-            while ($this->inputStream->eof() === false && Http::END_OF_LINE !== $line) {
+            while (!$this->inputStream->eof() && Http::END_OF_LINE !== $line) {
                 $line     = $this->inputStream->readLine() . "\n";
                 $headers .= $line;
             }
@@ -273,7 +273,7 @@ class HttpResponse extends BaseObject
     {
         $body = $buffer = '';
         $read = 0;
-        while ($read < $readLength && $this->inputStream->eof() === false) {
+        while ($read < $readLength && !$this->inputStream->eof()) {
             $buffer  = $this->inputStream->read($readLength);
             $read   += strlen($buffer);
             $body   .= $buffer;

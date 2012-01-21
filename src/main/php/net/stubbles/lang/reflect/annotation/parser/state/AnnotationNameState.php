@@ -143,7 +143,7 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
      */
     protected function changeState($targetState)
     {
-        if (in_array($this->name, $this->forbiddenAnnotationNames) === true) {
+        if (in_array($this->name, $this->forbiddenAnnotationNames)) {
             $targetState = AnnotationState::DOCBLOCK;
         }
 

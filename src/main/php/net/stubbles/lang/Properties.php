@@ -69,7 +69,7 @@ class Properties extends BaseObject implements \Iterator
      */
     public static function fromFile($propertiesFile)
     {
-        if (file_exists($propertiesFile) === false || is_readable($propertiesFile) === false) {
+        if (!file_exists($propertiesFile) || !is_readable($propertiesFile)) {
             throw new FileNotFoundException($propertiesFile);
         }
 
@@ -127,7 +127,7 @@ class Properties extends BaseObject implements \Iterator
      */
     public function getSection($section, array $default = array())
     {
-        if (isset($this->propertyData[$section]) === true) {
+        if (isset($this->propertyData[$section])) {
             return $this->propertyData[$section];
         }
 
@@ -143,7 +143,7 @@ class Properties extends BaseObject implements \Iterator
      */
     public function getSectionKeys($section, array $default = array())
     {
-        if (isset($this->propertyData[$section]) === true) {
+        if (isset($this->propertyData[$section])) {
             return array_keys($this->propertyData[$section]);
         }
 
@@ -159,7 +159,7 @@ class Properties extends BaseObject implements \Iterator
      */
     public function hasValue($section, $key)
     {
-        if (isset($this->propertyData[$section]) === true && isset($this->propertyData[$section][$key]) === true) {
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
             return true;
         }
 
@@ -176,7 +176,7 @@ class Properties extends BaseObject implements \Iterator
      */
     public function getValue($section, $key, $default = null)
     {
-        if (isset($this->propertyData[$section]) === true && isset($this->propertyData[$section][$key]) === true) {
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
             return $this->propertyData[$section][$key];
         }
 
@@ -193,7 +193,7 @@ class Properties extends BaseObject implements \Iterator
      */
     public function parseString($section, $key, $default = null)
     {
-        if (isset($this->propertyData[$section]) === true && isset($this->propertyData[$section][$key]) === true) {
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
             return (string) $this->propertyData[$section][$key];
         }
 
@@ -210,11 +210,11 @@ class Properties extends BaseObject implements \Iterator
      */
     public function parseInt($section, $key, $default = 0)
     {
-        if (isset($this->propertyData[$section]) === false || isset($this->propertyData[$section][$key]) === false) {
-            return $default;
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
+            return intval($this->propertyData[$section][$key]);
         }
 
-        return intval($this->propertyData[$section][$key]);
+        return $default;
     }
 
     /**
@@ -227,11 +227,11 @@ class Properties extends BaseObject implements \Iterator
      */
     public function parseFloat($section, $key, $default = 0.0)
     {
-        if (isset($this->propertyData[$section]) === false || isset($this->propertyData[$section][$key]) === false) {
-            return $default;
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
+            return floatval($this->propertyData[$section][$key]);
         }
 
-        return floatval($this->propertyData[$section][$key]);
+        return $default;
     }
 
     /**
@@ -247,12 +247,12 @@ class Properties extends BaseObject implements \Iterator
      */
     public function parseBool($section, $key, $default = false)
     {
-        if (isset($this->propertyData[$section]) === false || isset($this->propertyData[$section][$key]) === false) {
-            return $default;
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
+            $val = $this->propertyData[$section][$key];
+            return ('1' == $val || 'yes' === $val || 'true' === $val || 'on' === $val);
         }
 
-        $val = $this->propertyData[$section][$key];
-        return ('1' == $val || 'yes' === $val || 'true' === $val || 'on' === $val);
+        return $default;
     }
 
     /**
@@ -273,11 +273,11 @@ class Properties extends BaseObject implements \Iterator
      */
     public function parseArray($section, $key, array $default = null)
     {
-        if (isset($this->propertyData[$section]) === false || isset($this->propertyData[$section][$key]) === false) {
+        if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
             return $default;
         }
 
-        if (empty($this->propertyData[$section][$key]) === true) {
+        if (empty($this->propertyData[$section][$key])) {
             return array();
         }
 
@@ -305,11 +305,11 @@ class Properties extends BaseObject implements \Iterator
      */
     public function parseHash($section, $key, array $default = null)
     {
-        if (isset($this->propertyData[$section]) === false || isset($this->propertyData[$section][$key]) === false) {
+        if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
             return $default;
         }
 
-        if (empty($this->propertyData[$section][$key]) === true) {
+        if (empty($this->propertyData[$section][$key])) {
             return array();
         }
 
@@ -348,11 +348,11 @@ class Properties extends BaseObject implements \Iterator
      */
     public function parseRange($section, $key, array $default = array())
     {
-        if (isset($this->propertyData[$section]) === false || isset($this->propertyData[$section][$key]) === false) {
+        if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
             return $default;
         }
 
-        if (strstr($this->propertyData[$section][$key], '..') === false) {
+        if (!strstr($this->propertyData[$section][$key], '..')) {
             return array();
         }
 

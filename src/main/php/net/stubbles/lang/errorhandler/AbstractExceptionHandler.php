@@ -155,7 +155,7 @@ abstract class AbstractExceptionHandler extends BaseObject implements ExceptionH
         }
 
         $logDir = str_replace('{Y}', date('Y'), str_replace('{M}', date('m'), $this->logDir));
-        if (file_exists($logDir) === false) {
+        if (!file_exists($logDir)) {
             mkdir($logDir, $this->filemode, true);
         }
 

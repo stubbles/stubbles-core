@@ -52,7 +52,7 @@ class DefaultInjectionProvider extends BaseObject implements InjectionProvider
     public function get($name = null)
     {
         $constructor = $this->impl->getConstructor();
-        if (null === $constructor || $constructor->hasAnnotation('Inject') === false) {
+        if (null === $constructor || !$constructor->hasAnnotation('Inject')) {
             $instance = $this->impl->newInstance();
         } else {
             $instance = $this->impl->newInstanceArgs($this->injector->getInjectionValuesForMethod($constructor, $this->impl));

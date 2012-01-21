@@ -80,7 +80,7 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
         }
 
         $commonProjectPath = $this->realpath($this->projectPath . '/../common');
-        if (empty($commonProjectPath) === false) {
+        if (!empty($commonProjectPath)) {
             foreach ($this->createPathes($commonProjectPath, '.common') as $name => $value) {
                 $binder->bindConstant()
                        ->named($name)
@@ -135,7 +135,7 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      */
     protected function getProperties($configPath)
     {
-        if (null == $configPath || file_exists($configPath . DIRECTORY_SEPARATOR . 'config.ini') === false) {
+        if (null == $configPath || !file_exists($configPath . DIRECTORY_SEPARATOR . 'config.ini')) {
             return array();
         }
 
