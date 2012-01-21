@@ -62,9 +62,6 @@ class FileInputStream extends ResourceInputStream implements Seekable
     /**
      * helper method to retrieve the length of the resource
      *
-     * Not all stream wrappers support (f)stat - the extending class then
-     * needs to take care to deliver the correct resource length then.
-     *
      * @return  int
      */
     protected function getResourceLength()
