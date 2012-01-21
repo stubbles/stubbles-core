@@ -9,7 +9,6 @@
  */
 namespace net\stubbles\cache;
 use net\stubbles\lang\reflect\ReflectionClass;
-use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\cache\CacheProvider.
  *
@@ -24,26 +23,26 @@ class CacheProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $cacheProvider;
     /**
-     * mocked cache strategy
+     * mocked cache strategy provider
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockCacheStrategy;
+    protected $mockCacheStrategyProvider;
     /**
-     * access to cache directory
+     * mocked cache storage provider
      *
-     * @type  vfsStreamDirectory
+     * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $cacheDirectory;
+    protected $mockCacheStorageProvider;
 
     /**
      * set up the test environment
      */
     public function setUp()
     {
-        $this->root = vfsStream::setup('cache');
-        $this->mockCacheStrategy = $this->getMock('net\\stubbles\\cache\\CacheStrategy');
-        $this->cacheProvider     = new CacheProvider($this->mockCacheStrategy, vfsStream::url('cache'));
+        $this->mockCacheStrategyProvider = $this->getMock('net\\stubbles\\cache\\CacheStrategyProvider');
+        $this->mockCacheStorageProvider  = $this->getMock('net\\stubbles\\cache\\CacheStorageProvider');
+        $this->cacheProvider             = new CacheProvider($this->mockCacheStrategyProvider, $this->mockCacheStorageProvider);
     }
 
     /**
@@ -53,34 +52,14 @@ class CacheProviderTestCase extends \PHPUnit_Framework_TestCase
     {
         $refConstructor = $this->cacheProvider->getClass()->getConstructor();
         $this->assertTrue($refConstructor->hasAnnotation('Inject'));
-
-        $refParams = $refConstructor->getParameters();
-        $this->assertTrue($refParams[1]->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.cache.path',
-                            $refParams[1]->getAnnotation('Named')->getName()
-        );
     }
 
     /**
      * @test
      */
-    public function annotationPresentOnSetFileModeMethod()
+    public function isDefaultProviderForCache()
     {
-        $refMethod = $this->cacheProvider->getClass()->getMethod('setFileMode');
-        $this->assertTrue($refMethod->hasAnnotation('Inject'));
-        $this->assertTrue($refMethod->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.util.cache.filemode',
-                            $refMethod->getAnnotation('Named')->getName()
-        );
-    }
-
-    /**
-     * @test
-     * @since  1.1.0
-     */
-    public function isDefaultProviderForCacheContainer()
-    {
-        $refClass = new ReflectionClass('net\\stubbles\\cache\\CacheContainer');
+        $refClass = new ReflectionClass('net\\stubbles\\cache\\Cache');
         $this->assertTrue($refClass->hasAnnotation('ProvidedBy'));
         $this->assertEquals($this->cacheProvider->getClassName(),
                             $refClass->getAnnotation('ProvidedBy')
@@ -92,43 +71,33 @@ class CacheProviderTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function fileMode()
+    public function createsCacheUsingBothProviders()
     {
-        $this->assertSame($this->cacheProvider, $this->cacheProvider->setFileMode(0660));
+        $this->mockCacheStrategyProvider->expects($this->any())
+                                        ->method('get')
+                                        ->with($this->equalTo(null))
+                                        ->will($this->returnValue($this->getMock('net\\stubbles\\cache\\CacheStrategy')));
+        $this->mockCacheStorageProvider->expects($this->any())
+                                       ->method('get')
+                                       ->with($this->equalTo(null))
+                                       ->will($this->returnValue($this->getMock('net\\stubbles\\cache\\CacheStorage')));
+        $this->assertInstanceOf('net\\stubbles\\cache\\Cache', $this->cacheProvider->get());
     }
 
     /**
      * @test
      */
-    public function namedCacheContainerIsAlwaysSameInstance()
+    public function createsCacheUsingGivenName()
     {
-        $this->mockCacheStrategy->expects($this->any())
-                                ->method('shouldRunGc')
-                                ->will($this->returnValue(false));
-        $namedCacheContainer = $this->cacheProvider->get('websites');
-        $this->assertInstanceOf('net\\stubbles\\cache\\FileCacheContainer',
-                                $namedCacheContainer
-        );
-        $this->assertTrue($this->root->hasChild('websites'));
-        $this->assertSame($namedCacheContainer, $this->cacheProvider->get('websites'));
-    }
-
-
-    /**
-     * @test
-     */
-    public function unNamedCacheContainerIsAlwaysSameInstance()
-    {
-        $this->mockCacheStrategy->expects($this->any())
-                                ->method('shouldRunGc')
-                                ->will($this->returnValue(false));
-        $unnamedCacheContainer = $this->cacheProvider->get();
-        $this->assertInstanceOf('net\\stubbles\\cache\\FileCacheContainer',
-                                $unnamedCacheContainer
-        );
-        $this->assertFalse($this->root->hasChild(CacheProvider::DEFAULT_NAME));
-        $this->assertSame($unnamedCacheContainer, $this->cacheProvider->get());
-        $this->assertSame($unnamedCacheContainer, $this->cacheProvider->get(CacheProvider::DEFAULT_NAME));
+        $this->mockCacheStrategyProvider->expects($this->any())
+                                        ->method('get')
+                                        ->with($this->equalTo('foo'))
+                                        ->will($this->returnValue($this->getMock('net\\stubbles\\cache\\CacheStrategy')));
+        $this->mockCacheStorageProvider->expects($this->any())
+                                       ->method('get')
+                                       ->with($this->equalTo('foo'))
+                                       ->will($this->returnValue($this->getMock('net\\stubbles\\cache\\CacheStorage')));
+        $this->assertInstanceOf('net\\stubbles\\cache\\Cache', $this->cacheProvider->get('foo'));
     }
 }
 ?>

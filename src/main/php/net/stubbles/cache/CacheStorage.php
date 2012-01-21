@@ -10,11 +10,9 @@
 namespace net\stubbles\cache;
 use net\stubbles\lang\Object;
 /**
- * Interface for cache containers.
- *
- * @ProvidedBy(net\stubbles\cache\CacheProvider.class)
+ * Interface for cache storages.
  */
-interface CacheContainer extends Object
+interface CacheStorage extends Object
 {
     /**
      * puts date into the cache
@@ -36,14 +34,6 @@ interface CacheContainer extends Object
     public function has($key);
 
     /**
-     * checks whether cache data is expired
-     *
-     * @param   string  $key   key under which the data is stored
-     * @return  bool
-     */
-    public function isExpired($key);
-
-    /**
      * fetches data from the cache
      *
      * Returns null if no data is cached under the given key.
@@ -54,20 +44,19 @@ interface CacheContainer extends Object
     public function get($key);
 
     /**
+     * removes data with that key from storage
+     *
+     * @param  string  $key
+     */
+    public function remove($key);
+
+    /**
      * returns the time in seconds how long the data associated with $key is cached
      *
      * @param   string  $key
      * @return  int
      */
     public function getLifeTime($key);
-
-    /**
-     * returns the timestamp when data associated with $key is cached
-     *
-     * @param   string  $key
-     * @return  int
-     */
-    public function getStoreTime($key);
 
     /**
      * returns the allocated space of the data associated with $key in bytes
@@ -90,19 +79,5 @@ interface CacheContainer extends Object
      * @return  string[]
      */
     public function getKeys();
-
-    /**
-     * returns the unix timestamp of the last run of the garbage collection
-     *
-     * @return  int
-     */
-    public function lastGcRun();
-
-    /**
-     * runs the garbage collection
-     *
-     * @return  CacheContainer
-     */
-    public function gc();
 }
 ?>

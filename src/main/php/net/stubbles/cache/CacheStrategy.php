@@ -19,28 +19,28 @@ interface CacheStrategy extends Object
     /**
      * checks whether an item is cacheable or not
      *
-     * @param   CacheContainer  $container  the container to cache the data in
-     * @param   string          $key        the key to cache the data under
-     * @param   string          $data       data to cache
+     * @param   CacheStorage  $storage  the container to cache the data in
+     * @param   string        $key      the key to cache the data under
+     * @param   string        $data     data to cache
      * @return  bool
      */
-    public function isCachable(CacheContainer $container, $key, $data);
+    public function isCachable(CacheStorage $storage, $key, $data);
 
     /**
      * checks whether a cached item is expired
      *
-     * @param   CacheContainer  $container  the container that contains the cached data
-     * @param   string          $key        the key where the data is cached under
+     * @param   CacheStorage  $storage  the container that contains the cached data
+     * @param   string        $key      the key where the data is cached under
      * @return  bool
      */
-    public function isExpired(CacheContainer $container, $key);
+    public function isExpired(CacheStorage $storage, $key);
 
     /**
      * checks whether the garbage collection should be run
      *
-     * @param   CacheContainer $container
+     * @param   CacheStorage  $storage
      * @return  bool
      */
-    public function shouldRunGc(CacheContainer $container);
+    public function shouldRunGc(CacheStorage $storage);
 }
 ?>

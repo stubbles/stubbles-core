@@ -42,7 +42,7 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($setTimeToLiveMethod->hasAnnotation('Inject'));
         $this->assertTrue($setTimeToLiveMethod->getAnnotation('Inject')->isOptional());
         $this->assertTrue($setTimeToLiveMethod->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.util.cache.timeToLive',
+        $this->assertEquals('net.stubbles.cache.timeToLive',
                             $setTimeToLiveMethod->getAnnotation('Named')->getName()
         );
     }
@@ -58,7 +58,7 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($setMaxCacheSizeMethod->hasAnnotation('Inject'));
         $this->assertTrue($setMaxCacheSizeMethod->getAnnotation('Inject')->isOptional());
         $this->assertTrue($setMaxCacheSizeMethod->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.util.cache.maxSize',
+        $this->assertEquals('net.stubbles.cache.maxSize',
                             $setMaxCacheSizeMethod->getAnnotation('Named')->getName()
         );
     }
@@ -74,7 +74,7 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($setGcProbabilityMethod->hasAnnotation('Inject'));
         $this->assertTrue($setGcProbabilityMethod->getAnnotation('Inject')->isOptional());
         $this->assertTrue($setGcProbabilityMethod->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.util.cache.gcProbability',
+        $this->assertEquals('net.stubbles.cache.gcProbability',
                             $setGcProbabilityMethod->getAnnotation('Named')->getName()
         );
     }
@@ -102,14 +102,14 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $mockContainer->expects($this->once())
-                      ->method('getUsedSpace')
-                      ->will($this->returnValue(0));
-        $mockContainer->expects($this->once())
-                      ->method('getSize')
-                      ->will($this->returnValue(1));
-        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'a'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $mockStorage->expects($this->once())
+                    ->method('getUsedSpace')
+                    ->will($this->returnValue(0));
+        $mockStorage->expects($this->once())
+                    ->method('getSize')
+                    ->will($this->returnValue(1));
+        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockStorage, 'a', 'a'));
     }
 
     /**
@@ -120,14 +120,14 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $mockContainer->expects($this->once())
-                      ->method('getUsedSpace')
-                      ->will($this->returnValue(0));
-        $mockContainer->expects($this->once())
-                      ->method('getSize')
-                      ->will($this->returnValue(0));
-        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $mockStorage->expects($this->once())
+                    ->method('getUsedSpace')
+                    ->will($this->returnValue(0));
+        $mockStorage->expects($this->once())
+                    ->method('getSize')
+                    ->will($this->returnValue(0));
+        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockStorage, 'a', 'ab'));
     }
 
     /**
@@ -138,14 +138,14 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $mockContainer->expects($this->once())
-                      ->method('getUsedSpace')
-                      ->will($this->returnValue(2));
-        $mockContainer->expects($this->once())
-                      ->method('getSize')
-                      ->will($this->returnValue(2));
-        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $mockStorage->expects($this->once())
+                    ->method('getUsedSpace')
+                    ->will($this->returnValue(2));
+        $mockStorage->expects($this->once())
+                    ->method('getSize')
+                    ->will($this->returnValue(2));
+        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockStorage, 'a', 'ab'));
     }
 
     /**
@@ -156,8 +156,8 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(-1)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockStorage, 'a', 'ab'));
     }
 
     /**
@@ -168,14 +168,14 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(1)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $mockContainer->expects($this->once())
-                      ->method('getUsedSpace')
-                      ->will($this->returnValue(0));
-        $mockContainer->expects($this->once())
-                      ->method('getSize')
-                      ->will($this->returnValue(0));
-        $this->assertFalse($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $mockStorage->expects($this->once())
+                    ->method('getUsedSpace')
+                    ->will($this->returnValue(0));
+        $mockStorage->expects($this->once())
+                    ->method('getSize')
+                    ->will($this->returnValue(0));
+        $this->assertFalse($this->defaultCacheStrategy->isCachable($mockStorage, 'a', 'ab'));
     }
 
     /**
@@ -186,14 +186,14 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $mockContainer->expects($this->once())
-                      ->method('getUsedSpace')
-                      ->will($this->returnValue(1));
-        $mockContainer->expects($this->once())
-                      ->method('getSize')
-                      ->will($this->returnValue(0));
-        $this->assertFalse($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $mockStorage->expects($this->once())
+                    ->method('getUsedSpace')
+                    ->will($this->returnValue(1));
+        $mockStorage->expects($this->once())
+                    ->method('getSize')
+                    ->will($this->returnValue(0));
+        $this->assertFalse($this->defaultCacheStrategy->isCachable($mockStorage, 'a', 'ab'));
     }
 
     /**
@@ -204,11 +204,11 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $mockContainer->expects($this->once())
-                      ->method('getLifeTime')
-                      ->will($this->returnValue(9));
-        $this->assertFalse($this->defaultCacheStrategy->isExpired($mockContainer, 'a'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $mockStorage->expects($this->once())
+                    ->method('getLifeTime')
+                    ->will($this->returnValue(9));
+        $this->assertFalse($this->defaultCacheStrategy->isExpired($mockStorage, 'a'));
     }
 
     /**
@@ -219,11 +219,11 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $mockContainer->expects($this->once())
-                      ->method('getLifeTime')
-                      ->will($this->returnValue(10));
-        $this->assertFalse($this->defaultCacheStrategy->isExpired($mockContainer, 'a'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $mockStorage->expects($this->once())
+                    ->method('getLifeTime')
+                    ->will($this->returnValue(10));
+        $this->assertFalse($this->defaultCacheStrategy->isExpired($mockStorage, 'a'));
     }
 
     /**
@@ -234,11 +234,11 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $mockContainer->expects($this->once())
-                      ->method('getLifeTime')
-                      ->will($this->returnValue(11));
-        $this->assertTrue($this->defaultCacheStrategy->isExpired($mockContainer, 'a'));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $mockStorage->expects($this->once())
+                    ->method('getLifeTime')
+                    ->will($this->returnValue(11));
+        $this->assertTrue($this->defaultCacheStrategy->isExpired($mockStorage, 'a'));
     }
 
     /**
@@ -249,8 +249,8 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(0);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $this->assertFalse($this->defaultCacheStrategy->shouldRunGc($mockContainer));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $this->assertFalse($this->defaultCacheStrategy->shouldRunGc($mockStorage));
     }
 
     /**
@@ -261,8 +261,8 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
                                    ->setGcProbability(100);
-        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
-        $this->assertTrue($this->defaultCacheStrategy->shouldRunGc($mockContainer));
+        $mockStorage = $this->getMock('net\\stubbles\\cache\\CacheStorage');
+        $this->assertTrue($this->defaultCacheStrategy->shouldRunGc($mockStorage));
     }
 
     /**

@@ -46,7 +46,7 @@ class DefaultCacheStrategy extends BaseObject implements CacheStrategy
      * @throws  IllegalArgumentException
      * @since   1.1.0
      * @Inject(optional=true)
-     * @Named('net.stubbles.util.cache.timeToLive')
+     * @Named('net.stubbles.cache.timeToLive')
      */
     public function setTimeToLive($timeToLive)
     {
@@ -68,7 +68,7 @@ class DefaultCacheStrategy extends BaseObject implements CacheStrategy
      * @return  DefaultCacheStrategy
      * @since   1.1.0
      * @Inject(optional=true)
-     * @Named('net.stubbles.util.cache.maxSize')
+     * @Named('net.stubbles.cache.maxSize')
      */
     public function setMaxCacheSize($maxSize)
     {
@@ -84,7 +84,7 @@ class DefaultCacheStrategy extends BaseObject implements CacheStrategy
      * @throws  IllegalArgumentException
      * @since   1.1.0
      * @Inject(optional=true)
-     * @Named('net.stubbles.util.cache.gcProbability')
+     * @Named('net.stubbles.cache.gcProbability')
      */
     public function setGcProbability($gcProbability)
     {
@@ -100,18 +100,18 @@ class DefaultCacheStrategy extends BaseObject implements CacheStrategy
     /**
      * checks whether an item is cacheable or not
      *
-     * @param   CacheContainer  $container  the container to cache the data in
-     * @param   string          $key        the key to cache the data under
-     * @param   string          $data       data to cache
+     * @param   CacheStorage  $storage  the container to cache the data in
+     * @param   string        $key      the key to cache the data under
+     * @param   string        $data     data to cache
      * @return  bool
      */
-    public function isCachable(CacheContainer $container, $key, $data)
+    public function isCachable(CacheStorage $storage, $key, $data)
     {
         if (-1 == $this->maxSize) {
             return true;
         }
 
-        if (($container->getUsedSpace() + strlen($data) - $container->getSize($key)) > $this->maxSize) {
+        if (($storage->getUsedSpace() + strlen($data) - $storage->getSize($key)) > $this->maxSize) {
             return false;
         }
 
@@ -121,22 +121,22 @@ class DefaultCacheStrategy extends BaseObject implements CacheStrategy
     /**
      * checks whether a cached item is expired
      *
-     * @param   CacheContainer  $container  the container that contains the cached data
-     * @param   string          $key        the key where the data is cached under
+     * @param   CacheStorage  $storage  the container that contains the cached data
+     * @param   string        $key      the key where the data is cached under
      * @return  bool
      */
-    public function isExpired(CacheContainer $container, $key)
+    public function isExpired(CacheStorage $storage, $key)
     {
-        return ($container->getLifeTime($key) > $this->timeToLive);
+        return ($storage->getLifeTime($key) > $this->timeToLive);
     }
 
     /**
      * checks whether the garbage collection should be run
      *
-     * @param   CacheContainer  $container
+     * @param   CacheStorage  $storage
      * @return  bool
      */
-    public function shouldRunGc(CacheContainer $container)
+    public function shouldRunGc(CacheStorage $storage)
     {
         if (rand(1, 100) < $this->gcProbability) {
             return true;
