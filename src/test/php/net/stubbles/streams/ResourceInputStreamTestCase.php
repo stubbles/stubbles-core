@@ -116,7 +116,7 @@ jjj')
         $this->resourceInputStream->read();
         $this->assertTrue($this->resourceInputStream->eof());
         $this->assertEquals('', $this->resourceInputStream->read());
-        $this->assertEquals('', $this->resourceInputStream->readLine());
+        $this->assertEquals('', $this->resourceInputStream->read());
     }
 
     /**

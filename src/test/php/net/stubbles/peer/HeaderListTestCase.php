@@ -266,11 +266,26 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function hasNoDateByDefault()
+    {
+        $this->assertFalse($this->headerList->containsKey('Date'));
+    }
 
     /**
      * @test
      */
-    public function putDate()
+    public function putDateWithoutValueGiven()
+    {
+        $this->assertTrue($this->headerList->putDate()->containsKey('Date'));
+    }
+
+    /**
+     * @test
+     */
+    public function putDateWithGivenValue()
     {
         $time = time();
         $this->assertTrue($this->headerList->putDate($time)->containsKey('Date'));

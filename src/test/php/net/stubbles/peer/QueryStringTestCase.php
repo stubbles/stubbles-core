@@ -153,45 +153,45 @@ class QueryStringTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * test
+     * @test
      */
     public function removeNonExistingParamDoesNothing()
     {
         $this->assertEquals('foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=&set',
-                            $this->prefilledQueryString->remove('doesNotExist')
+                            $this->prefilledQueryString->removeParam('doesNotExist')
                                                        ->build()
         );
     }
 
     /**
-     * test
+     * @test
      */
     public function removeExistingEmptyParam()
     {
         $this->assertEquals('foo.hm=bar&baz[dummy]=blubb&baz[]=more&set',
-                            $this->prefilledQueryString->remove('empty')
+                            $this->prefilledQueryString->removeParam('empty')
                                                        ->build()
         );
     }
 
     /**
-     * test
+     * @test
      */
     public function removeExistingNullValueParam()
     {
         $this->assertEquals('foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=',
-                            $this->prefilledQueryString->remove('set')
+                            $this->prefilledQueryString->removeParam('set')
                                                        ->build()
         );
     }
 
     /**
-     * test
+     * @test
      */
     public function removeExistingArrayParam()
     {
         $this->assertEquals('foo.hm=bar&empty=&set',
-                            $this->prefilledQueryString->remove('baz')
+                            $this->prefilledQueryString->removeParam('baz')
                                                        ->build()
         );
     }
@@ -270,5 +270,6 @@ class QueryStringTestCase extends \PHPUnit_Framework_TestCase
                                                    ->build()
         );
     }
+
 }
 ?>

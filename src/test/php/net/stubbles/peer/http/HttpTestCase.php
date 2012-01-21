@@ -99,7 +99,8 @@ class HttpTestCase extends \PHPUnit_Framework_TestCase
                      array(506, Http::STATUS_CLASS_ERROR_SERVER),
                      array(507, Http::STATUS_CLASS_ERROR_SERVER),
                      array(509, Http::STATUS_CLASS_ERROR_SERVER),
-                     array(510, Http::STATUS_CLASS_ERROR_SERVER)
+                     array(510, Http::STATUS_CLASS_ERROR_SERVER),
+                     array(909, Http::STATUS_CLASS_UNKNOWN)
         );
     }
 
@@ -114,6 +115,14 @@ class HttpTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals($statusClass,
                             Http::getStatusClass($statusCode)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function returnsListOfStatusCodes()
+    {
+        $this->assertNotCount(0, Http::getStatusCodes());
     }
 
     /**

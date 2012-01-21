@@ -88,6 +88,21 @@ class HttpResponseTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function canReadResponseTwice()
+    {
+        $httpResponse = $this->getResponse(Http::line('HTTP/1.1 200 OK')
+                                         . Http::line('Host: ' . __METHOD__)
+                                         . Http::line('Content-Length: 6')
+                                         . Http::emptyLine()
+                                         . 'foobar'
+                        );
+        $this->assertEquals('foobar', $httpResponse->getBody());
+        $this->assertEquals('foobar', $httpResponse->getBody());
+    }
+
+    /**
+     * @test
+     */
     public function continuesOnStatusCode100()
     {
         $httpResponse = $this->getResponse(Http::line('HTTP/1.0 100 Continue')

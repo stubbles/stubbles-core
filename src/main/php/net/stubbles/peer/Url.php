@@ -160,11 +160,7 @@ class Url extends BaseObject implements UrlContainer
      */
     public function getUser($defaultUser = null)
     {
-        if ($this->parsedUrl->hasUser()) {
-            return $this->parsedUrl->getUser();
-        }
-
-        return $defaultUser;
+        return $this->parsedUrl->getUser($defaultUser);
     }
 
     /**
@@ -289,6 +285,16 @@ class Url extends BaseObject implements UrlContainer
     public function getParam($name, $defaultValue = null)
     {
         return $this->parsedUrl->queryString()->getParam($name, $defaultValue);
+    }
+
+    /**
+     * returns fragment of the url
+     *
+     * @return  string
+     */
+    public function getFragment()
+    {
+        return $this->parsedUrl->getFragment();
     }
 }
 ?>

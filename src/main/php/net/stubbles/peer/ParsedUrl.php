@@ -164,15 +164,16 @@ class ParsedUrl extends BaseObject
     /**
      * returns the user of the url
      *
+     * @param   string  $defaultUser  user to return if no user is set
      * @return  string
      */
-    public function getUser()
+    public function getUser($defaultUser = null)
     {
         if (isset($this->url['user'])) {
             return $this->url['user'];
         }
 
-        return null;
+        return $defaultUser;
     }
 
     /**

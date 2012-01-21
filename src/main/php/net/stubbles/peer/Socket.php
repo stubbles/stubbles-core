@@ -9,6 +9,7 @@
  */
 namespace net\stubbles\peer;
 use net\stubbles\lang\BaseObject;
+use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\exception\IllegalStateException;
 /**
  * Class for operations on sockets.
@@ -49,13 +50,18 @@ class Socket extends BaseObject
     /**
      * constructor
      *
-     * @param  string  $host     host to open socket to
-     * @param  int     $port     port to use for opening the socket
-     * @param  string  $prefix   prefix for host, e.g. ssl://
-     * @param  int     $timeout  connection timeout
+     * @param   string  $host     host to open socket to
+     * @param   int     $port     port to use for opening the socket
+     * @param   string  $prefix   prefix for host, e.g. ssl://
+     * @param   int     $timeout  connection timeout
+     * @throws  IllegalArgumentException
      */
     public function __construct($host, $port = 80, $prefix = null, $timeout = 5)
     {
+        if (empty($host)) {
+            throw new IllegalArgumentException('Host can not be empty');
+        }
+
         $this->host    = $host;
         $this->port    = $port;
         $this->prefix  = $prefix;
@@ -81,10 +87,6 @@ class Socket extends BaseObject
     {
         if ($this->isConnected()) {
             return true;
-        }
-
-        if (null == $this->host) {
-            return false;
         }
 
         $errno    = 0;

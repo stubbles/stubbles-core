@@ -26,6 +26,42 @@ class UrlTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException  net\stubbles\peer\MalformedUrlException
+     */
+    public function canNotCreateUrlWithInvalidScheme()
+    {
+        Url::fromString('404://stubbles.net');
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\peer\MalformedUrlException
+     */
+    public function canNotCreateUrlWithInvalidUser()
+    {
+        Url::fromString('http://mi@ss@stubbles.net');
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\peer\MalformedUrlException
+     */
+    public function canNotCreateUrlWithInvalidPassword()
+    {
+        Url::fromString('http://mi:s@s@stubbles.net');
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\peer\MalformedUrlException
+     */
+    public function canNotCreateUrlWithInvalidHost()
+    {
+        Url::fromString('http://_:80');
+    }
+
+    /**
+     * @test
      */
     public function createFromEmptyStringReturnsNull()
     {
@@ -415,6 +451,26 @@ class UrlTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function hasNoDnsRecordWitoutHost()
+    {
+        $this->assertFalse(Url::fromString('file:///home/test.txt')
+                              ->hasDnsRecord()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function returnsFalseIfHostHasNoDnsRecord()
+    {
+        $this->assertFalse(Url::fromString('http://example.dev/')
+                              ->hasDnsRecord()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function hasDnsRecordForExistingDomain()
     {
         $this->assertTrue(Url::fromString('http://stubbles.net/')
@@ -478,10 +534,21 @@ class UrlTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function asStringWithNonDefaultPortReturnsOriginalGivenUrl()
+    public function asStringWithNonDefaultPortReturnsOriginalGivenUrlWithPort()
     {
         $this->assertEquals('http://stubbles.net:80/index.php?content=features#top',
                             Url::fromString('http://stubbles.net:80/index.php?content=features#top')
+                               ->asStringWithNonDefaultPort()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function asStringWithNonDefaultPortReturnsOriginalGivenUrlWithoutPort()
+    {
+        $this->assertEquals('http://stubbles.net/index.php?content=features#top',
+                            Url::fromString('http://stubbles.net/index.php?content=features#top')
                                ->asStringWithNonDefaultPort()
         );
     }
@@ -676,6 +743,124 @@ class UrlTestCase extends \PHPUnit_Framework_TestCase
                             Url::fromString('http://example.org/?wsdl')
                                ->asStringWithoutPort()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function hasParamReturnsTrueIfParamPresent()
+    {
+        $this->assertTrue(Url::fromString('http://example.org/?wsdl')
+                             ->hasParam('wsdl')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function hasParamReturnsFalseIfParamNotPresent()
+    {
+        $this->assertFalse(Url::fromString('http://example.org/?wsdl')
+                              ->hasParam('doesNotExist')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getParamReturnsNullIfParamNotSet()
+    {
+        $this->assertNull(Url::fromString('http://example.org/?foo=bar')
+                             ->getParam('bar')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getParamReturnsDefaultValueIfParamNotSet()
+    {
+        $this->assertEquals('baz',
+                            Url::fromString('http://example.org/?foo=bar')
+                               ->getParam('bar', 'baz')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getParamReturnsValueIfParamSet()
+    {
+        $this->assertEquals('bar',
+                            Url::fromString('http://example.org/?foo=bar')
+                               ->getParam('foo')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function removeNonExistingParamChangesNothing()
+    {
+        $this->assertEquals('http://example.org/?wsdl',
+                            Url::fromString('http://example.org/?wsdl')
+                               ->removeParam('doesNotExist')
+                               ->asStringWithoutPort()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function removeExistingParamChangesQueryString()
+    {
+        $this->assertEquals('http://example.org/?wsdl',
+                            Url::fromString('http://example.org/?wsdl&foo=bar')
+                               ->removeParam('foo')
+                               ->asStringWithoutPort()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function addParamChangesQueryString()
+    {
+        $this->assertEquals('http://example.org/?wsdl&foo=bar',
+                            Url::fromString('http://example.org/?wsdl')
+                               ->addParam('foo', 'bar')
+                               ->asStringWithoutPort()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function fragmentIsNullIfNotInUrl()
+    {
+        $this->assertNull(Url::fromString('http://example.org/?wsdl')
+                             ->getFragment()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function fragmentFromUrlIsReturned()
+    {
+        $this->assertEquals('top',
+                            Url::fromString('http://example.org/?wsdl#top')
+                               ->getFragment()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsedUrlReturnsNullIfNoSchemeInUrl()
+    {
+        $parsedUrl = new ParsedUrl('://example.org/?wsdl#top');
+        $this->assertNull($parsedUrl->getScheme());
     }
 }
 ?>

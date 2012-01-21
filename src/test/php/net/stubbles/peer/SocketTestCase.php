@@ -17,6 +17,15 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     */
+    public function createWithEmptyHostThrowsIllegalArgumentException()
+    {
+        new Socket('');
+    }
+
+    /**
+     * @test
      */
     public function containsGivenHost()
     {
@@ -112,7 +121,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
     public function readOnUnconnectedThrowsIllegalStateException()
     {
         $socket = new Socket('example.com');
-        $data = $socket->read();
+        $socket->read();
     }
 
     /**
@@ -122,7 +131,17 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
     public function readLineOnUnconnectedThrowsIllegalStateException()
     {
         $socket = new Socket('example.com');
-        $data = $socket->readLine();
+        $socket->readLine();
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalStateException
+     */
+    public function readBinaryOnUnconnectedThrowsIllegalStateException()
+    {
+        $socket = new Socket('example.com');
+        $socket->readBinary();
     }
 
     /**
@@ -132,7 +151,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
     public function writeOnUnconnectedThrowsIllegalStateException()
     {
         $socket = new Socket('example.com');
-        $data = $socket->write('data');
+         $socket->write('data');
     }
 
     /**
