@@ -115,7 +115,7 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function isNotCachableIfValueDoesNotFitIntoCacheSpace()
+    public function isCachableIfValueDoesExactlyFitIntoCacheSpace()
     {
         $this->defaultCacheStrategy->setTimeToLive(10)
                                    ->setMaxCacheSize(2)
@@ -124,6 +124,24 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
         $mockContainer->expects($this->once())
                       ->method('getUsedSpace')
                       ->will($this->returnValue(0));
+        $mockContainer->expects($this->once())
+                      ->method('getSize')
+                      ->will($this->returnValue(0));
+        $this->assertTrue($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
+    }
+
+    /**
+     * @test
+     */
+    public function isCachableWhenCacheIsFullIfValueReplacesExistingValue()
+    {
+        $this->defaultCacheStrategy->setTimeToLive(10)
+                                   ->setMaxCacheSize(2)
+                                   ->setGcProbability(0);
+        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
+        $mockContainer->expects($this->once())
+                      ->method('getUsedSpace')
+                      ->will($this->returnValue(2));
         $mockContainer->expects($this->once())
                       ->method('getSize')
                       ->will($this->returnValue(2));
@@ -140,6 +158,42 @@ class DefaultCacheStrategyTestCase extends \PHPUnit_Framework_TestCase
                                    ->setGcProbability(0);
         $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
         $this->assertTrue($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
+    }
+
+    /**
+     * @test
+     */
+    public function isNotCachableIfValueExceedsCacheSpace()
+    {
+        $this->defaultCacheStrategy->setTimeToLive(10)
+                                   ->setMaxCacheSize(1)
+                                   ->setGcProbability(0);
+        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
+        $mockContainer->expects($this->once())
+                      ->method('getUsedSpace')
+                      ->will($this->returnValue(0));
+        $mockContainer->expects($this->once())
+                      ->method('getSize')
+                      ->will($this->returnValue(0));
+        $this->assertFalse($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
+    }
+
+    /**
+     * @test
+     */
+    public function isNotCachableIfValueDoesNotFitIntoRemainingCacheSpace()
+    {
+        $this->defaultCacheStrategy->setTimeToLive(10)
+                                   ->setMaxCacheSize(2)
+                                   ->setGcProbability(0);
+        $mockContainer = $this->getMock('net\\stubbles\\cache\\CacheContainer');
+        $mockContainer->expects($this->once())
+                      ->method('getUsedSpace')
+                      ->will($this->returnValue(1));
+        $mockContainer->expects($this->once())
+                      ->method('getSize')
+                      ->will($this->returnValue(0));
+        $this->assertFalse($this->defaultCacheStrategy->isCachable($mockContainer, 'a', 'ab'));
     }
 
     /**

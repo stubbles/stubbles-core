@@ -142,6 +142,17 @@ class AbstractCacheContainerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function valueIsExpiredIfStrategySaysSo()
+    {
+        $this->mockCacheStrategy->expects($this->once())
+                                ->method('isExpired')
+                                ->will($this->returnValue(true));
+        $this->assertTrue($this->cacheContainer->isExpired('foo'));
+    }
+
+    /**
+     * @test
+     */
     public function hasReturnsTrueForNonExpiredValue()
     {
         $this->cacheContainer->data = array('foo' => array('data' => 'bar', 'time' => 10));

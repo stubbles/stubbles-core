@@ -46,6 +46,8 @@ class FileCacheContainerTestCase extends \PHPUnit_Framework_TestCase
                                                           vfsStream::url('cache/id')
                                    );
         $this->cacheDirectory    = $root->getChild('id');
+        vfsStream::newDirectory('ignore_on_calculations_of_size_and_keys')
+                 ->at($this->cacheDirectory);
     }
 
     /**
@@ -233,6 +235,27 @@ class FileCacheContainerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function keysAreCached()
+    {
+        $this->cacheDirectory->addChild(vfsStream::newFile('foo.cache')
+                                                 ->withContent('bar')
+        );
+        $this->cacheDirectory->addChild(vfsStream::newFile('baz.cache')
+                                                 ->withContent('bar')
+        );
+        $this->mockCacheStrategy->expects($this->any())
+                                ->method('isExpired')
+                                ->will($this->returnValue(false));
+        $this->assertEquals(array('foo' => 'foo', 'baz' => 'baz'), $this->cacheContainer->getKeys());
+        $this->cacheDirectory->addChild(vfsStream::newFile('other.cache')
+                                                 ->withContent('more')
+        );
+        $this->assertEquals(array('foo' => 'foo', 'baz' => 'baz'), $this->cacheContainer->getKeys());
+    }
+
+    /**
+     * @test
+     */
     public function gcRemovesFilesForExpiredEntries()
     {
         $this->cacheDirectory->addChild(vfsStream::newFile('foo.cache')
@@ -266,6 +289,47 @@ class FileCacheContainerTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('barfoo' => 'barfoo'), $this->cacheContainer->getKeys());
         $this->assertEquals(3, $this->cacheContainer->getSize('bar' . DIRECTORY_SEPARATOR . 'foo'));
         $this->assertEquals(3, $this->cacheContainer->getUsedSpace());
+    }
+
+    /**
+     * @test
+     */
+    public function lifetimeForNonCachedKeyIsZero()
+    {
+        $this->assertEquals(0, $this->cacheContainer->getLifeTime('doesNotExist'));
+    }
+
+    /**
+     * @test
+     */
+    public function lifetimeForCachedKeyIsTimeSinceCreationInSeconds()
+    {
+        $this->cacheDirectory->addChild(vfsStream::newFile('foo.cache')
+                                                 ->withContent('bar')
+                                                 ->lastModified(time() - 500)
+        );
+        $this->assertGreaterThanOrEqual(500, $this->cacheContainer->getLifeTime('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function storetimeForNonCachedKeyIsZero()
+    {
+        $this->assertEquals(0, $this->cacheContainer->getStoreTime('doesNotExist'));
+    }
+
+    /**
+     * @test
+     */
+    public function storetimeForCachedKeyIsCreationTime()
+    {
+        $stored = time() - 500;
+        $this->cacheDirectory->addChild(vfsStream::newFile('foo.cache')
+                                                 ->withContent('bar')
+                                                 ->lastModified($stored)
+        );
+        $this->assertEquals($stored, $this->cacheContainer->getStoreTime('foo'));
     }
 }
 ?>
