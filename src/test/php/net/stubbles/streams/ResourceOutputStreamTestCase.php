@@ -43,13 +43,20 @@ class ResourceOutputStreamTestCase extends \PHPUnit_Framework_TestCase
      * @type  resource
      */
     protected $handle;
+    /**
+     * root directory
+     *
+     * @type   org\bovigo\vfs\vfsDirectory
+     */
+    protected $root;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->handle               = fopen(__DIR__ . '/test_write.txt', 'w');
+        $this->root                 = vfsStream::setup();
+        $this->handle               = fopen(vfsStream::url('root/test_write.txt'), 'w');
         $this->resourceOutputStream = new TestResourceOutputStream($this->handle);
     }
 
@@ -59,7 +66,7 @@ class ResourceOutputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidHandleThrowsIllegalArgumentException()
     {
-        $resourceOutputStream = new TestResourceOutputStream('invalid');
+        new TestResourceOutputStream('invalid');
     }
 
     /**
@@ -111,9 +118,8 @@ class ResourceOutputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function write()
     {
-        $root = vfsStream::setup('home');
-        $file = vfsStream::newFile('test.txt')->at($root);
-        $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('home/test.txt'), 'w'));
+        $file = vfsStream::newFile('test.txt')->at($this->root);
+        $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
         $this->assertEquals(9, $resourceOutputStream->write('foobarbaz'));
         $this->assertEquals('foobarbaz', $file->getContent());
     }
@@ -125,9 +131,8 @@ class ResourceOutputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function writeLine()
     {
-        $root = vfsStream::setup('home');
-        $file = vfsStream::newFile('test.txt')->at($root);
-        $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('home/test.txt'), 'w'));
+        $file = vfsStream::newFile('test.txt')->at($this->root);
+        $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
         $this->assertEquals(11, $resourceOutputStream->writeLine('foobarbaz'));
         $this->assertEquals("foobarbaz\r\n", $file->getContent());
     }
