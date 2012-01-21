@@ -242,6 +242,21 @@ class Bike implements Vehicle
         return $this->tire->rotate();
     }
 }
+
+class MissingArrayInjection
+{
+    /**
+     * constructor
+     *
+     * @param  array  $data
+     * @Inject
+     * @Named('foo')
+     */
+    public function setData(array $data)
+    {
+        // intentionally empty
+    }
+}
 /**
  * Another helper interface for injection and binding tests.
  */
@@ -566,6 +581,16 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
         $injector = new Injector();
         $class    = new Bike();
         $injector->handleInjections($class);
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\ioc\BindingException
+     */
+    public function missingConstantBindingOnInjectionHandlingThrowsBindingException()
+    {
+        $injector = new Injector();
+        $injector->handleInjections(new MissingArrayInjection());
     }
 
     /**
