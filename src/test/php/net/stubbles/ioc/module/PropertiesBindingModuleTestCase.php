@@ -196,5 +196,19 @@ net.stubbles.webapp.xml.serializeMode=true")
         $this->assertEquals(4, $this->injector->getConstant('net.stubbles.number.decimals'));
         $this->assertEquals(true, (bool) $this->injector->getConstant('net.stubbles.webapp.xml.serializeMode'));
     }
+
+    /**
+     * @test
+     */
+    public function noPropertiesAvailableIfConfigFileDoesNotExist()
+    {
+        vfsStream::setup();
+        $propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('root'));
+        $injector                = new Injector();
+        $propertiesBindingModule->configure(new Binder($injector));
+        $this->assertFalse($this->injector->hasConstant('net.stubbles.locale'));
+        $this->assertFalse($this->injector->hasConstant('net.stubbles.number.decimals'));
+        $this->assertFalse($this->injector->hasConstant('net.stubbles.webapp.xml.serializeMode'));
+    }
 }
 ?>
