@@ -24,7 +24,7 @@
 
   <filter>
     <whitelist>
-      <directory>src/main/php</directory>
+      <directory>src/main/php/net/stubbles</directory>
     </whitelist>
   </filter>
 
