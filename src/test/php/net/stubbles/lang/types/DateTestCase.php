@@ -438,7 +438,7 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function failingConstructionThrowsIllegalArgumentException()
     {
-        $date = new Date(null);
+        new Date(null);
     }
 
     /**
@@ -449,7 +449,7 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidDateStringhrowsIllegalArgumentException()
     {
-        $date = new Date('invalid');
+        new Date('invalid');
     }
 
     /**
@@ -466,21 +466,75 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * ensure useful xml conversion of date instance
-     *
      * @test
      */
-    public function toXmlConversion()
+    public function asStringReturnsStringValue()
     {
-        $this->markTestIncomplete('Dependencies not converted yet.');
-   /*     $provider      = new stubXmlStreamWriterProvider();
-        $xmlSerializer = new stubXMLSerializer($this->getMock('stubInjector'));
-        $this->assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<date value=\"1969-12-31 00:00:00+0000\"/>",
-                            $xmlSerializer->serialize(new Date('31.12.1969 00:00 GMT'),
-                                                      $provider->get()
-                                            )
-    *                                       ->asXML()
-        ); */
+        $date = new Date('2012-01-21 21:00:00');
+        $this->assertEquals('2012-01-21 21:00:00' . $date->getOffset(),
+                            $date->asString()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function classIsAnnotatedWithXmlTag()
+    {
+        Date::now()->getClass()
+                   ->hasAnnotation('XmlTag');
+    }
+
+    /**
+     * @test
+     */
+    public function getHandleIsAnnotatedWithXmlIgnore()
+    {
+        Date::now()->getClass()
+                   ->getMethod('getHandle')
+                   ->hasAnnotation('XmlIgnore');
+    }
+
+    /**
+     * returns list of methods which should be annotated with XmlIgnore
+     *
+     * @return  array
+     */
+    public function getXmlIgnoredMethods()
+    {
+        return array(array('getHandle'),
+                     array('change'),
+                     array('getTimestamp'),
+                     array('getSeconds'),
+                     array('getMinutes'),
+                     array('getHours'),
+                     array('getDay'),
+                     array('getMonth'),
+                     array('getYear'),
+                     array('getOffset'),
+                     array('getOffsetInSeconds'),
+                     array('getTimeZone')
+        );
+    }
+    /**
+     * @test
+     * @dataProvider  getXmlIgnoredMethods
+     */
+    public function methodIsAnnotatedWithXmlIgnore($method)
+    {
+        Date::now()->getClass()
+                   ->getMethod($method)
+                   ->hasAnnotation('XmlIgnore');
+    }
+
+    /**
+     * @test
+     */
+    public function asStringIsAnnotatedWithXmlAttribute()
+    {
+        Date::now()->getClass()
+                   ->getMethod('asString')
+                   ->hasAnnotation('@XmlAttribute');
     }
 }
 ?>
