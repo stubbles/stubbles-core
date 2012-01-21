@@ -62,5 +62,13 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($data[Annotation::TARGET_CLASS]['foo']['annotationName']));
         $this->assertEquals($annotation, unserialize($data[Annotation::TARGET_CLASS]['foo']['annotationName']));
     }
+
+    /**
+     * @test
+     */
+    public function retrieveUncachedAnnotationReturnsNull()
+    {
+        $this->assertNull(AnnotationCache::get(Annotation::TARGET_CLASS, 'DoesNotExist', 'annotationName'));
+    }
 }
 ?>
