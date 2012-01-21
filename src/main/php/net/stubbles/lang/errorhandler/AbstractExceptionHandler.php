@@ -67,17 +67,6 @@ abstract class AbstractExceptionHandler extends BaseObject implements ExceptionH
     }
 
     /**
-     * enables exception logging
-     *
-     * @return  net\stubbles\lang\errorhandler\AbstractExceptionHandler
-     */
-    public function enableLogging()
-    {
-        $this->loggingEnabled = true;
-        return $this;
-    }
-
-    /**
      * disables exception logging
      *
      * @return  net\stubbles\lang\errorhandler\AbstractExceptionHandler
