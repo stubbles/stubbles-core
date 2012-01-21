@@ -250,5 +250,42 @@ class AnnotationStateParserTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('CastedAround', $annotations['MoreArgument4#bar']['type']);
         $this->assertEquals(array('key' => 'value'), $annotations['MoreArgument4#bar']['params']);
     }
+
+    /**
+     * @test
+     * @expectedException  \ReflectionException
+     */
+    public function parseIncompleteDocblockThrowsReflectionException()
+    {
+        $annotationStateParser = new AnnotationStateParser();
+        $annotationStateParser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @ForArgument1{bar}');
+    }
+
+
+
+    /**
+     * @test
+     * @expectedException  \ReflectionException
+     */
+    public function changeStateToUnknownStateThrowsReflectionException()
+    {
+        $annotationStateParser = new AnnotationStateParser();
+        $annotationStateParser->changeState('invald');
+    }
+
+    /**
+     * @test
+     * @expectedException  \ReflectionException
+     */
+    public function registerSingleAnnotationAfterParamValueThrowsReflectionException()
+    {
+        $annotationStateParser = new AnnotationStateParser();
+        $annotationStateParser->registerAnnotationParam('paramName');
+        $annotationStateParser->setAnnotationParamValue('paramValue');
+        $annotationStateParser->registerSingleAnnotationParam('singleAnnotationValue');
+    }
 }
 ?>
