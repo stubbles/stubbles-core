@@ -162,30 +162,13 @@ abstract class BaseObject implements Object
 
         $string = $object->getClassName() . " {\n";
         foreach ($properties as $name => $value) {
-            if ('_serializedProperties' == $name) {
-                continue;
-            }
-
             $string .= '    ' . $name . '(' . self::_determineType($value) . '): ';
-            if (($value instanceof self) == false) {
+            if (is_resource($value)) {
+                $string .= "resource\n";
+            } elseif (!($value instanceof self)) {
                 $string .= $value . "\n";
-                continue;
-            }
-
-            $lines       = explode("\n", (string) $value);
-            $lineCounter = 0;
-            foreach ($lines as $line) {
-                if (empty($line) == true) {
-                    continue;
-                }
-
-                if (0 != $lineCounter) {
-                    $string .= '    ' . $line . "\n";
-                } else {
-                    $string .= $line . "\n";
-                }
-
-                $lineCounter++;
+            } else {
+                $string .= self::_convertToStringRepresentation($value);
             }
         }
 
@@ -210,6 +193,34 @@ abstract class BaseObject implements Object
         }
 
         return gettype($value);
+    }
+
+    /**
+     * converts given value to string
+     *
+     * @param   mixed  $value
+     * @return  string
+     */
+    private static function _convertToStringRepresentation($value)
+    {
+        $string      = '';
+        $lines       = explode("\n", (string) $value);
+        $lineCounter = 0;
+        foreach ($lines as $line) {
+            if (empty($line)) {
+                continue;
+            }
+
+            if (0 != $lineCounter) {
+                $string .= '    ' . $line . "\n";
+            } else {
+                $string .= $line . "\n";
+            }
+
+            $lineCounter++;
+        }
+
+        return $string;
     }
 }
 ?>

@@ -118,6 +118,15 @@ class stub3BaseObject extends BaseObject
     }
 }
 /**
+ * Helper class for the test.
+ *
+ * @since  2.0.0
+ */
+class stub4BaseObject extends BaseObject
+{
+    // intentionally empty
+}
+/**
  * Tests for net\stubbles\lang\BaseObject.
  *
  * @group  lang
@@ -270,6 +279,44 @@ class BaseObjectTestCase extends \PHPUnit_Framework_TestCase
     public function classInstanceIsNotEqualToNull()
     {
         $this->assertFalse($this->baseObject1->equals(null));
+    }
+
+    /**
+     * @test
+     */
+    public function toStringResult()
+    {
+        $baseObject3 = new stub3BaseObject($this->baseObject1, $this->baseObject2, 'foo');
+        $baseObject3->aResource = fopen(__FILE__, 'rb');
+        $this->assertEquals('net\\stubbles\\lang\\stub3BaseObject {
+    foo(net\\stubbles\\lang\\stub1BaseObject): net\\stubbles\\lang\\stub1BaseObject {
+        bar(integer): 5
+    }
+    bar(net\\stubbles\\lang\\stub2BaseObject): net\\stubbles\\lang\\stub2BaseObject {
+        baseObject(net\\stubbles\\lang\\stub1BaseObject): net\\stubbles\\lang\\stub1BaseObject {
+            bar(integer): 5
+        }
+        foo(string): bar
+    }
+    baz(string): foo
+    aResource(resource[stream]): resource
+}
+',
+                            (string) $baseObject3
+        );
+        fclose($baseObject3->aResource);
+    }
+
+    /**
+     * @test
+     */
+    public function stringRepresentationWithNoProperties()
+    {
+        $this->assertEquals('net\\stubbles\\lang\\stub4BaseObject {
+}
+',
+                            BaseObject::getStringRepresentationOf(new stub4BaseObject())
+        );
     }
 }
 ?>
