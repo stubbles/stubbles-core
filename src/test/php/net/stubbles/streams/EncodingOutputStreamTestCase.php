@@ -38,6 +38,14 @@ class EncodingOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function knowsGivenCharset()
+    {
+        $this->assertEquals('iso-8859-1', $this->encodingOutputStream->getCharset());
+    }
+
+    /**
      * data send write() should be encoded to charset
      *
      * @test

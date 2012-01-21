@@ -38,6 +38,14 @@ class DecodingInputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function knowsGivenCharset()
+    {
+        $this->assertEquals('iso-8859-1', $this->decodingInputStream->getCharset());
+    }
+
+    /**
      * data returned from read() should be decoded to UTF-8
      *
      * @test
