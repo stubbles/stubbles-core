@@ -122,7 +122,7 @@ class stub3BaseObject extends BaseObject
  *
  * @since  2.0.0
  */
-class stub4BaseObject extends BaseObject
+class stub4BaseObject extends BaseObject implements Clonable
 {
     // intentionally empty
 }
