@@ -12,7 +12,6 @@ use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\exception\RuntimeException;
 /**
  * Base class for enums.
-´´
  */
 abstract class Enum extends BaseObject
 {
@@ -98,14 +97,10 @@ abstract class Enum extends BaseObject
     public static function forValue($value)
     {
         $enumClass = new \ReflectionClass(get_called_class());
-        try {
-            foreach ($enumClass->getStaticProperties() as $instance) {
-                if ($instance->value() === $value) {
-                    return $instance;
-                }
+        foreach ($enumClass->getStaticProperties() as $instance) {
+            if ($instance->value() === $value) {
+                return $instance;
             }
-        } catch (\ReflectionException $re) {
-            throw new IllegalArgumentException($re->getMessage());
         }
 
         throw new IllegalArgumentException('Enum ' . $enumClass->getName() . ' for value ' . $value . ' does not exist.');
