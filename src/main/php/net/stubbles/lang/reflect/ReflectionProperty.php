@@ -70,7 +70,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      */
     public function hasAnnotation($annotationName)
     {
-        return AnnotationFactory::has($this->getDocComment(), $annotationName, Annotation::TARGET_PROPERTY, $this->className . '::' . $this->propertyName, $this->getDeclaringClass()->getFileName());
+        return AnnotationFactory::has($this->getDocComment(), $annotationName, Annotation::TARGET_PROPERTY, $this->className . '::' . $this->propertyName);
     }
 
     /**
@@ -81,7 +81,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      */
     public function getAnnotation($annotationName)
     {
-        return AnnotationFactory::create($this->getDocComment(), $annotationName, Annotation::TARGET_PROPERTY, $this->className . '::' . $this->propertyName, $this->getDeclaringClass()->getFileName());
+        return AnnotationFactory::create($this->getDocComment(), $annotationName, Annotation::TARGET_PROPERTY, $this->className . '::' . $this->propertyName);
     }
 
     /**

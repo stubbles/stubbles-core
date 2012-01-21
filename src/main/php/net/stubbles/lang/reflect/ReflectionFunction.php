@@ -49,7 +49,7 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
      */
     public function hasAnnotation($annotationName)
     {
-        return AnnotationFactory::has($this->docComment, $annotationName, Annotation::TARGET_FUNCTION, $this->functionName, $this->getFileName());
+        return AnnotationFactory::has($this->docComment, $annotationName, Annotation::TARGET_FUNCTION, $this->functionName);
     }
 
     /**
@@ -60,7 +60,7 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
      */
     public function getAnnotation($annotationName)
     {
-        return AnnotationFactory::create($this->docComment, $annotationName, Annotation::TARGET_FUNCTION, $this->functionName, $this->getFileName());
+        return AnnotationFactory::create($this->docComment, $annotationName, Annotation::TARGET_FUNCTION, $this->functionName);
     }
 
     /**

@@ -101,37 +101,12 @@ protected $commentComplexForArgument = '/**
      */
     public function has()
     {
-        $this->assertFalse(AnnotationFactory::has($this->comment, 'ExampleAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__));
-        $this->assertFalse(AnnotationFactory::has($this->comment, 'StubAnno', Annotation::TARGET_CLASS, 'MyClass', __FILE__));
+        $this->assertFalse(AnnotationFactory::has($this->comment, 'ExampleAnnotation', Annotation::TARGET_CLASS, 'MyClass'));
+        $this->assertFalse(AnnotationFactory::has($this->comment, 'StubAnno', Annotation::TARGET_CLASS, 'MyClass'));
 
-        $this->assertTrue(AnnotationFactory::has($this->commentComplex, 'MyAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__));
-        $this->assertTrue(AnnotationFactory::has($this->commentComplex, 'AnotherAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__));
-        $this->assertTrue(AnnotationFactory::has($this->commentComplex, 'EmptyAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__));
-    }
-
-    /**
-     * test that bug #77 will never occur again
-     *
-     * @link  http://stubbles.net/ticket/77
-     *
-     * @test
-     */
-    public function bug77()
-    {
-        // clear the cache from both annotations first
-        AnnotationCache::remove(Annotation::TARGET_CLASS, __FILE__ . '1' . '::' . 'MyClass', 'MyAnnotation');
-        AnnotationCache::remove(Annotation::TARGET_CLASS, __FILE__ . '2' . '::' . 'MyClass', 'MyAnnotation');
-
-        $myAnnotation1 = AnnotationFactory::create($this->commentComplex, 'MyAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__ . '1');
-        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, __FILE__ . '1' . '::' . 'MyClass', 'MyAnnotation'));
-        $this->assertFalse(AnnotationCache::hasNot(Annotation::TARGET_CLASS, __FILE__ . '1' . '::' . 'MyClass', 'MyAnnotation'));
-        $this->assertFalse(AnnotationCache::has(Annotation::TARGET_CLASS, __FILE__ . '2' . '::' . 'MyClass', 'MyAnnotation'));
-        $this->assertFalse(AnnotationCache::hasNot(Annotation::TARGET_CLASS, __FILE__ . '2' . '::' . 'MyClass', 'MyAnnotation'));
-        $myAnnotation2 = AnnotationFactory::create($this->commentComplex, 'MyAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__ . '2');
-        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, __FILE__ . '1' . '::' . 'MyClass', 'MyAnnotation'));
-        $this->assertFalse(AnnotationCache::hasNot(Annotation::TARGET_CLASS, __FILE__ . '1' . '::' . 'MyClass', 'MyAnnotation'));
-        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, __FILE__ . '2' . '::' . 'MyClass', 'MyAnnotation'));
-        $this->assertFalse(AnnotationCache::hasNot(Annotation::TARGET_CLASS, __FILE__ . '2' . '::' . 'MyClass', 'MyAnnotation'));
+        $this->assertTrue(AnnotationFactory::has($this->commentComplex, 'MyAnnotation', Annotation::TARGET_CLASS, 'MyClass'));
+        $this->assertTrue(AnnotationFactory::has($this->commentComplex, 'AnotherAnnotation', Annotation::TARGET_CLASS, 'MyClass'));
+        $this->assertTrue(AnnotationFactory::has($this->commentComplex, 'EmptyAnnotation', Annotation::TARGET_CLASS, 'MyClass'));
     }
 
     /**
@@ -141,7 +116,7 @@ protected $commentComplexForArgument = '/**
      */
     public function create()
     {
-        $myAnnotation = AnnotationFactory::create($this->commentComplex, 'MyAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__);
+        $myAnnotation = AnnotationFactory::create($this->commentComplex, 'MyAnnotation', Annotation::TARGET_CLASS, 'MyClass');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $myAnnotation
         );
@@ -150,27 +125,27 @@ protected $commentComplexForArgument = '/**
         $this->assertEquals('45', $myAnnotation->getArgh());
         $this->assertEquals('tomato', $myAnnotation->getVeggie());
 
-        $anotherAnnotation = AnnotationFactory::create($this->commentComplex, 'AnotherAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__);
+        $anotherAnnotation = AnnotationFactory::create($this->commentComplex, 'AnotherAnnotation', Annotation::TARGET_CLASS, 'MyClass');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $anotherAnnotation
         );
         $this->assertEquals('AnotherAnnotation', $anotherAnnotation->getAnnotationName());
         $this->assertTrue($anotherAnnotation->getValue());
 
-        $emptyAnnotation = AnnotationFactory::create($this->commentComplex, 'EmptyAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__);
+        $emptyAnnotation = AnnotationFactory::create($this->commentComplex, 'EmptyAnnotation', Annotation::TARGET_CLASS, 'MyClass');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $emptyAnnotation
         );
         $this->assertEquals('EmptyAnnotation', $emptyAnnotation->getAnnotationName());
 
-        $castedAnnotation = AnnotationFactory::create($this->commentComplex, 'CastedAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__);
+        $castedAnnotation = AnnotationFactory::create($this->commentComplex, 'CastedAnnotation', Annotation::TARGET_CLASS, 'MyClass');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $castedAnnotation
         );
         $this->assertEquals('AnotherAnnotation', $castedAnnotation->getAnnotationName());
         $this->assertFalse($castedAnnotation->getValue());
 
-        $myAnnotation = AnnotationFactory::create($this->commentWithClass, 'MyAnnotation', Annotation::TARGET_CLASS, 'AnotherClass', __FILE__);
+        $myAnnotation = AnnotationFactory::create($this->commentWithClass, 'MyAnnotation', Annotation::TARGET_CLASS, 'AnotherClass');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $myAnnotation
         );
@@ -188,7 +163,7 @@ protected $commentComplexForArgument = '/**
      */
     public function createShouldFail()
     {
-        AnnotationFactory::create($this->commentComplex, 'NonExisting', Annotation::TARGET_CLASS, 'MyClass', __FILE__);
+        AnnotationFactory::create($this->commentComplex, 'NonExisting', Annotation::TARGET_CLASS, 'MyClass');
     }
 
     /**
@@ -198,7 +173,7 @@ protected $commentComplexForArgument = '/**
      */
     public function createForArgument()
     {
-        $myAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'MyAnnotation#foo', Annotation::TARGET_PARAM, 'MyClass::baz()', __FILE__);
+        $myAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'MyAnnotation#foo', Annotation::TARGET_PARAM, 'MyClass::baz()');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $myAnnotation
         );
@@ -206,24 +181,24 @@ protected $commentComplexForArgument = '/**
         $this->assertEquals('45', $myAnnotation->getArgh());
         $this->assertEquals('tomato', $myAnnotation->getVeggie());
 
-        $anotherAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'AnotherAnnotation#foo', Annotation::TARGET_PARAM, 'MyClass::baz()', __FILE__);
+        $anotherAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'AnotherAnnotation#foo', Annotation::TARGET_PARAM, 'MyClass::baz()');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $anotherAnnotation
         );
         $this->assertTrue($anotherAnnotation->getValue());
 
-        $castedAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'CastedAnnotation#foo', Annotation::TARGET_PARAM, 'MyClass::baz()', __FILE__);
+        $castedAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'CastedAnnotation#foo', Annotation::TARGET_PARAM, 'MyClass::baz()');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $castedAnnotation
         );
         $this->assertFalse($castedAnnotation->getValue());
 
-        $emptyAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'AnotherAnnotation#bar', Annotation::TARGET_PARAM, 'MyClass::baz()', __FILE__);
+        $emptyAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'AnotherAnnotation#bar', Annotation::TARGET_PARAM, 'MyClass::baz()');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $emptyAnnotation
         );
 
-        $myAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'MyAnnotation#bar', Annotation::TARGET_PARAM, 'MyClass::baz()', __FILE__);
+        $myAnnotation = AnnotationFactory::create($this->commentComplexForArgument, 'MyAnnotation#bar', Annotation::TARGET_PARAM, 'MyClass::baz()');
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
                                 $myAnnotation
         );
@@ -240,7 +215,7 @@ protected $commentComplexForArgument = '/**
      */
     public function createForArgumentShouldFail()
     {
-        AnnotationFactory::create($this->commentComplexForArgument, 'MyAnnotation#baz', Annotation::TARGET_PARAM, 'MyClass::baz()', __FILE__);
+        AnnotationFactory::create($this->commentComplexForArgument, 'MyAnnotation#baz', Annotation::TARGET_PARAM, 'MyClass::baz()');
     }
 
     /**
@@ -306,16 +281,16 @@ protected $commentComplexForArgument = '/**
     public function cachingOfNonExistingAnnotations()
     {
         // make sure that the information is really not in the cache
-        AnnotationCache::remove(Annotation::TARGET_CLASS, __FILE__ . '::' . 'MyClass', 'NonExistingAnnotation');
-        $this->assertFalse(AnnotationCache::has(Annotation::TARGET_CLASS, __FILE__  . '::' . 'MyClass', 'NonExistingAnnotation'));
-        $this->assertFalse(AnnotationCache::hasNot(Annotation::TARGET_CLASS, __FILE__ . '::' . 'MyClass', 'NonExistingAnnotation'));
+        AnnotationCache::flush();
+        $this->assertFalse(AnnotationCache::has(Annotation::TARGET_CLASS, 'MyClass', 'NonExistingAnnotation'));
+        $this->assertFalse(AnnotationCache::hasNot(Annotation::TARGET_CLASS, 'MyClass', 'NonExistingAnnotation'));
         try {
-            $annotation = AnnotationFactory::create($this->commentComplex, 'NonExistingAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__);
+            $annotation = AnnotationFactory::create($this->commentComplex, 'NonExistingAnnotation', Annotation::TARGET_CLASS, 'MyClass');
         } catch (Exception $e) {
-            $this->assertFalse(AnnotationCache::has(Annotation::TARGET_CLASS, __FILE__  . '::' . 'MyClass', 'NonExistingAnnotation'));
-            $this->assertTrue(AnnotationCache::hasNot(Annotation::TARGET_CLASS, __FILE__ . '::' . 'MyClass', 'NonExistingAnnotation'));
+            $this->assertFalse(AnnotationCache::has(Annotation::TARGET_CLASS,'MyClass', 'NonExistingAnnotation'));
+            $this->assertTrue(AnnotationCache::hasNot(Annotation::TARGET_CLASS, 'MyClass', 'NonExistingAnnotation'));
             // now the exception will be thrown
-            $annotation = AnnotationFactory::create($this->commentComplex, 'NonExistingAnnotation', Annotation::TARGET_CLASS, 'MyClass', __FILE__);
+            $annotation = AnnotationFactory::create($this->commentComplex, 'NonExistingAnnotation', Annotation::TARGET_CLASS, 'MyClass');
             return;
         }
 

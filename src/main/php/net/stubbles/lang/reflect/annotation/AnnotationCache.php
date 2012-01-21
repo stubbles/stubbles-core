@@ -119,23 +119,6 @@ class AnnotationCache
     }
 
     /**
-     * removes an annotation from the cache
-     *
-     * @param  int     $target          target of the annotation
-     * @param  string  $targetName      name of the target
-     * @param  string  $annotationName  name of the annotation
-     */
-    public static function remove($target, $targetName, $annotationName)
-    {
-        if (!isset(self::$annotations[$target][$targetName]) || !isset(self::$annotations[$target][$targetName][$annotationName])) {
-            return;
-        }
-
-        unset(self::$annotations[$target][$targetName][$annotationName]);
-        self::$cacheChanged = true;
-    }
-
-    /**
      * check, whether an annotation is available in the cache
      *
      * @param   int     $target          target of the annotation
