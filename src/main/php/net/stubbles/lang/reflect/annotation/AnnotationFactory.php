@@ -36,21 +36,20 @@ class AnnotationFactory
      * @param   string      $annotationName   name of the annotation to create
      * @param   int         $target           the target for which the annotation should be created
      * @param   string      $targetName       the name of the target (property, class, method or function name)
-     * @param   string      $fileName         the file where the target resides
      * @return  Annotation
      * @throws  \ReflectionException
      */
-    public static function create($comment, $annotationName, $target, $targetName, $fileName)
+    public static function create($comment, $annotationName, $target, $targetName)
     {
-        if (AnnotationCache::has($target, $fileName . '::' . $targetName, $annotationName)) {
-            return AnnotationCache::get($target, $fileName . '::' . $targetName, $annotationName);
+        if (AnnotationCache::has($target, $targetName, $annotationName)) {
+            return AnnotationCache::get($target, $targetName, $annotationName);
         }
 
-        if (AnnotationCache::hasNot($target, $fileName . '::' . $targetName, $annotationName)) {
+        if (AnnotationCache::hasNot($target, $targetName, $annotationName)) {
             throw new \ReflectionException('Can not find annotation ' . $annotationName);
         }
 
-        $hash = md5($fileName . $comment . $targetName);
+        $hash = md5($comment . $targetName);
         if (!isset(self::$annotations[$hash])) {
             if (null === self::$parser) {
                 self::$parser = new AnnotationStateParser();
@@ -61,7 +60,7 @@ class AnnotationFactory
 
         if (!isset(self::$annotations[$hash][$annotationName])) {
             // put null into cache to save that the annotation does not exist
-            AnnotationCache::put($target, $fileName . '::' . $targetName, $annotationName);
+            AnnotationCache::put($target, $targetName, $annotationName);
             throw new \ReflectionException('Can not find annotation ' . $annotationName);
         }
 
@@ -74,7 +73,7 @@ class AnnotationFactory
             }
         }
 
-        AnnotationCache::put($target, $fileName . '::' . $targetName, $annotationName, $annotation);
+        AnnotationCache::put($target, $targetName, $annotationName, $annotation);
         return $annotation;
     }
 
@@ -85,13 +84,12 @@ class AnnotationFactory
      * @param   string  $annotationName  name of the annotation to check for
      * @param   int     $target          the target for which the annotation should be created
      * @param   string  $targetName      the name of the target (property, class, method or function name)
-     * @param   string  $fileName        the file where the target resides
      * @return  bool
      */
-    public static function has($comment, $annotationName, $target, $targetName, $fileName)
+    public static function has($comment, $annotationName, $target, $targetName)
     {
         try {
-            $annotation = self::create($comment, $annotationName, $target, $targetName, $fileName);
+            $annotation = self::create($comment, $annotationName, $target, $targetName);
         } catch (\ReflectionException $e) {
             $annotation = null;
         }

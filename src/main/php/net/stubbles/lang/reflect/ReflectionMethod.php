@@ -66,7 +66,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
      */
     public function hasAnnotation($annotationName)
     {
-        return AnnotationFactory::has($this->getDocComment(), $annotationName, Annotation::TARGET_METHOD, $this->className . '::' . $this->methodName . '()', $this->getFileName());
+        return AnnotationFactory::has($this->getDocComment(), $annotationName, Annotation::TARGET_METHOD, $this->className . '::' . $this->methodName . '()');
     }
 
     /**
@@ -77,7 +77,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
      */
     public function getAnnotation($annotationName)
     {
-        return AnnotationFactory::create($this->getDocComment(), $annotationName, Annotation::TARGET_METHOD, $this->className . '::' . $this->methodName . '()', $this->getFileName());
+        return AnnotationFactory::create($this->getDocComment(), $annotationName, Annotation::TARGET_METHOD, $this->className . '::' . $this->methodName . '()');
     }
 
     /**

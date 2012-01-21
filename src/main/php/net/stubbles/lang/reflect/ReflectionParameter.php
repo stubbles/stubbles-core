@@ -70,7 +70,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     {
         $refRoutine = $this->getDeclaringFunction();
         $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName));
-        return AnnotationFactory::has($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, Annotation::TARGET_PARAM, $targetName, $refRoutine->getFileName());
+        return AnnotationFactory::has($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, Annotation::TARGET_PARAM, $targetName);
     }
 
     /**
@@ -83,7 +83,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     {
         $refRoutine = $this->getDeclaringFunction();
         $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName));
-        return AnnotationFactory::create($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, Annotation::TARGET_PARAM, $targetName, $refRoutine->getFileName());
+        return AnnotationFactory::create($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, Annotation::TARGET_PARAM, $targetName);
     }
 
     /**
