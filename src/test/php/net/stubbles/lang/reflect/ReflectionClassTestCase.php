@@ -145,6 +145,20 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getMethodsUsingFilterReturnsListOfReflectionMethodForFilteredMethods()
+    {
+        $refMethods = $this->refClass1->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $this->assertEquals(2, count($refMethods));
+        foreach ($refMethods as $refMethod) {
+            $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionMethod',
+                                    $refMethod
+            );
+        }
+    }
+
+    /**
+     * @test
+     */
     public function getMethodsByMatcherReturnsListOfReflectionMethodForMatchingMethods()
     {
         $mockMethodMatcher = $this->getMock('net\\stubbles\\lang\\reflect\\matcher\\MethodMatcher');
@@ -196,6 +210,20 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
     {
         $refProperties = $this->refClass1->getProperties();
         $this->assertEquals(3, count($refProperties));
+        foreach ($refProperties as $refProperty) {
+            $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionProperty',
+                                    $refProperty
+            );
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function getPropertiesUsingFilterReturnsListOfReflectionPropertyForFilteredProperties()
+    {
+        $refProperties = $this->refClass1->getProperties(\ReflectionProperty::IS_PUBLIC);
+        $this->assertEquals(1, count($refProperties));
         foreach ($refProperties as $refProperty) {
             $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionProperty',
                                     $refProperty
@@ -302,6 +330,41 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
     public function reflectedClassesAreNeverPrimitiveTypes()
     {
         $this->assertFalse($this->refClass1->isPrimitive());
+    }
+
+    /**
+     * @test
+     */
+    public function hasAnnotationReturnsFalseIfAnnotationIsNotSet()
+    {
+        $this->assertFalse($this->refClass1->hasAnnotation('SomeAnnotation'));
+    }
+
+    /**
+     * @test
+     */
+    public function hasAnnotationReturnsTrueIfAnnotationIsSet()
+    {
+        $this->assertTrue($this->refClass2->hasAnnotation('SomeAnnotation'));
+    }
+
+    /**
+     * @test
+     * @expectedException  \ReflectionException
+     */
+    public function getAnnotationThrowsReflectionExceptionIfAnnotationNotSet()
+    {
+        $this->refClass1->getAnnotation('SomeAnnotation');
+    }
+
+    /**
+     * @test
+     */
+    public function getAnnotationReturnsInstanceOfAnnotationIfAnnotationSet()
+    {
+        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
+                                $this->refClass2->getAnnotation('SomeAnnotation')
+        );
     }
 }
 ?>

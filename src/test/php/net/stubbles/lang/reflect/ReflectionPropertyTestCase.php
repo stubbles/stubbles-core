@@ -17,6 +17,7 @@ class TestProperty1
      * a public property
      *
      * @type  mixed
+     * @SomeAnnotation
      */
     public $property;
     /**
@@ -184,6 +185,43 @@ class ReflectionPropertyTestCase extends \PHPUnit_Framework_TestCase
         $refProperty = new ReflectionProperty('net\\stubbles\\lang\\reflect\\TestProperty1', 'privateProperty');
         $refProperty->setValue($instance, 303);
         $this->assertEquals(303, $instance->getPrivateProperty());
+    }
+
+    /**
+     * @test
+     */
+    public function hasAnnotationReturnsFalseIfAnnotationIsNotSet()
+    {
+        $refProperty = new ReflectionProperty('net\\stubbles\\lang\\reflect\\TestProperty1', 'privateProperty');
+        $this->assertFalse($refProperty->hasAnnotation('SomeAnnotation'));
+    }
+
+    /**
+     * @test
+     */
+    public function hasAnnotationReturnsTrueIfAnnotationIsSet()
+    {
+        $this->assertTrue($this->refProperty->hasAnnotation('SomeAnnotation'));
+    }
+
+    /**
+     * @test
+     * @expectedException  \ReflectionException
+     */
+    public function getAnnotationThrowsReflectionExceptionIfAnnotationNotSet()
+    {
+        $refProperty = new ReflectionProperty('net\\stubbles\\lang\\reflect\\TestProperty1', 'privateProperty');
+        $refProperty->getAnnotation('SomeAnnotation');
+    }
+
+    /**
+     * @test
+     */
+    public function getAnnotationReturnsInstanceOfAnnotationIfAnnotationSet()
+    {
+        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\annotation\\Annotation',
+                                $this->refProperty->getAnnotation('SomeAnnotation')
+        );
     }
 }
 ?>

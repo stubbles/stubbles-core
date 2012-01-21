@@ -70,19 +70,8 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
             return false;
         }
 
-        if ($compare->classObject instanceof Object) {
-            $compareHashCode = $compare->classObject->hashCode();
-        } else {
-            $compareHashCode = spl_object_hash($compare->classObject);
-        }
-
-        if ($this->classObject instanceof Object) {
-            $classHashCode = $this->classObject->hashCode();
-        } else {
-            $classHashCode = spl_object_hash($this->classObject);
-        }
-
-        return ($compare->getName() == $this->getName() && $compareHashCode == $classHashCode);
+        return ($compare->getName() == $this->getName()
+          && spl_object_hash($compare->classObject) == spl_object_hash($this->classObject));
     }
 
     /**
