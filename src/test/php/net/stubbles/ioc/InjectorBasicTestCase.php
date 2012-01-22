@@ -242,7 +242,11 @@ class Bike implements Vehicle
         return $this->tire->rotate();
     }
 }
-
+/**
+ * Test class for missing array injection.
+ *
+ * @since  2.0.0
+ */
 class MissingArrayInjection
 {
     /**
@@ -321,7 +325,41 @@ class Convertible implements Vehicle
         return $this->tire->rotate();
     }
 }
+/**
+ * Helper class for optional constructor injection.
+ *
+ * @since  2.0.0
+ */
+class BikeWithOptionalTire implements Vehicle
+{
+    /**
+     * injected tire instance
+     *
+     * @type  Tire
+     */
+    public $tire;
 
+    /**
+     * sets the tire
+     *
+     * @param  Tire  $tire
+     * @Inject(optional=true)
+     */
+    public function __construct(Tire $tire = null)
+    {
+        $this->tire = ((null === $tire) ? (new Goodyear()) : ($tire));
+    }
+
+    /**
+     * moves the vehicle forward
+     *
+     * @return  string
+     */
+    public function moveForward()
+    {
+        return $this->tire->rotate();
+    }
+}
 /**
  * Test for net\stubbles\ioc\Injector.
  *
@@ -602,6 +640,18 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
         $injector    = new Injector();
         $mockBinding = $this->getMock('net\\stubbles\\ioc\\Binding');
         $this->assertSame($mockBinding, $injector->addBinding($mockBinding));
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function optionalConstructorInjection()
+    {
+        $injector = new Injector();
+        $bike     = $injector->getInstance('net\\stubbles\\ioc\\BikeWithOptionalTire');
+        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $bike->tire);
+
     }
 }
 ?>

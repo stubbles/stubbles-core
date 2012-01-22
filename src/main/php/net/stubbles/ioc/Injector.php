@@ -262,13 +262,8 @@ class Injector extends BaseObject
                 continue;
             }
 
-            try {
-                $paramValues = $this->getInjectionValuesForMethod($method, $class);
-            } catch (BindingException $be) {
-                if (!$method->getAnnotation('Inject')->isOptional()) {
-                    throw $be;
-                }
-
+            $paramValues = $this->getInjectionValuesForMethod($method, $class);
+            if (false === $paramValues) {
                 continue;
             }
 
@@ -294,8 +289,7 @@ class Injector extends BaseObject
             $type       = ((null !== $paramClass) ? ($paramClass->getName()) : (ConstantBinding::TYPE));
             $name       = (($param->hasAnnotation('Named')) ? ($param->getAnnotation('Named')->getName()) : ($namedMethod));
             if (!$this->hasExplicitBinding($type, $name) && $method->getAnnotation('Inject')->isOptional()) {
-                // Somewhat hackish... throwing an exception here which is catched and ignored in handleInjections()
-                throw new BindingException('Could not find explicit binding for optional injection of type ' . $this->createTypeMessage($type, $name) . ' to complete  ' . $this->createCalledMethodMessage($class, $method, $param, $type));
+                return false;
             }
 
             if (!$this->hasBinding($type, $name)) {

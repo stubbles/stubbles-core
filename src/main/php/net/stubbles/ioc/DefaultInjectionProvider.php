@@ -51,15 +51,29 @@ class DefaultInjectionProvider extends BaseObject implements InjectionProvider
      */
     public function get($name = null)
     {
-        $constructor = $this->impl->getConstructor();
-        if (null === $constructor || !$constructor->hasAnnotation('Inject')) {
-            $instance = $this->impl->newInstance();
-        } else {
-            $instance = $this->impl->newInstanceArgs($this->injector->getInjectionValuesForMethod($constructor, $this->impl));
-        }
-
+        $instance = $this->createInstance();
         $this->injector->handleInjections($instance, $this->impl);
         return $instance;
+    }
+
+    /**
+     * creates instance
+     *
+     * @return  mixed
+     */
+    protected function createInstance()
+    {
+        $constructor = $this->impl->getConstructor();
+        if (null === $constructor || !$constructor->hasAnnotation('Inject')) {
+            return $this->impl->newInstance();
+        }
+
+        $params = $this->injector->getInjectionValuesForMethod($constructor, $this->impl);
+        if (false === $params && $constructor->getAnnotation('Inject')->isOptional()) {
+            return $this->impl->newInstance();
+        }
+
+        return $this->impl->newInstanceArgs($params);
     }
 }
 ?>
