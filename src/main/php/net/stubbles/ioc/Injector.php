@@ -27,31 +27,23 @@ class Injector extends BaseObject
      */
     protected $scopes;
     /**
-     * bindings used by the injector that are not yet in the index
-     *
-     * @type  Binding[]
-     */
-    protected $bindings   = array();
-    /**
      * index for faster access to bindings
      *
-     * Do not access this array directly, use getIndex() instead. The binding
-     * index is a requirement because the key for a binding is not necessarily
-     * complete when the binding is added to the injector.
-     *
-     * @type  net\stubbles\ioc\Binding[]
+     * @type  BindingIndex
      */
-    private $bindingIndex = array();
+    private $bindingIndex;
 
     /**
      * constructor
      *
+     * @param  BindingIndex   $bindingIndex
      * @param  BindingScopes  $scopes
      * @since  1.5.0
      */
-    public function __construct(BindingScopes $scopes = null)
+    public function __construct(BindingIndex $bindingIndex = null, BindingScopes $scopes = null)
     {
-        $this->scopes = ((null === $scopes) ? (new BindingScopes()) : ($scopes));
+        $this->scopes       = ((null === $scopes) ? (new BindingScopes()) : ($scopes));
+        $this->bindingIndex = ((null === $bindingIndex) ? (new BindingIndex()) : ($bindingIndex));
     }
 
     /**
@@ -74,7 +66,7 @@ class Injector extends BaseObject
      */
     public function addBinding(Binding $binding)
     {
-        $this->bindings[] = $binding;
+        $this->bindingIndex->addBinding($binding);
         return $binding;
     }
 
@@ -129,14 +121,7 @@ class Injector extends BaseObject
      */
     public function hasExplicitBinding($type, $name = null)
     {
-        $bindingIndex = $this->getIndex();
-        if (null !== $name) {
-            if (isset($bindingIndex[$type . '#' . $name])) {
-                return true;
-            }
-        }
-
-        return isset($bindingIndex[$type]);
+        return $this->bindingIndex->hasBinding($type, $name);
     }
 
     /**
@@ -158,34 +143,6 @@ class Injector extends BaseObject
     }
 
     /**
-     * check whether a constant is available
-     *
-     * There is no need to distinguish between explicit and implicit binding for
-     * constant bindings as there are only explicit constant bindings and never
-     * implicit ones.
-     *
-     * @param   string  $name  name of constant to check for
-     * @return  bool
-     * @since   1.1.0
-     */
-    public function hasConstant($name)
-    {
-        return $this->hasBinding(ConstantBinding::TYPE, $name);
-    }
-
-    /**
-     * returns constanct value
-     *
-     * @param   string  $name  name of constant value to retrieve
-     * @return  scalar
-     * @since   1.1.0
-     */
-    public function getConstant($name)
-    {
-        return $this->getInstance(ConstantBinding::TYPE, $name);
-    }
-
-    /**
      * returns the binding for a name and type
      *
      * @param   string  $type
@@ -194,23 +151,31 @@ class Injector extends BaseObject
      */
     protected function getBinding($type, $name = null)
     {
-        $bindingIndex = $this->getIndex();
-        if (null !== $name) {
-            if (isset($bindingIndex[$type . '#' . $name])) {
-                return $bindingIndex[$type . '#' . $name];
-            }
+        $binding = $this->bindingIndex->getBinding($type, $name);
+        if (null !== $binding) {
+            return $binding;
         }
 
-        if (isset($bindingIndex[$type])) {
-            return $bindingIndex[$type];
+        if (ConstantBinding::TYPE !== $type) {
+            return $this->getAnnotatedBinding($type);
         }
 
-        // prevent illegal access to reflection class for constant type
-        if (ConstantBinding::TYPE === $type) {
-            return null;
-        }
+        return null;
+    }
 
-        // check for default implementation
+    /**
+     * returns binding denoted by annotations on type to create
+     *
+     * An annotated binding is when the type to create is annotated with
+     * @ImplementedBy oder @ProvidedBy.
+     *
+     * If this is not the case it will fall back to the implicit binding.
+     *
+     * @param   string  $type
+     * @return  Binding
+     */
+    protected function getAnnotatedBinding($type)
+    {
         $typeClass = new ReflectionClass($type);
         if ($typeClass->isInterface() && $typeClass->hasAnnotation('ImplementedBy')) {
             return $this->bind($type)
@@ -224,7 +189,21 @@ class Injector extends BaseObject
                           );
         }
 
-        // try implicit binding
+        return $this->getImplicitBinding($typeClass, $type);
+    }
+
+    /**
+     * returns implicit binding
+     *
+     * An implicit binding means that a type is requested which itself is a class
+     * and not an interface. Obviously, it makes sense to say that a class is
+     * always bound to itself if no other bindings where defined.
+     *
+     * @param   string  $type
+     * @return  Binding
+     */
+    protected function getImplicitBinding(ReflectionClass $typeClass, $type)
+    {
         if (!$typeClass->isInterface()) {
             return $this->bind($type)
                         ->to($typeClass);
@@ -234,22 +213,31 @@ class Injector extends BaseObject
     }
 
     /**
-     * returns the binding index
+     * check whether a constant is available
      *
-     * @return  net\stubbles\ioc\Binding[]
+     * There is no need to distinguish between explicit and implicit binding for
+     * constant bindings as there are only explicit constant bindings and never
+     * implicit ones.
+     *
+     * @param   string  $name  name of constant to check for
+     * @return  bool
+     * @since   1.1.0
      */
-    protected function getIndex()
+    public function hasConstant($name)
     {
-        if (empty($this->bindings)) {
-            return $this->bindingIndex;
-        }
+        return $this->bindingIndex->hasBinding(ConstantBinding::TYPE, $name);
+    }
 
-        foreach ($this->bindings as $binding) {
-            $this->bindingIndex[$binding->getKey()] = $binding;
-        }
-
-        $this->bindings = array();
-        return $this->bindingIndex;
+    /**
+     * returns constanct value
+     *
+     * @param   string  $name  name of constant value to retrieve
+     * @return  scalar
+     * @since   1.1.0
+     */
+    public function getConstant($name)
+    {
+        return $this->getInstance(ConstantBinding::TYPE, $name);
     }
 
     /**
