@@ -24,34 +24,62 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
     {
         return $this->getMock('net\\stubbles\\peer\\BsdSocket',
                               array('isConnected', 'disconnect', 'doRead'),
-                              array('example.com')
+                              array(SocketDomain::$AF_INET, 'example.com', 80)
                );
     }
 
     /**
      * @test
      */
-    public function containsGivenHost()
+    public function hasGivenDomain()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals(SocketDomain::$AF_UNIX, $socket->getDomain());
+    }
+
+    /**
+     * @test
+     */
+    public function hasGivenHost()
+    {
+        $socket = new BsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
         $this->assertEquals('example.com', $socket->getHost());
     }
 
     /**
      * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
      */
-    public function portDefaultsTo80()
+    public function throwsIllegalArgumentExceptionIfPortReqiredButNotGiven()
     {
-        $socket = new BsdSocket('example.com');
-        $this->assertEquals(80, $socket->getPort());
+        $socket = new BsdSocket(SocketDomain::$AF_INET, 'example.com');
+        $this->assertNull($socket->getPort());
     }
 
     /**
      * @test
      */
-    public function hasNoPrefixByDefault()
+    public function hasGivenPort()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_INET, 'example.com', 21);
+        $this->assertEquals(21, $socket->getPort());
+    }
+
+    /**
+     * @test
+     */
+    public function portIsNullIfNotRequired()
+    {
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertNull($socket->getPort());
+    }
+
+    /**
+     * @test
+     */
+    public function neverHasPrefix()
+    {
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertNull($socket->getPrefix());
     }
 
@@ -60,7 +88,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function timeoutDefaultsTo5Seconds()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals(5, $socket->getTimeout());
     }
 
@@ -69,7 +97,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function timeoutCanBeChanged()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals(60, $socket->setTimeout(60)->getTimeout());
     }
 
@@ -78,7 +106,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isNotConnectedAfterCreation()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertFalse($socket->isConnected());
     }
 
@@ -87,85 +115,8 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isAtEndOfSocketAfterCreation()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertTrue($socket->eof());
-    }
-
-    /**
-     * @test
-     */
-    public function hasGivenPort()
-    {
-        $socket = new BsdSocket('example.com', 21, null, 30);
-        $this->assertEquals(21, $socket->getPort());
-    }
-
-    /**
-     * @test
-     */
-    public function hasGivenPrefix()
-    {
-        $socket = new BsdSocket('example.com', 21, 'ssl://', 30);
-        $this->assertEquals('ssl://', $socket->getPrefix());
-    }
-
-    /**
-     * @test
-     */
-    public function hasGivenTimeout()
-    {
-        $socket = new BsdSocket('example.com', 21, null, 30);
-        $this->assertEquals(30, $socket->getTimeout());
-    }
-
-    /**
-     * @test
-     */
-    public function domainDefaultsToAF_INET()
-    {
-        $socket = new BsdSocket('example.com');
-        $this->assertEquals(AF_INET, $socket->getDomain());
-    }
-
-    /**
-     * @test
-     */
-    public function domainCanBeSetToAF_INET6()
-    {
-        $socket = new BsdSocket('example.com');
-        $this->assertEquals(AF_INET6, $socket->setDomain(AF_INET6)->getDomain());
-    }
-
-    /**
-     * @test
-     */
-    public function domainCanBeSetToAF_UNIX()
-    {
-        $socket = new BsdSocket('example.com');
-        $this->assertEquals(AF_UNIX, $socket->setDomain(AF_UNIX)->getDomain());
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function invalidDomainThrowsIllegalArgumentException()
-    {
-        $socket = new BsdSocket('example.com');
-        $socket->setDomain('invalid');
-    }
-
-    /**
-     * trying to set the domain when connected throws an illegal state exception
-     *
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalStateException
-     */
-    public function setDomainWhenConnectedThrowsIllegalStateConnection()
-    {
-        $socket = $this->createBsdSocketMock();
-        $socket->expects($this->any())->method('isConnected')->will($this->returnValue(true));
-        $socket->setDomain(AF_UNIX);
     }
 
     /**
@@ -173,7 +124,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function typeDefaultsToSOCK_STREAM()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals(SOCK_STREAM, $socket->getType());
     }
 
@@ -182,7 +133,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function typeCanBeSetToSOCK_DGRAM()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals(SOCK_DGRAM, $socket->setType(SOCK_DGRAM)->getType());
         $this->assertSame($socket, $socket->setType(SOCK_RAW));
         $this->assertEquals(SOCK_RAW, $socket->getType());
@@ -197,7 +148,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function typeCanBeSetToSOCK_RAW()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals(SOCK_RAW, $socket->setType(SOCK_RAW)->getType());
     }
 
@@ -206,7 +157,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function typeCanBeSetToSOCK_SEQPACKET()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals(SOCK_SEQPACKET, $socket->setType(SOCK_SEQPACKET)->getType());
     }
 
@@ -215,7 +166,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function typeCanBeSetToSOCK_RDM()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals(SOCK_RDM, $socket->setType(SOCK_RDM)->getType());
     }
 
@@ -227,7 +178,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidTypeThrowsIllegalArgumentException()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $socket->setType('invalid');
     }
 
@@ -249,7 +200,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function protocolDefaultsToTcp()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
         $this->assertTrue($socket->isTcp());
         $this->assertFalse($socket->isUdp());
     }
@@ -259,7 +210,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function protocolCanBeSetToTcp()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
         $this->assertTrue($socket->useTcp()->isTcp());
         $this->assertFalse($socket->isUdp());
     }
@@ -269,7 +220,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function protocolCanBeSetToUdp()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
         $this->assertTrue($socket->useUdp()->isUdp());
         $this->assertFalse($socket->isTcp());
     }
@@ -298,22 +249,43 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
      */
-    public function readUnsetOptionReturnsNull()
+    public function constructWithAlreadyBoundOptionsThrowsIllegalArgumentException()
     {
-        $socket = new BsdSocket('example.com');
-        $this->assertNull($socket->getOption('bar', 'baz'));
+        $mockOptions = $this->getMock('net\\stubbles\\peer\\SocketOptions');
+        $mockOptions->expects($this->once())
+                    ->method('boundToConnection')
+                    ->will($this->returnValue(true));
+        new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket', null, $mockOptions);
     }
 
     /**
      * @test
      */
-    public function readSetOptionReturnsValue()
+    public function usesOptionsToGetOption()
     {
-        $socket = new BsdSocket('example.com');
-        $this->assertEquals('baz',
-                            $socket->setOption('foo', 'bar', 'baz')
-                                   ->getOption('foo', 'bar')
+        $mockOptions = $this->getMock('net\\stubbles\\peer\\SocketOptions');
+        $mockOptions->expects($this->once())
+                    ->method('get')
+                    ->with($this->equalTo('bar'), $this->equalTo('baz'), $this->equalTo('default'))
+                    ->will($this->returnValue('foo'));
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket', null, $mockOptions);
+        $this->assertEquals('foo', $socket->getOption('bar', 'baz', 'default'));
+    }
+
+    /**
+     * @test
+     */
+    public function usesOptionsToSetOption()
+    {
+        $mockOptions = $this->getMock('net\\stubbles\\peer\\SocketOptions');
+        $mockOptions->expects($this->once())
+                    ->method('set')
+                    ->with($this->equalTo('bar'), $this->equalTo('baz'), $this->equalTo('foo'));
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket', null, $mockOptions);
+        $this->assertEquals($socket,
+                            $socket->setOption('bar', 'baz', 'foo')
         );
     }
 
@@ -337,8 +309,8 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function readOnUnconnectedThrowsIllegalStateException()
     {
-        $socket = new BsdSocket('example.com');
-        $data   = $socket->read();
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $socket->read();
     }
 
     /**
@@ -361,8 +333,8 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function readLineOnUnconnectedThrowsIllegalStateException()
     {
-        $socket = new BsdSocket('example.com');
-        $data   = $socket->readLine();
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $socket->readLine();
     }
 
     /**
@@ -385,8 +357,8 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function readBinaryOnUnconnectedThrowsIllegalStateException()
     {
-        $socket = new BsdSocket('example.com');
-        $data   = $socket->readBinary();
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $socket->readBinary();
     }
 
     /**
@@ -395,7 +367,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function writeOnUnconnectedThrowsIllegalStateException()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $socket->write('data');
     }
 
@@ -404,7 +376,7 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function disconnectReturnsInstance()
     {
-        $socket = new BsdSocket('example.com');
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertSame($socket, $socket->disconnect());
     }
 }

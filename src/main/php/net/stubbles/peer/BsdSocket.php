@@ -24,9 +24,9 @@ class BsdSocket extends Socket
     /**
      * domain type
      *
-     * @type  string
+     * @type  SocketDomain
      */
-    protected $domain         = AF_INET;
+    protected $domain;
     /**
      * type of socket
      *
@@ -42,18 +42,9 @@ class BsdSocket extends Socket
     /**
      * list of options for the socket
      *
-     * @type  array
+     * @type  SocketOptions
      */
-    protected $options        = array();
-    /**
-     * list of available domains
-     *
-     * @type  array
-     */
-    protected static $domains = array(AF_INET  => 'AF_INET',
-                                      AF_INET6 => 'AF_INET6',
-                                      AF_UNIX  => 'AF_UNIX'
-                                );
+    protected $options;
     /**
      * list of available socket types
      *
@@ -67,31 +58,36 @@ class BsdSocket extends Socket
                                 );
 
     /**
-     * sets the domain
+     * constructor
      *
-     * @param   int  $domain  one of AF_INET, AF_INET6 or AF_UNIX
-     * @return  BsdSocket
+     * Port can be null for SocketDomain::$AF_UNIX, all other domains require
+     * a port.
+     *
+     * @param   SocketDomain   $domain   one of SocketDomain::$AF_INET, SocketDomain::$AF_INET6 or SocketDomain::$AF_UNIX
+     * @param   string         $host     host to connect socket to
+     * @param   int            $port     port to connect socket to
+     * @param   SocketOptions  $options  options to set on the socket
      * @throws  IllegalArgumentException
-     * @throws  IllegalStateException
      */
-    public function setDomain($domain)
+    public function __construct(SocketDomain $domain, $host, $port = null, SocketOptions $options = null)
     {
-        if (!in_array($domain, array_keys(self::$domains))) {
-            throw new IllegalArgumentException('Domain must be one of AF_INET, AF_INET6 or AF_UNIX.');
+        if ($domain->requiresPort() && empty($port)) {
+            throw new IllegalArgumentException('Domain ' . $domain->name() . ' requires a port');
         }
 
-        if ($this->isConnected()) {
-            throw new IllegalStateException('Can not change domain on already connected socket.');
+        if (null !== $options && $options->boundToConnection()) {
+            throw new IllegalArgumentException('Can not use options already bound to another connection');
         }
 
-        $this->domain = $domain;
-        return $this;
+        parent::__construct($host, $port);
+        $this->domain  = $domain;
+        $this->options = ((null === $options) ? (new SocketOptions()) : ($options));
     }
 
     /**
      * returns the domain
      *
-     * @return  int
+     * @return  SocketDomain
      */
     public function getDomain()
     {
@@ -189,105 +185,53 @@ class BsdSocket extends Socket
      * @param   int    $name   option name
      * @param   mixed  $value  option value
      * @return  BsdSocket
-     * @throws  ConnectionException
      */
     public function setOption($level, $name, $value)
     {
-        if (!isset($this->options[$level])) {
-            $this->options[$level] = array();
-        }
-
-        $this->options[$level][$name] = $value;
-        if ($this->isConnected()) {
-            if (!socket_set_option($this->fp, $level, $name, $value)) {
-                throw new ConnectionException('Failed to set option ' . $name . ' on level ' . $level . ' to value ' . $value);
-            }
-        }
-
+        $this->options->set($level, $name, $value);
         return $this;
     }
 
     /**
      * returns an option
      *
-     * @param   int  $level  protocol level of option
-     * @param   int  $name   option name
+     * @param   int    $level    protocol level of option
+     * @param   int    $name     option name
+     * @param   mixed  $default  value to return if option not set
      * @return  mixed
-     * @throws  ConnectionException
      */
-    public function getOption($level, $name)
+    public function getOption($level, $name, $default)
     {
-        if ($this->isConnected()) {
-            $option = socket_get_option($this->fp, $level, $name);
-            if (false === $option) {
-                throw new ConnectionException('Failed to retrieve option ' . $name . ' on level ' . $level);
-            }
-
-            if (!isset($this->options[$level])) {
-                $this->options[$level] = array();
-            }
-
-            $this->options[$level][$name] = $option;
-        }
-
-        if (isset($this->options[$level]) && isset($this->options[$level][$name])) {
-            return $this->options[$level][$name];
-        }
-
-        return null;
+        return $this->options->get($level, $name, $default);
     }
 
     /**
      * opens a socket connection
      *
      * @param   int  $connectTimeout  timeout for establishing the connection
-     * @return  bool  true if connect was successful
+     * @return  BsdSocket
      * @throws  ConnectionException
      */
     public function connect($connectTimeout = 2)
     {
         if ($this->isConnected()) {
-            return true;
+            return $this;
         }
 
-        $this->fp = @socket_create($this->domain, $this->type, $this->protocol);
-        if (false === $this->fp) {
-            $this->fp = null;
+        $fp = @socket_create($this->domain->value(), $this->type, $this->protocol);
+        if (false === $fp) {
             throw new ConnectionException(sprintf('Create of %s socket (type %s, protocol %s) failed.',
-                                                  self::$domains[$this->domain],
+                                                  $this->domain->name(),
                                                   self::$types[$this->type],
                                                   getprotobynumber($this->protocol)
                                           )
                       );
         }
 
-        foreach ($this->options as $level => $pairs) {
-            foreach ($pairs as $name => $value) {
-                socket_set_option($this->fp, $level, $name, $value);
-            }
-        }
-
-        switch ($this->domain) {
-            case AF_INET:
-                $result = socket_connect($this->fp, gethostbyname($this->host), $this->port);
-                break;
-
-            case AF_UNIX:
-                $result = socket_connect($this->fp, $this->host);
-                break;
-
-            default:
-                throw new ConnectionException('Connect to ' . $this->host . ':' .$this->port . ' failed: Illegal domain type ' . $this->domain . ' used.');
-        }
-
-        if (false === $result) {
-            $errorMessage = $this->lastError();
-            $this->fp     = null;
-            throw new ConnectionException('Connect to ' . $this->host . ':' .$this->port . ' failed: ' . $errorMessage);
-        }
-
+        $this->options->bindToConnection($fp);
+        $this->fp  = $this->domain->connect($fp, $this->host, $this->port);
         $this->eof = false;
-        return true;
+        return $this;
     }
 
     /**
