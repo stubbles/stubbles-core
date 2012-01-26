@@ -338,7 +338,7 @@ class Properties extends BaseObject implements \Iterator
      * <code>
      * letters = a..e
      * letter_reverse = e..a
-     * numbers_reverese = 1..5
+     * numbers_reverese = 5..1
      * </code>
      *
      * @param   string  $section  name of the section
