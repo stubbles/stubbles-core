@@ -20,5 +20,6 @@
                 "url": "https://github.com/mikey179/vfsStream"
             }
         }
-    }
+    },
+    "bin": ["bin/bootstrap"]
 }
