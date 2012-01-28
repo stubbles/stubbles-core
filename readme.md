@@ -1,4 +1,4 @@
-Stubbles core classes
+Stubbles Core classes
 =====================
 
 Preconditions for any installation
