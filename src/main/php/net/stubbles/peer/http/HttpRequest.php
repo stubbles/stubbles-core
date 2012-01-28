@@ -21,7 +21,7 @@ class HttpRequest extends BaseObject
     /**
      * the http address to setup a connection to
      *
-     * @type  HttpUrlContainer
+     * @type  HttpUrl
      */
     protected $httpUrl = null;
     /**
@@ -34,10 +34,10 @@ class HttpRequest extends BaseObject
     /**
      * constructor
      *
-     * @param  HttpUrlContainer  $httpUrl  HTTP URL to perform a request to
-     * @param  HeaderList        $header   list of request headers
+     * @param  HttpUrl     $httpUrl  HTTP URL to perform a request to
+     * @param  HeaderList  $header   list of request headers
      */
-    public function __construct(HttpUrlContainer $httpUrl, HeaderList $header)
+    public function __construct(HttpUrl $httpUrl, HeaderList $header)
     {
         $this->httpUrl = $httpUrl;
         $this->headers = $header;
@@ -46,12 +46,12 @@ class HttpRequest extends BaseObject
     /**
      * static constructor
      *
-     * @param   HttpUrlContainer  $httpUrl
-     * @param   HeaderList        $header
+     * @param   HttpUrl     $httpUrl
+     * @param   HeaderList  $header
      * @return  HttpRequest
      * @since   2.0.0
      */
-    public static function create(HttpUrlContainer $httpUrl, HeaderList $header)
+    public static function create(HttpUrl $httpUrl, HeaderList $header)
     {
         return new self($httpUrl, $header);
     }

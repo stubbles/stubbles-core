@@ -9,25 +9,34 @@
  */
 namespace net\stubbles\peer\http;
 use net\stubbles\peer\HeaderList;
+use net\stubbles\peer\MalformedUrlException;
 use net\stubbles\peer\ParsedUrl;
 use net\stubbles\peer\Socket;
 use net\stubbles\peer\Url;
 /**
  * Class for URLs of scheme hypertext transfer protocol.
  */
-class HttpUrl extends Url implements HttpUrlContainer
+abstract class HttpUrl extends Url
 {
     /**
-     * constructor
+     * parses an url out of a string
      *
-     * @param   ParsedUrl  $url
+     * @param   string  $urlString  string to create instance from
+     * @return  HttpUrl
+     * @throws  MalformedUrlException
      */
-    protected function __construct(ParsedUrl $url)
+    public static function fromString($urlString)
     {
-        parent::__construct($url);
-        if ($this->parsedUrl->getPath() == null) {
-            $this->parsedUrl = $this->parsedUrl->transpose(array('path' => '/'));
+        if (strlen($urlString) === 0) {
+            return null;
         }
+
+        $url = new ConstructedHttpUrl(new ParsedUrl($urlString));
+        if ($url->isValid()) {
+            return $url;
+        }
+
+        throw new MalformedUrlException('The url ' . $urlString . ' is not a valid http url.');
     }
 
     /**
@@ -123,7 +132,7 @@ class HttpUrl extends Url implements HttpUrlContainer
             return $this;
         }
 
-        return new self($this->parsedUrl->transpose(array('scheme' => Http::SCHEME)));
+        return new ConstructedHttpUrl($this->parsedUrl->transpose(array('scheme' => Http::SCHEME)));
     }
 
     /**
@@ -138,7 +147,7 @@ class HttpUrl extends Url implements HttpUrlContainer
             return $this;
         }
 
-        return new self($this->parsedUrl->transpose(array('scheme' => Http::SCHEME_SSL)));
+        return new ConstructedHttpUrl($this->parsedUrl->transpose(array('scheme' => Http::SCHEME_SSL)));
     }
 
     /**

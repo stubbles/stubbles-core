@@ -36,7 +36,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->memoryOutputStream = new MemoryOutputStream();
-        $this->mockHttpUrl        = $this->getMock('net\\stubbles\\peer\\http\\HttpUrlContainer');
+        $this->mockHttpUrl        = $this->getMock('net\\stubbles\\peer\\http\\HttpUrl');
         $mockSocket               = $this->getMock('net\\stubbles\\peer\\Socket', array(), array('example.com'));
         $mockSocket->expects($this->any())
                    ->method('getInputStream')

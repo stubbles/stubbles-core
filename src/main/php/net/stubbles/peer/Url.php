@@ -12,7 +12,7 @@ use net\stubbles\lang\BaseObject;
 /**
  * Class for URLs and methods on URLs.
  */
-class Url extends BaseObject implements UrlContainer
+abstract class Url extends BaseObject
 {
     /**
      * internal representation after parse_url()
@@ -20,16 +20,6 @@ class Url extends BaseObject implements UrlContainer
      * @type  ParsedUrl
      */
     protected $parsedUrl;
-
-    /**
-     * constructor
-     *
-     * @param  ParsedUrl  $url
-     */
-    protected function __construct(ParsedUrl $url)
-    {
-        $this->parsedUrl = $url;
-    }
 
     /**
      * parses an url out of a string
@@ -44,8 +34,7 @@ class Url extends BaseObject implements UrlContainer
             return null;
         }
 
-        $class = get_called_class();
-        $url   = new $class(new ParsedUrl($urlString));
+        $url = new ConstructedUrl(new ParsedUrl($urlString));
         if ($url->isValid()) {
             return $url;
         }

@@ -18,7 +18,7 @@ class HttpConnection extends BaseObject
     /**
      * request object to open connection
      *
-     * @type  HttpUrlContainer
+     * @type  HttpUrl
      */
     protected $httpUrl  = null;
     /**
@@ -37,10 +37,10 @@ class HttpConnection extends BaseObject
     /**
      * constructor
      *
-     * @param  HttpUrlContainer  $httpUrl  url to create connection to
-     * @param  HeaderList        $headers  list of headers to be used
+     * @param  HttpUrl     $httpUrl  url to create connection to
+     * @param  HeaderList  $headers  list of headers to be used
      */
-    public function __construct(HttpUrlContainer $httpUrl, HeaderList $headers = null)
+    public function __construct(HttpUrl $httpUrl, HeaderList $headers = null)
     {
         $this->httpUrl = $httpUrl;
         $this->headers = ((null === $headers) ? (new HeaderList()) : ($headers));
