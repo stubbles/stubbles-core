@@ -23,6 +23,7 @@ Usage as library
         }
 `
 4. Run Composer to get Stubbles Core: `php path/to/composer.phar install`
+5. Run `php vendor/bin/bootstrap`. This will copy the required _bootstrap.php_ to the project`s root dir.
 
 
 Installation from source
