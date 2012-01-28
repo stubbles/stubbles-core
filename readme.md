@@ -22,7 +22,7 @@ Usage as library
             }
         }
 `
-4. Run Composer to get Stubbles Core: `php path/to/composer.phar install`
+4. Run Composer to get Stubbles Core: `php composer.phar install`
 5. Run `php vendor/bin/bootstrap`. This will copy the required _bootstrap.php_ to the project`s root dir.
 
 
@@ -30,7 +30,7 @@ Installation from source
 ------------------------
 1. Run `git clone https://github.com/stubbles/stubbles-core.git`
 2. cd into your checkout
-3. Run Composer to get the dependencies: `php path/to/composer.phar install`
+3. Run Composer to get the dependencies: `php composer.phar install`
 
 You should now be able to run the unit tests with `phpunit`.
 
