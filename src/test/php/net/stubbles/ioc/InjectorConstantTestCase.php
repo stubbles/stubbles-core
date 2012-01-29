@@ -12,56 +12,6 @@ use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\ReflectionClass;
 /**
  * Helper class for the test.
- */
-class Question
-{
-    /**
-     * the answer
-     *
-     * @type  mixed
-     */
-    private $answer;
-
-    /**
-     * sets the answer
-     *
-     * @param  mixed  $answer
-     * @Inject
-     * @Named('answer')
-     */
-    public function setAnswer($answer)
-    {
-        $this->answer = $answer;
-    }
-
-    /**
-     * returns the answer
-     *
-     * @return  mixed
-     */
-    public function getAnswer()
-    {
-        return $this->answer;
-    }
-}
-/**
- * Helper class for the test.
- *
- * @since  1.6.0
- */
-class AnswerConstantProvider extends BaseObject implements InjectionProvider
-{
-    /**
-     * returns the value to provide
-     *
-     * @param   string  $name  optional
-     * @return  mixed
-     */
-    public function get($name = null)
-    {
-        return 42;
-    }
-}
 /**
  * Test for net\stubbles\ioc\Injector with constant binding.
  *
@@ -76,8 +26,8 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function assertConstantInjection(Injector $injector)
     {
-        $question = $injector->getInstance('net\\stubbles\\ioc\\Question');
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Question', $question);
+        $question = $injector->getInstance('org\\stubbles\\test\\ioc\\Question');
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Question', $question);
         $this->assertEquals(42, $question->getAnswer());
     }
 
@@ -174,7 +124,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindConstant()
                ->named('answer')
-               ->toProviderClass(new ReflectionClass('net\\stubbles\\ioc\\AnswerConstantProvider'));
+               ->toProviderClass(new ReflectionClass('org\\stubbles\\test\\ioc\\AnswerConstantProvider'));
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));
         $this->assertEquals(42, $injector->getConstant('answer'));
@@ -191,7 +141,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindConstant()
                ->named('answer')
-               ->toProviderClass('net\\stubbles\\ioc\\AnswerConstantProvider');
+               ->toProviderClass('org\\stubbles\\test\\ioc\\AnswerConstantProvider');
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));
         $this->assertEquals(42, $injector->getConstant('answer'));

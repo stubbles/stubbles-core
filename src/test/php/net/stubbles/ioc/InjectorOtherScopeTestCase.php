@@ -10,13 +10,6 @@
 namespace net\stubbles\ioc;
 use net\stubbles\lang\BaseObject;
 /**
- * Helper class for the test.
- */
-class OtherScoped extends BaseObject
-{
-    // intentionally empty
-}
-/**
  * Test for net\stubbles\ioc\Injector with the session scope.
  *
  * @group  ioc
@@ -30,17 +23,17 @@ class InjectorOtherTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $mockBindingScope = $this->getMock('net\\stubbles\\ioc\\BindingScope');
-        $binder->bind('net\\stubbles\\ioc\\OtherScoped')
-               ->to('net\\stubbles\\ioc\\OtherScoped')
+        $binder->bind('\\stdClass')
+               ->to('\\stdClass')
                ->in($mockBindingScope);
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\OtherScoped'));
-        $instance = new OtherScoped();
+        $this->assertTrue($injector->hasBinding('\\stdClass'));
+        $instance = new \stdClass();
         $mockBindingScope->expects(($this->once()))
                          ->method('getInstance')
                          ->will($this->returnValue($instance));
-        $this->assertSame($instance, $injector->getInstance('net\\stubbles\\ioc\\OtherScoped'));
+        $this->assertSame($instance, $injector->getInstance('\\stdClass'));
     }
 }
 ?>
