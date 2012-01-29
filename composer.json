@@ -14,12 +14,5 @@
             "org\\stubbles": "src/main/php"
         }
     },
-    "repositories": {
-        "vfsstream": {
-            "vcs": {
-                "url": "https://github.com/mikey179/vfsStream"
-            }
-        }
-    },
     "bin": ["bin/bootstrap"]
 }
