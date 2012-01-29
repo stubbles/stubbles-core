@@ -9,357 +9,11 @@
  */
 namespace net\stubbles\ioc;
 use net\stubbles\lang\reflect\ReflectionClass;
-/**
- * Helper interface for injection and binding tests.
- */
-interface Tire
-{
-    /**
-     * rotates the tires
-     *
-     * @return  string
-     */
-    public function rotate();
-}
-/**
- * Helper class for injection and binding tests.
- */
-class Goodyear implements Tire
-{
-    /**
-     * rotates the tires
-     *
-     * @return  string
-     */
-    public function rotate()
-    {
-        return "I'm driving with Goodyear tires.";
-    }
-}
-/**
- * Helper class to test implicit binding with concrete class names.
- */
-class ImplicitDependency
-{
-    /**
-     * instance from constructor injection
-     *
-     * @type  Goodyear
-     */
-    protected $goodyearByConstructor;
-    /**
-     * instance from setter injection
-     *
-     * @type  Goodyear
-     */
-    protected $goodyearBySetter;
-
-    /**
-     * constructor
-     *
-     * @param  Goodyear  $goodyear
-     * @Inject
-     */
-    public function __construct(Goodyear $goodyear)
-    {
-        $this->goodyearByConstructor = $goodyear;
-    }
-
-    /**
-     * setter
-     *
-     * @param  Goodyear  $goodyear
-     * @Inject
-     */
-    public function setGoodyear(Goodyear $goodyear)
-    {
-        $this->goodyearBySetter = $goodyear;
-    }
-
-    /**
-     * returns the instance from constructor injection
-     *
-     * @return  Goodyear
-     */
-    public function getGoodyearByConstructor()
-    {
-        return $this->goodyearByConstructor;
-    }
-
-    /**
-     * returns the instance from setter injection
-     *
-     * @return  Goodyear
-     */
-    public function getGoodyearBySetter()
-    {
-        return $this->goodyearBySetter;
-    }
-}
-/**
- * Helper class to test implicit binding related to bug #102.
- *
- * @link  http://stubbles.net/ticket/102
- */
-class ImplicitDependencyBug102
-{
-    /**
-     * instance from setter injection
-     *
-     * @type  Goodyear
-     */
-    protected $goodyearBySetter;
-
-    /**
-     * setter
-     *
-     * @param  Goodyear  $goodyear
-     * @Inject
-     */
-    public function setGoodyear(Goodyear $goodyear)
-    {
-        $this->goodyearBySetter = $goodyear;
-    }
-
-    /**
-     * returns the instance from setter injection
-     *
-     * @return  Goodyear
-     */
-    public function getGoodyearBySetter()
-    {
-        return $this->goodyearBySetter;
-    }
-}
-/**
- * Helper class to test implicit binding related to bug #102.
- */
-class ImplicitOptionalDependency
-{
-    /**
-     * instance from setter injection
-     *
-     * @type  Goodyear
-     */
-    protected $goodyearBySetter;
-
-    /**
-     * setter
-     *
-     * @param  Goodyear  $goodyear
-     * @Inject(optional=true)
-     */
-    public function setGoodyear(Goodyear $goodyear)
-    {
-        $this->goodyearBySetter = $goodyear;
-    }
-
-    /**
-     * returns the instance from setter injection
-     *
-     * @return  Goodyear
-     */
-    public function getGoodyearBySetter()
-    {
-        return $this->goodyearBySetter;
-    }
-}
-/**
- * Another helper interface for injection and binding tests.
- */
-interface Vehicle
-{
-    /**
-     * moves the vehicle forward
-     *
-     * @return  string
-     */
-    public function moveForward();
-}
-/**
- * Another helper class for injection and binding tests.
- */
-class Car implements Vehicle
-{
-    /**
-     * injected tire instance
-     *
-     * @type  Tire
-     */
-    public $tire;
-
-    /**
-     * Create a new car
-     *
-     * @param  Tire  $tire
-     * @Inject
-     */
-    public function __construct(Tire $tire)
-    {
-        $this->tire = $tire;
-    }
-
-    /**
-     * moves the vehicle forward
-     *
-     * @return  string
-     */
-    public function moveForward()
-    {
-        return $this->tire->rotate();
-    }
-}
-/**
- * Another helper class for injection and binding tests.
- */
-class Bike implements Vehicle
-{
-    /**
-     * injected tire instance
-     *
-     * @type  Tire
-     */
-    public $tire;
-
-    /**
-     * sets the tire
-     *
-     * @param  Tire  $tire
-     * @Inject
-     */
-    public function setTire(Tire $tire)
-    {
-        $this->tire = $tire;
-    }
-
-    /**
-     * moves the vehicle forward
-     *
-     * @return  string
-     */
-    public function moveForward()
-    {
-        return $this->tire->rotate();
-    }
-}
-/**
- * Test class for missing array injection.
- *
- * @since  2.0.0
- */
-class MissingArrayInjection
-{
-    /**
-     * constructor
-     *
-     * @param  array  $data
-     * @Inject
-     * @Named('foo')
-     */
-    public function setData(array $data)
-    {
-        // intentionally empty
-    }
-}
-/**
- * Another helper interface for injection and binding tests.
- */
-interface Roof
-{
-    /**
-     * method to open the roof
-     */
-    public function open();
-    /**
-     * method to close the roof
-     */
-    public function close();
-}
-/**
- * Another helper class for injection and binding tests.
- */
-class Convertible implements Vehicle
-{
-    /**
-     * injected tire instance
-     *
-     * @type  Tire
-     */
-    public $tire;
-    /**
-     * injected roof instance
-     *
-     * @type   Roof
-     */
-    public $roof;
-
-    /**
-     * sets the tire
-     *
-     * @param  Tire $tire
-     * @Inject
-     */
-    public function setTire(Tire $tire)
-    {
-        $this->tire = $tire;
-    }
-
-    /**
-     * sets the root
-     *
-     * @param  Roof  $roof
-     * @Inject(optional=true)
-     */
-    public function setRoof(Roof $roof)
-    {
-        $this->roof = $roof;
-    }
-
-    /**
-     * moves the vehicle forward
-     *
-     * @return  string
-     */
-    public function moveForward()
-    {
-        return $this->tire->rotate();
-    }
-}
-/**
- * Helper class for optional constructor injection.
- *
- * @since  2.0.0
- */
-class BikeWithOptionalTire implements Vehicle
-{
-    /**
-     * injected tire instance
-     *
-     * @type  Tire
-     */
-    public $tire;
-
-    /**
-     * sets the tire
-     *
-     * @param  Tire  $tire
-     * @Inject(optional=true)
-     */
-    public function __construct(Tire $tire = null)
-    {
-        $this->tire = ((null === $tire) ? (new Goodyear()) : ($tire));
-    }
-
-    /**
-     * moves the vehicle forward
-     *
-     * @return  string
-     */
-    public function moveForward()
-    {
-        return $this->tire->rotate();
-    }
-}
+use org\stubbles\test\ioc\Bike;
+use org\stubbles\test\ioc\Goodyear;
+use org\stubbles\test\ioc\ImplicitDependencyBug102;
+use org\stubbles\test\ioc\ImplicitOptionalDependency;
+use org\stubbles\test\ioc\MissingArrayInjection;
 /**
  * Test for net\stubbles\ioc\Injector.
  *
@@ -375,20 +29,20 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     public function constructorInjection()
     {
         $binder = new Binder();
-        $binder->bind('net\\stubbles\\ioc\\Tire')->to('net\\stubbles\\ioc\\Goodyear');
-        $binder->bind('net\\stubbles\\ioc\\Vehicle')->to('net\\stubbles\\ioc\\Car');
+        $binder->bind('org\\stubbles\\test\\ioc\\Tire')->to('org\\stubbles\\test\\ioc\\Goodyear');
+        $binder->bind('org\\stubbles\\test\\ioc\\Vehicle')->to('org\\stubbles\\test\\ioc\\Car');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Vehicle'));
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Tire'));
+        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Vehicle'));
+        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Tire'));
 
-        $vehicle = $injector->getInstance('net\\stubbles\\ioc\\Vehicle');
+        $vehicle = $injector->getInstance('org\\stubbles\\test\\ioc\\Vehicle');
 
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Vehicle', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Car', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Tire', $vehicle->tire);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $vehicle->tire);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Vehicle', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Car', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Tire', $vehicle->tire);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $vehicle->tire);
     }
 
     /**
@@ -399,20 +53,20 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     public function setterInjection()
     {
         $binder = new Binder();
-        $binder->bind('net\\stubbles\\ioc\\Tire')->to('net\\stubbles\\ioc\\Goodyear');
-        $binder->bind('net\\stubbles\\ioc\\Vehicle')->to('net\\stubbles\\ioc\\Bike');
+        $binder->bind('org\\stubbles\\test\\ioc\\Tire')->to('org\\stubbles\\test\\ioc\\Goodyear');
+        $binder->bind('org\\stubbles\\test\\ioc\\Vehicle')->to('org\\stubbles\\test\\ioc\\Bike');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Vehicle'));
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Tire'));
+        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Vehicle'));
+        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Tire'));
 
-        $vehicle = $injector->getInstance('net\\stubbles\\ioc\\Vehicle');
+        $vehicle = $injector->getInstance('org\\stubbles\\test\\ioc\\Vehicle');
 
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Vehicle', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Bike', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Tire', $vehicle->tire);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $vehicle->tire);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Vehicle', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Bike', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Tire', $vehicle->tire);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $vehicle->tire);
     }
 
     /**
@@ -424,20 +78,20 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     public function setterInjectionWithClass()
     {
         $binder = new Binder();
-        $binder->bind('net\\stubbles\\ioc\\Tire')->to(new ReflectionClass('net\\stubbles\\ioc\\Goodyear'));
-        $binder->bind('net\\stubbles\\ioc\\Vehicle')->to(new ReflectionClass('net\\stubbles\\ioc\\Bike'));
+        $binder->bind('org\\stubbles\\test\\ioc\\Tire')->to(new ReflectionClass('org\\stubbles\\test\\ioc\\Goodyear'));
+        $binder->bind('org\\stubbles\\test\\ioc\\Vehicle')->to(new ReflectionClass('org\\stubbles\\test\\ioc\\Bike'));
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Vehicle'));
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Tire'));
+        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Vehicle'));
+        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Tire'));
 
-        $vehicle = $injector->getInstance('net\\stubbles\\ioc\\Vehicle');
+        $vehicle = $injector->getInstance('org\\stubbles\\test\\ioc\\Vehicle');
 
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Vehicle', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Bike', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Tire', $vehicle->tire);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $vehicle->tire);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Vehicle', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Bike', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Tire', $vehicle->tire);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $vehicle->tire);
     }
 
     /**
@@ -449,7 +103,7 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     public function setterInjectionWithInvalidArgument()
     {
         $binder = new Binder();
-        $binder->bind('net\\stubbles\\ioc\\Vehicle')->to(313);
+        $binder->bind('org\\stubbles\\test\\ioc\\Vehicle')->to(313);
     }
 
     /**
@@ -462,20 +116,20 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
         $tire = new Goodyear();
 
         $binder = new Binder();
-        $binder->bind('net\\stubbles\\ioc\\Tire')->toInstance($tire);
-        $binder->bind('net\\stubbles\\ioc\\Vehicle')->to('net\\stubbles\\ioc\\Bike');
+        $binder->bind('org\\stubbles\\test\\ioc\\Tire')->toInstance($tire);
+        $binder->bind('org\\stubbles\\test\\ioc\\Vehicle')->to('org\\stubbles\\test\\ioc\\Bike');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Vehicle'));
-        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Tire'));
+        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Vehicle'));
+        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Tire'));
 
-        $vehicle = $injector->getInstance('net\\stubbles\\ioc\\Vehicle');
+        $vehicle = $injector->getInstance('org\\stubbles\\test\\ioc\\Vehicle');
 
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Vehicle', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Bike', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Tire', $vehicle->tire);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $vehicle->tire);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Vehicle', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Bike', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Tire', $vehicle->tire);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $vehicle->tire);
         $this->identicalTo($vehicle->tire, $tire);
     }
 
@@ -490,7 +144,7 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
         $tire = new Goodyear();
 
         $binder = new Binder();
-        $binder->bind('net\\stubbles\\ioc\\Vehicle')->toInstance($tire);
+        $binder->bind('org\\stubbles\\test\\ioc\\Vehicle')->toInstance($tire);
     }
 
     /**
@@ -503,15 +157,15 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
         $tire = new Goodyear();
 
         $binder = new Binder();
-        $binder->bind('net\\stubbles\\ioc\\Tire')->to('net\\stubbles\\ioc\\Goodyear');
-        $binder->bind('net\\stubbles\\ioc\\Vehicle')->to('net\\stubbles\\ioc\\Convertible');
+        $binder->bind('org\\stubbles\\test\\ioc\\Tire')->to('org\\stubbles\\test\\ioc\\Goodyear');
+        $binder->bind('org\\stubbles\\test\\ioc\\Vehicle')->to('org\\stubbles\\test\\ioc\\Convertible');
 
         $injector = $binder->getInjector();
 
-        $vehicle = $injector->getInstance('net\\stubbles\\ioc\\Vehicle');
+        $vehicle = $injector->getInstance('org\\stubbles\\test\\ioc\\Vehicle');
 
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Vehicle', $vehicle);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Convertible', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Vehicle', $vehicle);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Convertible', $vehicle);
 
         $this->assertNull($vehicle->roof);
     }
@@ -525,10 +179,10 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        $this->assertFalse($injector->hasExplicitBinding('net\\stubbles\\ioc\\Goodyear'));
-        $goodyear = $injector->getInstance('net\\stubbles\\ioc\\Goodyear');
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $goodyear);
-        $this->assertTrue($injector->hasExplicitBinding('net\\stubbles\\ioc\\Goodyear'));
+        $this->assertFalse($injector->hasExplicitBinding('org\\stubbles\\test\\ioc\\Goodyear'));
+        $goodyear = $injector->getInstance('org\\stubbles\\test\\ioc\\Goodyear');
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $goodyear);
+        $this->assertTrue($injector->hasExplicitBinding('org\\stubbles\\test\\ioc\\Goodyear'));
     }
 
     /**
@@ -540,12 +194,12 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        $this->assertFalse($injector->hasExplicitBinding('net\\stubbles\\ioc\\ImplicitDependency'));
-        $obj      = $injector->getInstance('net\\stubbles\\ioc\\ImplicitDependency');
-        $this->assertInstanceOf('net\\stubbles\\ioc\\ImplicitDependency', $obj);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $obj->getGoodyearByConstructor());
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $obj->getGoodyearBySetter());
-        $this->assertTrue($injector->hasExplicitBinding('net\\stubbles\\ioc\\ImplicitDependency'));
+        $this->assertFalse($injector->hasExplicitBinding('org\\stubbles\\test\\ioc\\ImplicitDependency'));
+        $obj      = $injector->getInstance('org\\stubbles\\test\\ioc\\ImplicitDependency');
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\ImplicitDependency', $obj);
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $obj->getGoodyearByConstructor());
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $obj->getGoodyearBySetter());
+        $this->assertTrue($injector->hasExplicitBinding('org\\stubbles\\test\\ioc\\ImplicitDependency'));
     }
 
     /**
@@ -562,7 +216,7 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
         $binder   = new Binder();
         $injector = $binder->getInjector();
         $injector->handleInjections($obj);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $obj->getGoodyearBySetter());
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $obj->getGoodyearBySetter());
     }
 
     /**
@@ -584,10 +238,10 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     {
         $obj    = new ImplicitOptionalDependency();
         $binder = new Binder();
-        $binder->bind('net\\stubbles\\ioc\\Goodyear')->to('net\\stubbles\\ioc\\Goodyear');
+        $binder->bind('org\\stubbles\\test\\ioc\\Goodyear')->to('org\\stubbles\\test\\ioc\\Goodyear');
         $injector = $binder->getInjector();
         $injector->handleInjections($obj);
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $obj->getGoodyearBySetter());
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $obj->getGoodyearBySetter());
     }
 
     /**
@@ -607,7 +261,7 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     public function missingBindingThrowsBindingException()
     {
         $injector = new Injector();
-        $injector->getInstance('net\\stubbles\\ioc\\Vehicle');
+        $injector->getInstance('org\\stubbles\\test\\ioc\\Vehicle');
     }
 
     /**
@@ -632,8 +286,8 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
      * @since  1.5.0
+     * @test
      */
     public function addBindingReturnsAddedBinding()
     {
@@ -649,8 +303,8 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     public function optionalConstructorInjection()
     {
         $injector = new Injector();
-        $bike     = $injector->getInstance('net\\stubbles\\ioc\\BikeWithOptionalTire');
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Goodyear', $bike->tire);
+        $bike     = $injector->getInstance('org\\stubbles\\test\\ioc\\BikeWithOptionalTire');
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $bike->tire);
 
     }
 }
