@@ -8,10 +8,9 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\ioc\module\BindingModule;
 use net\stubbles\lang\BaseObject;
 use org\stubbles\test\ioc\AppClassWithBindings;
-use org\stubbles\test\ioc\AppTestBindingModuleOne;
+use org\stubbles\test\ioc\AppUsingBindingModule;
 /**
  * Test for net\stubbles\ioc\App.
  *
@@ -19,54 +18,6 @@ use org\stubbles\test\ioc\AppTestBindingModuleOne;
  */
 class AppTestCase extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function invalidBindingModuleClassThrowsIllegalArgumentException()
-    {
-        App::createInjector('\\stdClass');
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function invalidBindingModuleInstanceThrowsIllegalArgumentException()
-    {
-        App::createInjector(new \stdClass());
-    }
-
-    /**
-     * @test
-     */
-    public function bindingModulesAreProcessed()
-    {
-        $injector = App::createInjector(new AppTestBindingModuleOne(),
-                                        'org\\stubbles\\test\\ioc\\AppTestBindingModuleTwo'
-                    );
-        $this->assertTrue($injector->hasBinding('foo'));
-        $this->assertTrue($injector->hasBinding('bar'));
-        $this->assertTrue($injector->hasBinding('net\stubbles\ioc\Injector'));
-        $this->assertSame($injector, $injector->getInstance('net\stubbles\ioc\Injector'));
-    }
-
-    /**
-     * @test
-     * @since  1.6.0
-     */
-    public function bindingModulesAreProcessedIfPassedAsArray()
-    {
-        $injector = App::createInjector(array(new AppTestBindingModuleOne(),
-                                              'org\\stubbles\\test\\ioc\\AppTestBindingModuleTwo'
-                                        )
-                    );
-        $this->assertTrue($injector->hasBinding('foo'));
-        $this->assertTrue($injector->hasBinding('bar'));
-        $this->assertTrue($injector->hasBinding('net\stubbles\ioc\Injector'));
-        $this->assertSame($injector, $injector->getInstance('net\stubbles\ioc\Injector'));
-    }
-
     /**
      * @test
      */
@@ -106,6 +57,28 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
                                 $appClassWithArgument
         );
         $this->assertEquals('foo', $appClassWithArgument->getArgument());
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function canCreateModeBindingModule()
+    {
+        $this->assertInstanceOf('net\\stubbles\\ioc\\module\\ModeBindingModule',
+                                AppUsingBindingModule::getModeBindingModule()
+        );
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function canCreatePropertiesBindingModule()
+    {
+        $this->assertInstanceOf('net\\stubbles\\ioc\\module\\PropertiesBindingModule',
+                                AppUsingBindingModule::getPropertiesBindingModule(__DIR__)
+        );
     }
 }
 ?>

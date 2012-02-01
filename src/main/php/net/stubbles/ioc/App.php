@@ -8,43 +8,22 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\ioc\module\BindingModule;
+use net\stubbles\ioc\module\ArgumentsBindingModule;
+use net\stubbles\ioc\module\ModeBindingModule;
+use net\stubbles\ioc\module\PropertiesBindingModule;
 use net\stubbles\lang\BaseObject;
-use net\stubbles\lang\exception\IllegalArgumentException;
+use net\stubbles\lang\Mode;
 /**
- * Class for starting the application by configuring the IoC container.
+ * Application base class.
  */
-class App extends BaseObject
+abstract class App extends BaseObject
 {
     /**
-     * configures the application using the given binding modules and returns
-     * injector so that the bootstrap file can request an instance of the entry
-     * class
+     * runs the application
      *
-     * @return  Injector
+     * @since  2.0.0
      */
-    public static function createInjector()
-    {
-        return self::createInjectorWithBindings(self::extractArgs(func_get_args()));
-    }
-
-    /**
-     * extracts arguments
-     *
-     * If arguments has only one value and this is an array this will be returned,
-     * else all arguments will be returned.
-     *
-     * @param   array  $args
-     * @return  BindingModule[]
-     */
-    protected static function extractArgs(array $args)
-    {
-        if (count($args) === 1 && is_array($args[0])) {
-            return $args[0];
-        }
-
-        return $args;
-    }
+    public abstract function run();
 
     /**
      * creates an object via injection
@@ -56,12 +35,12 @@ class App extends BaseObject
      * @param   string    $className    full qualified class name of class to create an instance of
      * @param   string    $projectPath  path to project
      * @param   string[]  $argv         list of arguments
-     * @return  object
+     * @return  App
      */
     public static function createInstance($className, $projectPath, array $argv = null)
     {
-        return self::createInjectorWithBindings(self::getBindingsForClass($className, $projectPath, $argv))
-                   ->getInstance($className);
+        return BindingFactory::createInjector(self::getBindingsForApp($className, $projectPath, $argv))
+                             ->getInstance($className);
     }
 
     /**
@@ -73,7 +52,7 @@ class App extends BaseObject
      * @return  BindingModule[]
      * @since   1.3.0
      */
-    public static function getBindingsForClass($className, $projectPath, array $argv = null)
+    public static function getBindingsForApp($className, $projectPath, array $argv = null)
     {
         $bindings = array();
         if (method_exists($className, '__bindings')) {
@@ -81,54 +60,34 @@ class App extends BaseObject
         }
 
         if (null !== $argv) {
-            $bindings[] = new module\ArgumentsBindingModule($argv);
+            $bindings[] = new ArgumentsBindingModule($argv);
         }
 
         return $bindings;
     }
 
     /**
-     * configures the application using the given binding modules and returns
-     * injector so that the bootstrap file can request an instance of the entry
-     * class
+     * creates mode binding module
      *
-     * @param   BindingModule[]  $bindingModules
-     * @return  Injector
+     * @param   Mode  $mode  runtime mode
+     * @return  ModeBindingModule
+     * @since   2.0.0
      */
-    public static function createInjectorWithBindings(array $bindingModules)
+    protected static function createModeBindingModule(Mode $mode = null)
     {
-        return self::createBinderWithBindings($bindingModules)->getInjector();
+        return new ModeBindingModule($mode);
     }
 
     /**
-     * configures the application using the given binding modules and returns
-     * binder so that the bootstrap file can request an instance of the entry
-     * class
+     * creates properties binding module
      *
-     * @param   BindingModule[]  $bindingModules
-     * @return  Binder
-     * @throws  IllegalArgumentException
-     * @since   1.3.0
+     * @param   string  $projectPath
+     * @return  PropertiesBindingModule
+     * @since   2.0.0
      */
-    public static function createBinderWithBindings(array $bindingModules)
+    protected static function createPropertiesBindingModule($projectPath)
     {
-        $binder = new Binder();
-        foreach ($bindingModules as $bindingModule) {
-            if (is_string($bindingModule)) {
-                $bindingModule = new $bindingModule();
-            }
-
-            if (!($bindingModule instanceof BindingModule)) {
-                throw new IllegalArgumentException('Given module class ' . get_class($bindingModule) . ' is not an instance of net\\stubbles\\ioc\\module\\BindingModule');
-            }
-
-            /* @type  $bindingModule  BindingModule */
-            $bindingModule->configure($binder);
-        }
-
-        $binder->bind('net\\stubbles\\ioc\\Injector')
-               ->toInstance($binder->getInjector());
-        return $binder;
+        return new PropertiesBindingModule($projectPath);
     }
 }
 ?>

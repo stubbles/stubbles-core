@@ -8,11 +8,11 @@
  * @package  net\stubbles
  */
 namespace org\stubbles\test\ioc;
-use net\stubbles\lang\BaseObject;
+use net\stubbles\ioc\App;
 /**
  * Helper class for ioc tests.
  */
-class AppClassWithBindings extends BaseObject
+class AppClassWithBindings extends App
 {
     /**
      * given project path

@@ -8,11 +8,11 @@
  * @package  net\stubbles
  */
 namespace org\stubbles\test\ioc;
-use net\stubbles\lang\BaseObject;
+use net\stubbles\ioc\App;
 /**
  * Helper class for ioc tests.
  */
-class AppClassWithArgument extends BaseObject
+class AppClassWithArgument extends App
 {
     /**
      * given project path
@@ -42,5 +42,10 @@ class AppClassWithArgument extends BaseObject
     {
         return $this->arg;
     }
+
+    /**
+     * runs the command
+     */
+    public function run() { }
 }
 ?>
