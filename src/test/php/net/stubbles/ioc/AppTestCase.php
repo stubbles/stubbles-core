@@ -19,6 +19,19 @@ use org\stubbles\test\ioc\AppUsingBindingModule;
 class AppTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @since  2.0.0
+     * @test
+     */
+    public function createCreatesInstanceUsingBindings()
+    {
+        $appCommandWithBindings = AppClassWithBindings::create('projectPath');
+        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\AppClassWithBindings',
+                                $appCommandWithBindings
+        );
+        $this->assertEquals('projectPath', AppClassWithBindings::getProjectPath());
+    }
+
+    /**
      * @test
      */
     public function createInstanceCreatesInstanceUsingBindings()

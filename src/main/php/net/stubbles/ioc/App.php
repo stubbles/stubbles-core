@@ -32,6 +32,22 @@ abstract class App extends BaseObject
      * this method will be used to configure the ioc bindings before using the ioc
      * container to create the instance.
      *
+     * @param   string    $projectPath  path to project
+     * @param   string[]  $argv         list of arguments
+     * @return  App
+     */
+    public static function create($projectPath, array $argv = null)
+    {
+        return self::createInstance(get_called_class(), $projectPath, $argv);
+    }
+
+    /**
+     * creates an object via injection
+     *
+     * If the class to create an instance of contains a static __bindings() method
+     * this method will be used to configure the ioc bindings before using the ioc
+     * container to create the instance.
+     *
      * @param   string    $className    full qualified class name of class to create an instance of
      * @param   string    $projectPath  path to project
      * @param   string[]  $argv         list of arguments
