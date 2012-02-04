@@ -32,13 +32,12 @@ abstract class App extends BaseObject
      * this method will be used to configure the ioc bindings before using the ioc
      * container to create the instance.
      *
-     * @param   string    $projectPath  path to project
-     * @param   string[]  $argv         list of arguments
+     * @param   string  $projectPath  path to project
      * @return  App
      */
-    public static function create($projectPath, array $argv = null)
+    public static function create($projectPath)
     {
-        return self::createInstance(get_called_class(), $projectPath, $argv);
+        return self::createInstance(get_called_class(), $projectPath);
     }
 
     /**
@@ -48,14 +47,13 @@ abstract class App extends BaseObject
      * this method will be used to configure the ioc bindings before using the ioc
      * container to create the instance.
      *
-     * @param   string    $className    full qualified class name of class to create an instance of
-     * @param   string    $projectPath  path to project
-     * @param   string[]  $argv         list of arguments
+     * @param   string  $className    full qualified class name of class to create an instance of
+     * @param   string  $projectPath  path to project
      * @return  App
      */
-    public static function createInstance($className, $projectPath, array $argv = null)
+    public static function createInstance($className, $projectPath)
     {
-        return BindingFactory::createInjector(self::getBindingsForApp($className, $projectPath, $argv))
+        return BindingFactory::createInjector(self::getBindingsForApp($className, $projectPath))
                              ->getInstance($className);
     }
 
@@ -68,18 +66,13 @@ abstract class App extends BaseObject
      * @return  BindingModule[]
      * @since   1.3.0
      */
-    public static function getBindingsForApp($className, $projectPath, array $argv = null)
+    public static function getBindingsForApp($className, $projectPath)
     {
-        $bindings = array();
         if (method_exists($className, '__bindings')) {
-            $bindings = call_user_func_array(array($className, '__bindings'), array($projectPath));
+            return $className::__bindings($projectPath);
         }
 
-        if (null !== $argv) {
-            $bindings[] = new ArgumentsBindingModule($argv);
-        }
-
-        return $bindings;
+        return array();
     }
 
     /**

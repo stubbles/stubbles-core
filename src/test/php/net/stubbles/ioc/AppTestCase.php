@@ -56,22 +56,6 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
                                 )
         );
     }
-
-    /**
-     * @test
-     */
-    public function createInstanceWithArguments()
-    {
-        $appClassWithArgument = App::createInstance('org\\stubbles\\test\\ioc\\AppClassWithArgument',
-                                                    'projectPath',
-                                                    array('foo')
-                                );
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\AppClassWithArgument',
-                                $appClassWithArgument
-        );
-        $this->assertEquals('foo', $appClassWithArgument->getArgument());
-    }
-
     /**
      * @since  2.0.0
      * @test
