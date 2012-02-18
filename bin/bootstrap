@@ -1,5 +1,0 @@
-#!/usr/bin/env php
-<?php
-$rootDir = realpath(__DIR__ . '/../../../../');
-copy($rootDir . '/vendor/stubbles/core/bootstrap.php', $rootDir . '/bootstrap.php');
-?>
