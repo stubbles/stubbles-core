@@ -14,8 +14,10 @@ Usage as library
 ----------------
 1. In your application or dependent library, create a _composer.json_ file.
 2. In the _requirements_ section, add the following dependency: `"stubbles/core": "2.0.0-dev"`
-3. Run Composer to get Stubbles Core: `php composer.phar install`
-4. Run `php vendor/bin/bootstrap`. This will copy the required _bootstrap.php_ to the project`s root dir.
+3. In the _scripts_ section, add the following scripts: `
+    "post-install-cmd": "org\\stubbles\\scripts\\ComposerScripts::postInstall",
+    "post-update-cmd": "org\\stubbles\\scripts\\ComposerScripts::postUpdate"`
+4. Run Composer to get Stubbles Core: `php composer.phar install`
 
 
 Installation from source
