@@ -98,40 +98,6 @@ net.stubbles.webapp.xml.serializeMode=true")
     }
 
     /**
-     * @param  string  $pathPath
-     * @param  string  $constantName
-     * @test
-     * @dataProvider  getConstants
-     */
-    public function commonPathesAreNotBoundIfCommonPathDoesNotExist($pathPart, $constantName)
-    {
-        $this->propertiesBindingModule->configure(new Binder($this->injector));
-        $this->assertFalse($this->injector->hasConstant($constantName . '.common'));
-    }
-
-    /**
-     * @param  string  $pathPath
-     * @param  string  $constantName
-     * @test
-     * @dataProvider  getConstants
-     */
-    public function commonPathesAreBoundIfCommonPathDoesExist($pathPart, $constantName)
-    {
-        $this->propertiesBindingModule = $this->getMock('net\\stubbles\\ioc\\module\\PropertiesBindingModule',
-                                                        array('realpath'),
-                                                        array(vfsStream::url('projects/myproject'))
-                                         );
-        $this->propertiesBindingModule->expects(($this->once()))
-                                      ->method('realpath')
-                                      ->will($this->returnValue(vfsStream::url('projects/common')));
-        $this->propertiesBindingModule->configure(new Binder($this->injector));
-        $this->assertTrue($this->injector->hasConstant($constantName . '.common'));
-        $this->assertEquals($this->getProjectPath('common', $pathPart),
-                            $this->injector->getConstant($constantName . '.common')
-        );
-    }
-
-    /**
      * returns constant names and values
      *
      * @return  array
@@ -156,30 +122,6 @@ net.stubbles.webapp.xml.serializeMode=true")
         $this->assertTrue($this->injector->hasConstant($constantName));
         $this->assertEquals($this->getProjectPath('myproject', $pathPart),
                             $this->injector->getConstant($constantName)
-        );
-    }
-
-    /**
-     * @param  string  $pathPath
-     * @param  string  $constantName
-     * @test
-     * @dataProvider  getWithAdditionalConstants
-     */
-    public function commonPathesContainsAdditionalPath($pathPart, $constantName)
-    {
-        $this->propertiesBindingModule = $this->getMock('net\\stubbles\\ioc\\module\\PropertiesBindingModule',
-                                                        array('realpath'),
-                                                        array(vfsStream::url('projects/myproject'),
-                                                              array('user')
-                                                        )
-                                         );
-        $this->propertiesBindingModule->expects(($this->once()))
-                                      ->method('realpath')
-                                      ->will($this->returnValue(vfsStream::url('projects/common')));
-        $this->propertiesBindingModule->configure(new Binder($this->injector));
-        $this->assertTrue($this->injector->hasConstant($constantName . '.common'));
-        $this->assertEquals($this->getProjectPath('common', $pathPart),
-                            $this->injector->getConstant($constantName . '.common')
         );
     }
 

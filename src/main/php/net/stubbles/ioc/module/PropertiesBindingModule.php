@@ -79,15 +79,6 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
             }
         }
 
-        $commonProjectPath = $this->realpath($this->projectPath . '/../common');
-        if (!empty($commonProjectPath)) {
-            foreach ($this->createPathes($commonProjectPath, '.common') as $name => $value) {
-                $binder->bindConstant()
-                       ->named($name)
-                       ->to($value);
-            }
-        }
-
         foreach ($this->getProperties($configPath) as $key => $value) {
             $binder->bindConstant()
                    ->named($key)
