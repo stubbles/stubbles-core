@@ -70,6 +70,9 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
     public function configure(Binder $binder)
     {
         $configPath = null;
+        $binder->bindConstant()
+               ->named('net.stubbles.project.path')
+               ->to($this->projectPath);
         foreach ($this->createPathes($this->projectPath) as $name => $value) {
             $binder->bindConstant()
                    ->named($name)

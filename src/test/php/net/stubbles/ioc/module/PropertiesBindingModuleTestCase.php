@@ -44,26 +44,25 @@ class PropertiesBindingModuleTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $root = vfsStream::setup('projects');
-        vfsStream::newFile('myproject/config/config.ini')
+        vfsStream::newFile('config/config.ini')
                  ->withContent("net.stubbles.locale=\"de_DE\"
 net.stubbles.number.decimals=4
 net.stubbles.webapp.xml.serializeMode=true")
                  ->at($root);
         $this->projectPath             = vfsStream::url('projects');
-        $this->propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('projects/myproject'));
+        $this->propertiesBindingModule = PropertiesBindingModule::create($this->projectPath);
         $this->injector                = new Injector();
     }
 
     /**
      * returns complete path
      *
-     * @param   string  $project
      * @param   string  $part
      * @return  string
      */
-    protected function getProjectPath($project, $part)
+    protected function getProjectPath($part)
     {
-        return $this->projectPath . DIRECTORY_SEPARATOR . $project . DIRECTORY_SEPARATOR . $part;
+        return $this->projectPath . DIRECTORY_SEPARATOR . $part;
     }
 
     /**
@@ -83,6 +82,18 @@ net.stubbles.webapp.xml.serializeMode=true")
     }
 
     /**
+     * @test
+     */
+    public function projectPathIsBound()
+    {
+        $this->propertiesBindingModule->configure(new Binder($this->injector));
+        $this->assertTrue($this->injector->hasConstant('net.stubbles.project.path'));
+        $this->assertEquals($this->projectPath,
+                            $this->injector->getConstant('net.stubbles.project.path')
+        );
+    }
+
+    /**
      * @param  string  $pathPath
      * @param  string  $constantName
      * @test
@@ -92,7 +103,7 @@ net.stubbles.webapp.xml.serializeMode=true")
     {
         $this->propertiesBindingModule->configure(new Binder($this->injector));
         $this->assertTrue($this->injector->hasConstant($constantName));
-        $this->assertEquals($this->getProjectPath('myproject', $pathPart),
+        $this->assertEquals($this->getProjectPath($pathPart),
                             $this->injector->getConstant($constantName)
         );
     }
@@ -115,12 +126,12 @@ net.stubbles.webapp.xml.serializeMode=true")
      */
     public function additionalPathesShouldBeBound($pathPart, $constantName)
     {
-        $this->propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('projects/myproject'),
+        $this->propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('projects'),
                                                                          array('user')
                                          );
         $this->propertiesBindingModule->configure(new Binder($this->injector));
         $this->assertTrue($this->injector->hasConstant($constantName));
-        $this->assertEquals($this->getProjectPath('myproject', $pathPart),
+        $this->assertEquals($this->getProjectPath($pathPart),
                             $this->injector->getConstant($constantName)
         );
     }
