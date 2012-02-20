@@ -1,0 +1,15 @@
+{
+    "hash": "cb3f8267c813349ccea6bf89949ed0e3",
+    "packages": [
+        {
+            "package": "mikey179/vfsStream",
+            "version": "dev-master",
+            "source-reference": "8914884f56b8397943fbbb188a13e4fdc7a1ab3f"
+        },
+        {
+            "package": "stubbles/scripts",
+            "version": "dev-master",
+            "source-reference": "da98136e11dec1294cb0594d8c586adc62e356b1"
+        }
+    ]
+}
