@@ -37,7 +37,25 @@ class YearTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data provider for getDateSpansWithDayIntervalReturnsAllDaysInYear()
+     * @test
+     */
+    public function amountOfDaysIs366ForLeapYears()
+    {
+        $year = new Year(2008);
+        $this->assertEquals(366, $year->getAmountOfDays());
+    }
+
+    /**
+     * @test
+     */
+    public function amountOfDaysIs365ForNonLeapYears()
+    {
+        $year = new Year(2007);
+        $this->assertEquals(365, $year->getAmountOfDays());
+    }
+
+    /**
+     * data provider for getDaysReturnsAllDaysInYear()
      *
      * @return  array
      */
@@ -54,10 +72,10 @@ class YearTestCase extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  getDayYear
      */
-    public function getDateSpansWithDayIntervalReturnsAllDaysInYear($year, $dayCount)
+    public function getDaysReturnsAllDaysInYear($year, $dayCount)
     {
         $year = new Year($year);
-        $days = $year->getDateSpans();
+        $days = $year->getDays();
         $this->assertEquals($dayCount, count($days));
         foreach ($days as $day) {
             /* @var $day Day */
@@ -68,23 +86,10 @@ class YearTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getDateSpansWithWeeksIntervalReturnsAllWeeks()
-    {
-        $year  = new Year(2007);
-        $weeks = $year->getDateSpans(DatespanInterval::$WEEK);
-        $this->assertGreaterThan(0, count($weeks));
-        foreach ($weeks as $week) {
-            $this->assertInstanceOf('net\\stubbles\\lang\\types\\datespan\\Week', $week);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function getDateSpansWithMonthIntervalReturnsAllMonth()
+    public function getMonthsReturnsAllMonth()
     {
         $year   = new Year(2007);
-        $months = $year->getDateSpans(DatespanInterval::$MONTH);
+        $months = $year->getMonths();
         $this->assertEquals(12, count($months));
         $expectedMonth = 1;
         foreach ($months as $month) {
@@ -107,27 +112,6 @@ class YearTestCase extends \PHPUnit_Framework_TestCase
         }
 
         return 0 . $int;
-    }
-
-    /**
-     * @test
-     */
-    public function getDateSpansWithYearIntervalReturnsListWithSelf()
-    {
-        $year = new Year();
-        $dateSpans = $year->getDateSpans(DatespanInterval::$YEAR);
-        $this->assertEquals(1, count($dateSpans));
-        $this->assertSame($dateSpans[0], $year);
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function customIntervalThrowsIllegalArgumentException()
-    {
-        $year = new Year();
-        $year->getDateSpans(DatespanInterval::$CUSTOM);
     }
 
     /**
@@ -192,24 +176,6 @@ class YearTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function amountOfDaysIs366ForLeapYears()
-    {
-        $year = new Year(2008);
-        $this->assertEquals(366, $year->getAmountOfDays());
-    }
-
-    /**
-     * @test
-     */
-    public function amountOfDaysIs365ForNonLeapYears()
-    {
-        $year = new Year(2007);
-        $this->assertEquals(365, $year->getAmountOfDays());
-    }
-
-    /**
-     * @test
-     */
     public function isLeapYearReturnsTrueForLeapYears()
     {
         $year = new Year(2008);
@@ -223,6 +189,33 @@ class YearTestCase extends \PHPUnit_Framework_TestCase
     {
         $year = new Year(2007);
         $this->assertFalse($year->isLeapYear());
+    }
+
+    /**
+     * @test
+     */
+    public function isCurrentYearReturnsTrueForCreationWithoutArguments()
+    {
+        $year = new Year();
+        $this->assertTrue($year->isCurrentYear());
+    }
+
+    /**
+     * @test
+     */
+    public function isCurrentYearReturnsTrueWhenCreatedForCurrentYear()
+    {
+        $year = new Year(date('Y'));
+        $this->assertTrue($year->isCurrentYear());
+    }
+
+    /**
+     * @test
+     */
+    public function isCurrentYearReturnsFalseForAllOtherYears()
+    {
+        $year = new Year(2007);
+        $this->assertFalse($year->isCurrentYear());
     }
 }
 ?>

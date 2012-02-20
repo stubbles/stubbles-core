@@ -30,10 +30,19 @@ class MonthTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function stringRepresentationForCorrectMonthNotFixed()
+    {
+        $month = new Month(2007, '04');
+        $this->assertEquals('2007-04', $month->asString());
+    }
+
+    /**
+     * @test
+     */
     public function usesCurrentYearIfNotGiven()
     {
-        $month = new Month(null, 4);
-        $this->assertEquals(date('Y') . '-04', $month->asString());
+        $month = new Month(null, 10);
+        $this->assertEquals(date('Y') . '-10', $month->asString());
     }
 
     /**
@@ -55,7 +64,7 @@ class MonthTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data provider for getDateSpansWithDayIntervalReturnsAllDaysInMonth()
+     * data provider for amountOfDaysIsAlwaysCorrect() and getDaysReturnsAllDaysInMonth()
      *
      * @return  array
      */
@@ -75,62 +84,31 @@ class MonthTestCase extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  getDayMonth
      */
-    public function getDateSpansWithDayIntervalReturnsAllDaysInMonth($year, $month, $dayCount)
+    public function amountOfDaysIsAlwaysCorrect($year, $month, $dayCount)
     {
         $month = new Month($year, $month);
-        $days  = $month->getDateSpans();
+        $this->assertEquals($dayCount, $month->getAmountOfDays());
+    }
+
+    /**
+     * @param  int  $year      year to get days for
+     * @param  int  $month     month to get days for
+     * @param  int  $dayCount  amount of days in this month
+     * @test
+     * @dataProvider  getDayMonth
+     */
+    public function getDaysReturnsAllDaysInMonth($year, $month, $dayCount)
+    {
+        $month = new Month($year, $month);
+        $days  = $month->getDays();
         $this->assertEquals($dayCount, count($days));
         $expectedDay = 1;
         foreach ($days as $day) {
             /* @var $day Day */
             $this->assertInstanceOf('net\\stubbles\\lang\\types\\datespan\\Day', $day);
-            $this->assertEquals($expectedDay, $day->getStartDate()->getDay());
+            $this->assertEquals($expectedDay, $day->asInt());
             $expectedDay++;
         }
-    }
-
-    /**
-     * @test
-     */
-    public function getDateSpansWithWeeksIntervalReturnsAllWeeks()
-    {
-        $month = new Month(2007, 4);
-        $weeks = $month->getDateSpans(DatespanInterval::$WEEK);
-        $this->assertGreaterThan(0, count($weeks));
-        foreach ($weeks as $week) {
-            $this->assertInstanceOf('net\\stubbles\\lang\\types\\datespan\\Week', $week);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function getDateSpansWithMonthIntervalReturnsListWithSelf()
-    {
-        $month = new Month();
-        $dateSpans = $month->getDateSpans(DatespanInterval::$MONTH);
-        $this->assertEquals(1, count($dateSpans));
-        $this->assertSame($dateSpans[0], $month);
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function yearIntervalThrowsIllegalArgumentException()
-    {
-        $month = new Month();
-        $month->getDateSpans(DatespanInterval::$YEAR);
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function customIntervalThrowsIllegalArgumentException()
-    {
-        $month = new Month();
-        $month->getDateSpans(DatespanInterval::$CUSTOM);
     }
 
     /**
@@ -190,16 +168,30 @@ class MonthTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  int  $year      year to get days for
-     * @param  int  $month     month to get days for
-     * @param  int  $dayCount  amount of days in this month
      * @test
-     * @dataProvider  getDayMonth
      */
-    public function getAmountOfDaysInMonth($year, $month, $dayCount)
+    public function isCurrentMonthReturnsTrueForCreationWithoutArguments()
     {
-        $month = new Month($year, $month);
-        $this->assertEquals($dayCount, $month->getAmountOfDays());
+        $month = new Month();
+        $this->assertTrue($month->isCurrentMonth());
+    }
+
+    /**
+     * @test
+     */
+    public function isCurrentMonthReturnsTrueWhenCreatedForCurrentMonth()
+    {
+        $month = new Month(date('Y'), date('m'));
+        $this->assertTrue($month->isCurrentMonth());
+    }
+
+    /**
+     * @test
+     */
+    public function isCurrentMonthReturnsFalseForAllOtherMonths()
+    {
+        $month = new Month(2007, 4);
+        $this->assertFalse($month->isCurrentMonth());
     }
 }
 ?>

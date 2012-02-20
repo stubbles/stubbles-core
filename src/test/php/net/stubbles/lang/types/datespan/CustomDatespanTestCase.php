@@ -21,19 +21,10 @@ class CustomDatespanTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function stringRepresentationOfDayContainsStartAndEndDate()
-    {
-        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
-        $this->assertEquals('04.04.2006 - 20.04.2006', $customDatespan->asString());
-    }
-
-    /**
-     * @test
-     */
     public function startDateCreatedFromStringInput()
     {
         $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
-        $startDate      = $customDatespan->getStartDate();
+        $startDate      = $customDatespan->getStart();
         $this->assertInstanceOf('net\\stubbles\\lang\\types\\Date', $startDate);
         $this->assertEquals('2006-04-04 00:00:00' . $startDate->getOffset(),
                             $startDate->asString()
@@ -46,7 +37,7 @@ class CustomDatespanTestCase extends \PHPUnit_Framework_TestCase
     public function endDateCreatedFromStringInput()
     {
         $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
-        $endDate        = $customDatespan->getEndDate();
+        $endDate        = $customDatespan->getEnd();
         $this->assertInstanceOf('net\\stubbles\\lang\\types\\Date', $endDate);
         $this->assertEquals('2006-04-20 23:59:59' . $endDate->getOffset(),
                             $endDate->asString()
@@ -59,7 +50,7 @@ class CustomDatespanTestCase extends \PHPUnit_Framework_TestCase
     public function startDateIsSetToMidnight()
     {
         $customDatespan = new CustomDatespan(new Date('2006-04-04'), new Date('2006-04-20'));
-        $startDate      = $customDatespan->getStartDate();
+        $startDate      = $customDatespan->getStart();
         $this->assertEquals('2006-04-04 00:00:00' . $startDate->getOffset(),
                             $startDate->asString()
         );
@@ -71,7 +62,7 @@ class CustomDatespanTestCase extends \PHPUnit_Framework_TestCase
     public function endDateIsSetToMidnight()
     {
         $customDatespan = new CustomDatespan(new Date('2006-04-04'), new Date('2006-04-20'));
-        $endDate        = $customDatespan->getEndDate();
+        $endDate        = $customDatespan->getEnd();
         $this->assertEquals('2006-04-20 23:59:59' . $endDate->getOffset(),
                             $endDate->asString()
         );
@@ -80,66 +71,26 @@ class CustomDatespanTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getDateSpansIntervalDay()
+    public function returnsAmountOfDaysInDatespan()
     {
         $customDatespan = new CustomDatespan('2007-05-14', '2007-05-27');
-        $days           = $customDatespan->getDateSpans();
+        $this->assertEquals(14, $customDatespan->getAmountOfDays());
+    }
+
+    /**
+     * @test
+     */
+    public function getDaysReturnsListOfAllDays()
+    {
+        $customDatespan = new CustomDatespan('2007-05-14', '2007-05-27');
+        $days           = $customDatespan->getDays();
         $this->assertEquals(14, count($days));
+        $expectedDay = 14;
         foreach ($days as $day) {
             $this->assertInstanceOf('net\\stubbles\\lang\\types\\datespan\\Day', $day);
+            $this->assertEquals($expectedDay, $day->asInt());
+            $expectedDay++;
         }
-    }
-
-    /**
-     * @test
-     */
-    public function getDateSpansIntervalDayWithExplicitInterval()
-    {
-        $customDatespan = new CustomDatespan('2007-05-14', '2007-05-27');
-        $days           = $customDatespan->getDateSpans(DatespanInterval::$DAY);
-        $this->assertEquals(14, count($days));
-        foreach ($days as $day) {
-            $this->assertInstanceOf('net\\stubbles\\lang\\types\\datespan\\Day', $day);
-        }
-    }
-
-    /**
-     * test that the datespans are returned correctly
-     *
-     * @test
-     */
-    public function getDateSpansIntervalWeek()
-    {
-        $customDatespan = new CustomDatespan('2007-05-14', '2007-05-27');
-        $weeks          = $customDatespan->getDateSpans(DatespanInterval::$WEEK);
-        $this->assertEquals(2, count($weeks));
-        foreach ($weeks as $week) {
-            $this->assertInstanceOf('net\\stubbles\\lang\\types\\datespan\\Week', $week);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function getDateSpansIntervalMonth()
-    {
-        $customDatespan = new CustomDatespan('2008-01-01', '2008-12-31');
-        $months          = $customDatespan->getDateSpans(DatespanInterval::$MONTH);
-        $this->assertEquals(12, count($months));
-        foreach ($months as $month) {
-            $this->assertInstanceOf('net\\stubbles\\lang\\types\\datespan\\Month', $month);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function getDateSpansWithCustomIntervalReturnsListWithSelf()
-    {
-        $customDatespan = new CustomDatespan('2007-05-14', '2007-05-27');
-        $dateSpans = $customDatespan->getDateSpans(DatespanInterval::$CUSTOM);
-        $this->assertEquals(1, count($dateSpans));
-        $this->assertSame($dateSpans[0], $customDatespan);
     }
 
     /**
@@ -206,17 +157,17 @@ class CustomDatespanTestCase extends \PHPUnit_Framework_TestCase
         $customDatespan = new CustomDatespan('2007-05-14', '2007-05-27');
         $serialized     = serialize($customDatespan);
         $unserialized   = unserialize($serialized);
-        $this->assertTrue($customDatespan->getStartDate()->equals($unserialized->getStartDate()));
-        $this->assertTrue($customDatespan->getEndDate()->equals($unserialized->getEndDate()));
+        $this->assertTrue($customDatespan->getStart()->equals($unserialized->getStart()));
+        $this->assertTrue($customDatespan->getEnd()->equals($unserialized->getEnd()));
     }
 
     /**
      * @test
      */
-    public function returnsAmountOfDaysInDatespan()
+    public function stringRepresentationOfDayContainsStartAndEndDate()
     {
-        $customDatespan = new CustomDatespan('2007-05-14', '2007-05-27');
-        $this->assertEquals(14, $customDatespan->getAmountOfDays());
+        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
+        $this->assertEquals('04.04.2006 - 20.04.2006', $customDatespan->asString());
     }
 }
 ?>

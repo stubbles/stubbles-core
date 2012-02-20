@@ -12,7 +12,7 @@ use net\stubbles\lang\types\Date;
 /**
  * Datespan that represents a week.
  */
-class Week extends CustomDatespan implements Datespan
+class Week extends CustomDatespan
 {
     /**
      * constructor
@@ -25,28 +25,27 @@ class Week extends CustomDatespan implements Datespan
             $date = new Date($date);
         }
 
-        $end = $date->change()->to('+ 6 days');
-        parent::__construct($date, $end);
+        parent::__construct($date, $date->change()->to('+ 6 days'));
     }
 
     /**
-     * returns maximum supported interval
+     * returns amount of days in this datespan
      *
-     * @return  DatespanInterval
+     * @return  int
      */
-    protected function getMaxInterval()
+    public function getAmountOfDays()
     {
-        return DatespanInterval::$WEEK;
+        return 7;
     }
 
     /**
-     * returns a string representation of the date object
+     * returns a string representation for the week
      *
      * @return  string
      */
     public function asString()
     {
-        return $this->start->format('W');
+        return $this->getStart()->format('W');
     }
 }
 ?>
