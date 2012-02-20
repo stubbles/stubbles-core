@@ -12,8 +12,27 @@ use net\stubbles\lang\types\Date;
 /**
  * Datespan that represents a month.
  */
-class Month extends CustomDatespan implements Datespan
+class Month extends CustomDatespan
 {
+    /**
+     * year where month is within
+     *
+     * @type  int
+     */
+    private $year;
+    /**
+     * actual month
+     *
+     * @type  int
+     */
+    private $month;
+    /**
+     * amount of days in this month
+     *
+     * @type  int
+     */
+    private $amountOfDays;
+
     /**
      * constructor
      *
@@ -46,13 +65,13 @@ class Month extends CustomDatespan implements Datespan
             }
         }
 
-        $start = new \DateTime();
-        $start->setDate($year, $month, 1);
-        $start->setTime(0, 0, 0);
-        $end = new \DateTime();
-        $end->setDate($year, $month, $start->format('t'));
-        $end->setTime(23, 59, 59);
-        parent::__construct(new Date($start), new Date($end));
+        $start              = new Date($year . '-' . $month . '-1 00:00:00');
+        $this->amountOfDays = $start->format('t');
+        $this->year         = $year;
+        $this->month        = $month;
+        parent::__construct($start,
+                            new Date($year . '-' . $month . '-' . $this->amountOfDays . ' 23:59:59')
+        );
     }
 
     /**
@@ -77,13 +96,23 @@ class Month extends CustomDatespan implements Datespan
     }
 
     /**
-     * returns maximum supported interval
+     * returns amount of days in this month
      *
-     * @return  DatespanInterval
+     * @return  int
      */
-    protected function getMaxInterval()
+    public function getAmountOfDays()
     {
-        return DatespanInterval::$MONTH;
+        return $this->amountOfDays;
+    }
+
+    /**
+     * checks if it represents the current month
+     *
+     * @return  bool
+     */
+    public function isCurrentMonth()
+    {
+        return $this->asString() === Date::now()->format('Y-m');
     }
 
     /**
@@ -93,17 +122,7 @@ class Month extends CustomDatespan implements Datespan
      */
     public function asString()
     {
-        return $this->start->format('Y-m');
-    }
-
-    /**
-     * returns amount of days in this month
-     *
-     * @return  int
-     */
-    public function getAmountOfDays()
-    {
-        return $this->start->format('t');
+        return $this->year . '-' . ((10 > $this->month && strlen($this->month) === 1) ? ('0' . $this->month) : ($this->month));
     }
 }
 ?>

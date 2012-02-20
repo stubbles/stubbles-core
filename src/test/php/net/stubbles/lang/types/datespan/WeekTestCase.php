@@ -21,68 +21,27 @@ class WeekTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function stringRepresentationOfWeekContainsNumberOfWeek()
+    public function amountOfDaysIsAlwaysSeven()
     {
-        $week = new Week('2007-04-02');
-        $this->assertEquals('14', $week->asString());
+        $week = new Week('2007-05-14');
+        $this->assertEquals(7, $week->getAmountOfDays());
     }
 
     /**
      * @test
      */
-    public function getDateSpansWithDayIntervalReturnsAllSevenDays()
+    public function getDaysReturnsAllSevenDays()
     {
         $week = new Week('2007-05-14');
-        $days = $week->getDateSpans();
+        $days = $week->getDays();
         $this->assertEquals(7, count($days));
         $expectedDay = 14;
         foreach ($days as $day) {
             /* @var $day Day */
             $this->assertInstanceOf('net\\stubbles\\lang\\types\\datespan\\Day', $day);
-            $this->assertEquals($expectedDay, $day->getStartDate()->getDay());
+            $this->assertEquals($expectedDay, $day->asInt());
             $expectedDay++;
         }
-    }
-
-    /**
-     * @test
-     */
-    public function getDateSpansWithWeekIntervalReturnsListWithSelf()
-    {
-        $week      = new Week('2007-05-14');
-        $dateSpans = $week->getDateSpans(DatespanInterval::$WEEK);
-        $this->assertEquals(1, count($dateSpans));
-        $this->assertSame($dateSpans[0], $week);
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function monthIntervalThrowsIllegalArgumentException()
-    {
-        $week = new Week('2007-05-14');
-        $week->getDateSpans(DatespanInterval::$MONTH);
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function yearIntervalThrowsIllegalArgumentException()
-    {
-        $week = new Week('2007-05-14');
-        $week->getDateSpans(DatespanInterval::$YEAR);
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function customIntervalThrowsIllegalArgumentException()
-    {
-        $week = new Week('2007-05-14');
-        $week->getDateSpans(DatespanInterval::$CUSTOM);
     }
 
     /**
@@ -143,6 +102,15 @@ class WeekTestCase extends \PHPUnit_Framework_TestCase
     {
         $week = new Week('2009-01-05');
         $this->assertFalse($week->containsDate(new Date('2009-01-12')));
+    }
+
+    /**
+     * @test
+     */
+    public function stringRepresentationOfWeekContainsNumberOfWeek()
+    {
+        $week = new Week('2007-04-02');
+        $this->assertEquals('14', $week->asString());
     }
 }
 ?>

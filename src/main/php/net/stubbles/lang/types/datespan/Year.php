@@ -12,8 +12,15 @@ use net\stubbles\lang\types\Date;
 /**
  * Datespan that represents a month.
  */
-class Year extends CustomDatespan implements Datespan
+class Year extends CustomDatespan
 {
+    /**
+     * the represented year
+     *
+     * @type  int
+     */
+    private $year;
+
     /**
      * constructor
      *
@@ -24,7 +31,7 @@ class Year extends CustomDatespan implements Datespan
     public function __construct($year = null)
     {
         if (null === $year) {
-            $year = (int) date('Y');
+            $year = date('Y');
         }
 
         $start = new \DateTime();
@@ -34,26 +41,7 @@ class Year extends CustomDatespan implements Datespan
         $end->setDate($year, 12, $start->format('t'));
         $end->setTime(23, 59, 59);
         parent::__construct(new Date($start), new Date($end));
-    }
-
-    /**
-     * returns maximum supported interval
-     *
-     * @return  DatespanInterval
-     */
-    protected function getMaxInterval()
-    {
-        return DatespanInterval::$YEAR;
-    }
-
-    /**
-     * returns a string representation of the date object
-     *
-     * @return  string
-     */
-    public function asString()
-    {
-        return $this->start->format('Y');
+        $this->year = (int) $year;
     }
 
     /**
@@ -71,13 +59,51 @@ class Year extends CustomDatespan implements Datespan
     }
 
     /**
+     * returns list of months for this year
+     *
+     * @return  Month[]
+     */
+    public function getMonths()
+    {
+        $month        = array();
+        $start        = $this->getStart();
+        $endTimestamp = $this->getEnd()->format('U');
+        while ($start->format('U') <= $endTimestamp) {
+            $month[] = new Month($start->getYear(), $start->getMonth());
+            $start   = $start->change()->to('+1 month');
+        }
+
+        return $month;
+    }
+
+    /**
      * checks whether year is a leap year
      *
      * @return  bool
      */
     public function isLeapYear()
     {
-        return $this->start->format('L') == 1;
+        return $this->getStart()->format('L') == 1;
+    }
+
+    /**
+     * checks if represented year is current year
+     *
+     * @return  bool
+     */
+    public function isCurrentYear()
+    {
+        return ((int) date('Y')) === $this->year;
+    }
+
+    /**
+     * returns a string representation of the date object
+     *
+     * @return  string
+     */
+    public function asString()
+    {
+        return (string) $this->year;
     }
 }
 ?>

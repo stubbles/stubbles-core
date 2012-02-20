@@ -24,8 +24,8 @@ class DayTestCase extends \PHPUnit_Framework_TestCase
     public function startDateSetToMidNight()
     {
         $day = new Day('2007-04-04');
-        $this->assertEquals('2007-04-04 00:00:00' . $day->getStartDate()->getOffset(),
-                            $day->getStartDate()->asString()
+        $this->assertEquals('2007-04-04 00:00:00' . $day->getStart()->getOffset(),
+                            $day->getStart()->asString()
         );
     }
 
@@ -35,27 +35,27 @@ class DayTestCase extends \PHPUnit_Framework_TestCase
     public function endDateSetToOneSecondBeforeMidNight()
     {
         $day = new Day('2007-04-04');
-        $this->assertEquals('2007-04-04 23:59:59' . $day->getEndDate()->getOffset(),
-                            $day->getEndDate()->asString()
+        $this->assertEquals('2007-04-04 23:59:59' . $day->getEnd()->getOffset(),
+                            $day->getEnd()->asString()
         );
     }
 
     /**
      * @test
      */
-    public function stringRepresentationOfDayContainsNameOfDayAndDate()
+    public function amountOfDaysIsAlwaysOne()
     {
         $day = new Day('2007-04-04');
-        $this->assertEquals('Wednesday, 04.04.2007', $day->asString());
+        $this->assertEquals(1, $day->getAmountOfDays());
     }
 
     /**
      * @test
      */
-    public function getDateSpansReturnsListWithSelf()
+    public function getDaysReturnsListWithSelf()
     {
         $day       = new Day('2007-05-14');
-        $dateSpans = $day->getDateSpans();
+        $dateSpans = $day->getDays();
         $this->assertEquals(1, count($dateSpans));
         $this->assertSame($dateSpans[0], $day);
     }
@@ -63,52 +63,28 @@ class DayTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getDateSpansWithDayIntervalReturnsListWithSelf()
+    public function tomorrowIsNotToday()
     {
-        $day       = new Day('2007-05-14');
-        $dateSpans = $day->getDateSpans(DatespanInterval::$DAY);
-        $this->assertEquals(1, count($dateSpans));
-        $this->assertSame($dateSpans[0], $day);
+        $day = new Day('tomorrow');
+        $this->assertFalse($day->isToday());
     }
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
      */
-    public function weekIntervalThrowsIllegalArgumentException()
+    public function yesterdayIsNotToday()
     {
-        $day = new Day('2007-05-14');
-        $day->getDateSpans(DatespanInterval::$WEEK);
+        $day = new Day('yesterday');
+        $this->assertFalse($day->isToday());
     }
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
      */
-    public function monthIntervalThrowsIllegalArgumentException()
+    public function nowIsToday()
     {
-        $day = new Day('2007-05-14');
-        $day->getDateSpans(DatespanInterval::$MONTH);
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function yearIntervalThrowsIllegalArgumentException()
-    {
-        $day = new Day('2007-05-14');
-        $day->getDateSpans(DatespanInterval::$YEAR);
-    }
-
-    /**
-     * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     */
-    public function customIntervalThrowsIllegalArgumentException()
-    {
-        $day = new Day('2007-05-14');
-        $day->getDateSpans(DatespanInterval::$CUSTOM);
+        $day = new Day('now');
+        $this->assertTrue($day->isToday());
     }
 
     /**
@@ -170,10 +146,28 @@ class DayTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function amountOfDaysIsAlwaysOne()
+    public function stringRepresentationOfDayContainsNameOfDayAndDate()
     {
         $day = new Day('2007-04-04');
-        $this->assertEquals(1, $day->getAmountOfDays());
+        $this->assertEquals('2007-04-04', $day->asString());
+    }
+
+    /**
+     * @test
+     */
+    public function asIntReturnsRepresentationOfDayWithinMonth()
+    {
+        $day = new Day('2007-05-14');
+        $this->assertEquals(14, $day->asInt());
+    }
+
+    /**
+     * @test
+     */
+    public function formatReturnsOtherStringRepresentation()
+    {
+        $day = new Day('2007-05-14');
+        $this->assertEquals('Monday, 14.05.2007', $day->format('l, d.m.Y'));
     }
 }
 ?>

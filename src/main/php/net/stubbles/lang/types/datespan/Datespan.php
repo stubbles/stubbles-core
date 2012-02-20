@@ -20,29 +20,28 @@ interface Datespan extends Object
      *
      * @return  Date
      */
-    public function getStartDate();
+    public function getStart();
 
     /**
      * returns the end date
      *
      * @return  Date
      */
-    public function getEndDate();
+    public function getEnd();
 
     /**
-     * returns the spans between the start date and the end date in given intervals
+     * returns amount of days in this datespan
      *
-     * @param   DatespanInterval  $interval
-     * @return  Datespan[]
+     * @return  int
      */
-    public function getDatespans(DatespanInterval $interval = null);
+    public function getAmountOfDays();
 
     /**
-     * returns a string representation of the date object
+     * returns list of days
      *
-     * @return  string
+     * @return  Day[]
      */
-    public function asString();
+    public function getDays();
 
     /**
      * checks whether the span is in the future compared to current date
@@ -60,10 +59,10 @@ interface Datespan extends Object
     public function containsDate(Date $date);
 
     /**
-     * returns amount of days in this datespan
+     * returns a string representation of the datespan
      *
-     * @return  int
+     * @return  string
      */
-    public function getAmountOfDays();
+    public function asString();
 }
 ?>
