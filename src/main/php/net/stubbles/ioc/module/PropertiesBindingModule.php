@@ -10,6 +10,7 @@
 namespace net\stubbles\ioc\module;
 use net\stubbles\ioc\Binder;
 use net\stubbles\lang\BaseObject;
+use net\stubbles\lang\Properties;
 /**
  * Module to read properties from a file and bind them.
  */
@@ -20,19 +21,19 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      *
      * @type  string[]
      */
-    protected $pathTypes   = array('cache',
-                                   'config',
-                                   'data',
-                                   'docroot',
-                                   'log',
-                                   'pages'
-                             );
+    private $pathTypes   = array('cache',
+                                 'config',
+                                 'data',
+                                 'docroot',
+                                 'log',
+                                 'pages'
+                           );
     /**
      * path to project files
      *
      * @type  string
      */
-    protected $projectPath;
+    private $projectPath;
 
     /**
      * constructor
@@ -73,7 +74,7 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
         $binder->bindConstant()
                ->named('net.stubbles.project.path')
                ->to($this->projectPath);
-        foreach ($this->createPathes($this->projectPath) as $name => $value) {
+        foreach ($this->buildPathes($this->projectPath) as $name => $value) {
             $binder->bindConstant()
                    ->named($name)
                    ->to($value);
@@ -82,7 +83,15 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
             }
         }
 
-        foreach ($this->getProperties($configPath) as $key => $value) {
+        if (!$this->propertiesAvailable($configPath)) {
+            return;
+        }
+
+        $properties = $this->getProperties($configPath);
+        $binder->bind('net\\stubbles\\lang\\Properties')
+               ->named('config')
+               ->toInstance($properties);
+        foreach ($properties->getSection('config') as $key => $value) {
             $binder->bindConstant()
                    ->named($key)
                    ->to($value);
@@ -93,10 +102,9 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      * appends directory separator if necessary
      *
      * @param   string  $path
-     * @param   string  $suffix
      * @return  string
      */
-    protected function createPathes($path, $suffix = null)
+    private function buildPathes($path)
     {
         if (substr($path, -1) !== DIRECTORY_SEPARATOR) {
             $path .= DIRECTORY_SEPARATOR;
@@ -104,36 +112,32 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
 
         $pathes = array();
         foreach ($this->pathTypes as $pathType) {
-            $pathes['net.stubbles.' . $pathType . '.path' . $suffix] = $path . $pathType;
+            $pathes['net.stubbles.' . $pathType . '.path'] = $path . $pathType;
         }
 
         return $pathes;
     }
 
     /**
-     * emulate real path to be able to mock this in unit tests
+     * checks whether properties are available at given path
      *
-     * @param   string  $path
-     * @return  string|bool
+     * @param   string  $configPath
+     * @return  bool
      */
-    protected function realpath($path)
+    private function propertiesAvailable($configPath)
     {
-        return realpath($path);
+        return !empty($configPath) && file_exists($configPath . DIRECTORY_SEPARATOR . 'config.ini');
     }
 
     /**
      * returns list of properties
      *
      * @param   string  $configPath
-     * @return  scalar[]
+     * @return  Properties
      */
-    protected function getProperties($configPath)
+    private function getProperties($configPath)
     {
-        if (null == $configPath || !file_exists($configPath . DIRECTORY_SEPARATOR . 'config.ini')) {
-            return array();
-        }
-
-        return parse_ini_file($configPath . DIRECTORY_SEPARATOR . 'config.ini');
+        return Properties::fromFile($configPath . DIRECTORY_SEPARATOR . 'config.ini');
     }
 }
 ?>

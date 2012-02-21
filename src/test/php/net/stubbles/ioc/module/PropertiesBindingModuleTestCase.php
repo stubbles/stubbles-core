@@ -24,19 +24,19 @@ class PropertiesBindingModuleTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  PropertiesBindingModule
      */
-    protected $propertiesBindingModule;
+    private $propertiesBindingModule;
     /**
      * project path used throughout the test
      *
      * @type  string
      */
-    protected $projectPath;
+    private $projectPath;
     /**
      * injector instance
      *
      * @type  Injector
      */
-    protected $injector;
+    private $injector;
 
     /**
      * set up test environment
@@ -45,7 +45,8 @@ class PropertiesBindingModuleTestCase extends \PHPUnit_Framework_TestCase
     {
         $root = vfsStream::setup('projects');
         vfsStream::newFile('config/config.ini')
-                 ->withContent("net.stubbles.locale=\"de_DE\"
+                 ->withContent("[config]
+net.stubbles.locale=\"de_DE\"
 net.stubbles.number.decimals=4
 net.stubbles.webapp.xml.serializeMode=true")
                  ->at($root);
@@ -60,7 +61,7 @@ net.stubbles.webapp.xml.serializeMode=true")
      * @param   string  $part
      * @return  string
      */
-    protected function getProjectPath($part)
+    private function getProjectPath($part)
     {
         return $this->projectPath . DIRECTORY_SEPARATOR . $part;
     }
@@ -162,6 +163,39 @@ net.stubbles.webapp.xml.serializeMode=true")
         $this->assertFalse($this->injector->hasConstant('net.stubbles.locale'));
         $this->assertFalse($this->injector->hasConstant('net.stubbles.number.decimals'));
         $this->assertFalse($this->injector->hasConstant('net.stubbles.webapp.xml.serializeMode'));
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     * @group  issue_5
+     */
+    public function propertiesAvailableViaInstance()
+    {
+        $this->propertiesBindingModule->configure(new Binder($this->injector));
+        $this->assertTrue($this->injector->hasExplicitBinding('net\\stubbles\\lang\\Properties', 'config'));
+        $properties = $this->injector->getInstance('net\\stubbles\\lang\\Properties', 'config');
+        /* @var  $properties  \net\stubbles\lang\Properties */
+        $this->assertTrue($properties->hasValue('config', 'net.stubbles.locale'));
+        $this->assertTrue($properties->hasValue('config', 'net.stubbles.number.decimals'));
+        $this->assertTrue($properties->hasValue('config', 'net.stubbles.webapp.xml.serializeMode'));
+        $this->assertEquals('de_DE', $properties->getValue('config', 'net.stubbles.locale'));
+        $this->assertEquals(4, $properties->parseInt('config', 'net.stubbles.number.decimals'));
+        $this->assertEquals(true, $properties->parseBool('config', 'net.stubbles.webapp.xml.serializeMode'));
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     * @group  issue_5
+     */
+    public function noPropertiesInstanceAvailableIfConfigFileDoesNotExist()
+    {
+        vfsStream::setup();
+        $propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('root'));
+        $injector                = new Injector();
+        $propertiesBindingModule->configure(new Binder($injector));
+        $this->assertFalse($this->injector->hasExplicitBinding('net\\stubbles\\lang\\Properties', 'config'));
     }
 }
 ?>
