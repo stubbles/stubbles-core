@@ -45,17 +45,12 @@ class AbstractDecoratedOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * set() and get() enclosed output stream
-     *
      * @test
      */
-    public function setAndGetEnclosedOutputStream()
+    public function returnsEnclosedOutputStream()
     {
-        $this->assertSame($this->mockOutputStream, $this->abstractDecoratedOutputStream->getEnclosedOutputStream());
-        $mockOutputStream2 = $this->getMock('net\\stubbles\\streams\\OutputStream');
-        $this->assertSame($mockOutputStream2,
-                          $this->abstractDecoratedOutputStream->setEnclosedOutputStream($mockOutputStream2)
-                                                              ->getEnclosedOutputStream()
+        $this->assertSame($this->mockOutputStream,
+                          $this->abstractDecoratedOutputStream->getEnclosedOutputStream()
         );
     }
 

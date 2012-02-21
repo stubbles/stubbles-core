@@ -14,13 +14,6 @@ namespace net\stubbles\streams;
 interface DecoratedInputStream extends InputStream
 {
     /**
-     * replace current enclosed input stream
-     *
-     * @param  InputStream  $inputStream
-     */
-    public function setEnclosedInputStream(InputStream $inputStream);
-
-    /**
      * returns enclosed input stream
      *
      * @return  InputStream
