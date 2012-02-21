@@ -19,7 +19,7 @@ use net\stubbles\lang\reflect\ReflectionObject;
  * of this and inherited exceptions should never be catched. The docblock of a
  * method must not indicate that a runtime exception may be thrown.
  */
-class RuntimeException extends \Exception implements Throwable
+class RuntimeException extends \RuntimeException implements Throwable
 {
     /**
      * constructor
