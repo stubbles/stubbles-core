@@ -22,13 +22,13 @@ class AbstractExceptionHandlerTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  AbstractExceptionHandler
      */
-    protected $abstractExceptionHandler;
+    private $abstractExceptionHandler;
     /**
      * root path for log files
      *
      * @type  org\bovigo\vfs\vfsStreamDirectory
      */
-    protected $root;
+    private $root;
 
 
     /**
@@ -49,8 +49,8 @@ class AbstractExceptionHandlerTestCase extends \PHPUnit_Framework_TestCase
     public function loggingDisabledFillsResponseOnly()
     {
         $abstractExceptionHandler = $this->getMock('net\stubbles\lang\errorhandler\AbstractExceptionHandler',
-                                                         array('log', 'header', 'createResponseBody', 'writeBody'),
-                                                         array(vfsStream::url('root'))
+                                                   array('log', 'header', 'createResponseBody', 'writeBody'),
+                                                   array(vfsStream::url('root'))
                                           );
         $abstractExceptionHandler->expects($this->never())->method('log');
         $abstractExceptionHandler->expects($this->once())->method('header');
@@ -85,10 +85,10 @@ class AbstractExceptionHandlerTestCase extends \PHPUnit_Framework_TestCase
         $exception = new \net\stubbles\lang\exception\Exception('chained exception', new \Exception('exception message'), 303);
         $line      = __LINE__ - 1;
 
-        $this->abstractExceptionHandler->setLogTarget('foo')->handleException($exception);
-        $this->assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/foo-' . date('Y-m-d') . '.log'));
+        $this->abstractExceptionHandler->handleException($exception);
+        $this->assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log'));
         $this->assertEquals('|net\\stubbles\\lang\\exception\\Exception|chained exception|' . __FILE__ . '|' . $line . '|Exception|exception message|' . __FILE__ . '|' . $line . "\n",
-                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/foo-' . date('Y-m-d') . '.log')
+                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log')
                                               ->getContent(),
                                    19
                             )

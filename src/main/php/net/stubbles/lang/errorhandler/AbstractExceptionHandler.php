@@ -27,31 +27,25 @@ abstract class AbstractExceptionHandler extends BaseObject implements ExceptionH
      *
      * @type  string
      */
-    protected $sapi;
+    private $sapi;
     /**
      * switch whether logging is enabled or not
      *
      * @type  bool
      */
-    protected $loggingEnabled = true;
-    /**
-     * target of the log data
-     *
-     * @type  string
-     */
-    protected $logTarget      = 'exceptions';
+    private $loggingEnabled = true;
     /**
      * directory to log errors into
      *
      * @type  string
      */
-    protected $logDir;
+    private $logDir;
     /**
      * mode for new directories
      *
      * @type  int
      */
-    protected $filemode       = 0700;
+    private $filemode       = 0700;
 
     /**
      * constructor
@@ -78,21 +72,9 @@ abstract class AbstractExceptionHandler extends BaseObject implements ExceptionH
     }
 
     /**
-     * sets the target of the log data
-     *
-     * @param   string                        $logTarget
-     * @return  net\stubbles\lang\errorhandler\AbstractExceptionHandler
-     */
-    public function setLogTarget($logTarget)
-    {
-        $this->logTarget = $logTarget;
-        return $this;
-    }
-
-    /**
      * sets the mode for new log directories
      *
-     * @param   int                           $filemode
+     * @param   int  $filemode
      * @return  AbstractExceptionHandler
      */
     public function setFilemode($filemode)
@@ -148,8 +130,16 @@ abstract class AbstractExceptionHandler extends BaseObject implements ExceptionH
             mkdir($logDir, $this->filemode, true);
         }
 
-        error_log($logData . "\n", 3, $logDir . DIRECTORY_SEPARATOR . $this->logTarget . '-' . date('Y-m-d') . '.log');
+        error_log($logData . "\n", 3, $logDir . DIRECTORY_SEPARATOR . 'exceptions-' . date('Y-m-d') . '.log');
     }
+
+    /**
+     * creates response body with useful data for display
+     *
+     * @param   \Exception     $exception  the uncatched exception
+     * @return  string
+     */
+    protected abstract function createResponseBody(\Exception $exception);
 
     /**
      * helper method to send the header
@@ -160,14 +150,6 @@ abstract class AbstractExceptionHandler extends BaseObject implements ExceptionH
     {
         header($header);
     }
-
-    /**
-     * creates response body with useful data for display
-     *
-     * @param   \Exception     $exception  the uncatched exception
-     * @return  string
-     */
-    protected abstract function createResponseBody(\Exception $exception);
 
     /**
      * helper method to send the body
