@@ -32,18 +32,6 @@ abstract class AbstractDecoratedOutputStream extends BaseObject implements Decor
     }
 
     /**
-     * replace current enclosed output stream
-     *
-     * @param   OutputStream  $outputStream
-     * @return  AbstractDecoratedOutputStream
-     */
-    public function setEnclosedOutputStream(OutputStream $outputStream)
-    {
-        $this->outputStream = $outputStream;
-        return $this;
-    }
-
-    /**
      * returns enclosed output stream
      *
      * @return  OutputStream

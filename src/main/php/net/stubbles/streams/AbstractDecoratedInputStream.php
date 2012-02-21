@@ -32,18 +32,6 @@ abstract class AbstractDecoratedInputStream extends BaseObject implements Decora
     }
 
     /**
-     * replace current enclosed input stream
-     *
-     * @param   InputStream  $inputStream
-     * @return  AbstractDecoratedInputStream
-     */
-    public function setEnclosedInputStream(InputStream $inputStream)
-    {
-        $this->inputStream = $inputStream;
-        return $this;
-    }
-
-    /**
      * returns enclosed input stream
      *
      * @return  InputStream

@@ -45,17 +45,12 @@ class AbstractDecoratedInputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * set() and get() enclosed input stream
-     *
      * @test
      */
-    public function setAndGetEnclosedInputStream()
+    public function returnsEnclosedInputStream()
     {
-        $this->assertSame($this->mockInputStream, $this->abstractDecoratedInputStream->getEnclosedInputStream());
-        $mockInputStream2 = $this->getMock('net\\stubbles\\streams\\InputStream');
-        $this->assertSame($mockInputStream2,
-                          $this->abstractDecoratedInputStream->setEnclosedInputStream($mockInputStream2)
-                                                             ->getEnclosedInputStream()
+        $this->assertSame($this->mockInputStream,
+                          $this->abstractDecoratedInputStream->getEnclosedInputStream()
         );
     }
 
