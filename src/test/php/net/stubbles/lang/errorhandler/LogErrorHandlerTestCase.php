@@ -22,13 +22,13 @@ class LogErrorHandlerTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  LogErrorHandler
      */
-    protected $logErrorHandler;
+    private $logErrorHandler;
     /**
      * root path for log files
      *
      * @type  org\bovigo\vfs\vfsStreamDirectory
      */
-    protected $root;
+    private $root;
 
     /**
      * set up test environment
@@ -87,12 +87,11 @@ class LogErrorHandlerTestCase extends \PHPUnit_Framework_TestCase
     public function handleErrorShouldLogTheErrorWhenTargetChanged()
     {
         $line = __LINE__;
-        $this->assertTrue($this->logErrorHandler->setLogTarget('errors')
-                                                ->handle(313, 'message', __FILE__, $line)
+        $this->assertTrue($this->logErrorHandler->handle(313, 'message', __FILE__, $line)
         );
-        $this->assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/errors-' . date('Y-m-d') . '.log'));
+        $this->assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/php-error-' . date('Y-m-d') . '.log'));
         $this->assertEquals('|313|unknown|message|' . __FILE__ . '|' . $line . "\n",
-                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/errors-' . date('Y-m-d') . '.log')
+                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/php-error-' . date('Y-m-d') . '.log')
                                        ->getContent(),
                                    19
                             )

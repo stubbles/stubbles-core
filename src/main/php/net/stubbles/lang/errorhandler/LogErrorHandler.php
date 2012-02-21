@@ -25,39 +25,33 @@ class LogErrorHandler extends BaseObject implements ErrorHandler
      *
      * @type  string[]
      */
-    protected static $levelStrings  = array(E_ERROR             => 'E_ERROR',
-                                            E_WARNING           => 'E_WARNING',
-                                            E_PARSE             => 'E_PARSE',
-                                            E_NOTICE            => 'E_NOTICE',
-                                            E_CORE_ERROR        => 'E_CORE_ERROR',
-                                            E_CORE_WARNING      => 'E_CORE_WARNING',
-                                            E_COMPILE_ERROR     => 'E_COMPILE_ERROR',
-                                            E_COMPILE_WARNING   => 'E_COMPILE_WARNING',
-                                            E_USER_ERROR        => 'E_USER_ERROR',
-                                            E_USER_WARNING      => 'E_USER_WARNING',
-                                            E_USER_NOTICE       => 'E_USER_NOTICE',
-                                            E_STRICT            => 'E_STRICT',
-                                            E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
-                                            E_ALL               => 'E_ALL'
-                                      );
-    /**
-     * target of the log data
-     *
-     * @type  string
-     */
-    protected $logTarget = 'php-error';
+    private static $levelStrings  = array(E_ERROR             => 'E_ERROR',
+                                          E_WARNING           => 'E_WARNING',
+                                          E_PARSE             => 'E_PARSE',
+                                          E_NOTICE            => 'E_NOTICE',
+                                          E_CORE_ERROR        => 'E_CORE_ERROR',
+                                          E_CORE_WARNING      => 'E_CORE_WARNING',
+                                          E_COMPILE_ERROR     => 'E_COMPILE_ERROR',
+                                          E_COMPILE_WARNING   => 'E_COMPILE_WARNING',
+                                          E_USER_ERROR        => 'E_USER_ERROR',
+                                          E_USER_WARNING      => 'E_USER_WARNING',
+                                          E_USER_NOTICE       => 'E_USER_NOTICE',
+                                          E_STRICT            => 'E_STRICT',
+                                          E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
+                                          E_ALL               => 'E_ALL'
+                                    );
     /**
      * directory to log errors into
      *
      * @type  string
      */
-    protected $logDir;
+    private $logDir;
     /**
      * mode for new directories
      *
      * @type  int
      */
-    protected $filemode  = 0700;
+    private $filemode  = 0700;
 
     /**
      * constructor
@@ -67,18 +61,6 @@ class LogErrorHandler extends BaseObject implements ErrorHandler
     public function __construct($projectPath)
     {
         $this->logDir = $projectPath . DIRECTORY_SEPARATOR . 'log' . DIRECTORY_SEPARATOR . 'errors' . DIRECTORY_SEPARATOR . '{Y}' . DIRECTORY_SEPARATOR . '{M}';
-    }
-
-    /**
-     * sets the target of the log data
-     *
-     * @param   string               $logTarget
-     * @return  stubLogErrorHandler
-     */
-    public function setLogTarget($logTarget)
-    {
-        $this->logTarget = $logTarget;
-        return $this;
     }
 
     /**
@@ -150,7 +132,7 @@ class LogErrorHandler extends BaseObject implements ErrorHandler
             mkdir($logDir, $this->filemode, true);
         }
 
-        error_log($logData . "\n", 3, $logDir . DIRECTORY_SEPARATOR . $this->logTarget . '-' . date('Y-m-d') . '.log');
+        error_log($logData . "\n", 3, $logDir . DIRECTORY_SEPARATOR . 'php-error-' . date('Y-m-d') . '.log');
         return ErrorHandler::STOP_ERROR_HANDLING;
     }
 
@@ -159,7 +141,7 @@ class LogErrorHandler extends BaseObject implements ErrorHandler
      *
      * @return  string
      */
-    protected function buildLogDir()
+    private function buildLogDir()
     {
         return str_replace('{Y}', date('Y'), str_replace('{M}', date('m'), $this->logDir));
     }
