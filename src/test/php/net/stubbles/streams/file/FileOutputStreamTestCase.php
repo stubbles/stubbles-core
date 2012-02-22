@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams\file;
-use net\stubbles\streams\memory\MemoryStreamWrapper;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\streams\file\FileOutputStream.
@@ -67,8 +66,8 @@ class FileOutputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function constructWithStringFailsAndThrowsIOException()
     {
-        MemoryStreamWrapper::register();
-        new FileOutputStream('memory://doesNotExist', 'r');
+        vfsStream::newFile('test.txt', 0000)->at(vfsStream::setup());
+        new FileOutputStream($this->fileUrl, 'r');
     }
 
     /**

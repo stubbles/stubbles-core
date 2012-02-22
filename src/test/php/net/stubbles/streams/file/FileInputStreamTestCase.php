@@ -9,7 +9,6 @@
  */
 namespace net\stubbles\streams\file;
 use net\stubbles\streams\Seekable;
-use net\stubbles\streams\memory\MemoryStreamWrapper;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\streams\file\FileInputStream.
@@ -42,8 +41,7 @@ class FileInputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function constructWithStringFailsAndThrowsIOException()
     {
-        MemoryStreamWrapper::register();
-        new FileInputStream('memory://doesNotExist', 'r');
+        new FileInputStream('doesNotExist', 'r');
     }
 
     /**
