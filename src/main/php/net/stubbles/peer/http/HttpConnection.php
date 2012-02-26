@@ -11,38 +11,38 @@ namespace net\stubbles\peer\http;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\peer\HeaderList;
 /**
- * Class for connections to URLs of HTTP/HTTPS.
+ * Class for connections to URIs of HTTP/HTTPS.
  */
 class HttpConnection extends BaseObject
 {
     /**
      * request object to open connection
      *
-     * @type  HttpUrl
+     * @type  HttpUri
      */
-    protected $httpUrl  = null;
+    private $httpUri  = null;
     /**
      * contains request headers
      *
      * @type  HeaderList
      */
-    protected $headers  = null;
+    private $headers  = null;
     /**
      * timeout
      *
      * @type  int
      */
-    protected $timeout  = 30;
+    private $timeout  = 30;
 
     /**
      * constructor
      *
-     * @param  HttpUrl     $httpUrl  url to create connection to
+     * @param  HttpUri     $httpUri  uri to create connection to
      * @param  HeaderList  $headers  list of headers to be used
      */
-    public function __construct(HttpUrl $httpUrl, HeaderList $headers = null)
+    public function __construct(HttpUri $httpUri, HeaderList $headers = null)
     {
-        $this->httpUrl = $httpUrl;
+        $this->httpUri = $httpUri;
         $this->headers = ((null === $headers) ? (new HeaderList()) : ($headers));
     }
 
@@ -71,7 +71,7 @@ class HttpConnection extends BaseObject
     }
 
     /**
-     * say the connection was refered from given url
+     * say the connection was refered from given uri
      *
      * @param   string  $referer
      * @return  HttpConnection
@@ -121,31 +121,31 @@ class HttpConnection extends BaseObject
     }
 
     /**
-     * returns response object for given URL after GET request
+     * returns response object for given URI after GET request
      *
      * @param   string  $version  HTTP version
      * @return  HttpResponse
      */
     public function get($version = Http::VERSION_1_1)
     {
-        return HttpRequest::create($this->httpUrl, $this->headers)
+        return HttpRequest::create($this->httpUri, $this->headers)
                           ->get($this->timeout, $version);
     }
 
     /**
-     * returns response object for given URL after HEAD request
+     * returns response object for given URI after HEAD request
      *
      * @param   string  $version  HTTP version
      * @return  HttpResponse
      */
     public function head($version = Http::VERSION_1_1)
     {
-        return HttpRequest::create($this->httpUrl, $this->headers)
+        return HttpRequest::create($this->httpUri, $this->headers)
                           ->head($this->timeout, $version);
     }
 
     /**
-     * returns response object for given URL after POST request
+     * returns response object for given URI after POST request
      *
      * @param   string|array  $body
      * @param   string        $version  HTTP version
@@ -153,7 +153,7 @@ class HttpConnection extends BaseObject
      */
     public function post($body, $version = Http::VERSION_1_1)
     {
-        return HttpRequest::create($this->httpUrl, $this->headers)
+        return HttpRequest::create($this->httpUri, $this->headers)
                           ->post($body, $this->timeout, $version);
     }
 }

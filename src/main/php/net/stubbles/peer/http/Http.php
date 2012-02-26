@@ -18,11 +18,11 @@ use net\stubbles\lang\exception\IllegalArgumentException;
 class Http extends BaseObject
 {
     /**
-     * default url scheme
+     * default uri scheme
      */
     const SCHEME                    = 'http';
     /**
-     * url scheme for ssl
+     * uri scheme for ssl
      */
     const SCHEME_SSL                = 'https';
     /**
