@@ -9,38 +9,38 @@
  */
 namespace net\stubbles\peer\http;
 use net\stubbles\peer\HeaderList;
-use net\stubbles\peer\MalformedUrlException;
-use net\stubbles\peer\ParsedUrl;
+use net\stubbles\peer\MalformedUriException;
+use net\stubbles\peer\ParsedUri;
 use net\stubbles\peer\Socket;
-use net\stubbles\peer\Url;
+use net\stubbles\peer\Uri;
 /**
- * Class for URLs of scheme hypertext transfer protocol.
+ * Class for URIs of scheme hypertext transfer protocol.
  */
-abstract class HttpUrl extends Url
+abstract class HttpUri extends Uri
 {
     /**
-     * parses an url out of a string
+     * parses an uri out of a string
      *
-     * @param   string  $urlString  string to create instance from
-     * @return  HttpUrl
-     * @throws  MalformedUrlException
+     * @param   string  $uriString  string to create instance from
+     * @return  HttpUri
+     * @throws  MalformedUriException
      */
-    public static function fromString($urlString)
+    public static function fromString($uriString)
     {
-        if (strlen($urlString) === 0) {
+        if (strlen($uriString) === 0) {
             return null;
         }
 
-        $url = new ConstructedHttpUrl(new ParsedUrl($urlString));
-        if ($url->isValid()) {
-            return $url;
+        $uri = new ConstructedHttpUri(new ParsedUri($uriString));
+        if ($uri->isValid()) {
+            return $uri;
         }
 
-        throw new MalformedUrlException('The url ' . $urlString . ' is not a valid http url.');
+        throw new MalformedUriException('The URI ' . $uriString . ' is not a valid HTTP URI');
     }
 
     /**
-     * Checks whether URL is a correct URL.
+     * Checks whether URI is a correct URI.
      *
      * @return  bool
      */
@@ -51,7 +51,7 @@ abstract class HttpUrl extends Url
         }
 
 
-        if ($this->parsedUrl->getScheme() !== Http::SCHEME && $this->parsedUrl->getScheme() !== Http::SCHEME_SSL) {
+        if ($this->parsedUri->getScheme() !== Http::SCHEME && $this->parsedUri->getScheme() !== Http::SCHEME_SSL) {
             return false;
         }
 
@@ -59,7 +59,7 @@ abstract class HttpUrl extends Url
     }
 
     /**
-     * checks whether the url uses a default port or not
+     * checks whether the uri uses a default port or not
      *
      * Default ports are 80 for http and 443 for https
      *
@@ -67,15 +67,15 @@ abstract class HttpUrl extends Url
      */
     public function hasDefaultPort()
     {
-        if (!$this->parsedUrl->hasPort()) {
+        if (!$this->parsedUri->hasPort()) {
             return true;
         }
 
-        if ($this->isHttp() && $this->parsedUrl->getPort() === Http::PORT) {
+        if ($this->isHttp() && $this->parsedUri->getPort() === Http::PORT) {
             return true;
         }
 
-        if ($this->isHttps() && $this->parsedUrl->getPort() === Http::PORT_SSL) {
+        if ($this->isHttps() && $this->parsedUri->getPort() === Http::PORT_SSL) {
             return true;
         }
 
@@ -83,9 +83,9 @@ abstract class HttpUrl extends Url
     }
 
     /**
-     * returns port of the url
+     * returns port of the uri
      *
-     * @param   int  $defaultPort  parameter is ignored for http urls
+     * @param   int  $defaultPort  parameter is ignored for http uris
      * @return  int
      */
     public function getPort($defaultPort = null)
@@ -106,7 +106,7 @@ abstract class HttpUrl extends Url
      */
     public function isHttp()
     {
-        return $this->parsedUrl->getScheme() === Http::SCHEME;
+        return $this->parsedUri->getScheme() === Http::SCHEME;
     }
 
     /**
@@ -117,13 +117,13 @@ abstract class HttpUrl extends Url
      */
     public function isHttps()
     {
-        return $this->parsedUrl->getScheme() === Http::SCHEME_SSL;
+        return $this->parsedUri->getScheme() === Http::SCHEME_SSL;
     }
 
     /**
-     * transposes url to http
+     * transposes uri to http
      *
-     * @return  HttpUrl
+     * @return  HttpUri
      * @since   2.0.0
      */
     public function toHttp()
@@ -132,13 +132,13 @@ abstract class HttpUrl extends Url
             return $this;
         }
 
-        return new ConstructedHttpUrl($this->parsedUrl->transpose(array('scheme' => Http::SCHEME)));
+        return new ConstructedHttpUri($this->parsedUri->transpose(array('scheme' => Http::SCHEME)));
     }
 
     /**
-     * transposes url to https
+     * transposes uri to https
      *
-     * @return  HttpUrl
+     * @return  HttpUri
      * @since   2.0.0
      */
     public function toHttps()
@@ -147,15 +147,15 @@ abstract class HttpUrl extends Url
             return $this;
         }
 
-        return new ConstructedHttpUrl($this->parsedUrl->transpose(array('scheme' => Http::SCHEME_SSL)));
+        return new ConstructedHttpUri($this->parsedUri->transpose(array('scheme' => Http::SCHEME_SSL)));
     }
 
     /**
-     * creates a http connectoon for this url
+     * creates a http connectoon for this uri
      *
      * To submit a complete HTTP request use this:
      * <code>
-     * $response = $url->connect()->asUserAgent('Not Mozilla')
+     * $response = $uri->connect()->asUserAgent('Not Mozilla')
      *                            ->timeout(5)
      *                            ->usingHeader('X-Money', 'Euro')
      *                            ->get();
@@ -170,7 +170,7 @@ abstract class HttpUrl extends Url
     }
 
     /**
-     * opens socket to this url
+     * opens socket to this uri
      *
      * @param   int  $timeout  connection timeout
      * @return  Socket

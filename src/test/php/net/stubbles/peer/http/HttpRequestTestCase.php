@@ -10,7 +10,7 @@
 namespace net\stubbles\peer\http;
 use net\stubbles\peer\HeaderList;
 use net\stubbles\peer\Socket;
-use net\stubbles\peer\ParsedUrl;
+use net\stubbles\peer\ParsedUri;
 use net\stubbles\streams\memory\MemoryOutputStream;
 /**
  * Test for net\stubbles\peer\http\HttpRequest.
@@ -25,13 +25,13 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  HttpRequest
      */
-    protected $httpRequest;
+    private $httpRequest;
     /**
      * memory stream to write http request to
      *
      * @type  MemoryOutputStream
      */
-    protected $memoryOutputStream;
+    private $memoryOutputStream;
 
     /**
      * set up test environment
@@ -39,7 +39,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->memoryOutputStream = new MemoryOutputStream();
-        $mockHttpUrl              = $this->getMock('net\\stubbles\\peer\\http\\HttpUrl');
+        $mockHttpUri              = $this->getMock('net\\stubbles\\peer\\http\\HttpUri');
         $mockSocket               = $this->getMock('net\\stubbles\\peer\\Socket', array(), array('example.com'));
         $mockSocket->expects($this->any())
                    ->method('getInputStream')
@@ -47,16 +47,16 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
         $mockSocket->expects(($this->any()))
                    ->method('getOutputStream')
                    ->will($this->returnValue($this->memoryOutputStream));
-        $mockHttpUrl->expects($this->any())
+        $mockHttpUri->expects($this->any())
                     ->method('openSocket')
                     ->will($this->returnValue($mockSocket));
-        $mockHttpUrl->expects($this->any())
+        $mockHttpUri->expects($this->any())
                     ->method('getPath')
                     ->will($this->returnValue('/'));
-        $mockHttpUrl->expects($this->any())
+        $mockHttpUri->expects($this->any())
                     ->method('getHost')
                     ->will($this->returnValue('example.com'));
-        $this->httpRequest = HttpRequest::create($mockHttpUrl,
+        $this->httpRequest = HttpRequest::create($mockHttpUri,
                                                  new HeaderList(array('X-Binford' => 6100))
                              );
 

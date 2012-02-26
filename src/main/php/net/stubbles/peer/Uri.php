@@ -10,67 +10,67 @@
 namespace net\stubbles\peer;
 use net\stubbles\lang\BaseObject;
 /**
- * Class for URLs and methods on URLs.
+ * Class for URIs and methods on URIs.
  */
-abstract class Url extends BaseObject
+abstract class Uri extends BaseObject
 {
     /**
      * internal representation after parse_url()
      *
-     * @type  ParsedUrl
+     * @type  ParsedUri
      */
-    protected $parsedUrl;
+    protected $parsedUri;
 
     /**
-     * parses an url out of a string
+     * parses an uri out of a string
      *
-     * @param   string  $urlString  string to create instance from
-     * @return  Url
-     * @throws  MalformedUrlException
+     * @param   string  $uriString  string to create instance from
+     * @return  Uri
+     * @throws  MalformedUriException
      */
-    public static function fromString($urlString)
+    public static function fromString($uriString)
     {
-        if (strlen($urlString) === 0) {
+        if (strlen($uriString) === 0) {
             return null;
         }
 
-        $url = new ConstructedUrl(new ParsedUrl($urlString));
-        if ($url->isValid()) {
-            return $url;
+        $uri = new ConstructedUri(new ParsedUri($uriString));
+        if ($uri->isValid()) {
+            return $uri;
         }
 
-        throw new MalformedUrlException('The url ' . $urlString . ' is not a valid url.');
+        throw new MalformedUriException('The URI ' . $uriString . ' is not a valid URI.');
     }
 
     /**
-     * Checks whether URL is a correct URL.
+     * Checks whether URI is a correct URI.
      *
      * @return  bool
      */
     protected function isValid()
     {
-        if (!$this->parsedUrl->hasScheme()) {
+        if (!$this->parsedUri->hasScheme()) {
             return false;
         }
 
-        if (preg_match('!^([a-z][a-z0-9\+]*)://([^@]+@)?([^/?#]*)(/([^#?]*))?(.*)$!', $this->parsedUrl->asString()) == 0) {
+        if (preg_match('!^([a-z][a-z0-9\+]*)://([^@]+@)?([^/?#]*)(/([^#?]*))?(.*)$!', $this->parsedUri->asString()) == 0) {
             return false;
         }
 
-        if ($this->parsedUrl->hasUser()) {
-            if (preg_match('~([@:/])~', $this->parsedUrl->getUser()) != 0) {
+        if ($this->parsedUri->hasUser()) {
+            if (preg_match('~([@:/])~', $this->parsedUri->getUser()) != 0) {
                 return false;
             }
 
-            if (preg_match('~([@:/])~', $this->parsedUrl->getPassword()) != 0) {
+            if (preg_match('~([@:/])~', $this->parsedUri->getPassword()) != 0) {
                 return false;
             }
         }
 
-        if ($this->parsedUrl->hasHost()
-          && preg_match('!^([a-zA-Z0-9\.-]+|\[[^\]]+\])(:([0-9]+))?$!', $this->parsedUrl->getHost()) != 0) {
+        if ($this->parsedUri->hasHost()
+          && preg_match('!^([a-zA-Z0-9\.-]+|\[[^\]]+\])(:([0-9]+))?$!', $this->parsedUri->getHost()) != 0) {
             return true;
-        } elseif (!$this->parsedUrl->hasHost() || strlen($this->parsedUrl->getHost()) === 0) {
+        } elseif (!$this->parsedUri->hasHost() || strlen($this->parsedUri->getHost()) === 0) {
             return true;
         }
 
@@ -78,19 +78,19 @@ abstract class Url extends BaseObject
     }
 
     /**
-     * checks whether host of url is listed in dns
+     * checks whether host of uri is listed in dns
      *
      * @return  bool
      */
     public function hasDnsRecord()
     {
-        if (!$this->parsedUrl->hasHost()) {
+        if (!$this->parsedUri->hasHost()) {
             return false;
         }
 
-        if ($this->parsedUrl->isLocalHost()
-          || checkdnsrr($this->parsedUrl->getHost(), 'ANY')
-          || checkdnsrr($this->parsedUrl->getHost(), 'MX')) {
+        if ($this->parsedUri->isLocalHost()
+          || checkdnsrr($this->parsedUri->getHost(), 'ANY')
+          || checkdnsrr($this->parsedUri->getHost(), 'MX')) {
             return true;
         }
 
@@ -98,33 +98,33 @@ abstract class Url extends BaseObject
     }
 
     /**
-     * returns the url as string as originally given
+     * returns the uri as string as originally given
      *
      * @return  string
      */
     public function asString()
     {
-        return $this->parsedUrl->asString();
+        return $this->parsedUri->asString();
     }
 
     /**
-     * Returns url as string but without port even if originally given.
+     * Returns uri as string but without port even if originally given.
      *
      * @return  string
      */
     public function asStringWithoutPort()
     {
-        return $this->parsedUrl->asStringWithoutPort();
+        return $this->parsedUri->asStringWithoutPort();
     }
 
     /**
-     * Returns url as string containing the port if it is not the default port.
+     * Returns uri as string containing the port if it is not the default port.
      *
      * @return  string
      */
     public function asStringWithNonDefaultPort()
     {
-        if ($this->parsedUrl->hasPort() && !$this->hasDefaultPort()) {
+        if ($this->parsedUri->hasPort() && !$this->hasDefaultPort()) {
             return $this->asString();
         }
 
@@ -132,13 +132,13 @@ abstract class Url extends BaseObject
     }
 
     /**
-     * returns the scheme of the url
+     * returns the scheme of the uri
      *
      * @return  string
      */
     public function getScheme()
     {
-        return $this->parsedUrl->getScheme();
+        return $this->parsedUri->getScheme();
     }
 
     /**
@@ -149,7 +149,7 @@ abstract class Url extends BaseObject
      */
     public function getUser($defaultUser = null)
     {
-        return $this->parsedUrl->getUser($defaultUser);
+        return $this->parsedUri->getUser($defaultUser);
     }
 
     /**
@@ -160,29 +160,29 @@ abstract class Url extends BaseObject
      */
     public function getPassword($defaultPassword = null)
     {
-        if (!$this->parsedUrl->hasUser()) {
+        if (!$this->parsedUri->hasUser()) {
             return null;
         }
 
-        if ($this->parsedUrl->hasPassword()) {
-            return $this->parsedUrl->getPassword();
+        if ($this->parsedUri->hasPassword()) {
+            return $this->parsedUri->getPassword();
         }
 
         return $defaultPassword;
     }
 
     /**
-     * returns hostname of the url
+     * returns hostname of the uri
      *
      * @return  string
      */
     public function getHost()
     {
-        return $this->parsedUrl->getHost();
+        return $this->parsedUri->getHost();
     }
 
     /**
-     * checks whether the url uses a default port or not
+     * checks whether the uri uses a default port or not
      *
      * @return  bool
      */
@@ -192,63 +192,63 @@ abstract class Url extends BaseObject
     }
 
     /**
-     * returns port of the url
+     * returns port of the uri
      *
      * @param   int  $defaultPort  port to be used if no port is defined
      * @return  int
      */
     public function getPort($defaultPort = null)
     {
-        if ($this->parsedUrl->hasPort()) {
-            return $this->parsedUrl->getPort();
+        if ($this->parsedUri->hasPort()) {
+            return $this->parsedUri->getPort();
         }
 
         return $defaultPort;
     }
 
     /**
-     * returns path of the url
+     * returns path of the uri
      *
      * @return  string
      */
     public function getPath()
     {
-        return $this->parsedUrl->getPath();
+        return $this->parsedUri->getPath();
     }
 
     /**
-     * checks whether url has a query
+     * checks whether uri has a query
      *
      * @return  bool
      */
     public function hasQueryString()
     {
-        return $this->parsedUrl->queryString()->hasParams();
+        return $this->parsedUri->queryString()->hasParams();
     }
 
     /**
-     * add a parameter to the url
+     * add a parameter to the uri
      *
      * @param   string  $name   name of parameter
      * @param   mixed   $value  value of parameter
-     * @return  Url
+     * @return  Uri
      */
     public function addParam($name, $value)
     {
-        $this->parsedUrl->queryString()->addParam($name, $value);
+        $this->parsedUri->queryString()->addParam($name, $value);
         return $this;
     }
 
     /**
-     * remove a param from url
+     * remove a param from uri
      *
      * @param   string  $name  name of parameter
-     * @return  Url
+     * @return  Uri
      * @since   1.1.2
      */
     public function removeParam($name)
     {
-        $this->parsedUrl->queryString()->removeParam($name);
+        $this->parsedUri->queryString()->removeParam($name);
         return $this;
     }
 
@@ -261,7 +261,7 @@ abstract class Url extends BaseObject
      */
     public function hasParam($name)
     {
-        return $this->parsedUrl->queryString()->containsParam($name);
+        return $this->parsedUri->queryString()->containsParam($name);
     }
 
     /**
@@ -273,17 +273,17 @@ abstract class Url extends BaseObject
      */
     public function getParam($name, $defaultValue = null)
     {
-        return $this->parsedUrl->queryString()->getParam($name, $defaultValue);
+        return $this->parsedUri->queryString()->getParam($name, $defaultValue);
     }
 
     /**
-     * returns fragment of the url
+     * returns fragment of the uri
      *
      * @return  string
      */
     public function getFragment()
     {
-        return $this->parsedUrl->getFragment();
+        return $this->parsedUri->getFragment();
     }
 }
 ?>

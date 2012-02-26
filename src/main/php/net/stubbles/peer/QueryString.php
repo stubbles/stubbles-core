@@ -16,7 +16,7 @@ use net\stubbles\lang\exception\IllegalArgumentException;
 class QueryString extends BaseObject
 {
     /**
-     * parameters for url
+     * parameters for uri
      *
      * @type  array
      */

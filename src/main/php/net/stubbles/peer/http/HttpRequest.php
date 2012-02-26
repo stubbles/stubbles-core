@@ -21,9 +21,9 @@ class HttpRequest extends BaseObject
     /**
      * the http address to setup a connection to
      *
-     * @type  HttpUrl
+     * @type  HttpUri
      */
-    protected $httpUrl = null;
+    protected $httpUri = null;
     /**
      * contains request headers
      *
@@ -34,26 +34,26 @@ class HttpRequest extends BaseObject
     /**
      * constructor
      *
-     * @param  HttpUrl     $httpUrl  HTTP URL to perform a request to
+     * @param  HttpUri     $httpUri  HTTP URI to perform a request to
      * @param  HeaderList  $header   list of request headers
      */
-    public function __construct(HttpUrl $httpUrl, HeaderList $header)
+    public function __construct(HttpUri $httpUri, HeaderList $header)
     {
-        $this->httpUrl = $httpUrl;
+        $this->httpUri = $httpUri;
         $this->headers = $header;
     }
 
     /**
      * static constructor
      *
-     * @param   HttpUrl     $httpUrl
+     * @param   HttpUri     $httpUri
      * @param   HeaderList  $header
      * @return  HttpRequest
      * @since   2.0.0
      */
-    public static function create(HttpUrl $httpUrl, HeaderList $header)
+    public static function create(HttpUri $httpUri, HeaderList $header)
     {
-        return new self($httpUrl, $header);
+        return new self($httpUri, $header);
     }
 
     /**
@@ -65,7 +65,7 @@ class HttpRequest extends BaseObject
      */
     public function get($timeout = 30, $version = Http::VERSION_1_1)
     {
-        $socket = $this->httpUrl->openSocket($timeout);
+        $socket = $this->httpUri->openSocket($timeout);
         $this->processHeader($socket->getOutputStream(), Http::GET, $version);
         return HttpResponse::create($socket->getInputStream());
     }
@@ -79,7 +79,7 @@ class HttpRequest extends BaseObject
      */
     public function head($timeout = 30, $version = Http::VERSION_1_1)
     {
-        $socket = $this->httpUrl->openSocket($timeout);
+        $socket = $this->httpUri->openSocket($timeout);
         $this->headers->put('Connection', 'close');
         $this->processHeader($socket->getOutputStream(), Http::HEAD, $version);
         return HttpResponse::create($socket->getInputStream());
@@ -106,7 +106,7 @@ class HttpRequest extends BaseObject
         }
 
         $this->headers->put('Content-Length', strlen($body));
-        $socket = $this->httpUrl->openSocket($timeout);
+        $socket = $this->httpUri->openSocket($timeout);
         $out    = $socket->getOutputStream();
         $this->processHeader($out, Http::POST, $version);
         $out->write($body);
@@ -143,8 +143,8 @@ class HttpRequest extends BaseObject
             throw new IllegalArgumentException("Invalid HTTP version " . $version . ', please use either ' . Http::VERSION_1_0 . ' or ' . Http::VERSION_1_1);
         }
 
-        $out->write(Http::line($method . ' ' . $this->httpUrl->getPath() . ' ' . $version));
-        $out->write(Http::line('Host: ' . $this->httpUrl->getHost()));
+        $out->write(Http::line($method . ' ' . $this->httpUri->getPath() . ' ' . $version));
+        $out->write(Http::line('Host: ' . $this->httpUri->getHost()));
         foreach ($this->headers as $key => $value) {
             $out->write(Http::line($key . ': ' . $value));
         }

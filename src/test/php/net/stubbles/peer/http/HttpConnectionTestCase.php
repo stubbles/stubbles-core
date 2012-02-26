@@ -22,13 +22,13 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  HttpConnection
      */
-    protected $httpConnection;
+    private $httpConnection;
     /**
-     * URL instance to be used
+     * URI instance to be used
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $httpURL;
+    private $mockHttpUri;
 
     /**
      * set up test environment
@@ -36,7 +36,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->memoryOutputStream = new MemoryOutputStream();
-        $this->mockHttpUrl        = $this->getMock('net\\stubbles\\peer\\http\\HttpUrl');
+        $this->mockHttpUri        = $this->getMock('net\\stubbles\\peer\\http\\HttpUri');
         $mockSocket               = $this->getMock('net\\stubbles\\peer\\Socket', array(), array('example.com'));
         $mockSocket->expects($this->any())
                    ->method('getInputStream')
@@ -44,17 +44,17 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
         $mockSocket->expects(($this->any()))
                    ->method('getOutputStream')
                    ->will($this->returnValue($this->memoryOutputStream));
-        $this->mockHttpUrl->expects($this->any())
+        $this->mockHttpUri->expects($this->any())
                           ->method('openSocket')
                           ->with($this->equalTo(2))
                           ->will($this->returnValue($mockSocket));
-        $this->mockHttpUrl->expects($this->any())
+        $this->mockHttpUri->expects($this->any())
                           ->method('getPath')
                           ->will($this->returnValue('/'));
-        $this->mockHttpUrl->expects($this->any())
+        $this->mockHttpUri->expects($this->any())
                           ->method('getHost')
                           ->will($this->returnValue('example.com'));
-        $this->httpConnection = new HttpConnection($this->mockHttpUrl);
+        $this->httpConnection = new HttpConnection($this->mockHttpUri);
     }
 
     /**
