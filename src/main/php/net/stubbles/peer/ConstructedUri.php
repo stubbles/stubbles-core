@@ -10,18 +10,20 @@
 namespace net\stubbles\peer;
 use net\stubbles\lang\BaseObject;
 /**
- * Class for URLs and methods on URLs.
+ * Class for URIs and methods on URIs.
+ *
+ * Use Uri::fromString() to create an instance.
  */
-class ConstructedUrl extends Url
+class ConstructedUri extends Uri
 {
     /**
      * constructor
      *
-     * @param  ParsedUrl  $url
+     * @param  ParsedUri  $uri
      */
-    protected function __construct(ParsedUrl $url)
+    protected function __construct(ParsedUri $uri)
     {
-        $this->parsedUrl = $url;
+        $this->parsedUri = $uri;
     }
 }
 ?>

@@ -141,7 +141,7 @@ class HeaderList extends BaseObject implements \IteratorAggregate
     /**
      * creates header for referer
      *
-     * @param   string  $referer  referer url
+     * @param   string  $referer  referer uri
      * @return  HeaderList
      */
     public function putReferer($referer)

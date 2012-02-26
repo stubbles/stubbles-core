@@ -10,46 +10,46 @@
 namespace net\stubbles\peer;
 use net\stubbles\lang\BaseObject;
 /**
- * Represents a parses url.
+ * Represents a parses uri.
  */
-class ParsedUrl extends BaseObject
+class ParsedUri extends BaseObject
 {
     /**
      * internal representation after parse_url()
      *
      * @type  array
      */
-    protected $url         = array();
+    private $uri         = array();
     /**
-     * query string of url
+     * query string of uri
      *
      * @type  QueryString
      */
-    protected $queryString;
+    private $queryString;
 
     /**
      * constructor
      *
-     * @param  string  $url
+     * @param  string  $uri
      */
-    public function __construct($url)
+    public function __construct($uri)
     {
-        $this->url = ((!is_array($url)) ? (parse_url($url)): ($url));
-        if (isset($this->url['host'])) {
-            $this->url['host'] = strtolower($this->url['host']);
+        $this->uri = ((!is_array($uri)) ? (parse_url($uri)): ($uri));
+        if (isset($this->uri['host'])) {
+            $this->uri['host'] = strtolower($this->uri['host']);
         }
 
-        $this->queryString = new QueryString((isset($this->url['query'])) ? ($this->url['query']) : (null));
+        $this->queryString = new QueryString((isset($this->uri['query'])) ? ($this->uri['query']) : (null));
         // bugfix for a PHP issue: ftp://user:@auxiliary.kl-s.com/
-        // will lead to an unset $this->url['pass'] which is wrong
+        // will lead to an unset $this->uri['pass'] which is wrong
         // due to RFC1738 3.1, it has to be an empty string
-        if (isset($this->url['user']) && !isset($this->url['pass']) && $this->asString() !== $url) {
-            $this->url['pass'] = '';
+        if (isset($this->uri['user']) && !isset($this->uri['pass']) && $this->asString() !== $uri) {
+            $this->uri['pass'] = '';
         }
     }
 
     /**
-     * transposes the url to another one
+     * transposes the uri to another one
      *
      * This will create a new instance, leaving the existing instance unchanged.
      * The given array should contain the parts to change, where the key denotes
@@ -58,73 +58,73 @@ class ParsedUrl extends BaseObject
      * The return value is a new instance with the named parts changed to the
      * new values.
      *
-     * @param   array  $changedUrl
-     * @return  ParsedUrl
+     * @param   array  $changedUri
+     * @return  ParsedUri
      */
-    public function transpose(array $changedUrl)
+    public function transpose(array $changedUri)
     {
-        return new self(array_merge($this->url, $changedUrl));
+        return new self(array_merge($this->uri, $changedUri));
     }
 
     /**
-     * returns original url
+     * returns original uri
      *
      * @return  string
      */
     public function asString()
     {
-        return $this->createString(function(ParsedUrl $url) { return $url->getPort();});
+        return $this->createString(function(ParsedUri $uri) { return $uri->getPort();});
     }
 
     /**
-     * returns original url
+     * returns original uri
      *
      * @return  string
      */
     public function asStringWithoutPort()
     {
-        return $this->createString(function(ParsedUrl $url) { return null;});
+        return $this->createString(function(ParsedUri $uri) { return null;});
     }
 
     /**
-     * creates string representation of url
+     * creates string representation of uri
      *
      * @param   \Closure  $portCreator
      * @return  string
      */
     protected function createString(\Closure $portCreator)
     {
-        $url = $this->getScheme() . '://';
+        $uri = $this->getScheme() . '://';
         if ($this->hasUser()) {
             $user = $this->getUser();
             if ($this->hasPassword()) {
                 $user .= ':' . $this->getPassword();
             }
 
-            $url .= $user;
+            $uri .= $user;
             if ($this->hasHost()) {
-                $url .= '@';
+                $uri .= '@';
             }
         }
 
         if ($this->hasHost()) {
-            $url .= $this->getHost();
+            $uri .= $this->getHost();
             $port = $portCreator($this);
             if (strlen($port) > 0) {
-                $url .= ':' . $port;
+                $uri .= ':' . $port;
             }
         }
 
-        $url .= $this->getPath();
+        $uri .= $this->getPath();
         if ($this->queryString->hasParams()) {
-            $url .= '?' . $this->queryString->build();
+            $uri .= '?' . $this->queryString->build();
         }
 
         if ($this->hasFragment()) {
-            $url .= '#' . $this->getFragment();
+            $uri .= '#' . $this->getFragment();
         }
 
-        return $url;
+        return $uri;
     }
 
     /**
@@ -134,18 +134,18 @@ class ParsedUrl extends BaseObject
      */
     public function hasScheme()
     {
-        return isset($this->url['scheme']);
+        return isset($this->uri['scheme']);
     }
 
     /**
-     * returns the scheme of the url
+     * returns the scheme of the uri
      *
      * @return  string
      */
     public function getScheme()
     {
-        if (isset($this->url['scheme'])) {
-            return $this->url['scheme'];
+        if (isset($this->uri['scheme'])) {
+            return $this->uri['scheme'];
         }
 
         return null;
@@ -158,19 +158,19 @@ class ParsedUrl extends BaseObject
      */
     public function hasUser()
     {
-        return isset($this->url['user']);
+        return isset($this->uri['user']);
     }
 
     /**
-     * returns the user of the url
+     * returns the user of the uri
      *
      * @param   string  $defaultUser  user to return if no user is set
      * @return  string
      */
     public function getUser($defaultUser = null)
     {
-        if (isset($this->url['user'])) {
-            return $this->url['user'];
+        if (isset($this->uri['user'])) {
+            return $this->uri['user'];
         }
 
         return $defaultUser;
@@ -183,18 +183,18 @@ class ParsedUrl extends BaseObject
      */
     public function hasPassword()
     {
-        return isset($this->url['pass']);
+        return isset($this->uri['pass']);
     }
 
     /**
-     * returns the password of the url
+     * returns the password of the uri
      *
      * @return  string
      */
     public function getPassword()
     {
-        if (isset($this->url['pass'])) {
-            return $this->url['pass'];
+        if (isset($this->uri['pass'])) {
+            return $this->uri['pass'];
         }
 
         return null;
@@ -207,7 +207,7 @@ class ParsedUrl extends BaseObject
      */
     public function hasHost()
     {
-        return isset($this->url['host']);
+        return isset($this->uri['host']);
     }
 
     /**
@@ -217,18 +217,18 @@ class ParsedUrl extends BaseObject
      */
     public function isLocalHost()
     {
-        return in_array($this->url['host'], array('localhost', '127.0.0.1', '[::1]'));
+        return in_array($this->uri['host'], array('localhost', '127.0.0.1', '[::1]'));
     }
 
     /**
-     * returns hostname of the url
+     * returns hostname of the uri
      *
      * @return  string
      */
     public function getHost()
     {
-        if (isset($this->url['host'])) {
-            return $this->url['host'];
+        if (isset($this->uri['host'])) {
+            return $this->uri['host'];
         }
 
         return null;
@@ -241,32 +241,32 @@ class ParsedUrl extends BaseObject
      */
     public function hasPort()
     {
-        return isset($this->url['port']);
+        return isset($this->uri['port']);
     }
 
     /**
-     * returns port of the url
+     * returns port of the uri
      *
      * @return  string
      */
     public function getPort()
     {
-        if (isset($this->url['port'])) {
-            return (int) $this->url['port'];
+        if (isset($this->uri['port'])) {
+            return (int) $this->uri['port'];
         }
 
         return null;
     }
 
     /**
-     * returns path of the url
+     * returns path of the uri
      *
      * @return  string
      */
     public function getPath()
     {
-        if (isset($this->url['path'])) {
-            return $this->url['path'];
+        if (isset($this->uri['path'])) {
+            return $this->uri['path'];
         }
 
         return null;
@@ -283,24 +283,24 @@ class ParsedUrl extends BaseObject
     }
 
     /**
-     * checks whether port is set
+     * checks whether fragment is set
      *
      * @return  bool
      */
     public function hasFragment()
     {
-        return isset($this->url['fragment']);
+        return isset($this->uri['fragment']);
     }
 
     /**
-     * returns port of the url
+     * returns port of the uri
      *
      * @return  string
      */
     public function getFragment()
     {
-        if (isset($this->url['fragment'])) {
-            return $this->url['fragment'];
+        if (isset($this->uri['fragment'])) {
+            return $this->uri['fragment'];
         }
 
         return null;

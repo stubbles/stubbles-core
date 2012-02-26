@@ -10,9 +10,9 @@
 namespace net\stubbles\peer;
 use net\stubbles\lang\exception\Exception;
 /**
- * Exception to be thrown when an URL can not be parsed from a string.
+ * Exception to be thrown when an URI can not be parsed from a string.
  */
-class MalformedUrlException extends Exception
+class MalformedUriException extends Exception
 {
     // intentionally empty
 }
