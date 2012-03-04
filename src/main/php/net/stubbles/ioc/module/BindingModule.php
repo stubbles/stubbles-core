@@ -12,6 +12,8 @@ use net\stubbles\ioc\Binder;
 use net\stubbles\lang\Object;
 /**
  * Interface for modules which configure the binder.
+ *
+ * @api
  */
 interface BindingModule extends Object
 {

@@ -7,11 +7,14 @@
  *
  * @package  net\stubbles
  */
-namespace net\stubbles\ioc;
+namespace net\stubbles\ioc\binding;
+use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\lang\Object;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
- * Interface for all scopes
+ * Interface for all scopes.
+ *
+ * @api
  */
 interface BindingScope extends Object
 {

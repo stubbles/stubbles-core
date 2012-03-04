@@ -98,7 +98,7 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     public function namedSetterInjectionWithMultipleParamAndOneNamedConstantParam()
     {
         $binder = new Binder();
-        $binder->bindConstant()->named('boss')->to('role:boss');
+        $binder->bindConstant('boss')->to('role:boss');
         $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
 
         $injector = $binder->getInjector();
@@ -122,7 +122,7 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     public function namedConstructorInjectionWithMultipleParamAndOneNamedConstantParam()
     {
         $binder = new Binder();
-        $binder->bindConstant()->named('boss')->to('role:boss');
+        $binder->bindConstant('boss')->to('role:boss');
         $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
 
         $injector = $binder->getInjector();

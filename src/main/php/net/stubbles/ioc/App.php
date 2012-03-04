@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\ioc\module\ArgumentsBindingModule;
 use net\stubbles\ioc\module\ModeBindingModule;
 use net\stubbles\ioc\module\PropertiesBindingModule;
 use net\stubbles\lang\BaseObject;
@@ -21,6 +20,7 @@ abstract class App extends BaseObject
     /**
      * runs the application
      *
+     * @api
      * @since  2.0.0
      */
     public abstract function run();
@@ -32,6 +32,7 @@ abstract class App extends BaseObject
      * this method will be used to configure the ioc bindings before using the ioc
      * container to create the instance.
      *
+     * @api
      * @param   string  $projectPath  path to project
      * @return  App
      */
@@ -47,6 +48,7 @@ abstract class App extends BaseObject
      * this method will be used to configure the ioc bindings before using the ioc
      * container to create the instance.
      *
+     * @api
      * @param   string  $className    full qualified class name of class to create an instance of
      * @param   string  $projectPath  path to project
      * @return  App
@@ -60,13 +62,12 @@ abstract class App extends BaseObject
     /**
      * creates list of bindings from given class
      *
-     * @param   string    $className    full qualified class name of class to create an instance of
-     * @param   string    $projectPath  path to project
-     * @param   string[]  $argv         list of arguments
+     * @param   string  $className    full qualified class name of class to create an instance of
+     * @param   string  $projectPath  path to project
      * @return  BindingModule[]
      * @since   1.3.0
      */
-    public static function getBindingsForApp($className, $projectPath)
+    private static function getBindingsForApp($className, $projectPath)
     {
         if (method_exists($className, '__bindings')) {
             return $className::__bindings($projectPath);
@@ -78,6 +79,7 @@ abstract class App extends BaseObject
     /**
      * creates mode binding module
      *
+     * @api
      * @param   Mode  $mode  runtime mode
      * @return  ModeBindingModule
      * @since   2.0.0
@@ -90,6 +92,7 @@ abstract class App extends BaseObject
     /**
      * creates properties binding module
      *
+     * @api
      * @param   string  $projectPath
      * @return  PropertiesBindingModule
      * @since   2.0.0
