@@ -159,49 +159,6 @@ class BaseObjectTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @group  bug162
-     * @see    http://stubbles.net/ticket/162
-     * @since  2.0.0
-     */
-    public function staticConstructionForClassWithoutMagicConstructMethod()
-    {
-        $this->assertInstanceOf('net\\stubbles\\lang\\stub1BaseObject',
-                                stub1BaseObject::newInstance()
-        );
-    }
-
-    /**
-     * @test
-     * @group  bug162
-     * @see    http://stubbles.net/ticket/162
-     * @since  2.0.0
-     */
-    public function staticConstructionForClassWithMagicConstructMethodWithoutArguments()
-    {
-        $this->assertInstanceOf('net\\stubbles\\lang\\stub2BaseObject',
-                                stub2BaseObject::newInstance()
-        );
-    }
-
-    /**
-     * @test
-     * @group  bug162
-     * @see    http://stubbles.net/ticket/162
-     * @since  2.0.0
-     */
-    public function staticConstructionPassesParameters()
-    {
-        $BaseObject3 = stub3BaseObject::newInstance($this->baseObject1, $this->baseObject2, 303);
-        $this->assertInstanceOf('net\\stubbles\\lang\\stub3BaseObject',
-                                $BaseObject3
-        );
-        $this->assertSame($this->baseObject1, $BaseObject3->getFoo());
-        $this->assertSame($this->baseObject2, $BaseObject3->getBar());
-        $this->assertEquals(303, $BaseObject3->getBaz());
-    }
-
-    /**
-     * @test
      */
     public function getClassReturnsReflectorForClass()
     {

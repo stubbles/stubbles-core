@@ -16,28 +16,10 @@ use net\stubbles\lang\reflect\ReflectionObject;
 abstract class BaseObject implements Object
 {
     /**
-     * constructs and returns a new instance of the class
-     *
-     * @return  BaseObject
-     * @since   2.0.0
-     */
-    public static function newInstance()
-    {
-        $args = func_get_args();
-        if (count($args) === 0) {
-            $class = get_called_class();
-            return new $class();
-        }
-
-        $refClass = new \ReflectionClass(get_called_class());
-        return $refClass->newInstanceArgs($args);
-    }
-
-    /**
      * returns class informations
      *
-     * @return  ReflectionObject
      * @XmlIgnore
+     * @return  ReflectionObject
      */
     public function getClass()
     {
@@ -47,8 +29,8 @@ abstract class BaseObject implements Object
     /**
      * returns the full qualified class name
      *
-     * @return  string
      * @XmlIgnore
+     * @return  string
      */
     public function getClassName()
     {
@@ -58,8 +40,8 @@ abstract class BaseObject implements Object
     /**
      * returns a unique hash code for the class
      *
-     * @return  string
      * @XmlIgnore
+     * @return  string
      */
     public function hashCode()
     {
@@ -96,8 +78,8 @@ abstract class BaseObject implements Object
      * }
      * </code>
      *
-     * @return  string
      * @XmlIgnore
+     * @return  string
      */
     public function __toString()
     {

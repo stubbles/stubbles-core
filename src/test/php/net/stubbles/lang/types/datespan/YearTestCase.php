@@ -157,11 +157,22 @@ class YearTestCase extends \PHPUnit_Framework_TestCase
     {
         $year = new Year(2007);
         for ($month = 1; $month <= 12; $month++) {
-            $days = Month::newInstance(2007, $month)->getAmountOfDays();
+            $days = $this->createMonth($month)->getAmountOfDays();
             for ($day = 1; $day <= $days; $day++) {
                 $this->assertTrue($year->containsDate(new Date('2007-' . $month . '-' . $day)));
             }
         }
+    }
+
+    /**
+     * helper method to create a month
+     *
+     * @param   int  $month
+     * @return  Month
+     */
+    private function createMonth($month)
+    {
+        return new Month(2007, $month);
     }
 
     /**
