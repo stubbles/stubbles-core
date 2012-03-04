@@ -23,6 +23,8 @@ use net\stubbles\lang\reflect\annotation\parser\state\AnnotationTextState;
 use net\stubbles\lang\reflect\annotation\parser\state\AnnotationTypeState;
 /**
  * Parser to parse Java-Style annotations.
+ *
+ * @internal
  */
 class AnnotationStateParser extends BaseObject implements AnnotationParser
 {

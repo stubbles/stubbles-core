@@ -12,6 +12,7 @@ use net\stubbles\Bootstrap;
 /**
  * Static cache for annotations
  *
+ * @internal
  * @static
  */
 class AnnotationCache

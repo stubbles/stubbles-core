@@ -37,6 +37,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance which represents the changed date
      *
+     * @api
      * @param   string  $target  relative format accepted by strtotime()
      * @return  Date
      */
@@ -50,6 +51,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance with same date but changed time
      *
+     * @api
      * @param   string  $time  time representation in format HH:MM:SS
      * @return  Date
      * @throws  IllegalArgumentException
@@ -68,6 +70,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance with same date, minute and second but changed hour
      *
+     * @api
      * @param   int  $hour
      * @return  Date
      */
@@ -79,6 +82,7 @@ class DateModifier extends BaseObject
     /**
      * changes date by given amount of hours
      *
+     * @api
      * @param   int  $hours
      * @return  Date
      */
@@ -90,6 +94,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance with same date, hour and second but changed minute
      *
+     * @api
      * @param   int  $minute
      * @return  Date
      */
@@ -101,6 +106,7 @@ class DateModifier extends BaseObject
     /**
      * changes date by given amount of minutes
      *
+     * @api
      * @param   int  $minutes
      * @return  Date
      */
@@ -112,6 +118,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance with same date, hour and minute but changed second
      *
+     * @api
      * @param   int  $second
      * @return  Date
      */
@@ -123,6 +130,7 @@ class DateModifier extends BaseObject
     /**
      * changes date by given amount of seconds
      *
+     * @api
      * @param   int  $seconds
      * @return  Date
      */
@@ -134,6 +142,7 @@ class DateModifier extends BaseObject
     /**
      * creates new date instance with changed time
      *
+     * @api
      * @param   int  $hour
      * @param   int  $minute
      * @param   int  $second
@@ -153,6 +162,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance with changed date but same time
      *
+     * @api
      * @param   string  $date  date representation in format YYYY-MM-DD
      * @return  Date
      * @throws  IllegalArgumentException
@@ -171,6 +181,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance with changed year but same time, month and day
      *
+     * @api
      * @param   string  $year
      * @return  Date
      */
@@ -182,6 +193,7 @@ class DateModifier extends BaseObject
     /**
      * changes date by given amount of years
      *
+     * @api
      * @param   int  $years
      * @return  Date
      */
@@ -193,6 +205,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance with changed month but same time, year and day
      *
+     * @api
      * @param   string  $month
      * @return  Date
      */
@@ -204,6 +217,7 @@ class DateModifier extends BaseObject
     /**
      * changes date by given amount of months
      *
+     * @api
      * @param   int  $months
      * @return  Date
      */
@@ -215,6 +229,7 @@ class DateModifier extends BaseObject
     /**
      * returns a new date instance with changed day but same time, year and month
      *
+     * @api
      * @param   string  $day
      * @return  Date
      */
@@ -226,6 +241,7 @@ class DateModifier extends BaseObject
     /**
      * changes date by given amount of days
      *
+     * @api
      * @param   int  $days
      * @return  Date
      */

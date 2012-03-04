@@ -12,7 +12,7 @@ use net\stubbles\lang\BaseObject;
 /**
  * Container for a collection of PHP error handlers.
  *
- * @see  http://php.net/set_error_handler
+ * @api
  */
 class CompositeErrorHandler extends BaseObject implements ErrorHandler
 {
@@ -21,7 +21,7 @@ class CompositeErrorHandler extends BaseObject implements ErrorHandler
      *
      * @type  ErrorHandler[]
      */
-    protected $errorHandlers = array();
+    private $errorHandlers = array();
 
     /**
      * adds an error handler to the collection

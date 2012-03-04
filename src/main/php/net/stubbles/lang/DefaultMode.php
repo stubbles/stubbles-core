@@ -15,22 +15,36 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  * The mode instance contains information about which exception handler and
  * which error handler should be used, else well as whether caching is enabled
  * or not. Currently, there are four different default modes available:
- * DefaultMode::prod()
- *      - uses exception handler net\stubbles\lang\errorhandler\ProdModeExceptionHandler
- *      - uses default error handler net\stubbles\lang\errorhandler\DefaultErrorHandler
- *      - caching enabled
- * DefaultMode::test()
- *      - uses exception handler net\stubbles\lang\errorhandler\DisplayExceptionHandler
- *      - uses default error handler net\stubbles\lang\errorhandler\DefaultErrorHandler
- *      - caching enabled
- * DefaultMode::stage()
- *      - uses exception handler net\stubbles\lang\errorhandler\DisplayExceptionHandler
- *      - no error handler
- *      - caching disabled
- * DefaultMode::dev()
- *      - uses exception handler net\stubbles\lang\errorhandler\DisplayExceptionHandler
- *      - no error handler
- *      - caching disabled
+ * <ul>
+ * <li>DefaultMode::prod()
+ *   <ul>
+ *     <li>uses exception handler net\stubbles\lang\errorhandler\ProdModeExceptionHandler</li>
+ *     <li>uses default error handler net\stubbles\lang\errorhandler\DefaultErrorHandler</li>
+ *     <li>caching enabled</li>
+ *   </ul>
+ * </li>
+ * <li>DefaultMode::test()
+ *   <ul>
+ *     <li>uses exception handler net\stubbles\lang\errorhandler\DisplayExceptionHandler</li>
+ *     <li>uses default error handler net\stubbles\lang\errorhandler\DefaultErrorHandler</li>
+ *     <li>caching enabled</li>
+ *   </ul>
+ * </li>
+ * <li>DefaultMode::stage()
+ *   <ul>
+ *     <li>uses exception handler net\stubbles\lang\errorhandler\DisplayExceptionHandler</li>
+ *     <li>no error handler</li>
+ *     <li>caching disabled</li>
+ *   </ul>
+ * </li>
+ * <li>DefaultMode::dev()
+ *   <ul>
+ *     <li>uses exception handler net\stubbles\lang\errorhandler\DisplayExceptionHandler</li>
+ *     <li>no error handler</li>
+ *     <li>caching disabled</li>
+ *   </ul>
+ * </li>
+ * </ul>
  * While stage and dev mode currently are not different this may change in
  * future in case new mode depending switches become neccessary.
  *
@@ -102,6 +116,7 @@ class DefaultMode extends BaseObject implements Mode
      * - default error handling for PHP errors
      * - caching enabled
      *
+     * @api
      * @return  Mode
      */
     public static function prod()
@@ -118,6 +133,7 @@ class DefaultMode extends BaseObject implements Mode
      * - default error handling for PHP errors
      * - caching enabled
      *
+     * @api
      * @return  Mode
      */
     public static function test()
@@ -134,6 +150,7 @@ class DefaultMode extends BaseObject implements Mode
      * - no error handling for PHP errors
      * - caching disabled
      *
+     * @api
      * @return  Mode
      */
     public static function stage()
@@ -149,6 +166,7 @@ class DefaultMode extends BaseObject implements Mode
      * - no error handling for PHP errors
      * - caching disabled
      *
+     * @api
      * @return  Mode
      */
     public static function dev()
@@ -160,6 +178,7 @@ class DefaultMode extends BaseObject implements Mode
     /**
      * returns the name of the mode
      *
+     * @api
      * @return  string
      */
     public function name()
@@ -196,7 +215,7 @@ class DefaultMode extends BaseObject implements Mode
      * value will be false, if registered handler was an instance the handler
      * instance will be returned, and true in any other case.
      *
-     * @param   string       $projectPath  path to project
+     * @param   string  $projectPath  path to project
      * @return  bool|object
      */
     public function registerExceptionHandler($projectPath)
@@ -242,7 +261,7 @@ class DefaultMode extends BaseObject implements Mode
      * will be false, if registered handler was an instance the handler instance
      * will be returned, and true in any other case.
      *
-     * @param   string       $projectPath  path to project
+     * @param   string  $projectPath  path to project
      * @return  bool|object
      */
     public function registerErrorHandler($projectPath)
@@ -262,6 +281,7 @@ class DefaultMode extends BaseObject implements Mode
     /**
      * checks whether cache is enabled or not
      *
+     * @api
      * @return  bool
      */
     public function isCacheEnabled()

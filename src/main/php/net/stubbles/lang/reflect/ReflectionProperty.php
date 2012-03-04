@@ -17,6 +17,8 @@ use net\stubbles\lang\reflect\annotation\AnnotationFactory;
  * In difference to the default setting of PHP a stub-reflected property will
  * always be accessible by default, regardless of whether it was defined as
  * public, protected or private.
+ *
+ * @api
  */
 class ReflectionProperty extends \ReflectionProperty implements Annotatable
 {

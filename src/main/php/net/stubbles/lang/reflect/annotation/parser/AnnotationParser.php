@@ -10,6 +10,8 @@
 namespace net\stubbles\lang\reflect\annotation\parser;
 /**
  * Interface for parsers to parse Java-Style annotations.
+ *
+ * @internal
  */
 interface AnnotationParser
 {

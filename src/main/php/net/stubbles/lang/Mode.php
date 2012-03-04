@@ -28,6 +28,7 @@ interface Mode extends Object
     /**
      * returns the name of the mode
      *
+     * @api
      * @return  string
      */
     public function name();
@@ -81,6 +82,7 @@ interface Mode extends Object
     /**
      * checks whether cache is enabled or not
      *
+     * @api
      * @return  bool
      */
     public function isCacheEnabled();

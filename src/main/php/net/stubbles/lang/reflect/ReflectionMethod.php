@@ -14,6 +14,8 @@ use net\stubbles\lang\reflect\annotation\Annotation;
 use net\stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
  * Extended Reflection class for class methods that allows usage of annotations.
+ *
+ * @api
  */
 class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
 {

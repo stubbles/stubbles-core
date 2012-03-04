@@ -11,6 +11,8 @@ namespace net\stubbles\lang\types\datespan;
 use net\stubbles\lang\types\Date;
 /**
  * Datespan that represents a week.
+ *
+ * @api
  */
 class Week extends CustomDatespan
 {

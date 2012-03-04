@@ -67,6 +67,7 @@ class Annotation extends BaseObject
     /**
      * Returns the name under which the annotation is stored.
      *
+     * @api
      * @return  string
      */
     public function getAnnotationName()
@@ -89,6 +90,7 @@ class Annotation extends BaseObject
      *
      * Returns null if a value with given name does not exist or is not set.
      *
+     * @api
      * @param   string  $name
      * @return  bool
      * @since   1.7.0
@@ -103,6 +105,7 @@ class Annotation extends BaseObject
      *
      * Returns null if a value with given name does not exist or is not set.
      *
+     * @api
      * @param   string  $name
      * @return  mixed
      * @since   1.7.0

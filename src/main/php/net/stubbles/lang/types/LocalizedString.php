@@ -12,6 +12,7 @@ use net\stubbles\lang\BaseObject;
 /**
  * Class containing a localized string.
  *
+ * @api
  * @XmlTag(tagName='string')
  */
 class LocalizedString extends BaseObject
@@ -44,8 +45,8 @@ class LocalizedString extends BaseObject
     /**
      * returns the locale of the message
      *
-     * @return  string
      * @XmlAttribute(attributeName='locale')
+     * @return  string
      */
     public function getLocale()
     {
@@ -55,8 +56,8 @@ class LocalizedString extends BaseObject
     /**
      * returns the content of the message
      *
-     * @return  string
      * @XmlTag(tagName='content')
+     * @return  string
      */
     public function getMessage()
     {

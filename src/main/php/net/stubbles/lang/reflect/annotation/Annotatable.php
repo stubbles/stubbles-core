@@ -10,6 +10,8 @@
 namespace net\stubbles\lang\reflect\annotation;
 /**
  * Interface for reflected structures that may have annotations.
+ *
+ * @api
  */
 interface Annotatable
 {

@@ -12,6 +12,7 @@ use net\stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
 /**
  * Factory to create annotations.
  *
+ * @internal
  * @static
  */
 class AnnotationFactory

@@ -15,7 +15,8 @@ use net\stubbles\lang\exception\IllegalStateException;
 /**
  * Class for operations on bsd-style sockets.
  *
- * @since  2.0.0
+ * @since     2.0.0
+ * @internal
  */
 class SocketOptions extends BaseObject implements Clonable
 {

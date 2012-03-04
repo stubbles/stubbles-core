@@ -12,6 +12,8 @@ use net\stubbles\lang\Object;
 use net\stubbles\lang\reflect\ReflectionMethod;
 /**
  * Interface for matching methods.
+ *
+ * @api
  */
 interface MethodMatcher extends Object
 {
