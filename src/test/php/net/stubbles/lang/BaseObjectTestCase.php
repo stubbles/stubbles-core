@@ -315,7 +315,7 @@ class BaseObjectTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('net\\stubbles\\lang\\stub4BaseObject {
 }
 ',
-                            BaseObject::getStringRepresentationOf(new stub4BaseObject())
+                            StringRepresentationBuilder::buildFrom(new stub4BaseObject())
         );
     }
 }
