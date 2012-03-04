@@ -15,6 +15,8 @@ use net\stubbles\peer\Socket;
 use net\stubbles\peer\Uri;
 /**
  * Class for URIs of scheme hypertext transfer protocol.
+ *
+ * @api
  */
 abstract class HttpUri extends Uri
 {

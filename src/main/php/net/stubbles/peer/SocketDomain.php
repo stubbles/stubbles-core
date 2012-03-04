@@ -23,6 +23,7 @@ class SocketDomain extends Enum
      *
      * Requires a port to connect.
      *
+     * @api
      * @type  SocketDomain
      */
     public static $AF_INET;
@@ -34,6 +35,7 @@ class SocketDomain extends Enum
      *
      * Requires a port to connect.
      *
+     * @api
      * @type  SocketDomain
      */
     public static $AF_INET6;
@@ -44,6 +46,7 @@ class SocketDomain extends Enum
      *
      * Does not require a port to connect.
      *
+     * @api
      * @type  SocketDomain
      */
     public static $AF_UNIX;

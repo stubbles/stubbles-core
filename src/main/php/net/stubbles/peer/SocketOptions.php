@@ -55,7 +55,7 @@ class SocketOptions extends BaseObject implements Clonable
      *
      * @return  bool
      */
-    public function boundToConnection()
+    private function boundToConnection()
     {
         return (null !== $this->connection);
     }
@@ -92,14 +92,6 @@ class SocketOptions extends BaseObject implements Clonable
         }
 
         return $this->retrieve($level, $name, $default);
-    }
-
-    /**
-     * free from connection binding
-     */
-    public function __clone()
-    {
-        $this->connection = null;
     }
 
     /**

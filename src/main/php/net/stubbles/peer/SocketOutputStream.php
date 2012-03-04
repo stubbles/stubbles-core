@@ -12,6 +12,8 @@ use net\stubbles\lang\BaseObject;
 use net\stubbles\streams\OutputStream;
 /**
  * Output stream for writing to sockets.
+ *
+ * @api
  */
 class SocketOutputStream extends BaseObject implements OutputStream
 {

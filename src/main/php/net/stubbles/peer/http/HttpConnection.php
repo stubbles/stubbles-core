@@ -49,6 +49,7 @@ class HttpConnection extends BaseObject
     /**
      * set timeout for connection
      *
+     * @api
      * @param   int  $timeout  timeout for connection in seconds
      * @return  HttpConnection
      */
@@ -61,6 +62,7 @@ class HttpConnection extends BaseObject
     /**
      * do the request with the given user agent header
      *
+     * @api
      * @param   string  $userAgent
      * @return  HttpConnection
      */
@@ -73,6 +75,7 @@ class HttpConnection extends BaseObject
     /**
      * say the connection was refered from given uri
      *
+     * @api
      * @param   string  $referer
      * @return  HttpConnection
      */
@@ -85,6 +88,7 @@ class HttpConnection extends BaseObject
     /**
      * add some cookie data to the request
      *
+     * @api
      * @param   array  $cookieValues  list of key-value pairs
      * @return  HttpConnection
      */
@@ -97,6 +101,7 @@ class HttpConnection extends BaseObject
     /**
      * authorize with given credentials
      *
+     * @api
      * @param   string  $user
      * @param   string  $password
      * @return  HttpConnection
@@ -110,6 +115,7 @@ class HttpConnection extends BaseObject
     /**
      * adds any arbitrary header
      *
+     * @api
      * @param   string  $key    name of header
      * @param   string  $value  value of header
      * @return  HttpConnection
@@ -123,6 +129,7 @@ class HttpConnection extends BaseObject
     /**
      * returns response object for given URI after GET request
      *
+     * @api
      * @param   string  $version  HTTP version
      * @return  HttpResponse
      */
@@ -135,6 +142,7 @@ class HttpConnection extends BaseObject
     /**
      * returns response object for given URI after HEAD request
      *
+     * @api
      * @param   string  $version  HTTP version
      * @return  HttpResponse
      */
@@ -147,6 +155,7 @@ class HttpConnection extends BaseObject
     /**
      * returns response object for given URI after POST request
      *
+     * @api
      * @param   string|array  $body
      * @param   string        $version  HTTP version
      * @return  HttpResponse

@@ -13,6 +13,8 @@ use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\exception\IllegalStateException;
 /**
  * Class for operations on sockets.
+ *
+ * @api
  */
 class Socket extends BaseObject
 {
