@@ -65,6 +65,36 @@ class Binder extends BaseObject
     }
 
     /**
+     * bind to a list
+     *
+     * If a list with given name already exists it will return exactly this list
+     * to add more values to it.
+     *
+     * @param   string  $name
+     * @return  net\stubbles\ioc\binding\ListBinding
+     * @since   2.0.0
+     */
+    public function bindList($name)
+    {
+        return $this->injector->bindList($name);
+    }
+
+    /**
+     * bind to a map
+     *
+     * If a map with given name already exists it will return exactly this map
+     * to add more key-value pairs to it.
+     *
+     * @param   string  $name
+     * @return  net\stubbles\ioc\binding\MapBinding
+     * @since   2.0.0
+     */
+    public function bindMap($name)
+    {
+        return $this->injector->bindMap($name);
+    }
+
+    /**
      * Get an injector for this binder
      *
      * @return  Injector

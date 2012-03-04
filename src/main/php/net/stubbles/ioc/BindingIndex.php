@@ -10,7 +10,6 @@
 namespace net\stubbles\ioc;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
-use net\stubbles\lang\reflect\ReflectionClass;
 /**
  * Stores list of all available bindings.
  *
@@ -50,9 +49,9 @@ class BindingIndex extends BaseObject
     /**
      * check whether a binding for a type is available (explicit and implicit)
      *
-     * @param   string   $type
-     * @param   string   $name
-     * @return  boolean
+     * @param   string  $type
+     * @param   string  $name
+     * @return  bool
      */
     public function hasBinding($type, $name = null)
     {
@@ -68,6 +67,10 @@ class BindingIndex extends BaseObject
      */
     public function getBinding($type, $name = null)
     {
+        if ($name instanceof BaseReflectionClass) {
+            $name = $name->getName();
+        }
+
         $bindingIndex = $this->getIndex();
         if (null !== $name && isset($bindingIndex[$type . '#' . $name])) {
             return $bindingIndex[$type . '#' . $name];
