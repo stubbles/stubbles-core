@@ -37,7 +37,7 @@ class InjectorProviderTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function injectWithInvalidProviderClassThrowsException()
     {

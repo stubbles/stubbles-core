@@ -52,7 +52,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function retrieveNonExistingConstantThrowsBindingException()
     {
@@ -101,7 +101,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      * @group              ioc_constantprovider
      * @since              1.6.0
      */

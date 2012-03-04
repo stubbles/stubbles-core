@@ -8,9 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc\binding;
-use net\stubbles\ioc\BindingException;
-use net\stubbles\ioc\BindingScope;
-use net\stubbles\ioc\BindingScopes;
 use net\stubbles\ioc\DefaultInjectionProvider;
 use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\ioc\Injector;

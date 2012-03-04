@@ -9,7 +9,10 @@
  */
 namespace net\stubbles\ioc;
 use net\stubbles\ioc\binding\Binding;
+use net\stubbles\ioc\binding\BindingException;
 use net\stubbles\ioc\binding\BindingIndex;
+use net\stubbles\ioc\binding\BindingScope;
+use net\stubbles\ioc\binding\BindingScopes;
 use net\stubbles\ioc\binding\ClassBinding;
 use net\stubbles\ioc\binding\ConstantBinding;
 use net\stubbles\ioc\binding\ListBinding;

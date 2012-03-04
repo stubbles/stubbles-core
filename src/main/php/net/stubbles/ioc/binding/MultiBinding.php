@@ -9,7 +9,6 @@
  */
 namespace net\stubbles\ioc\binding;
 use net\stubbles\ioc\Injector;
-use net\stubbles\ioc\BindingException;
 use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;

@@ -7,7 +7,7 @@
  *
  * @package  net\stubbles
  */
-namespace net\stubbles\ioc;
+namespace net\stubbles\ioc\binding;
 use net\stubbles\lang\exception\Exception;
 /**
  * Exception to be thrown in case a binding is invalid or missing

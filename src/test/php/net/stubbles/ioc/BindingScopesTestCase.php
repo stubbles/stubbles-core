@@ -20,8 +20,8 @@ class BindingScopesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createsSingletonScopeIfNonePassed()
     {
-        $bindingScopes = new BindingScopes();
-        $this->assertInstanceOf('net\\stubbles\\ioc\\SingletonBindingScope',
+        $bindingScopes = new binding\BindingScopes();
+        $this->assertInstanceOf('net\\stubbles\\ioc\\binding\\SingletonBindingScope',
                                 $bindingScopes->getSingletonScope()
         );
     }
@@ -31,8 +31,8 @@ class BindingScopesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function usesPassedSingletonScope()
     {
-        $mockSingletonScope = $this->getMock('net\\stubbles\\ioc\\BindingScope');
-        $bindingScopes = new BindingScopes($mockSingletonScope);
+        $mockSingletonScope = $this->getMock('net\\stubbles\\ioc\\binding\\BindingScope');
+        $bindingScopes = new binding\BindingScopes($mockSingletonScope);
         $this->assertSame($mockSingletonScope,
                           $bindingScopes->getSingletonScope()
         );
@@ -44,7 +44,7 @@ class BindingScopesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function retrievingSessionScopeWithoutPriorSettingThrowsRuntimeException()
     {
-        $bindingScopes = new BindingScopes();
+        $bindingScopes = new binding\BindingScopes();
         $bindingScopes->getSessionScope();
     }
 
@@ -53,8 +53,8 @@ class BindingScopesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function usesPassedSessionScope()
     {
-        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\BindingScope');
-        $bindingScopes = new BindingScopes(null, $mockSessionScope);
+        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\binding\\BindingScope');
+        $bindingScopes = new binding\BindingScopes(null, $mockSessionScope);
         $this->assertSame($mockSessionScope,
                           $bindingScopes->getSessionScope()
         );
@@ -65,8 +65,8 @@ class BindingScopesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function usesLaterSetSessionScope()
     {
-        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\BindingScope');
-        $bindingScopes = new BindingScopes(null);
+        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\binding\\BindingScope');
+        $bindingScopes = new binding\BindingScopes(null);
         $this->assertSame($mockSessionScope,
                           $bindingScopes->setSessionScope($mockSessionScope)
                                         ->getSessionScope()

@@ -256,7 +256,7 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function missingBindingThrowsBindingException()
     {
@@ -266,7 +266,7 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function missingBindingOnInjectionHandlingThrowsBindingException()
     {
@@ -277,7 +277,7 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function missingConstantBindingOnInjectionHandlingThrowsBindingException()
     {

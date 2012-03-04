@@ -7,7 +7,8 @@
  *
  * @package  net\stubbles
  */
-namespace net\stubbles\ioc;
+namespace net\stubbles\ioc\binding;
+use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\lang\Object;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**

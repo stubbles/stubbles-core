@@ -174,7 +174,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function typedListWithInvalidValueThrowsBindingException()
     {
@@ -188,7 +188,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function typedMapWithInvalidValueThrowsBindingException()
     {

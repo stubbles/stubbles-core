@@ -96,7 +96,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function invalidValueAddedToTypedListThrowsBindingException()
     {
@@ -106,7 +106,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function invalidObjectAddedToTypedListThrowsBindingException()
     {
@@ -147,7 +147,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function invalidValueFromProviderAddedToTypedListThrowsBindingException()
     {
@@ -161,7 +161,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function invalidObjectFromProviderAddedToTypedListThrowsBindingException()
     {
@@ -210,7 +210,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function invalidValueFromProviderClassAddedToTypedListThrowsBindingException()
     {
@@ -226,7 +226,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function invalidObjectFromProviderClassAddedToTypedListThrowsBindingException()
     {
@@ -257,7 +257,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\ioc\BindingException
+     * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function addInvalidProviderClassThrowsBindingException()
     {

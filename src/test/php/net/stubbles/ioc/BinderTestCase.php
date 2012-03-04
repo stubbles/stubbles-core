@@ -43,7 +43,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
     {
         $mockInjector     = $this->getMock('net\\stubbles\\ioc\\Injector');
         $binder           = new Binder($mockInjector);
-        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\BindingScope');
+        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\binding\\BindingScope');
         $mockInjector->expects($this->once())
                      ->method('setSessionScope')
                      ->with($this->equalTo($mockSessionScope));
