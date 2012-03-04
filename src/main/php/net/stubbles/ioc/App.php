@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\ioc\module\ArgumentsBindingModule;
 use net\stubbles\ioc\module\ModeBindingModule;
 use net\stubbles\ioc\module\PropertiesBindingModule;
 use net\stubbles\lang\BaseObject;
@@ -60,9 +59,8 @@ abstract class App extends BaseObject
     /**
      * creates list of bindings from given class
      *
-     * @param   string    $className    full qualified class name of class to create an instance of
-     * @param   string    $projectPath  path to project
-     * @param   string[]  $argv         list of arguments
+     * @param   string  $className    full qualified class name of class to create an instance of
+     * @param   string  $projectPath  path to project
      * @return  BindingModule[]
      * @since   1.3.0
      */

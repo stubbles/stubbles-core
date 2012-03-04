@@ -253,7 +253,7 @@ class BindingIndex extends BaseObject
         }
 
         if ($this->isObjectBinding($type)) {
-            return $this->getAnnotatedBinding($type);
+            return $this->getAnnotatedBinding(new ReflectionClass($type));
         }
 
         return null;
@@ -312,25 +312,24 @@ class BindingIndex extends BaseObject
      *
      * If this is not the case it will fall back to the implicit binding.
      *
-     * @param   string  $type
+     * @param   ReflectionClass  $class
      * @return  Binding
      */
-    private function getAnnotatedBinding($type)
+    private function getAnnotatedBinding(ReflectionClass $class)
     {
-        $typeClass = new ReflectionClass($type);
-        if ($typeClass->isInterface() && $typeClass->hasAnnotation('ImplementedBy')) {
-            return $this->bind($type)
-                        ->to($typeClass->getAnnotation('ImplementedBy')
-                                       ->getDefaultImplementation()
+        if ($class->isInterface() && $class->hasAnnotation('ImplementedBy')) {
+            return $this->bind($class->getName())
+                        ->to($class->getAnnotation('ImplementedBy')
+                                   ->getDefaultImplementation()
                           );
-        } elseif ($typeClass->hasAnnotation('ProvidedBy')) {
-            return $this->bind($type)
-                        ->toProviderClass($typeClass->getAnnotation('ProvidedBy')
-                                                    ->getProviderClass()
+        } elseif ($class->hasAnnotation('ProvidedBy')) {
+            return $this->bind($class->getName())
+                        ->toProviderClass($class->getAnnotation('ProvidedBy')
+                                                ->getProviderClass()
                           );
         }
 
-        return $this->getImplicitBinding($typeClass, $type);
+        return $this->getImplicitBinding($class);
     }
 
     /**
@@ -338,16 +337,16 @@ class BindingIndex extends BaseObject
      *
      * An implicit binding means that a type is requested which itself is a class
      * and not an interface. Obviously, it makes sense to say that a class is
-     * always bound to itself if no other bindings where defined.
+     * always bound to itself if no other bindings were defined.
      *
-     * @param   string  $type
+     * @param   ReflectionClass  $class
      * @return  Binding
      */
-    private function getImplicitBinding(ReflectionClass $typeClass, $type)
+    private function getImplicitBinding(ReflectionClass $class)
     {
-        if (!$typeClass->isInterface()) {
-            return $this->bind($type)
-                        ->to($typeClass);
+        if (!$class->isInterface()) {
+            return $this->bind($class->getName())
+                        ->to($class);
         }
 
         return null;
