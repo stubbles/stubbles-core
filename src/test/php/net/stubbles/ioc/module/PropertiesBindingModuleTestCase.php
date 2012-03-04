@@ -34,9 +34,9 @@ class PropertiesBindingModuleTestCase extends \PHPUnit_Framework_TestCase
     /**
      * injector instance
      *
-     * @type  Injector
+     * @type  Binder
      */
-    private $injector;
+    private $binder;
 
     /**
      * set up test environment
@@ -52,7 +52,7 @@ net.stubbles.webapp.xml.serializeMode=true")
                  ->at($root);
         $this->projectPath             = vfsStream::url('projects');
         $this->propertiesBindingModule = PropertiesBindingModule::create($this->projectPath);
-        $this->injector                = new Injector();
+        $this->binder                  = new Binder();
     }
 
     /**
@@ -87,10 +87,11 @@ net.stubbles.webapp.xml.serializeMode=true")
      */
     public function projectPathIsBound()
     {
-        $this->propertiesBindingModule->configure(new Binder($this->injector));
-        $this->assertTrue($this->injector->hasConstant('net.stubbles.project.path'));
+        $this->propertiesBindingModule->configure($this->binder);
+        $this->assertTrue($this->binder->hasConstant('net.stubbles.project.path'));
         $this->assertEquals($this->projectPath,
-                            $this->injector->getConstant('net.stubbles.project.path')
+                            $this->binder->getInjector()
+                                         ->getConstant('net.stubbles.project.path')
         );
     }
 
@@ -102,10 +103,11 @@ net.stubbles.webapp.xml.serializeMode=true")
      */
     public function pathesShouldBeBoundAsConstant($pathPart, $constantName)
     {
-        $this->propertiesBindingModule->configure(new Binder($this->injector));
-        $this->assertTrue($this->injector->hasConstant($constantName));
+        $this->propertiesBindingModule->configure($this->binder);
+        $this->assertTrue($this->binder->hasConstant($constantName));
         $this->assertEquals($this->getProjectPath($pathPart),
-                            $this->injector->getConstant($constantName)
+                            $this->binder->getInjector()
+                                         ->getConstant($constantName)
         );
     }
 
@@ -130,10 +132,11 @@ net.stubbles.webapp.xml.serializeMode=true")
         $this->propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('projects'),
                                                                          array('user')
                                          );
-        $this->propertiesBindingModule->configure(new Binder($this->injector));
-        $this->assertTrue($this->injector->hasConstant($constantName));
+        $this->propertiesBindingModule->configure($this->binder);
+        $this->assertTrue($this->binder->hasConstant($constantName));
         $this->assertEquals($this->getProjectPath($pathPart),
-                            $this->injector->getConstant($constantName)
+                            $this->binder->getInjector()
+                                         ->getConstant($constantName)
         );
     }
 
@@ -142,13 +145,22 @@ net.stubbles.webapp.xml.serializeMode=true")
      */
     public function propertiesShouldBeAvailableAsInjections()
     {
-        $this->propertiesBindingModule->configure(new Binder($this->injector));
-        $this->assertTrue($this->injector->hasConstant('net.stubbles.locale'));
-        $this->assertTrue($this->injector->hasConstant('net.stubbles.number.decimals'));
-        $this->assertTrue($this->injector->hasConstant('net.stubbles.webapp.xml.serializeMode'));
-        $this->assertEquals('de_DE', $this->injector->getConstant('net.stubbles.locale'));
-        $this->assertEquals(4, $this->injector->getConstant('net.stubbles.number.decimals'));
-        $this->assertEquals(true, (bool) $this->injector->getConstant('net.stubbles.webapp.xml.serializeMode'));
+        $this->propertiesBindingModule->configure($this->binder);
+        $this->assertTrue($this->binder->hasConstant('net.stubbles.locale'));
+        $this->assertTrue($this->binder->hasConstant('net.stubbles.number.decimals'));
+        $this->assertTrue($this->binder->hasConstant('net.stubbles.webapp.xml.serializeMode'));
+        $this->assertEquals('de_DE',
+                            $this->binder->getInjector()
+                                         ->getConstant('net.stubbles.locale')
+        );
+        $this->assertEquals(4,
+                            $this->binder->getInjector()
+                                         ->getConstant('net.stubbles.number.decimals')
+        );
+        $this->assertEquals(true,
+                            (bool) $this->binder->getInjector()
+                                                ->getConstant('net.stubbles.webapp.xml.serializeMode')
+        );
     }
 
     /**
@@ -158,11 +170,10 @@ net.stubbles.webapp.xml.serializeMode=true")
     {
         vfsStream::setup();
         $propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('root'));
-        $injector                = new Injector();
-        $propertiesBindingModule->configure(new Binder($injector));
-        $this->assertFalse($this->injector->hasConstant('net.stubbles.locale'));
-        $this->assertFalse($this->injector->hasConstant('net.stubbles.number.decimals'));
-        $this->assertFalse($this->injector->hasConstant('net.stubbles.webapp.xml.serializeMode'));
+        $propertiesBindingModule->configure($this->binder);
+        $this->assertFalse($this->binder->hasConstant('net.stubbles.locale'));
+        $this->assertFalse($this->binder->hasConstant('net.stubbles.number.decimals'));
+        $this->assertFalse($this->binder->hasConstant('net.stubbles.webapp.xml.serializeMode'));
     }
 
     /**
@@ -172,9 +183,10 @@ net.stubbles.webapp.xml.serializeMode=true")
      */
     public function propertiesAvailableViaInstance()
     {
-        $this->propertiesBindingModule->configure(new Binder($this->injector));
-        $this->assertTrue($this->injector->hasExplicitBinding('net\\stubbles\\lang\\Properties', 'config'));
-        $properties = $this->injector->getInstance('net\\stubbles\\lang\\Properties', 'config');
+        $this->propertiesBindingModule->configure($this->binder);
+        $this->assertTrue($this->binder->hasExplicitBinding('net\\stubbles\\lang\\Properties', 'config'));
+        $properties = $this->binder->getInjector()
+                                   ->getInstance('net\\stubbles\\lang\\Properties', 'config');
         /* @var  $properties  \net\stubbles\lang\Properties */
         $this->assertTrue($properties->hasValue('config', 'net.stubbles.locale'));
         $this->assertTrue($properties->hasValue('config', 'net.stubbles.number.decimals'));
@@ -193,9 +205,8 @@ net.stubbles.webapp.xml.serializeMode=true")
     {
         vfsStream::setup();
         $propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('root'));
-        $injector                = new Injector();
-        $propertiesBindingModule->configure(new Binder($injector));
-        $this->assertFalse($this->injector->hasExplicitBinding('net\\stubbles\\lang\\Properties', 'config'));
+        $propertiesBindingModule->configure($this->binder);
+        $this->assertFalse($this->binder->hasExplicitBinding('net\\stubbles\\lang\\Properties', 'config'));
     }
 }
 ?>

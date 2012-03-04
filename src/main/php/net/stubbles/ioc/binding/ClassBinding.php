@@ -29,12 +29,6 @@ use net\stubbles\lang\reflect\ReflectionClass;
 class ClassBinding extends BaseObject implements Binding
 {
     /**
-     * injector used by this binding
-     *
-     * @type  Injector
-     */
-    protected $injector      = null;
-    /**
      * type for this binding
      *
      * @type  string
@@ -86,13 +80,11 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * constructor
      *
-     * @param  Injector       $injector
      * @param  string         $type
      * @param  BindingScopes  $scopes
      */
-    public function __construct(Injector $injector, $type, BindingScopes $scopes)
+    public function __construct($type, BindingScopes $scopes)
     {
-        $this->injector = $injector;
         $this->type     = $type;
         $this->impl     = $type;
         $this->scopes   = $scopes;
@@ -217,11 +209,12 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * returns the created instance
      *
-     * @param   string  $name
+     * @param   Injector  $injector
+     * @param   string    $name
      * @return  mixed
      * @throws  BindingException
      */
-    public function getInstance($name)
+    public function getInstance(Injector $injector, $name)
     {
         if (null !== $this->instance) {
             return $this->instance;
@@ -239,14 +232,14 @@ class ClassBinding extends BaseObject implements Binding
 
         if (null === $this->provider) {
             if (null != $this->providerClass) {
-                $provider = $this->injector->getInstance($this->providerClass);
+                $provider = $injector->getInstance($this->providerClass);
                 if (!($provider instanceof InjectionProvider)) {
                     throw new BindingException('Configured provider class ' . $this->providerClass . ' for type ' . $this->type . ' is not an instance of net\\stubbles\\ioc\\InjectionProvider.');
                 }
 
                 $this->provider = $provider;
             } else {
-                $this->provider = new DefaultInjectionProvider($this->injector, $this->impl);
+                $this->provider = new DefaultInjectionProvider($injector, $this->impl);
             }
         }
 

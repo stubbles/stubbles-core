@@ -21,58 +21,40 @@ class ConstantBinding extends BaseObject implements Binding
     /**
      * This string is used when generating the key for a constant binding.
      */
-    const TYPE               = '__CONSTANT__';
-    /**
-     * injector used by this binding
-     *
-     * @type  Injector
-     */
-    protected $injector      = null;
+    const TYPE             = '__CONSTANT__';
     /**
      * annotated with a name
      *
      * @type  string
      */
-    protected $name          = null;
+    private $name          = null;
     /**
      * value to provide
      *
      * @type  mixed
      */
-    protected $value;
+    private $value;
     /**
      * provider to use for this binding
      *
      * @type  InjectionProvider
      */
-    protected $provider      = null;
+    private $provider      = null;
     /**
      * provider class to use for this binding (will be created via injector)
      *
      * @type  string
      */
-    protected $providerClass = null;
+    private $providerClass = null;
 
     /**
      * constructor
      *
-     * @param  Injector  $injector
+     * @param  string  $name  name of the list or map
      */
-    public function __construct(Injector $injector)
-    {
-        $this->injector = $injector;
-    }
-
-    /**
-     * set the name of the injection
-     *
-     * @param   string               $name
-     * @return  ConstantBinding
-     */
-    public function named($name)
+    public function __construct($name)
     {
         $this->name = $name;
-        return $this;
     }
 
     /**
@@ -131,20 +113,20 @@ class ConstantBinding extends BaseObject implements Binding
     }
 
     /**
-     * returns the value to provide
+     * returns the created instance
      *
-     * @param   string  $name
+     * @param   Injector  $injector
+     * @param   string    $name
      * @return  mixed
-     * @throws  BindingException
      */
-    public function getInstance($name)
+    public function getInstance(Injector $injector, $name)
     {
         if (null !== $this->provider) {
             return $this->provider->get($name);
         }
 
         if (null != $this->providerClass) {
-            $provider = $this->injector->getInstance($this->providerClass);
+            $provider = $injector->getInstance($this->providerClass);
             if (!($provider instanceof InjectionProvider)) {
                  throw new BindingException('Configured provider class ' . $this->providerClass . ' for constant ' . $this->name . ' is not an instance of net\stubbles\ioc\InjectionProvider.');
             }

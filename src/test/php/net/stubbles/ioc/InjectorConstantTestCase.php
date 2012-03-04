@@ -37,7 +37,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
     public function injectConstant()
     {
         $binder = new Binder();
-        $binder->bindConstant()->named('answer')->to(42);
+        $binder->bindConstant('answer')->to(42);
         $this->assertConstantInjection($binder->getInjector());
     }
 
@@ -67,7 +67,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
     public function checkForExistingConstantReturnsTrue()
     {
         $binder = new Binder();
-        $binder->bindConstant()->named('answer')->to(42);
+        $binder->bindConstant('answer')->to(42);
         $this->assertTrue($binder->getInjector()->hasConstant('answer'));
     }
 
@@ -78,7 +78,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
     public function retrieveExistingConstantReturnsValue()
     {
         $binder = new Binder();
-        $binder->bindConstant()->named('answer')->to(42);
+        $binder->bindConstant('answer')->to(42);
         $this->assertEquals(42, $binder->getInjector()->getConstant('answer'));
     }
 
@@ -89,10 +89,13 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
      */
     public function constantViaInjectionProviderInstance()
     {
+        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
+        $mockProvider->expects($this->any())
+                     ->method('get')
+                     ->will($this->returnValue(42));
         $binder = new Binder();
-        $binder->bindConstant()
-               ->named('answer')
-               ->toProvider(new ValueInjectionProvider(42));
+        $binder->bindConstant('answer')
+               ->toProvider($mockProvider);
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));
         $this->assertEquals(42, $injector->getConstant('answer'));
@@ -108,8 +111,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
     public function constantViaInvalidInjectionProviderClassThrowsBindingException()
     {
         $binder = new Binder();
-        $binder->bindConstant()
-               ->named('answer')
+        $binder->bindConstant('answer')
                ->toProviderClass('\stdClass');
         $binder->getInjector()->getConstant('answer');
     }
@@ -122,8 +124,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
     public function constantViaInjectionProviderClass()
     {
         $binder = new Binder();
-        $binder->bindConstant()
-               ->named('answer')
+        $binder->bindConstant('answer')
                ->toProviderClass(new ReflectionClass('org\\stubbles\\test\\ioc\\AnswerConstantProvider'));
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));
@@ -139,8 +140,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
     public function constantViaInjectionProviderClassName()
     {
         $binder = new Binder();
-        $binder->bindConstant()
-               ->named('answer')
+        $binder->bindConstant('answer')
                ->toProviderClass('org\\stubbles\\test\\ioc\\AnswerConstantProvider');
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));

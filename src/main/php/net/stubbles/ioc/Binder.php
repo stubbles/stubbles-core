@@ -8,6 +8,8 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
+use net\stubbles\ioc\binding\Binding;
+use net\stubbles\ioc\binding\BindingIndex;
 use net\stubbles\ioc\binding\BindingScope;
 use net\stubbles\lang\BaseObject;
 /**
@@ -16,20 +18,20 @@ use net\stubbles\lang\BaseObject;
 class Binder extends BaseObject
 {
     /**
-     * Injector used by this binder
+     * index for faster access to bindings
      *
-     * @type  Injector
+     * @type  BindingIndex
      */
-    protected $injector;
+    private $bindingIndex;
 
     /**
-     * Create a new binder
+     * constructor
      *
-     * @param  Injector  $injector
+     * @param  BindingIndex  $index
      */
-    public function __construct(Injector $injector = null)
+    public function __construct(BindingIndex $index = null)
     {
-        $this->injector = ((null === $injector) ? (new Injector()) : ($injector));
+        $this->bindingIndex = ((null === $index) ? (new BindingIndex()) : ($index));
     }
 
     /**
@@ -40,29 +42,41 @@ class Binder extends BaseObject
      */
     public function setSessionScope(BindingScope $sessionScope)
     {
-        $this->injector->setSessionScope($sessionScope);
+        $this->bindingIndex->setSessionScope($sessionScope);
         return $this;
+    }
+
+    /**
+     * adds a new binding to the injector
+     *
+     * @param   Binding  $binding
+     * @return  Binding
+     */
+    public function addBinding(Binding $binding)
+    {
+        return $this->bindingIndex->addBinding($binding);
     }
 
     /**
      * Bind a new interface to a class
      *
      * @param   string  $interface
-     * @return  ClassBinding
+     * @return  net\stubbles\ioc\binding\ClassBinding
      */
     public function bind($interface)
     {
-        return $this->injector->bind($interface);
+        return $this->bindingIndex->bind($interface);
     }
 
     /**
-     * Bind a new constant
+     * bind a constant
      *
-     * @return  ConstantBinding
+     * @param   string  $name  name of constant to bind
+     * @return  net\stubbles\ioc\binding\ConstantBinding
      */
-    public function bindConstant()
+    public function bindConstant($name)
     {
-        return $this->injector->bindConstant();
+        return $this->bindingIndex->bindConstant($name);
     }
 
     /**
@@ -77,7 +91,7 @@ class Binder extends BaseObject
      */
     public function bindList($name)
     {
-        return $this->injector->bindList($name);
+        return $this->bindingIndex->bindList($name);
     }
 
     /**
@@ -92,7 +106,52 @@ class Binder extends BaseObject
      */
     public function bindMap($name)
     {
-        return $this->injector->bindMap($name);
+        return $this->bindingIndex->bindMap($name);
+    }
+
+    /**
+     * check whether a binding for a type is available (explicit and implicit)
+     *
+     * @param   string  $type
+     * @param   string  $name
+     * @return  bool
+     * @since   2.0.0
+     */
+    public function hasBinding($type, $name = null)
+    {
+        return $this->bindingIndex->hasBinding($type, $name);
+    }
+
+    /**
+     * check whether an excplicit binding for a type is available
+     *
+     * Be aware that implicit bindings turn into explicit bindings when
+     * hasBinding() or getInstance() are called.
+     *
+     * @param   string  $type
+     * @param   string  $name
+     * @return  bool
+     * @since   2.0.0
+     */
+    public function hasExplicitBinding($type, $name = null)
+    {
+        return $this->bindingIndex->hasExplicitBinding($type, $name);
+    }
+
+    /**
+     * check whether a constant is available
+     *
+     * There is no need to distinguish between explicit and implicit binding for
+     * constant bindings as there are only explicit constant bindings and never
+     * implicit ones.
+     *
+     * @param   string  $name  name of constant to check for
+     * @return  bool
+     * @since   2.0.0
+     */
+    public function hasConstant($name)
+    {
+        return $this->bindingIndex->hasConstant($name);
     }
 
     /**
@@ -102,7 +161,10 @@ class Binder extends BaseObject
      */
     public function getInjector()
     {
-        return $this->injector;
+        $injector = new Injector($this->bindingIndex);
+        $this->bindingIndex->bind($injector->getClassName())
+                           ->toInstance($injector);
+        return $injector;
     }
 }
 ?>

@@ -28,26 +28,27 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function binderAlwaysReturnsSameInjector()
+    public function passesSessionScopeToBindingIndex()
     {
-        $binder    = new Binder();
-        $injector  = $binder->getInjector();
-        $injector2 = $binder->getInjector();
-        $this->identicalTo($injector, $injector2);
+        $mockIndex        = $this->getMock('net\\stubbles\\ioc\\binding\\BindingIndex');
+        $binder           = new Binder($mockIndex);
+        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\binding\\BindingScope');
+        $mockIndex->expects($this->once())
+                  ->method('setSessionScope')
+                  ->with($this->equalTo($mockSessionScope));
+        $this->assertSame($binder, $binder->setSessionScope($mockSessionScope));
     }
 
     /**
+     * @since  2.0.0
      * @test
      */
-    public function passesSessionScopeToInjector()
+    public function addBindingReturnsAddedBinding()
     {
-        $mockInjector     = $this->getMock('net\\stubbles\\ioc\\Injector');
-        $binder           = new Binder($mockInjector);
-        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\binding\\BindingScope');
-        $mockInjector->expects($this->once())
-                     ->method('setSessionScope')
-                     ->with($this->equalTo($mockSessionScope));
-        $this->assertSame($binder, $binder->setSessionScope($mockSessionScope));
+        $binder   = new Binder();
+        $mockBinding = $this->getMock('net\\stubbles\\ioc\\binding\\Binding');
+        $this->assertSame($mockBinding, $binder->addBinding($mockBinding));
     }
+
 }
 ?>

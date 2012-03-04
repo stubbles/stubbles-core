@@ -9,7 +9,7 @@
  */
 namespace net\stubbles\ioc\binding;
 use net\stubbles\lang\BaseObject;
-use net\stubbles\lang\reflect\BaseReflectionClass;
+use net\stubbles\lang\reflect\ReflectionClass;
 /**
  * Stores list of all available bindings.
  *
@@ -17,6 +17,12 @@ use net\stubbles\lang\reflect\BaseReflectionClass;
  */
 class BindingIndex extends BaseObject
 {
+    /**
+     * list of available binding scopes
+     *
+     * @type  BindingScopes
+     */
+    private $scopes;
     /**
      * added bindings that are in the index not yet
      *
@@ -35,6 +41,58 @@ class BindingIndex extends BaseObject
     private $index    = array();
 
     /**
+     * constructor
+     *
+     * @param  BindingScopes  $scopes
+     */
+    public function __construct(BindingScopes $scopes = null)
+    {
+        $this->scopes = ((null === $scopes) ? (new BindingScopes()) : ($scopes));
+    }
+
+    /**
+     * returns key for constant bindings
+     *
+     * @return  string
+     */
+    public static function getConstantType()
+    {
+        return ConstantBinding::TYPE;
+    }
+
+    /**
+     * returns key for constant bindings
+     *
+     * @return  string
+     */
+    public static function getListType()
+    {
+        return ListBinding::TYPE;
+    }
+
+    /**
+     * returns key for constant bindings
+     *
+     * @return  string
+     */
+    public static function getMapType()
+    {
+        return MapBinding::TYPE;
+    }
+
+    /**
+     * sets the session scope
+     *
+     * @param   BindingScope  $sessionScope
+     * @return  BindingIndex
+     */
+    public function setSessionScope(BindingScope $sessionScope)
+    {
+        $this->scopes->setSessionScope($sessionScope);
+        return $this;
+    }
+
+    /**
      * adds a new binding to the injector
      *
      * @param   Binding  $binding
@@ -47,6 +105,82 @@ class BindingIndex extends BaseObject
     }
 
     /**
+     * Bind a new interface to a class
+     *
+     * @param   string  $interface
+     * @return  ClassBinding
+     */
+    public function bind($interface)
+    {
+        return $this->addBinding(new ClassBinding($interface,
+                                                  $this->scopes
+                                 )
+               );
+    }
+
+    /**
+     * check whether a constant is available
+     *
+     * There is no need to distinguish between explicit and implicit binding for
+     * constant bindings as there are only explicit constant bindings and never
+     * implicit ones.
+     *
+     * @param   string  $name  name of constant to check for
+     * @return  bool
+     */
+    public function hasConstant($name)
+    {
+        return $this->hasBinding(ConstantBinding::TYPE, $name);
+    }
+
+    /**
+     * bind a constant
+     *
+     * @param   string  $name  name of constant to bind
+     * @return  ConstantBinding
+     */
+    public function bindConstant($name)
+    {
+        return $this->addBinding(new ConstantBinding($name));
+    }
+
+    /**
+     * bind to a list
+     *
+     * If a list with given name already exists it will return exactly this list
+     * to add more values to it.
+     *
+     * @param   string  $name
+     * @return  ListBinding
+     */
+    public function bindList($name)
+    {
+        if ($this->hasBinding(ListBinding::TYPE, $name)) {
+            return $this->getBinding(ListBinding::TYPE, $name);
+        }
+
+        return $this->addBinding(new ListBinding($name));
+    }
+
+    /**
+     * bind to a map
+     *
+     * If a map with given name already exists it will return exactly this map
+     * to add more key-value pairs to it.
+     *
+     * @param   string  $name
+     * @return  MapBinding
+     */
+    public function bindMap($name)
+    {
+        if ($this->hasBinding(MapBinding::TYPE, $name)) {
+            return $this->getBinding(MapBinding::TYPE, $name);
+        }
+
+        return $this->addBinding(new MapBinding($name));
+    }
+
+    /**
      * check whether a binding for a type is available (explicit and implicit)
      *
      * @param   string  $type
@@ -55,7 +189,31 @@ class BindingIndex extends BaseObject
      */
     public function hasBinding($type, $name = null)
     {
-        return ($this->getBinding($type, $name) != null);
+        return ($this->findBinding($type, $name) != null);
+    }
+
+    /**
+     * check whether an excplicit binding for a type is available
+     *
+     * Be aware that implicit bindings turn into explicit bindings when
+     * hasBinding() is called or an object of this type is requested.
+     *
+     * @param   string   $type
+     * @param   string   $name
+     * @return  boolean
+     */
+    public function hasExplicitBinding($type, $name = null)
+    {
+        $bindingIndex = $this->getIndex();
+        if (null !== $name && isset($bindingIndex[$type . '#' . $name])) {
+            return true;
+        }
+
+        if (isset($bindingIndex[$type])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -64,13 +222,27 @@ class BindingIndex extends BaseObject
      * @param   string  $type
      * @param   string  $name
      * @return  Binding
+     * @throws  BindingException
      */
     public function getBinding($type, $name = null)
     {
-        if ($name instanceof BaseReflectionClass) {
-            $name = $name->getName();
+        $binding = $this->findBinding($type, $name);
+        if (null === $binding) {
+            throw new BindingException('No binding for ' . $type . ' defined');
         }
 
+        return $binding;
+    }
+
+    /**
+     * tries to find a binding
+     *
+     * @param   string  $type
+     * @param   string  $name
+     * @return  Binding
+     */
+    private function findBinding($type, $name)
+    {
         $bindingIndex = $this->getIndex();
         if (null !== $name && isset($bindingIndex[$type . '#' . $name])) {
             return $bindingIndex[$type . '#' . $name];
@@ -80,7 +252,37 @@ class BindingIndex extends BaseObject
             return $bindingIndex[$type];
         }
 
+        if ($this->isObjectBinding($type)) {
+            return $this->getAnnotatedBinding($type);
+        }
+
         return null;
+    }
+
+    /**
+     * returns the binding for a constant
+     *
+     * @param   string  $name
+     * @return  Binding
+     */
+    public function getConstantBinding($name = null)
+    {
+        return $this->getBinding(ConstantBinding::TYPE, $name);
+    }
+
+    /**
+     * checks if given type allows annotated bindings
+     *
+     * @param   string  $type
+     * @return  bool
+     */
+    public function isObjectBinding($type)
+    {
+        if (in_array($type, array(ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE))) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -101,5 +303,55 @@ class BindingIndex extends BaseObject
         $this->bindings = array();
         return $this->index;
     }
+
+    /**
+     * returns binding denoted by annotations on type to create
+     *
+     * An annotated binding is when the type to create is annotated with
+     * @ImplementedBy oder @ProvidedBy.
+     *
+     * If this is not the case it will fall back to the implicit binding.
+     *
+     * @param   string  $type
+     * @return  Binding
+     */
+    private function getAnnotatedBinding($type)
+    {
+        $typeClass = new ReflectionClass($type);
+        if ($typeClass->isInterface() && $typeClass->hasAnnotation('ImplementedBy')) {
+            return $this->bind($type)
+                        ->to($typeClass->getAnnotation('ImplementedBy')
+                                       ->getDefaultImplementation()
+                          );
+        } elseif ($typeClass->hasAnnotation('ProvidedBy')) {
+            return $this->bind($type)
+                        ->toProviderClass($typeClass->getAnnotation('ProvidedBy')
+                                                    ->getProviderClass()
+                          );
+        }
+
+        return $this->getImplicitBinding($typeClass, $type);
+    }
+
+    /**
+     * returns implicit binding
+     *
+     * An implicit binding means that a type is requested which itself is a class
+     * and not an interface. Obviously, it makes sense to say that a class is
+     * always bound to itself if no other bindings where defined.
+     *
+     * @param   string  $type
+     * @return  Binding
+     */
+    private function getImplicitBinding(ReflectionClass $typeClass, $type)
+    {
+        if (!$typeClass->isInterface()) {
+            return $this->bind($type)
+                        ->to($typeClass);
+        }
+
+        return null;
+    }
+
 }
 ?>

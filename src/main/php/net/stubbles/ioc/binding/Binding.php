@@ -8,27 +8,21 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc\binding;
+use net\stubbles\ioc\Injector;
 use net\stubbles\lang\Object;
 /**
- * Binding to bind an interface to an implementation
+ * A binding knows how to deliver a concrete instance.
  */
 interface Binding extends Object
 {
     /**
-     * set the name of the injection
-     *
-     * @param   string       $name
-     * @return  Binding
-     */
-    public function named($name);
-
-    /**
      * returns the created instance
      *
-     * @param   string  $name
+     * @param   Injector  $injector
+     * @param   string    $name
      * @return  mixed
      */
-    public function getInstance($name);
+    public function getInstance(Injector $injector, $name);
 
     /**
      * creates a unique key for this binding

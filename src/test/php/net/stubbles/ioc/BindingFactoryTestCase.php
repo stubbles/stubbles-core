@@ -42,12 +42,12 @@ class BindingFactoryTestCase extends \PHPUnit_Framework_TestCase
     public function bindingModulesAreProcessed()
     {
         $injector = BindingFactory::createInjector(new AppTestBindingModuleOne(),
-                                        'org\\stubbles\\test\\ioc\\AppTestBindingModuleTwo'
+                                                   'org\\stubbles\\test\\ioc\\AppTestBindingModuleTwo'
                     );
         $this->assertTrue($injector->hasBinding('foo'));
         $this->assertTrue($injector->hasBinding('bar'));
-        $this->assertTrue($injector->hasBinding('net\stubbles\ioc\Injector'));
-        $this->assertSame($injector, $injector->getInstance('net\stubbles\ioc\Injector'));
+        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Injector'));
+        $this->assertSame($injector, $injector->getInstance('net\\stubbles\\ioc\\Injector'));
     }
 
     /**
@@ -57,13 +57,13 @@ class BindingFactoryTestCase extends \PHPUnit_Framework_TestCase
     public function bindingModulesAreProcessedIfPassedAsArray()
     {
         $injector = BindingFactory::createInjector(array(new AppTestBindingModuleOne(),
-                                              'org\\stubbles\\test\\ioc\\AppTestBindingModuleTwo'
-                                        )
+                                                         'org\\stubbles\\test\\ioc\\AppTestBindingModuleTwo'
+                                                   )
                     );
         $this->assertTrue($injector->hasBinding('foo'));
         $this->assertTrue($injector->hasBinding('bar'));
-        $this->assertTrue($injector->hasBinding('net\stubbles\ioc\Injector'));
-        $this->assertSame($injector, $injector->getInstance('net\stubbles\ioc\Injector'));
+        $this->assertTrue($injector->hasBinding('net\\stubbles\\ioc\\Injector'));
+        $this->assertSame($injector, $injector->getInstance('net\\stubbles\\ioc\\Injector'));
     }
 }
 ?>

@@ -154,8 +154,6 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
      */
     public function optionalSetterInjection()
     {
-        $tire = new Goodyear();
-
         $binder = new Binder();
         $binder->bind('org\\stubbles\\test\\ioc\\Tire')->to('org\\stubbles\\test\\ioc\\Goodyear');
         $binder->bind('org\\stubbles\\test\\ioc\\Vehicle')->to('org\\stubbles\\test\\ioc\\Convertible');
@@ -246,21 +244,12 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     */
-    public function injectedInjectorIsUsed()
-    {
-        $injector = new Injector();
-        $binder   = new Binder($injector);
-        $this->assertSame($injector, $binder->getInjector());
-    }
-
-    /**
-     * @test
      * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function missingBindingThrowsBindingException()
     {
-        $injector = new Injector();
+        $binder   = new Binder();
+        $injector = $binder->getInjector();
         $injector->getInstance('org\\stubbles\\test\\ioc\\Vehicle');
     }
 
@@ -270,7 +259,8 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
      */
     public function missingBindingOnInjectionHandlingThrowsBindingException()
     {
-        $injector = new Injector();
+        $binder   = new Binder();
+        $injector = $binder->getInjector();
         $class    = new Bike();
         $injector->handleInjections($class);
     }
@@ -281,19 +271,9 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
      */
     public function missingConstantBindingOnInjectionHandlingThrowsBindingException()
     {
-        $injector = new Injector();
+        $binder   = new Binder();
+        $injector = $binder->getInjector();
         $injector->handleInjections(new MissingArrayInjection());
-    }
-
-    /**
-     * @since  1.5.0
-     * @test
-     */
-    public function addBindingReturnsAddedBinding()
-    {
-        $injector    = new Injector();
-        $mockBinding = $this->getMock('net\\stubbles\\ioc\\binding\\Binding');
-        $this->assertSame($mockBinding, $injector->addBinding($mockBinding));
     }
 
     /**
@@ -302,7 +282,8 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
      */
     public function optionalConstructorInjection()
     {
-        $injector = new Injector();
+        $binder   = new Binder();
+        $injector = $binder->getInjector();
         $bike     = $injector->getInstance('org\\stubbles\\test\\ioc\\BikeWithOptionalTire');
         $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Goodyear', $bike->tire);
 

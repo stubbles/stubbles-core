@@ -45,7 +45,7 @@ class ModeBindingModuleTestCase extends \PHPUnit_Framework_TestCase
         $this->mockMode->expects($this->once())
                        ->method('registerExceptionHandler')
                        ->with($this->equalTo($projectPath));
-        $modeBindingModule = new ModeBindingModule($projectPath, $this->mockMode);
+        new ModeBindingModule($projectPath, $this->mockMode);
     }
 
     /**
@@ -54,10 +54,13 @@ class ModeBindingModuleTestCase extends \PHPUnit_Framework_TestCase
     public function givenModeShouldBeBound()
     {
         $modeBindingModule = new ModeBindingModule('/tmp', $this->mockMode);
-        $injector          = new Injector();
-        $modeBindingModule->configure(new Binder($injector));
-        $this->assertTrue($injector->hasExplicitBinding('net\\stubbles\\lang\\Mode'));
-        $this->assertSame($this->mockMode, $injector->getInstance('net\\stubbles\\lang\\Mode'));
+        $binder            = new Binder();
+        $modeBindingModule->configure($binder);
+        $this->assertTrue($binder->hasExplicitBinding('net\\stubbles\\lang\\Mode'));
+        $this->assertSame($this->mockMode,
+                          $binder->getInjector()
+                                 ->getInstance('net\\stubbles\\lang\\Mode')
+        );
     }
 
     /**
@@ -66,11 +69,13 @@ class ModeBindingModuleTestCase extends \PHPUnit_Framework_TestCase
     public function noModeGivenDefaultsToProdMode()
     {
         $modeBindingModule = new ModeBindingModule('/tmp');
-        $injector          = new Injector();
-        $modeBindingModule->configure(new Binder($injector));
-        $this->assertTrue($injector->hasExplicitBinding('net\\stubbles\\lang\\Mode'));
+        $binder            = new Binder();
+        $modeBindingModule->configure($binder);
+        $this->assertTrue($binder->hasExplicitBinding('net\\stubbles\\lang\\Mode'));
         $this->assertEquals('PROD',
-                            $injector->getInstance('net\\stubbles\\lang\\Mode')->name()
+                            $binder->getInjector()
+                                   ->getInstance('net\\stubbles\\lang\\Mode')
+                                   ->name()
         );
         restore_error_handler();
         restore_exception_handler();

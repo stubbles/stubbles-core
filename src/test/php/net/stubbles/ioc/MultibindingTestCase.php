@@ -212,8 +212,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder->bind('org\\stubbles\\test\\ioc\\Plugin')
                ->named('foo')
                ->toInstance($mockPlugin);
-        $binder->bindConstant()
-               ->named('foo')
+        $binder->bindConstant('foo')
                ->to(42);
         $binder->bindList('aList')
                ->withValue(313);

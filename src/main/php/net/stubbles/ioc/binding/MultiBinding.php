@@ -21,45 +21,27 @@ use net\stubbles\lang\reflect\BaseReflectionClass;
 abstract class MultiBinding extends BaseObject implements Binding
 {
     /**
-     * injector instance
-     *
-     * @type  Injector
-     */
-    private $injector;
-    /**
-     * annotated with a name
+     * name of the list or map
      *
      * @type  string
      */
-    private $name     = null;
+    private $name;
 
     /**
      * created multi binding
      *
      * @type  array
      */
-    private $array    = null;
+    private $array = null;
 
     /**
      * constructor
      *
-     * @param  Injector  $injector
+     * @param  string  $name  name of the list or map
      */
-    public function __construct(Injector $injector)
-    {
-        $this->injector = $injector;
-    }
-
-    /**
-     * set the name of the injection
-     *
-     * @param   string       $name
-     * @return  Binding
-     */
-    public function named($name)
+    public function __construct($name)
     {
         $this->name = $name;
-        return $this;
     }
 
     /**
@@ -103,13 +85,14 @@ abstract class MultiBinding extends BaseObject implements Binding
     /**
      * returns the created instance
      *
-     * @param   string  $name
-     * @return  array
+     * @param   Injector  $injector
+     * @param   string    $name
+     * @return  mixed
      */
-    public function getInstance($name)
+    public function getInstance(Injector $injector, $name)
     {
         if (null === $this->array) {
-            $this->array = $this->resolve($name);
+            $this->array = $this->resolve($injector, $name);
         }
 
         return $this->array;
@@ -118,15 +101,16 @@ abstract class MultiBinding extends BaseObject implements Binding
     /**
      * creates the instance
      *
-     * @param   string  $type
+     * @param   Injector  $injector
+     * @param   string    $type
      * @return  array
      * @throws  BindingException
      */
-    private function resolve($type)
+    private function resolve(Injector $injector, $type)
     {
         $resolved = array();
         foreach ($this->getBindings() as $key => $bindingValue) {
-            $value = $bindingValue($this->injector, $this->name, $key);
+            $value = $bindingValue($injector, $this->name, $key);
             if ($this->isTypeMismatch($type, $value)) {
                 throw new BindingException('Value for ' . ((is_int($key)) ? ('list') : ('map')) . ' named ' . $this->name . ' at position ' . $key . ' is not of type ' . $type->getName());
             }

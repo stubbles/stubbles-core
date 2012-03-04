@@ -55,8 +55,6 @@ class BindingFactory extends BaseObject
             $bindingModule->configure($binder);
         }
 
-        $binder->bind('net\\stubbles\\ioc\\Injector')
-               ->toInstance($binder->getInjector());
         return $binder;
     }
 
