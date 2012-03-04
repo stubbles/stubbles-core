@@ -15,6 +15,8 @@ use net\stubbles\peer\Socket;
 use net\stubbles\streams\OutputStream;
 /**
  * Class for sending a HTTP request.
+ *
+ * @internal
  */
 class HttpRequest extends BaseObject
 {

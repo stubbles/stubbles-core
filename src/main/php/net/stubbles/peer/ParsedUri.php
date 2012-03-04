@@ -11,6 +11,8 @@ namespace net\stubbles\peer;
 use net\stubbles\lang\BaseObject;
 /**
  * Represents a parses uri.
+ *
+ * @internal
  */
 class ParsedUri extends BaseObject
 {

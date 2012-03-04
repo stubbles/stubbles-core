@@ -11,6 +11,8 @@ namespace net\stubbles\streams;
 use net\stubbles\lang\Object;
 /**
  * Interface for input streams.
+ *
+ * @api
  */
 interface InputStream extends Object
 {

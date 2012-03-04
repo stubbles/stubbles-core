@@ -10,6 +10,8 @@
 namespace net\stubbles\lang\errorhandler;
 /**
  * Exception handler for production mode: fills the response with an error document.
+ *
+ * @internal
  */
 class ProdModeExceptionHandler extends AbstractExceptionHandler
 {

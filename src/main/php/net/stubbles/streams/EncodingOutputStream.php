@@ -10,6 +10,8 @@
 namespace net\stubbles\streams;
 /**
  * Encodes internal encoding into output charset.
+ *
+ * @api
  */
 class EncodingOutputStream extends AbstractDecoratedOutputStream
 {

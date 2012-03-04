@@ -85,6 +85,7 @@ class HttpResponse extends BaseObject
     /**
      * returns status line of response
      *
+     * @api
      * @return  string
      * @since   2.0.0
      */
@@ -96,6 +97,7 @@ class HttpResponse extends BaseObject
     /**
      * returns http version of response
      *
+     * @api
      * @return  string
      * @since   2.0.0
      */
@@ -107,6 +109,7 @@ class HttpResponse extends BaseObject
     /**
      * returns status code of response
      *
+     * @api
      * @return  int
      * @since   2.0.0
      */
@@ -118,6 +121,7 @@ class HttpResponse extends BaseObject
     /**
      * return status code class of response
      *
+     * @api
      * @return  string
      * @since   2.0.0
      */
@@ -134,6 +138,7 @@ class HttpResponse extends BaseObject
     /**
      * returns reason phrase of response
      *
+     * @api
      * @return  string
      * @since   2.0.0
      */
@@ -145,6 +150,7 @@ class HttpResponse extends BaseObject
     /**
      * returns list of headers from response
      *
+     * @api
      * @return  HeaderList
      */
     public function getHeader()
@@ -155,6 +161,7 @@ class HttpResponse extends BaseObject
     /**
      * returns body of response
      *
+     * @api
      * @return  string
      */
     public function getBody()

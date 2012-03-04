@@ -13,6 +13,8 @@ use net\stubbles\lang\exception\Throwable;
  * Exception handler that displays the exception message nicely formated in the response.
  *
  * You should not use this exception handler in production mode!
+ *
+ * @internal
  */
 class DisplayExceptionHandler extends AbstractExceptionHandler
 {

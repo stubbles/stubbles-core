@@ -15,7 +15,8 @@ use net\stubbles\lang\exception\IllegalStateException;
 /**
  * Class for operations on bsd-style sockets.
  *
- * @since  2.0.0
+ * @since     2.0.0
+ * @internal
  */
 class SocketOptions extends BaseObject implements Clonable
 {
@@ -55,7 +56,7 @@ class SocketOptions extends BaseObject implements Clonable
      *
      * @return  bool
      */
-    public function boundToConnection()
+    private function boundToConnection()
     {
         return (null !== $this->connection);
     }
@@ -92,14 +93,6 @@ class SocketOptions extends BaseObject implements Clonable
         }
 
         return $this->retrieve($level, $name, $default);
-    }
-
-    /**
-     * free from connection binding
-     */
-    public function __clone()
-    {
-        $this->connection = null;
     }
 
     /**

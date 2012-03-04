@@ -13,6 +13,8 @@ use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\types\Date;
 /**
  * Datespan with a custom start and end date.
+ *
+ * @internal
  */
 abstract class AbstractDatespan extends BaseObject implements Datespan
 {

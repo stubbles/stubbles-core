@@ -18,7 +18,7 @@ namespace net\stubbles\lang\errorhandler;
  *  - stubLogErrorHandler
  *      logs all remaining errors into the logfile php-errors with log level error
  *
- * @see  http://php.net/set_error_handler
+ * @internal
  */
 class DefaultErrorHandler extends CompositeErrorHandler
 {

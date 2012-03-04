@@ -12,7 +12,7 @@ use net\stubbles\lang\BaseObject;
 /**
  * Abstract base implementation for exception handlers, containing logging of exceptions.
  *
- * @see  http://php.net/set_exception_handler
+ * @internal
  */
 abstract class AbstractExceptionHandler extends BaseObject implements ExceptionHandler
 {
@@ -63,7 +63,7 @@ abstract class AbstractExceptionHandler extends BaseObject implements ExceptionH
     /**
      * disables exception logging
      *
-     * @return  net\stubbles\lang\errorhandler\AbstractExceptionHandler
+     * @return  AbstractExceptionHandler
      */
     public function disableLogging()
     {

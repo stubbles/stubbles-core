@@ -16,7 +16,7 @@ use net\stubbles\lang\BaseObject;
  * handlers it should be added as last one so it catches all errors that have
  * not been handled before.
  *
- * @see  http://php.net/set_error_handler
+ * @internal
  */
 class LogErrorHandler extends BaseObject implements ErrorHandler
 {

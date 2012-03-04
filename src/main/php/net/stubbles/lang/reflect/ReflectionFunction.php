@@ -13,6 +13,8 @@ use net\stubbles\lang\reflect\annotation\Annotation;
 use net\stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
  * Extended Reflection class for functions that allows usage of annotations.
+ *
+ * @api
  */
 class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutine
 {

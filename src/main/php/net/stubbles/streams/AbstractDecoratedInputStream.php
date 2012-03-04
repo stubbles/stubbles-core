@@ -11,8 +11,10 @@ namespace net\stubbles\streams;
 use net\stubbles\lang\BaseObject;
 /**
  * Abstract base class for decorated input streams.
+ *
+ * @api
  */
-abstract class AbstractDecoratedInputStream extends BaseObject implements DecoratedInputStream
+abstract class AbstractDecoratedInputStream extends BaseObject implements InputStream
 {
     /**
      * input stream to encode into internal encoding
@@ -29,16 +31,6 @@ abstract class AbstractDecoratedInputStream extends BaseObject implements Decora
     public function __construct(InputStream $inputStream)
     {
         $this->inputStream = $inputStream;
-    }
-
-    /**
-     * returns enclosed input stream
-     *
-     * @return  InputStream
-     */
-    public function getEnclosedInputStream()
-    {
-        return $this->inputStream;
     }
 
     /**

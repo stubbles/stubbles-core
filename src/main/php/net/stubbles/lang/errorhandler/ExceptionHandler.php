@@ -12,6 +12,7 @@ use net\stubbles\lang\Object;
 /**
  * Interface for exception handlers.
  *
+ * @api
  * @see  http://php.net/set_exception_handler
  */
 interface ExceptionHandler extends Object

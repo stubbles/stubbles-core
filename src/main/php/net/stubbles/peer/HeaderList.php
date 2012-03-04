@@ -12,6 +12,8 @@ use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Container for list of headers.
+ *
+ * @api
  */
 class HeaderList extends BaseObject implements \IteratorAggregate
 {

@@ -9,7 +9,9 @@
  */
 namespace net\stubbles\lang\reflect\annotation\parser\state;
 /**
- * Parser is inside an annotation param name
+ * Parser is inside an annotation param name.
+ *
+ * @internal
  */
 class AnnotationParamNameState extends AnnotationAbstractState implements AnnotationState
 {

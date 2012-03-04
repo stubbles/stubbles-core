@@ -14,6 +14,8 @@ use net\stubbles\streams\InputStream;
 use net\stubbles\streams\Seekable;
 /**
  * Class to stream data from memory.
+ *
+ * @api
  */
 class MemoryInputStream extends BaseObject implements InputStream, Seekable
 {

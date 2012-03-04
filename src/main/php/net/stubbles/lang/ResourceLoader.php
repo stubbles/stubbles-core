@@ -13,7 +13,7 @@ use net\stubbles\lang\BaseObject;
 /**
  * Class to load resources from arbitrary locations.
  *
- * @since       1.6.0
+ * @since  1.6.0
  * @Singleton
  */
 class ResourceLoader extends BaseObject

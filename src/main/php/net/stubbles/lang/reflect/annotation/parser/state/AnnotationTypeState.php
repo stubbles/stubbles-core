@@ -9,7 +9,9 @@
  */
 namespace net\stubbles\lang\reflect\annotation\parser\state;
 /**
- * Parser is inside the annotation type
+ * Parser is inside the annotation type.
+ *
+ * @internal
  */
 class AnnotationTypeState extends AnnotationAbstractState implements AnnotationState
 {

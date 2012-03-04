@@ -14,7 +14,8 @@ use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for starting the application by configuring the IoC container.
  *
- * @since  2.0.0
+ * @since     2.0.0
+ * @internal
  */
 class BindingFactory extends BaseObject
 {

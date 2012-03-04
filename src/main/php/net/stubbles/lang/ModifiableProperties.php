@@ -21,6 +21,7 @@ class ModifiableProperties extends Properties
     /**
      * construct class from string
      *
+     * @api
      * @param   string  $propertyString
      * @return  ModifiableProperties
      * @throws  IllegalArgumentException
@@ -39,6 +40,7 @@ class ModifiableProperties extends Properties
     /**
      * construct class from a file
      *
+     * @api
      * @param   string  $propertiesFile  full path to file containing properties
      * @return  ModifiableProperties
      * @throws  FileNotFoundException  if file can not be found or is not readable
@@ -63,6 +65,7 @@ class ModifiableProperties extends Properties
      *
      * If a section with this name already exists it will be replaced.
      *
+     * @api
      * @param   string  $section
      * @param   array   $data
      * @return  ModifiableProperties
@@ -79,6 +82,7 @@ class ModifiableProperties extends Properties
      * If a property with this name in the given section already exists it will
      * be replaced.
      *
+     * @api
      * @param   string  $section
      * @param   string  $name
      * @param   mixed   $value
@@ -100,6 +104,7 @@ class ModifiableProperties extends Properties
      * If a property with this name in the given section already exists it will
      * be replaced.
      *
+     * @api
      * @param   string  $section
      * @param   string  $name
      * @param   bool    $value
@@ -116,6 +121,7 @@ class ModifiableProperties extends Properties
      * If a property with this name in the given section already exists it will
      * be replaced.
      *
+     * @api
      * @param   string  $section
      * @param   string  $name
      * @param   array   $value
@@ -132,6 +138,7 @@ class ModifiableProperties extends Properties
      * If a property with this name in the given section already exists it will
      * be replaced.
      *
+     * @api
      * @param   string  $section
      * @param   string  $name
      * @param   array   $hash
@@ -153,6 +160,7 @@ class ModifiableProperties extends Properties
      * If a property with this name in the given section already exists it will
      * be replaced.
      *
+     * @api
      * @param   string  $section
      * @param   string  $name
      * @param   array   $range

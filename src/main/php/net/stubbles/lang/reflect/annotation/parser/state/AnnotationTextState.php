@@ -10,6 +10,8 @@
 namespace net\stubbles\lang\reflect\annotation\parser\state;
 /**
  * Text within a docblock state.
+ *
+ * @internal
  */
 class AnnotationTextState extends AnnotationAbstractState implements AnnotationState
 {

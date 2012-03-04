@@ -12,6 +12,8 @@ use net\stubbles\lang\BaseObject;
 use net\stubbles\streams\OutputStream;
 /**
  * Class to stream data into memory.
+ *
+ * @api
  */
 class MemoryOutputStream extends BaseObject implements OutputStream
 {

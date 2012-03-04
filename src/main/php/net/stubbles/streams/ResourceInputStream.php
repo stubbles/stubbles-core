@@ -14,6 +14,8 @@ use net\stubbles\lang\exception\IllegalStateException;
 use net\stubbles\lang\exception\IOException;
 /**
  * Class for resource based input streams.
+ *
+ * @internal
  */
 abstract class ResourceInputStream extends BaseObject implements InputStream
 {

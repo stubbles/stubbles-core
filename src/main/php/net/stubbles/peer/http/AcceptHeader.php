@@ -12,6 +12,8 @@ use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class to work with all kinds of Accept* headers.
+ *
+ * @api
  */
 class AcceptHeader extends BaseObject implements \Countable
 {

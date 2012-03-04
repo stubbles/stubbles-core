@@ -11,6 +11,8 @@ namespace net\stubbles\streams\filter;
 use net\stubbles\lang\Object;
 /**
  * Interface for stream filters.
+ *
+ * @api
  */
 interface StreamFilter extends Object
 {

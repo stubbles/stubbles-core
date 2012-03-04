@@ -47,16 +47,6 @@ class AbstractDecoratedOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function returnsEnclosedOutputStream()
-    {
-        $this->assertSame($this->mockOutputStream,
-                          $this->abstractDecoratedOutputStream->getEnclosedOutputStream()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function writeCallsDecoratedStream()
     {
         $this->mockOutputStream->expects($this->once())

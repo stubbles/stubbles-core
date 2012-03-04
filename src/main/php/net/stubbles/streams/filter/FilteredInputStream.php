@@ -12,6 +12,8 @@ use net\stubbles\streams\AbstractDecoratedInputStream;
 use net\stubbles\streams\InputStream;
 /**
  * Input stream applying a filter on data read before returning to requestor.
+ *
+ * @api
  */
 class FilteredInputStream extends AbstractDecoratedInputStream
 {

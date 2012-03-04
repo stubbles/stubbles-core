@@ -17,48 +17,56 @@ class ReflectionPrimitive extends Enum implements ReflectionType
     /**
      * primitive of type string
      *
+     * @api
      * @type  ReflectionPrimitive
      */
     public static $STRING;
     /**
      * primitive of type int
      *
+     * @api
      * @type  ReflectionPrimitive
      */
     public static $INT;
     /**
      * primitive of type int, marked as integer
      *
+     * @api
      * @type  ReflectionPrimitive
      */
     public static $INTEGER;
     /**
      * primitive of type float
      *
+     * @api
      * @type  ReflectionPrimitive
      */
     public static $FLOAT;
     /**
      * primitive of type double, equal to float
      *
+     * @api
      * @type  ReflectionPrimitive
      */
     public static $DOUBLE;
     /**
      * primitive of type bool
      *
+     * @api
      * @type  ReflectionPrimitive
      */
     public static $BOOL;
     /**
      * primitive of type bool, marked as boolean
      *
+     * @api
      * @type  ReflectionPrimitive
      */
     public static $BOOLEAN;
     /**
      * primitive of type array
      *
+     * @api
      * @type  ReflectionPrimitive
      */
     public static $ARRAY;
@@ -81,6 +89,7 @@ class ReflectionPrimitive extends Enum implements ReflectionType
     /**
      * returns the enum instance of given class identified by its name
      *
+     * @api
      * @param   string  $name
      * @return  ReflectionPrimitive
      */
@@ -96,6 +105,7 @@ class ReflectionPrimitive extends Enum implements ReflectionType
     /**
      * returns the name of the type
      *
+     * @api
      * @return  string
      */
     public function getName()
@@ -106,6 +116,7 @@ class ReflectionPrimitive extends Enum implements ReflectionType
     /**
      * checks whether the type is an object
      *
+     * @api
      * @return  bool
      */
     public function isObject()
@@ -116,6 +127,7 @@ class ReflectionPrimitive extends Enum implements ReflectionType
     /**
      * checks whether the type is a primitive
      *
+     * @api
      * @return  bool
      */
     public function isPrimitive()
@@ -126,6 +138,7 @@ class ReflectionPrimitive extends Enum implements ReflectionType
     /**
      * checks whether a value is equal to the class
      *
+     * @api
      * @param   mixed  $compare
      * @return  bool
      */
@@ -141,6 +154,7 @@ class ReflectionPrimitive extends Enum implements ReflectionType
     /**
      * returns a string representation of the class
      *
+     * @api
      * @return  string
      */
     public function __toString()

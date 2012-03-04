@@ -17,6 +17,7 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  * Shameless rip from the XP framework. ;-) Wraps PHP's internal date/time
  * functions for ease of use.
  *
+ * @api
  * @XmlTag(tagName='date')
  */
 class Date extends BaseObject

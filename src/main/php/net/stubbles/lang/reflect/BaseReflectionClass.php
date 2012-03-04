@@ -18,6 +18,8 @@ use net\stubbles\lang\reflect\matcher\PropertyMatcher;
  * net\stubbles\lang\reflect\ReflectionClass and
  * net\stubbles\lang\reflect\ReflectionObject on
  * the same argument when the argument is typehinted with this interface.
+ *
+ * @api
  */
 interface BaseReflectionClass extends ReflectionType, Annotatable
 {

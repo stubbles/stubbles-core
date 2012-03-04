@@ -13,6 +13,8 @@ use net\stubbles\lang\exception\IOException;
 use net\stubbles\streams\ResourceOutputStream;
 /**
  * Class for file based output streams.
+ *
+ * @api
  */
 class FileOutputStream extends ResourceOutputStream
 {

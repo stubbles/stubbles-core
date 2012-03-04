@@ -15,6 +15,8 @@ use net\stubbles\lang\reflect\BaseReflectionClass;
  * Default injection provider.
  *
  * Creates objects and injects all dependencies via the default injector.
+ *
+ * @internal
  */
 class DefaultInjectionProvider extends BaseObject implements InjectionProvider
 {

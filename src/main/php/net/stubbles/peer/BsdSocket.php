@@ -12,6 +12,8 @@ use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\exception\IllegalStateException;
 /**
  * Class for operations on bsd-style sockets.
+ *
+ * @api
  */
 class BsdSocket extends Socket
 {
@@ -20,7 +22,7 @@ class BsdSocket extends Socket
      *
      * @type  bool
      */
-    protected $eof            = true;
+    protected $eof          = true;
     /**
      * domain type
      *
@@ -32,13 +34,13 @@ class BsdSocket extends Socket
      *
      * @type  int
      */
-    protected $type           = SOCK_STREAM;
+    protected $type         = SOCK_STREAM;
     /**
      * protocol to use: tcp or udp
      *
      * @type  int
      */
-    protected $protocol       = SOL_TCP;
+    protected $protocol     = SOL_TCP;
     /**
      * list of options for the socket
      *
@@ -50,12 +52,12 @@ class BsdSocket extends Socket
      *
      * @type  array
      */
-    protected static $types   = array(SOCK_STREAM    => 'SOCK_STREAM',
-                                      SOCK_DGRAM     => 'SOCK_DGRAM',
-                                      SOCK_RAW       => 'SOCK_RAW',
-                                      SOCK_SEQPACKET => 'SOCK_SEQPACKET',
-                                      SOCK_RDM       => 'SOCK_RDM'
-                                );
+    protected static $types = array(SOCK_STREAM    => 'SOCK_STREAM',
+                                    SOCK_DGRAM     => 'SOCK_DGRAM',
+                                    SOCK_RAW       => 'SOCK_RAW',
+                                    SOCK_SEQPACKET => 'SOCK_SEQPACKET',
+                                    SOCK_RDM       => 'SOCK_RDM'
+                              );
 
     /**
      * constructor
@@ -66,22 +68,17 @@ class BsdSocket extends Socket
      * @param   SocketDomain   $domain   one of SocketDomain::$AF_INET, SocketDomain::$AF_INET6 or SocketDomain::$AF_UNIX
      * @param   string         $host     host to connect socket to
      * @param   int            $port     port to connect socket to
-     * @param   SocketOptions  $options  options to set on the socket
      * @throws  IllegalArgumentException
      */
-    public function __construct(SocketDomain $domain, $host, $port = null, SocketOptions $options = null)
+    public function __construct(SocketDomain $domain, $host, $port = null)
     {
         if ($domain->requiresPort() && empty($port)) {
             throw new IllegalArgumentException('Domain ' . $domain->name() . ' requires a port');
         }
 
-        if (null !== $options && $options->boundToConnection()) {
-            throw new IllegalArgumentException('Can not use options already bound to another connection');
-        }
-
         parent::__construct($host, $port);
         $this->domain  = $domain;
-        $this->options = ((null === $options) ? (new SocketOptions()) : ($options));
+        $this->options = new SocketOptions();
     }
 
     /**

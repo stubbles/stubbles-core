@@ -10,6 +10,8 @@
 namespace net\stubbles\lang\reflect\annotation\parser\state;
 /**
  * Parser is inside an annotation param value.
+ *
+ * @internal
  */
 class AnnotationParamValueState extends AnnotationAbstractState implements AnnotationState
 {
