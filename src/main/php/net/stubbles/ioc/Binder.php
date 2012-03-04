@@ -14,6 +14,8 @@ use net\stubbles\ioc\binding\BindingScope;
 use net\stubbles\lang\BaseObject;
 /**
  * Binder for the IoC functionality.
+ *
+ * @api
  */
 class Binder extends BaseObject
 {

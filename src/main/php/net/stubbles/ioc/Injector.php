@@ -44,6 +44,7 @@ class Injector extends BaseObject
     /**
      * check whether a binding for a type is available (explicit and implicit)
      *
+     * @api
      * @param   string   $type
      * @param   string   $name
      * @return  boolean
@@ -59,6 +60,7 @@ class Injector extends BaseObject
      * Be aware that implicit bindings turn into explicit bindings when
      * hasBinding() or getInstance() are called.
      *
+     * @api
      * @param   string   $type
      * @param   string   $name
      * @return  boolean
@@ -71,6 +73,7 @@ class Injector extends BaseObject
     /**
      * get an instance
      *
+     * @api
      * @param   string  $type
      * @param   string  $name
      * @return  object
@@ -99,6 +102,7 @@ class Injector extends BaseObject
     /**
      * check whether a constant is available
      *
+     * @api
      * @param   string  $name  name of constant to check for
      * @return  bool
      * @since   1.1.0
@@ -111,6 +115,7 @@ class Injector extends BaseObject
     /**
      * returns constanct value
      *
+     * @api
      * @param   string  $name  name of constant value to retrieve
      * @return  scalar
      * @since   1.1.0

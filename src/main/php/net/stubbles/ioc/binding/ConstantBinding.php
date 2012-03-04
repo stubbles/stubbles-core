@@ -60,7 +60,8 @@ class ConstantBinding extends BaseObject implements Binding
     /**
      * set the constant value
      *
-     * @param   mixed                $value
+     * @api
+     * @param   mixed  $value
      * @return  ConstantBinding
      */
     public function to($value)
@@ -75,6 +76,7 @@ class ConstantBinding extends BaseObject implements Binding
      * This cannot be used in conjuction with the 'to()' or
      * 'toProviderClass()' method.
      *
+     * @api
      * @param   InjectionProvider  $provider
      * @return  ConstantBinding
      * @since   1.6.0
@@ -91,6 +93,7 @@ class ConstantBinding extends BaseObject implements Binding
      * This cannot be used in conjuction with the 'to()' or
      * 'toProvider()' method.
      *
+     * @api
      * @param   string|BaseReflectionClass  $providerClass
      * @return  ConstantBinding
      * @since   1.6.0

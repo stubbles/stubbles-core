@@ -93,6 +93,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * set the concrete implementation
      *
+     * @api
      * @param   BaseReflectionClass|string  $impl
      * @return  ClassBinding
      * @throws  IllegalArgumentException
@@ -113,6 +114,7 @@ class ClassBinding extends BaseObject implements Binding
      * This cannot be used in conjuction with the 'toProvider()' or
      * 'toProviderClass()' method.
      *
+     * @api
      * @param   object            $instance
      * @return  ClassBinding
      * @throws  IllegalArgumentException
@@ -133,6 +135,7 @@ class ClassBinding extends BaseObject implements Binding
      * This cannot be used in conjuction with the 'toInstance()' or
      * 'toProviderClass()' method.
      *
+     * @api
      * @param   InjectionProvider  $provider
      * @return  ClassBinding
      */
@@ -148,6 +151,7 @@ class ClassBinding extends BaseObject implements Binding
      * This cannot be used in conjuction with the 'toInstance()' or
      * 'toProvider()' method.
      *
+     * @api
      * @param   string|BaseReflectionClass  $providerClass
      * @return  ClassBinding
      */
@@ -161,6 +165,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * binds the class to the singleton scope
      *
+     * @api
      * @return  ClassBinding
      * @since   1.5.0
      */
@@ -173,6 +178,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * binds the class to the session scope
      *
+     * @api
      * @return  ClassBinding
      * @since   1.5.0
      */
@@ -185,6 +191,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * set the scope
      *
+     * @api
      * @param   BindingScope  $scope
      * @return  ClassBinding
      */
@@ -197,6 +204,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * Set the name of the injection
      *
+     * @api
      * @param   string            $name
      * @return  ClassBinding
      */

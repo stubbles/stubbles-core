@@ -11,7 +11,7 @@ namespace net\stubbles\ioc\binding;
 /**
  * Class for list bindings.
  *
- * @since  2.0.0 
+ * @since  2.0.0
  */
 class ListBinding extends MultiBinding
 {
@@ -29,6 +29,7 @@ class ListBinding extends MultiBinding
     /**
      * adds a value to the list
      *
+     * @api
      * @param   mixed  $value
      * @return  ListBinding
      */
@@ -41,6 +42,7 @@ class ListBinding extends MultiBinding
     /**
      * adds a value to the list created by an injection provider
      *
+     * @api
      * @param   string|InjectionProvider  $provider
      * @return  ListBinding
      */

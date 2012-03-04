@@ -29,6 +29,7 @@ class MapBinding extends MultiBinding
     /**
      * adds an entry to the list
      *
+     * @api
      * @param   string  $key
      * @param   mixed   $value
      * @return  MapBinding
@@ -42,6 +43,7 @@ class MapBinding extends MultiBinding
     /**
      * adds an entry to the map created by an injection provider
      *
+     * @api
      * @param   string                    $key
      * @param   string|InjectionProvider  $provider
      * @return  MapBinding
