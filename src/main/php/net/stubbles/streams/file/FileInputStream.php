@@ -15,6 +15,8 @@ use net\stubbles\streams\ResourceInputStream;
 use net\stubbles\streams\Seekable;
 /**
  * Class for file based input streams.
+ *
+ * @api
  */
 class FileInputStream extends ResourceInputStream implements Seekable
 {
