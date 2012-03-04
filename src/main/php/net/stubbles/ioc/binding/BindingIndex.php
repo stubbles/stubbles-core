@@ -7,7 +7,7 @@
  *
  * @package  net\stubbles
  */
-namespace net\stubbles\ioc;
+namespace net\stubbles\ioc\binding;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**

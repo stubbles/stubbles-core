@@ -292,7 +292,7 @@ class InjectorBasicTestCase extends \PHPUnit_Framework_TestCase
     public function addBindingReturnsAddedBinding()
     {
         $injector    = new Injector();
-        $mockBinding = $this->getMock('net\\stubbles\\ioc\\Binding');
+        $mockBinding = $this->getMock('net\\stubbles\\ioc\\binding\\Binding');
         $this->assertSame($mockBinding, $injector->addBinding($mockBinding));
     }
 

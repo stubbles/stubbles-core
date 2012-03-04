@@ -7,7 +7,7 @@
  *
  * @package  net\stubbles
  */
-namespace net\stubbles\ioc;
+namespace net\stubbles\ioc\binding;
 use net\stubbles\lang\Object;
 /**
  * Binding to bind an interface to an implementation

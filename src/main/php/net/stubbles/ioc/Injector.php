@@ -8,6 +8,10 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
+use net\stubbles\ioc\binding\Binding;
+use net\stubbles\ioc\binding\BindingIndex;
+use net\stubbles\ioc\binding\ClassBinding;
+use net\stubbles\ioc\binding\ConstantBinding;
 use net\stubbles\ioc\binding\ListBinding;
 use net\stubbles\ioc\binding\MapBinding;
 use net\stubbles\lang\BaseObject;

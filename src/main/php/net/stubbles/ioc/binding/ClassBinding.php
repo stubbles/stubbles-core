@@ -7,7 +7,13 @@
  *
  * @package  net\stubbles
  */
-namespace net\stubbles\ioc;
+namespace net\stubbles\ioc\binding;
+use net\stubbles\ioc\BindingException;
+use net\stubbles\ioc\BindingScope;
+use net\stubbles\ioc\BindingScopes;
+use net\stubbles\ioc\DefaultInjectionProvider;
+use net\stubbles\ioc\InjectionProvider;
+use net\stubbles\ioc\Injector;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\reflect\BaseReflectionClass;
