@@ -9,6 +9,7 @@
  */
 namespace net\stubbles\lang\types;
 use net\stubbles\lang\BaseObject;
+use net\stubbles\lang\StringRepresentationBuilder;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for time zone handling.
@@ -150,7 +151,7 @@ class TimeZone extends BaseObject
      */
     public function __toString()
     {
-        return self::getStringRepresentationOf($this, array('timeZone' => $this->timeZone->getName()));
+        return StringRepresentationBuilder::buildFrom($this, array('timeZone' => $this->timeZone->getName()));
     }
 }
 ?>
