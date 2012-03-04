@@ -139,7 +139,7 @@ class Injector extends BaseObject
             throw new BindingException('No binding for ' . $type . ' defined');
         }
 
-        return $binding->getInstance($type, $name);
+        return $binding->getInstance($name);
     }
 
     /**

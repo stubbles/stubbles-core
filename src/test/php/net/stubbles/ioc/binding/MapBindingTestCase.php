@@ -57,7 +57,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
     public function returnsEmptyListIfNothingAdded()
     {
         $this->assertEquals(array(),
-                            $this->mapBinding->getInstance('int', 'foo')
+                            $this->mapBinding->getInstance('int')
         );
     }
 
@@ -67,9 +67,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
     public function returnsTypedEmptyListIfNothingAdded()
     {
         $this->assertEquals(array(),
-                            $this->mapBinding->getInstance(new ReflectionClass('\\stdClass'),
-                                                            'foo'
-                            )
+                            $this->mapBinding->getInstance(new ReflectionClass('\\stdClass'))
         );
     }
 
@@ -80,7 +78,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(array('x' => 303),
                             $this->mapBinding->withEntry('x', 303)
-                                             ->getInstance('int', 'foo')
+                                             ->getInstance('int')
         );
     }
 
@@ -92,9 +90,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
         $value = new \stdClass();
         $this->assertEquals(array('x' => $value),
                             $this->mapBinding->withEntry('x', $value)
-                                             ->getInstance(new ReflectionClass('\\stdClass'),
-                                                           'foo'
-                            )
+                                             ->getInstance(new ReflectionClass('\\stdClass'))
         );
     }
 
@@ -105,9 +101,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
     public function invalidValueAddedToTypedListThrowsBindingException()
     {
         $this->mapBinding->withEntry('x', 303)
-                         ->getInstance(new ReflectionClass('\stdClass'),
-                                       'foo'
-        );
+                         ->getInstance(new ReflectionClass('\stdClass'));
     }
 
     /**
@@ -117,9 +111,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
     public function invalidObjectAddedToTypedListThrowsBindingException()
     {
         $this->mapBinding->withEntry('x', new \stdClass())
-                         ->getInstance(new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider'),
-                                       'foo'
-        );
+                         ->getInstance(new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider'));
     }
 
     /**
@@ -133,7 +125,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
                      ->will($this->returnValue(303));
         $this->assertEquals(array('x' => 303),
                             $this->mapBinding->withEntryFromProvider('x', $mockProvider)
-                                             ->getInstance('int', 'foo')
+                                             ->getInstance('int')
         );
     }
 
@@ -149,9 +141,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
                      ->will($this->returnValue($value));
         $this->assertEquals(array('x' => $value),
                             $this->mapBinding->withEntryFromProvider('x', $mockProvider)
-                                             ->getInstance(new ReflectionClass('\\stdClass'),
-                                                           'foo'
-                            )
+                                             ->getInstance(new ReflectionClass('\\stdClass'))
         );
     }
 
@@ -166,9 +156,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
                      ->method('get')
                      ->will($this->returnValue(303));
         $this->mapBinding->withEntryFromProvider('x', $mockProvider)
-                         ->getInstance(new ReflectionClass('\\stdClass'),
-                                       'foo'
-        );
+                         ->getInstance(new ReflectionClass('\\stdClass'));
     }
 
     /**
@@ -182,9 +170,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
                      ->method('get')
                      ->will($this->returnValue(new \stdClass()));
         $this->mapBinding->withEntryFromProvider('x', $mockProvider)
-                         ->getInstance(new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider'),
-                                       'foo'
-        );
+                         ->getInstance(new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider'));
     }
 
     /**
@@ -200,7 +186,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
         $this->prepareInjector($mockProvider, $mockProviderClass);
         $this->assertEquals(array('x' => 303),
                             $this->mapBinding->withEntryFromProvider('x', $mockProviderClass)
-                                             ->getInstance('int', 'foo')
+                                             ->getInstance('int')
         );
     }
 
@@ -218,9 +204,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
         $this->prepareInjector($mockProvider, $mockProviderClass);
         $this->assertEquals(array('x' => $value),
                             $this->mapBinding->withEntryFromProvider('x', $mockProviderClass)
-                                             ->getInstance(new ReflectionClass('\\stdClass'),
-                                                           'foo'
-                            )
+                                             ->getInstance(new ReflectionClass('\\stdClass'))
         );
     }
 
@@ -237,9 +221,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
         $mockProviderClass = $this->getMockClass('net\\stubbles\\ioc\\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
         $this->mapBinding->withEntryFromProvider('x', $mockProviderClass)
-                         ->getInstance(new ReflectionClass('\\stdClass'),
-                                       'foo'
-        );
+                         ->getInstance(new ReflectionClass('\\stdClass'));
     }
 
     /**
@@ -255,9 +237,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
         $mockProviderClass = $this->getMockClass('net\\stubbles\\ioc\\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
         $this->mapBinding->withEntryFromProvider('x', $mockProviderClass)
-                         ->getInstance(new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider'),
-                                       'foo'
-        );
+                         ->getInstance(new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider'));
     }
 
     /**
@@ -287,9 +267,7 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
                            ->with($this->equalTo($mockProviderClass))
                            ->will($this->returnValue('\\stdClass'));
         $this->mapBinding->withEntryFromProvider('x', $mockProviderClass)
-                         ->getInstance(new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider'),
-                                       'foo'
-        );
+                         ->getInstance(new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider'));
     }
 
     /**

@@ -105,14 +105,13 @@ abstract class MultiBinding extends BaseObject implements Binding
     /**
      * returns the created instance
      *
-     * @param   string  $type
      * @param   string  $name
      * @return  array
      */
-    public function getInstance($type, $name)
+    public function getInstance($name)
     {
         if (null === $this->array) {
-            $this->array = $this->resolve($type, $name);
+            $this->array = $this->resolve($name);
         }
 
         return $this->array;
@@ -122,17 +121,16 @@ abstract class MultiBinding extends BaseObject implements Binding
      * creates the instance
      *
      * @param   string  $type
-     * @param   string  $name
      * @return  array
      * @throws  BindingException
      */
-    private function resolve($type, $name)
+    private function resolve($type)
     {
         $resolved = array();
         foreach ($this->getBindings() as $key => $bindingValue) {
             $value = $bindingValue($this->injector, $this->name, $key);
             if ($this->isTypeMismatch($type, $value)) {
-                throw new BindingException('Value for ' . ((is_int($key)) ? ('list') : ('map')) . ' named ' . $name . ' at position ' . $key . ' is not of type ' . $type->getName());
+                throw new BindingException('Value for ' . ((is_int($key)) ? ('list') : ('map')) . ' named ' . $this->name . ' at position ' . $key . ' is not of type ' . $type->getName());
             }
 
             $resolved[$key] = $value;

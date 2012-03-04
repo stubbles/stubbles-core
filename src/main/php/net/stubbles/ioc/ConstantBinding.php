@@ -131,12 +131,11 @@ class ConstantBinding extends BaseObject implements Binding
     /**
      * returns the value to provide
      *
-     * @param   string  $type
      * @param   string  $name
      * @return  mixed
      * @throws  BindingException
      */
-    public function getInstance($type, $name)
+    public function getInstance($name)
     {
         if (null !== $this->provider) {
             return $this->provider->get($name);

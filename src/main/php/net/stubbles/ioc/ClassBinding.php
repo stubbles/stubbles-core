@@ -214,12 +214,11 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * returns the created instance
      *
-     * @param   string  $type
      * @param   string  $name
      * @return  mixed
      * @throws  BindingException
      */
-    public function getInstance($type, $name)
+    public function getInstance($name)
     {
         if (null !== $this->instance) {
             return $this->instance;

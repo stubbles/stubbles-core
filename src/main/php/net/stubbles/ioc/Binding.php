@@ -25,11 +25,10 @@ interface Binding extends Object
     /**
      * returns the created instance
      *
-     * @param   string  $type
      * @param   string  $name
      * @return  mixed
      */
-    public function getInstance($type, $name);
+    public function getInstance($name);
 
     /**
      * creates a unique key for this binding
