@@ -8,8 +8,8 @@
  * @package  net\stubbles
  */
 namespace org\stubbles\test\ioc;
-use net\stubbles\ioc\BindingScope;
 use net\stubbles\ioc\InjectionProvider;
+use net\stubbles\ioc\binding\BindingScope;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**

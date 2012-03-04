@@ -71,12 +71,10 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
     public function configure(Binder $binder)
     {
         $configPath = null;
-        $binder->bindConstant()
-               ->named('net.stubbles.project.path')
+        $binder->bindConstant('net.stubbles.project.path')
                ->to($this->projectPath);
         foreach ($this->buildPathes($this->projectPath) as $name => $value) {
-            $binder->bindConstant()
-                   ->named($name)
+            $binder->bindConstant($name)
                    ->to($value);
             if ('net.stubbles.config.path' === $name) {
                 $configPath = $value;
@@ -92,8 +90,7 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
                ->named('config')
                ->toInstance($properties);
         foreach ($properties->getSection('config') as $key => $value) {
-            $binder->bindConstant()
-                   ->named($key)
+            $binder->bindConstant($key)
                    ->to($value);
         }
     }

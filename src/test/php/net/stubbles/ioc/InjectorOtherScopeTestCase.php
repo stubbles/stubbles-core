@@ -22,7 +22,7 @@ class InjectorOtherTestCase extends \PHPUnit_Framework_TestCase
     public function otherScopeIsUsedToCreateInstance()
     {
         $binder = new Binder();
-        $mockBindingScope = $this->getMock('net\\stubbles\\ioc\\BindingScope');
+        $mockBindingScope = $this->getMock('net\\stubbles\\ioc\\binding\\BindingScope');
         $binder->bind('\\stdClass')
                ->to('\\stdClass')
                ->in($mockBindingScope);

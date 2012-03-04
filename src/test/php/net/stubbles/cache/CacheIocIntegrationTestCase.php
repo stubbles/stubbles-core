@@ -36,8 +36,7 @@ class CacheIocIntegrationTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->root = vfsStream::setup();
         $binder = new Binder();
-        $binder->bindConstant()
-               ->named('net.stubbles.cache.path')
+        $binder->bindConstant('net.stubbles.cache.path')
                ->to(vfsStream::url('root'));
         $this->injector = $binder->getInjector();
     }

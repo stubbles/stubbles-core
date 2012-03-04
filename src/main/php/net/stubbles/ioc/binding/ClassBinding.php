@@ -7,7 +7,10 @@
  *
  * @package  net\stubbles
  */
-namespace net\stubbles\ioc;
+namespace net\stubbles\ioc\binding;
+use net\stubbles\ioc\DefaultInjectionProvider;
+use net\stubbles\ioc\InjectionProvider;
+use net\stubbles\ioc\Injector;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\reflect\BaseReflectionClass;
@@ -25,12 +28,6 @@ use net\stubbles\lang\reflect\ReflectionClass;
  */
 class ClassBinding extends BaseObject implements Binding
 {
-    /**
-     * injector used by this binding
-     *
-     * @type  Injector
-     */
-    protected $injector      = null;
     /**
      * type for this binding
      *
@@ -83,13 +80,11 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * constructor
      *
-     * @param  Injector       $injector
      * @param  string         $type
      * @param  BindingScopes  $scopes
      */
-    public function __construct(Injector $injector, $type, BindingScopes $scopes)
+    public function __construct($type, BindingScopes $scopes)
     {
-        $this->injector = $injector;
         $this->type     = $type;
         $this->impl     = $type;
         $this->scopes   = $scopes;
@@ -98,6 +93,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * set the concrete implementation
      *
+     * @api
      * @param   BaseReflectionClass|string  $impl
      * @return  ClassBinding
      * @throws  IllegalArgumentException
@@ -118,6 +114,7 @@ class ClassBinding extends BaseObject implements Binding
      * This cannot be used in conjuction with the 'toProvider()' or
      * 'toProviderClass()' method.
      *
+     * @api
      * @param   object            $instance
      * @return  ClassBinding
      * @throws  IllegalArgumentException
@@ -138,6 +135,7 @@ class ClassBinding extends BaseObject implements Binding
      * This cannot be used in conjuction with the 'toInstance()' or
      * 'toProviderClass()' method.
      *
+     * @api
      * @param   InjectionProvider  $provider
      * @return  ClassBinding
      */
@@ -153,6 +151,7 @@ class ClassBinding extends BaseObject implements Binding
      * This cannot be used in conjuction with the 'toInstance()' or
      * 'toProvider()' method.
      *
+     * @api
      * @param   string|BaseReflectionClass  $providerClass
      * @return  ClassBinding
      */
@@ -166,6 +165,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * binds the class to the singleton scope
      *
+     * @api
      * @return  ClassBinding
      * @since   1.5.0
      */
@@ -178,6 +178,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * binds the class to the session scope
      *
+     * @api
      * @return  ClassBinding
      * @since   1.5.0
      */
@@ -190,6 +191,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * set the scope
      *
+     * @api
      * @param   BindingScope  $scope
      * @return  ClassBinding
      */
@@ -202,6 +204,7 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * Set the name of the injection
      *
+     * @api
      * @param   string            $name
      * @return  ClassBinding
      */
@@ -214,12 +217,12 @@ class ClassBinding extends BaseObject implements Binding
     /**
      * returns the created instance
      *
-     * @param   string  $type
-     * @param   string  $name
+     * @param   Injector  $injector
+     * @param   string    $name
      * @return  mixed
      * @throws  BindingException
      */
-    public function getInstance($type, $name)
+    public function getInstance(Injector $injector, $name)
     {
         if (null !== $this->instance) {
             return $this->instance;
@@ -237,14 +240,14 @@ class ClassBinding extends BaseObject implements Binding
 
         if (null === $this->provider) {
             if (null != $this->providerClass) {
-                $provider = $this->injector->getInstance($this->providerClass);
+                $provider = $injector->getInstance($this->providerClass);
                 if (!($provider instanceof InjectionProvider)) {
                     throw new BindingException('Configured provider class ' . $this->providerClass . ' for type ' . $this->type . ' is not an instance of net\\stubbles\\ioc\\InjectionProvider.');
                 }
 
                 $this->provider = $provider;
             } else {
-                $this->provider = new DefaultInjectionProvider($this->injector, $this->impl);
+                $this->provider = new DefaultInjectionProvider($injector, $this->impl);
             }
         }
 

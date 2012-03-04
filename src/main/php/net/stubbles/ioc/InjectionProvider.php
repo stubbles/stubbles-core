@@ -12,6 +12,8 @@ use net\stubbles\lang\Object;
 /**
  * Interface for providers that create objects that are required by the
  * Inversion of Control features of Stubbles.
+ *
+ * @api
  */
 interface InjectionProvider extends Object
 {
