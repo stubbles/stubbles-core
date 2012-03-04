@@ -12,6 +12,8 @@ use net\stubbles\streams\AbstractDecoratedOutputStream;
 use net\stubbles\streams\OutputStream;
 /**
  * Output stream applying a filter on data to write.
+ *
+ * @api
  */
 class FilteredOutputStream extends AbstractDecoratedOutputStream
 {

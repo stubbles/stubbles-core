@@ -10,6 +10,8 @@
 namespace net\stubbles\lang\reflect;
 /**
  * Basic interface for type references.
+ *
+ * @api
  */
 interface ReflectionType
 {

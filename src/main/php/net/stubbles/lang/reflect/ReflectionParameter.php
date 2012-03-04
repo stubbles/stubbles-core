@@ -13,6 +13,8 @@ use net\stubbles\lang\reflect\annotation\Annotation;
 use net\stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
  * Extended Reflection class for parameters.
+ *
+ * @api
  */
 class ReflectionParameter extends \ReflectionParameter implements Annotatable
 {

@@ -12,6 +12,8 @@ use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Query string handling.
+ *
+ * @internal
  */
 class QueryString extends BaseObject
 {

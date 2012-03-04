@@ -12,6 +12,8 @@ use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\RuntimeException;
 /**
  * All built-in scopes.
+ *
+ * @internal
  */
 class BindingScopes extends BaseObject
 {

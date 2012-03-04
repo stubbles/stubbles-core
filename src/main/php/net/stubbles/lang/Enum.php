@@ -53,6 +53,7 @@ abstract class Enum extends BaseObject
     /**
      * returns the name of the enum
      *
+     * @api
      * @return  string
      */
     public function name()
@@ -63,6 +64,7 @@ abstract class Enum extends BaseObject
     /**
      * returns the value of the enum
      *
+     * @api
      * @return  mixed
      */
     public function value()
@@ -73,6 +75,7 @@ abstract class Enum extends BaseObject
     /**
      * returns the enum instance of given class identified by its name
      *
+     * @api
      * @param   string  $name
      * @return  Enum
      * @throws  IllegalArgumentException
@@ -90,6 +93,7 @@ abstract class Enum extends BaseObject
     /**
      * returns the enum instance of given class identified by its value
      *
+     * @api
      * @param   string  $value
      * @return  Enum
      * @throws  IllegalArgumentException
@@ -109,6 +113,7 @@ abstract class Enum extends BaseObject
     /**
      * returns a list of all instances for given enum
      *
+     * @api
      * @return  Enum[]
      */
     public static function instances()
@@ -120,6 +125,7 @@ abstract class Enum extends BaseObject
     /**
      * returns a list of enum names for given enum
      *
+     * @api
      * @return  string[]
      */
     public static function namesOf()
@@ -131,6 +137,7 @@ abstract class Enum extends BaseObject
     /**
      * returns a list of values for given enum
      *
+     * @api
      * @return  mixed[]
      */
     public static function valuesOf()
@@ -147,9 +154,9 @@ abstract class Enum extends BaseObject
     /**
      * checks whether a value is equal to the class
      *
+     * @XmlIgnore
      * @param   mixed  $compare
      * @return  bool
-     * @XmlIgnore
      */
     public function equals($compare)
     {
@@ -163,8 +170,8 @@ abstract class Enum extends BaseObject
     /**
      * returns a string representation of the class
      *
-     * @return  string
      * @XmlIgnore
+     * @return  string
      */
     public function __toString()
     {

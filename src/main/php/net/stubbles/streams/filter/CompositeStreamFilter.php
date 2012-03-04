@@ -11,6 +11,8 @@ namespace net\stubbles\streams\filter;
 use net\stubbles\lang\BaseObject;
 /**
  * Composite to combine a list of stream filters.
+ *
+ * @api
  */
 class CompositeStreamFilter extends BaseObject implements StreamFilter
 {

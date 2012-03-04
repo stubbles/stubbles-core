@@ -13,6 +13,8 @@ use net\stubbles\lang\BaseObject;
  * Class for URIs and methods on URIs.
  *
  * Use Uri::fromString() to create an instance.
+ *
+ * @internal
  */
 class ConstructedUri extends Uri
 {

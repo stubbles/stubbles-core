@@ -10,6 +10,8 @@
 namespace net\stubbles\streams;
 /**
  * Decodes input stream into internal charset.
+ *
+ * @api
  */
 class DecodingInputStream extends AbstractDecoratedInputStream
 {

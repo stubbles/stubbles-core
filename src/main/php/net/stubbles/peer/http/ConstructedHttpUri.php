@@ -12,6 +12,8 @@ use net\stubbles\lang\BaseObject;
 use net\stubbles\peer\ParsedUri;
 /**
  * Class for URIs and methods on URIs.
+ *
+ * @internal
  */
 class ConstructedHttpUri extends HttpUri
 {

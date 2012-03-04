@@ -15,6 +15,8 @@ use net\stubbles\lang\reflect\matcher\MethodMatcher;
 use net\stubbles\lang\reflect\matcher\PropertyMatcher;
 /**
  * Extended Reflection class for classes that allows usage of annotations.
+ *
+ * @api
  */
 class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
 {

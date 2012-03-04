@@ -12,6 +12,8 @@ use net\stubbles\lang\Object;
 use net\stubbles\lang\types\Date;
 /**
  * Interface for the datespan classes.
+ *
+ * @api
  */
 interface Datespan extends Object
 {

@@ -34,6 +34,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * constructor
      *
+     * @api
      * @param  array  $propertyData  the property data
      */
     public function __construct(array $propertyData = array())
@@ -44,6 +45,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * construct class from string
      *
+     * @api
      * @param   string  $propertyString
      * @return  Properties
      * @throws  IllegalArgumentException
@@ -62,6 +64,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * construct class from a file
      *
+     * @api
      * @param   string  $propertiesFile  full path to file containing properties
      * @return  Properties
      * @throws  FileNotFoundException  if file can not be found or is not readable
@@ -88,6 +91,7 @@ class Properties extends BaseObject implements \Iterator
      * instance combined. If both instances have sections of the same name the
      * section from the other instance overwrite the section from this instance.
      *
+     * @api
      * @param   Properties  $otherProperties
      * @return  Properties
      * @since   1.3.0
@@ -100,6 +104,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * returns a list of section keys
      *
+     * @api
      * @return  string[]
      */
     public function getSections()
@@ -110,6 +115,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * checks if a certain section exists
      *
+     * @api
      * @param   string  $section  name of the section
      * @return  bool
      */
@@ -121,6 +127,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * returns a whole section if it exists or the default if the section does not exist
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   array   $default  value to return if section does not exist
      * @return  scalar[]
@@ -137,6 +144,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * returns a list of all keys of a specific section
      *
+     * @api
      * @param   string    $section  name of the section
      * @param   string[]  $default  value to return if section does not exist
      * @return  string[]
@@ -153,6 +161,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * checks if a certain section contains a certain key
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @return  bool
@@ -169,6 +178,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * returns a value from a section or a default value if the section or key does not exist
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @param   mixed   $default  value to return if section or key does not exist
@@ -186,6 +196,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * returns a string from a section or a default string if the section or key does not exist
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @param   string  $default  string to return if section or key does not exist
@@ -203,6 +214,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * returns an integer or a default value if the section or key does not exist
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @param   int     $default  value to return if section or key does not exist
@@ -220,6 +232,7 @@ class Properties extends BaseObject implements \Iterator
     /**
      * returns a float or a default value if the section or key does not exist
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @param   float   $default  value to return if section or key does not exist
@@ -240,6 +253,7 @@ class Properties extends BaseObject implements \Iterator
      * The return value is true if the property value is either "1", "yes",
      * "true" or "on". In any other case the return value will be false.
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @param   bool    $default  value to return if section or key does not exist
@@ -266,6 +280,7 @@ class Properties extends BaseObject implements \Iterator
      * </code>
      * The resulting array would be array('foo', 'bar', 'baz')
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @param   array   $default  array to return if section or key does not exist
@@ -298,6 +313,7 @@ class Properties extends BaseObject implements \Iterator
      * </code>
      * The resulting hash would be array('foo' => 'bar', 'baz')
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @param   array   $default  array to return if section or key does not exist
@@ -341,6 +357,7 @@ class Properties extends BaseObject implements \Iterator
      * numbers_reverse = 5..1
      * </code>
      *
+     * @api
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @param   array   $default  range to return if section or key does not exist

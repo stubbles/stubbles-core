@@ -10,6 +10,8 @@
 namespace net\stubbles\lang\reflect\annotation\parser\state;
 /**
  * Interface for an annotation parser state.
+ *
+ * @internal
  */
 interface AnnotationState
 {

@@ -8,22 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\errorhandler;
-/**
- * Tests for net\stubbles\lang\errorhandler\DefaultErrorHandler.
- */
-class DefaultErrorHandlerAccessor extends DefaultErrorHandler
-{
-    /**
-     * accesses internal list of added errror handlers
-     *
-     * @param   DefaultErrorHandler $handler
-     * @return  ErrorHandler[]
-     */
-    public static function getErrorHandlers(DefaultErrorHandler $handler)
-    {
-        return $handler->errorHandlers;
-    }
-}
+use net\stubbles\lang\ObjectParser;
 /**
  * Tests for net\stubbles\lang\errorhandler\DefaultErrorHandler.
  *
@@ -52,7 +37,9 @@ class DefaultErrorHandlerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasAddedAllErrorHandlers()
     {
-        $errorHandlers = DefaultErrorHandlerAccessor::getErrorHandlers($this->defaultErrorHandler);
+        $errorHandlers = ObjectParser::readProperty($this->defaultErrorHandler,
+                                                    'errorHandlers'
+                         );
         $this->assertInstanceOf('net\\stubbles\\lang\\errorhandler\\IllegalArgumentErrorHandler',
                                 $errorHandlers[0]
         );

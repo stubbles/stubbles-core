@@ -12,14 +12,16 @@ use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
- * Scope for singletons
+ * Ensures that an object instance is only created once.
+ *
+ * @internal
  */
 class SingletonBindingScope extends BaseObject implements BindingScope
 {
     /**
      * instances in this scope
      *
-     * @type  array
+     * @type  object[]
      */
     protected $instances = array();
 

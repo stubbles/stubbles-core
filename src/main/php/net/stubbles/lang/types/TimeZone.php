@@ -16,6 +16,8 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  *
  * Shameless rip from the XP framework. ;-) Wraps PHP's internal time zone
  * functions for ease of use.
+ *
+ * @api
  */
 class TimeZone extends BaseObject
 {

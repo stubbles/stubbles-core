@@ -17,7 +17,7 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  * a type hint has been infringed with an argument of another type. If such an error is detected
  * an stubIllegalArgumentException will be thrown.
  *
- * @see  http://php.net/set_error_handler
+ * @internal
  */
 class IllegalArgumentErrorHandler extends BaseObject implements ErrorHandler
 {

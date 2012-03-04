@@ -34,29 +34,11 @@ class SocketOptionsTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function isNotBoundToConnectionByDefault()
+    public function canBindToConnection()
     {
-        $this->assertFalse($this->socketOptions->boundToConnection());
-    }
-
-    /**
-     * @test
-     */
-    public function isBoundToConnectionAfterBinding()
-    {
-        $this->assertTrue($this->socketOptions->bindToConnection('mockfp')
-                                              ->boundToConnection()
+        $this->assertSame($this->socketOptions,
+                          $this->socketOptions->bindToConnection('mockfp')
         );
-    }
-
-    /**
-     * @test
-     */
-    public function clonedInstanceIsNotBoundToConnection()
-    {
-        $this->socketOptions->bindToConnection('mockfp');
-        $cloned = clone $this->socketOptions;
-        $this->assertFalse($cloned->boundToConnection());
     }
 
     /**

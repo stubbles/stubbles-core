@@ -11,6 +11,8 @@ namespace net\stubbles\lang\types\datespan;
 use net\stubbles\lang\types\Date;
 /**
  * Datespan that represents a single day.
+ *
+ * @api
  */
 class Day extends AbstractDatespan implements Datespan
 {

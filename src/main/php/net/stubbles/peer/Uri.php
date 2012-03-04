@@ -11,6 +11,8 @@ namespace net\stubbles\peer;
 use net\stubbles\lang\BaseObject;
 /**
  * Class for URIs and methods on URIs.
+ *
+ * @api
  */
 abstract class Uri extends BaseObject
 {

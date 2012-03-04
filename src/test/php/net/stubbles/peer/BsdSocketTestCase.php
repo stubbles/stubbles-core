@@ -249,43 +249,24 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
      */
-    public function constructWithAlreadyBoundOptionsThrowsIllegalArgumentException()
+    public function returnsDefaultForOptionNotSet()
     {
-        $mockOptions = $this->getMock('net\\stubbles\\peer\\SocketOptions');
-        $mockOptions->expects($this->once())
-                    ->method('boundToConnection')
-                    ->will($this->returnValue(true));
-        new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket', null, $mockOptions);
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals('default',
+                            $socket->getOption('bar', 'baz', 'default')
+        );
     }
 
     /**
      * @test
      */
-    public function usesOptionsToGetOption()
+    public function returnsValueFromOptionAlreadySet()
     {
-        $mockOptions = $this->getMock('net\\stubbles\\peer\\SocketOptions');
-        $mockOptions->expects($this->once())
-                    ->method('get')
-                    ->with($this->equalTo('bar'), $this->equalTo('baz'), $this->equalTo('default'))
-                    ->will($this->returnValue('foo'));
-        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket', null, $mockOptions);
-        $this->assertEquals('foo', $socket->getOption('bar', 'baz', 'default'));
-    }
-
-    /**
-     * @test
-     */
-    public function usesOptionsToSetOption()
-    {
-        $mockOptions = $this->getMock('net\\stubbles\\peer\\SocketOptions');
-        $mockOptions->expects($this->once())
-                    ->method('set')
-                    ->with($this->equalTo('bar'), $this->equalTo('baz'), $this->equalTo('foo'));
-        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket', null, $mockOptions);
-        $this->assertEquals($socket,
+        $socket = new BsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals('foo',
                             $socket->setOption('bar', 'baz', 'foo')
+                                   ->getOption('bar', 'baz', 'default')
         );
     }
 

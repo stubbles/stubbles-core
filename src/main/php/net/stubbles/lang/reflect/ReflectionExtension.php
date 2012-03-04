@@ -10,6 +10,8 @@
 namespace net\stubbles\lang\reflect;
 /**
  * Extended Reflection class for extensions.
+ *
+ * @api
  */
 class ReflectionExtension extends \ReflectionExtension
 {

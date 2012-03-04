@@ -11,6 +11,8 @@ namespace net\stubbles\lang\reflect;
 use net\stubbles\lang\reflect\annotation\Annotatable;
 /**
  * Common base interface for methods and functions.
+ *
+ * @api
  */
 interface ReflectionRoutine extends Annotatable
 {

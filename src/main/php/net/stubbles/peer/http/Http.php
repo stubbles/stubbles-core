@@ -167,6 +167,7 @@ class Http extends BaseObject
     /**
      * checks if given http version is valid
      *
+     * @api
      * @param   string  $version
      * @return  bool
      */
@@ -184,6 +185,7 @@ class Http extends BaseObject
      *
      * Returns null if given status code is empty.
      *
+     * @api
      * @param   int  $statusCode
      * @return  string
      */
@@ -200,6 +202,7 @@ class Http extends BaseObject
     /**
      * returns list of known status codes
      *
+     * @api
      * @return  array
      */
     public static function getStatusCodes()
@@ -210,6 +213,7 @@ class Http extends BaseObject
     /**
      * returns reason phrase for given status code
      *
+     * @api
      * @param   int  $statusCode
      * @return  string
      * @throws  IllegalArgumentException
