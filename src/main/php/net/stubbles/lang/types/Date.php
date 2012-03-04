@@ -9,6 +9,7 @@
  */
 namespace net\stubbles\lang\types;
 use net\stubbles\lang\BaseObject;
+use net\stubbles\lang\StringRepresentationBuilder;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for date/time handling.
@@ -291,7 +292,7 @@ class Date extends BaseObject
      */
     public function __toString()
     {
-        return self::getStringRepresentationOf($this, array('dateTime' => $this->format('Y-m-d H:i:sO')));
+        return StringRepresentationBuilder::buildFrom($this, array('dateTime' => $this->format('Y-m-d H:i:sO')));
     }
 
     /**
