@@ -52,7 +52,7 @@ class ResourceLoaderTestCase extends \PHPUnit_Framework_TestCase
                                     . 'src' . DIRECTORY_SEPARATOR
                                     . 'main' . DIRECTORY_SEPARATOR
                                     . 'resources' . DIRECTORY_SEPARATOR
-                                    . 'lang/stubbles.ini'
+                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini'
                             ),
                             $this->resourceLoader->getResourceUris('lang/stubbles.ini')
         );

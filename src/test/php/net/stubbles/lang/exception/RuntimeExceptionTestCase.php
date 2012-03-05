@@ -151,7 +151,7 @@ class RuntimeExceptionTestCase extends \PHPUnit_Framework_TestCase
      */
     public function toStringResult()
     {
-        $this->assertEquals("net\stubbles\lang\exception\RuntimeException {\n    message(string): message\n    file(string): " . __FILE__ . "\n    line(integer): " . $this->runtimeException3->getLine() . "\n    code(integer): 0\n    stacktrace(string): " . $this->runtimeException3->getTraceAsString() . "\n}\n",
+        $this->assertEquals("net\\stubbles\\lang\\exception\\RuntimeException {\n    message(string): message\n    file(string): " . __FILE__ . "\n    line(integer): " . $this->runtimeException3->getLine() . "\n    code(integer): 0\n    stacktrace(string): " . $this->runtimeException3->getTraceAsString() . "\n}\n",
                             (string) $this->runtimeException3
         );
     }
