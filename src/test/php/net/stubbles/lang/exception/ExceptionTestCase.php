@@ -151,7 +151,7 @@ class ExceptionTestCase extends \PHPUnit_Framework_TestCase
      */
     public function toStringResult()
     {
-        $this->assertEquals("net\stubbles\lang\exception\Exception {\n    message(string): message\n    file(string): " . __FILE__ . "\n    line(integer): " . $this->exception3->getLine() . "\n    code(integer): 0\n    stacktrace(string): " . $this->exception3->getTraceAsString() . "\n}\n",
+        $this->assertEquals("net\\stubbles\\lang\\exception\\Exception {\n    message(string): message\n    file(string): " . __FILE__ . "\n    line(integer): " . $this->exception3->getLine() . "\n    code(integer): 0\n    stacktrace(string): " . $this->exception3->getTraceAsString() . "\n}\n",
                             (string) $this->exception3
         );
     }
