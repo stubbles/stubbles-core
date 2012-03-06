@@ -22,11 +22,7 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      * @type  string[]
      */
     private $pathTypes   = array('cache',
-                                 'config',
-                                 'data',
-                                 'docroot',
-                                 'log',
-                                 'pages'
+                                 'config'
                            );
     /**
      * path to project files
@@ -38,15 +34,10 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
     /**
      * constructor
      *
-     * @param  string    $projectPath  path to project
-     * @param  string[]  $pathTypes    the different possible path types
+     * @param  string  $projectPath  path to project
      */
-    public function __construct($projectPath, array $pathTypes = null)
+    public function __construct($projectPath)
     {
-        if (null !== $pathTypes) {
-            $this->pathTypes = array_merge($this->pathTypes, $pathTypes);
-        }
-
         $this->projectPath = $projectPath;
 
     }
@@ -54,13 +45,29 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
     /**
      * static constructor
      *
-     * @param   string    $projectPath  path to project
-     * @param   string[]  $pathTypes    the different possible path types
+     * @param   string  $projectPath  path to project
      * @return  PropertiesBindingModule
      */
-    public static function create($projectPath, array $pathTypes = null)
+    public static function create($projectPath)
     {
-        return new self($projectPath, $pathTypes);
+        return new self($projectPath);
+    }
+
+    /**
+     * adds a path type to be bound
+     *
+     * The path type will lead to a path available via injection. The constant
+     * name of this path will be <i>net.stubbles.$pathtype.path</i> and it's
+     * value will be $projectPath/$pathtype.
+     *
+     * @api
+     * @param   string  $pathType
+     * @return  PropertiesBindingModule
+     */
+    public function addPathType($pathType)
+    {
+        $this->pathTypes[] = $pathType;
+        return $this;
     }
 
     /**
