@@ -73,12 +73,9 @@ net.stubbles.webapp.xml.serializeMode=true")
      */
     public function getConstants()
     {
-        return array('cache'   => array('cache', 'net.stubbles.cache.path', ),
-                     'config'  => array('config', 'net.stubbles.config.path'),
-                     'data'    => array('data', 'net.stubbles.data.path'),
-                     'docroot' => array('docroot', 'net.stubbles.docroot.path'),
-                     'log'     => array('log', 'net.stubbles.log.path'),
-                     'pages'   => array('pages', 'net.stubbles.pages.path')
+        return array('cache'  => array('cache', 'net.stubbles.cache.path', ),
+                     'config' => array('config', 'net.stubbles.config.path'),
+                     'log'    => array('log', 'net.stubbles.log.path')
         );
     }
 
@@ -127,12 +124,10 @@ net.stubbles.webapp.xml.serializeMode=true")
      * @test
      * @dataProvider  getWithAdditionalConstants
      */
-    public function additionalPathesShouldBeBound($pathPart, $constantName)
+    public function additionalPathTypesShouldBeBound($pathPart, $constantName)
     {
-        $this->propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('projects'),
-                                                                         array('user')
-                                         );
-        $this->propertiesBindingModule->configure($this->binder);
+        $this->propertiesBindingModule->addPathType('user')
+                                      ->configure($this->binder);
         $this->assertTrue($this->binder->hasConstant($constantName));
         $this->assertEquals($this->getProjectPath($pathPart),
                             $this->binder->getInjector()
