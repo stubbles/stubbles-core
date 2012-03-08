@@ -22,7 +22,8 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      * @type  string[]
      */
     private $pathTypes   = array('cache',
-                                 'config'
+                                 'config',
+                                 'log'
                            );
     /**
      * path to project files

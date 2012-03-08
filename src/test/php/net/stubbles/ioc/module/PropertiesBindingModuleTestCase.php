@@ -73,8 +73,9 @@ net.stubbles.webapp.xml.serializeMode=true")
      */
     public function getConstants()
     {
-        return array('cache'   => array('cache', 'net.stubbles.cache.path', ),
-                     'config'  => array('config', 'net.stubbles.config.path')
+        return array('cache'  => array('cache', 'net.stubbles.cache.path', ),
+                     'config' => array('config', 'net.stubbles.config.path'),
+                     'log'    => array('log', 'net.stubbles.log.path')
         );
     }
 
