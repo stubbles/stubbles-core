@@ -93,7 +93,7 @@ class ResourceLoader extends BaseObject
     {
         if (null === self::$rootPath) {
             if (file_exists(__DIR__ . '/../../../../../../../../.composer/autoload_namespaces.php')) {
-                self::$rootPath = realpath(__DIR__ . '/../../../../../../../../');
+                self::$rootPath = realpath(__DIR__ . '/../../../../../../../../../');
             } else {
                 self::$rootPath = realpath(__DIR__ . '/../../../../../../');
             }
