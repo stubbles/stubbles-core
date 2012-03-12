@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang;
-use net\stubbles\Bootstrap;
 /**
  * Tests for net\stubbles\lang\ResourceLoader.
  *
@@ -48,7 +47,7 @@ class ResourceLoaderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfAllResourceUrisForExistingFile()
     {
-        $this->assertEquals(array(Bootstrap::getRootPath() . DIRECTORY_SEPARATOR
+        $this->assertEquals(array(ResourceLoader::getRootPath() . DIRECTORY_SEPARATOR
                                     . 'src' . DIRECTORY_SEPARATOR
                                     . 'main' . DIRECTORY_SEPARATOR
                                     . 'resources' . DIRECTORY_SEPARATOR
