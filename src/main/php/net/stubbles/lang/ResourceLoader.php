@@ -19,6 +19,12 @@ use net\stubbles\lang\BaseObject;
 class ResourceLoader extends BaseObject
 {
     /**
+     * root path of application
+     *
+     * @type  string
+     */
+    private static $rootPath;
+    /**
      * list of source pathes
      *
      * @type  string[]
@@ -51,14 +57,13 @@ class ResourceLoader extends BaseObject
     private function getSourcePathes()
     {
         if (null === self::$sourcePathes) {
-            $pathes       = array();
-            $vendorPathes = require Bootstrap::getRootPath() . '/vendor/.composer/autoload_namespaces.php';
-            foreach ($vendorPathes as $path) {
+            $pathes = array();
+            foreach ($this->getVendorPathes() as $path) {
                 if (substr($path, -13) === '/src/main/php') {
                     $path = str_replace('/src/main/php', '/src/main', $path);
                 }
 
-                if (isset($pathes[$path]) === false) {
+                if (!isset($pathes[$path])) {
                     $pathes[$path] = $path;
                 }
             }
@@ -67,6 +72,34 @@ class ResourceLoader extends BaseObject
         }
 
         return self::$sourcePathes;
+    }
+
+    /**
+     * return list of vendor pathes
+     *
+     * @return  string[]
+     */
+    private function getVendorPathes()
+    {
+        return require self::getRootPath() . '/vendor/.composer/autoload_namespaces.php';
+    }
+
+    /**
+     * returns root path
+     *
+     * @return  string
+     */
+    public static function getRootPath()
+    {
+        if (null === self::$rootPath) {
+            if (file_exists(__DIR__ . '/../../../../../../../../.composer/autoload_namespaces.php')) {
+                self::$rootPath = realpath(__DIR__ . '/../../../../../../../../');
+            } else {
+                self::$rootPath = realpath(__DIR__ . '/../../../../../../');
+            }
+        }
+
+        return self::$rootPath;
     }
 }
 ?>

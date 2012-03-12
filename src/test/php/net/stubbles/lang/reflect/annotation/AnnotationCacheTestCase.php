@@ -8,7 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation;
-use net\stubbles\Bootstrap;
+use net\stubbles\lang\ResourceLoader;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\lang\reflect\annotation\AnnotationCache.
@@ -35,7 +35,7 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        AnnotationCache::setCacheFile(Bootstrap::getRootPath() . '/cache/annotations.cache');
+        AnnotationCache::setCacheFile(ResourceLoader::getRootPath() . '/cache/annotations.cache');
     }
 
     /**
