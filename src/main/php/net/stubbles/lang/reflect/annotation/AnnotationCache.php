@@ -8,7 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation;
-use net\stubbles\Bootstrap;
+use net\stubbles\lang\ResourceLoader;
 /**
  * Static cache for annotations
  *
@@ -55,7 +55,7 @@ class AnnotationCache
      */
     public static function __static()
     {
-        self::$cacheFile = Bootstrap::getRootPath() . '/cache/annotations.cache';
+        self::$cacheFile = ResourceLoader::getRootPath() . '/cache/annotations.cache';
         if (file_exists(self::$cacheFile) == true) {
             self::$annotations = unserialize(file_get_contents(self::$cacheFile));
         }
