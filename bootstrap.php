@@ -34,12 +34,6 @@ if (($ctype = getenv('LC_CTYPE')) || ($ctype = setlocale(LC_CTYPE, 0))) {
 class Bootstrap
 {
     /**
-     * list of source pathes
-     *
-     * @type  string[]
-     */
-    private static $sourcePathes;
-    /**
      * returns root path of the installation
      *
      * @return  string
@@ -47,32 +41,6 @@ class Bootstrap
     public static function getRootPath()
     {
         return __DIR__;
-    }
-
-    /**
-     * returns list of source pathes
-     *
-     * @return  string[]
-     */
-    public static function getSourcePathes()
-    {
-        if (null === self::$sourcePathes) {
-            $pathes       = array();
-            $vendorPathes = require __DIR__ . '/vendor/.composer/autoload_namespaces.php';
-            foreach ($vendorPathes as $path) {
-                if (substr($path, -13) === '/src/main/php') {
-                    $path = str_replace('/src/main/php', '/src/main', $path);
-                }
-
-                if (isset($pathes[$path]) === false) {
-                    $pathes[$path] = $path;
-                }
-            }
-
-            self::$sourcePathes = array_values($pathes);
-        }
-
-        return self::$sourcePathes;
     }
 
     /**
