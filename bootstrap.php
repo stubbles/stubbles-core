@@ -42,17 +42,5 @@ class Bootstrap
     {
         return __DIR__;
     }
-
-    /**
-     * run an application
-     *
-     * @param  string  $appClass  full qualified class name of the app to run
-     * @since  1.7.0
-     */
-    public static function run($appClass)
-    {
-        net\stubbles\ioc\App::createInstance($appClass, __DIR__)
-                            ->run();
-    }
 }
 ?>
