@@ -62,4 +62,21 @@ interface Object
      */
     public function __toString();
 }
+/**
+* set internal, input and output encoding
+*/
+call_user_func(function() {
+    iconv_set_encoding('internal_encoding', 'UTF-8');
+    if (($ctype = getenv('LC_CTYPE')) || ($ctype = setlocale(LC_CTYPE, 0))) {
+        sscanf($ctype, '%[^.].%s', $language, $charset);
+        if (is_numeric($charset) === true) {
+            $charset = 'CP' . $charset;
+        } elseif (null == $charset) {
+            $charset = 'iso-8859-1';
+        }
+
+        iconv_set_encoding('output_encoding', $charset);
+        iconv_set_encoding('input_encoding', $charset);
+    }
+});
 ?>
