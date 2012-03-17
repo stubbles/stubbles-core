@@ -35,6 +35,10 @@ abstract class HttpUri extends Uri
 
         $uri = new ConstructedHttpUri(new ParsedUri($uriString));
         if ($uri->isValid()) {
+            if ($uri->parsedUri->getPath() == null) {
+                $uri->parsedUri = $uri->parsedUri->transpose(array("path" => "/"));
+            }
+
             return $uri;
         }
 

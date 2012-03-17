@@ -39,6 +39,15 @@ class HttpUriTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @expectedException  net\stubbles\peer\MalformedUriException
+     */
+    public function canNotCreateHttpUriFromInvalidHost()
+    {
+        HttpUri::fromString('http://:');
+    }
+
+    /**
      * @since  2.0.0
      * @test
      * @expectedException  net\stubbles\peer\MalformedUriException
