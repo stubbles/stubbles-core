@@ -33,10 +33,15 @@ class ParsedUri extends BaseObject
      * constructor
      *
      * @param  string  $uri
+     * @throws  MalformedUriException
      */
     public function __construct($uri)
     {
         $this->uri = ((!is_array($uri)) ? (parse_url($uri)): ($uri));
+        if (!is_array($this->uri)) {
+            throw new MalformedUriException('The URI ' . $uri . ' is not a valid URI');
+        }
+
         if (isset($this->uri['host'])) {
             $this->uri['host'] = strtolower($this->uri['host']);
         }
