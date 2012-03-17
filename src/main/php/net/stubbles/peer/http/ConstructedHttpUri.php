@@ -20,14 +20,11 @@ class ConstructedHttpUri extends HttpUri
     /**
      * constructor
      *
-     * @param   ParsedUri  $uri
+     * @param  ParsedUri  $uri
      */
     protected function __construct(ParsedUri $uri)
     {
         $this->parsedUri = $uri;
-        if ($this->parsedUri->getPath() == null) {
-            $this->parsedUri = $this->parsedUri->transpose(array("path" => "/"));
-        }
     }
 }
 ?>
