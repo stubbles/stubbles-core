@@ -116,6 +116,41 @@ class HttpRequest extends BaseObject
     }
 
     /**
+     * initializes a put request
+     *
+     * @param   string   $body     post request body
+     * @param   int      $timeout  connection timeout
+     * @param   string   $version  http version
+     * @return  HttpResponse
+     * @since   2.0.0
+     */
+    public function put($body, $timeout = 30, $version = Http::VERSION_1_1)
+    {
+        $this->headers->put('Content-Length', strlen($body));
+        $socket = $this->httpUri->openSocket($timeout);
+        $out    = $socket->getOutputStream();
+        $this->processHeader($out, Http::PUT, $version);
+        $out->write($body);
+        return HttpResponse::create($socket->getInputStream());
+    }
+
+    /**
+     * initializes a put request
+     *
+     * @param   string   $body     post request body
+     * @param   int      $timeout  connection timeout
+     * @param   string   $version  http version
+     * @return  HttpResponse
+     * @since   2.0.0
+     */
+    public function delete($timeout = 30, $version = Http::VERSION_1_1)
+    {
+        $socket = $this->httpUri->openSocket($timeout);
+        $this->processHeader($socket->getOutputStream(), Http::DELETE, $version);
+        return HttpResponse::create($socket->getInputStream());
+    }
+
+    /**
      * transforms post values to post body
      *
      * @param   array  $postValues
