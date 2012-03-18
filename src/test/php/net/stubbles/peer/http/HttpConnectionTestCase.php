@@ -50,7 +50,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                           ->will($this->returnValue($mockSocket));
         $this->mockHttpUri->expects($this->any())
                           ->method('getPath')
-                          ->will($this->returnValue('/'));
+                          ->will($this->returnValue('/foo/resource'));
         $this->mockHttpUri->expects($this->any())
                           ->method('getHost')
                           ->will($this->returnValue('example.com'));
@@ -71,7 +71,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->get()
         );
-        $this->assertEquals(Http::line('GET / HTTP/1.1')
+        $this->assertEquals(Http::line('GET /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
                           . Http::line('User-Agent: Stubbles HTTP Client')
                           . Http::line('Referer: http://example.com/')
@@ -97,7 +97,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->head()
         );
-        $this->assertEquals(Http::line('HEAD / HTTP/1.1')
+        $this->assertEquals(Http::line('HEAD /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
                           . Http::line('User-Agent: Stubbles HTTP Client')
                           . Http::line('Referer: http://example.com/')
@@ -124,7 +124,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->post('foobar')
         );
-        $this->assertEquals(Http::line('POST / HTTP/1.1')
+        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
                           . Http::line('User-Agent: Stubbles HTTP Client')
                           . Http::line('Referer: http://example.com/')
@@ -152,7 +152,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->post(array('foo' => 'bar', 'ba z' => 'dum my'))
         );
-        $this->assertEquals(Http::line('POST / HTTP/1.1')
+        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
                           . Http::line('User-Agent: Stubbles HTTP Client')
                           . Http::line('Referer: http://example.com/')
@@ -163,6 +163,62 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 20')
                           . Http::emptyLine()
                           . 'foo=bar&ba+z=dum+my&',
+                            $this->memoryOutputStream->getBuffer()
+        );
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function initializePutRequest()
+    {
+        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
+                                $this->httpConnection->timeout(2)
+                                                     ->asUserAgent('Stubbles HTTP Client')
+                                                     ->referedFrom('http://example.com/')
+                                                     ->withCookie(array('foo' => 'bar baz'))
+                                                     ->authorizedAs('user', 'pass')
+                                                     ->usingHeader('X-Binford', 6100)
+                                                     ->put('foobar')
+        );
+        $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.1')
+                          . Http::line('Host: example.com')
+                          . Http::line('User-Agent: Stubbles HTTP Client')
+                          . Http::line('Referer: http://example.com/')
+                          . Http::line('Cookie: foo=bar+baz;')
+                          . Http::line('Authorization: BASIC ' . base64_encode('user:pass'))
+                          . Http::line('X-Binford: 6100')
+                          . Http::line('Content-Length: 6')
+                          . Http::emptyLine()
+                          . 'foobar',
+                            $this->memoryOutputStream->getBuffer()
+        );
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function initializeDeleteRequest()
+    {
+        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
+                                $this->httpConnection->timeout(2)
+                                                     ->asUserAgent('Stubbles HTTP Client')
+                                                     ->referedFrom('http://example.com/')
+                                                     ->withCookie(array('foo' => 'bar baz'))
+                                                     ->authorizedAs('user', 'pass')
+                                                     ->usingHeader('X-Binford', 6100)
+                                                     ->delete()
+        );
+        $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.1')
+                          . Http::line('Host: example.com')
+                          . Http::line('User-Agent: Stubbles HTTP Client')
+                          . Http::line('Referer: http://example.com/')
+                          . Http::line('Cookie: foo=bar+baz;')
+                          . Http::line('Authorization: BASIC ' . base64_encode('user:pass'))
+                          . Http::line('X-Binford: 6100')
+                          . Http::emptyLine(),
                             $this->memoryOutputStream->getBuffer()
         );
     }

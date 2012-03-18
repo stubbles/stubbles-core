@@ -165,5 +165,34 @@ class HttpConnection extends BaseObject
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->post($body, $this->timeout, $version);
     }
+
+    /**
+     * returns response object for given URI after PUT request
+     *
+     * @api
+     * @param   string  $body
+     * @param   string  $version  HTTP version
+     * @return  HttpResponse
+     * @since   2.0.0
+     */
+    public function put($body, $version = Http::VERSION_1_1)
+    {
+        return HttpRequest::create($this->httpUri, $this->headers)
+                          ->put($body, $this->timeout, $version);
+    }
+
+    /**
+     * returns response object for given URI after DELETE request
+     *
+     * @api
+     * @param   string  $version  HTTP version
+     * @return  HttpResponse
+     * @since   2.0.0
+     */
+    public function delete($version = Http::VERSION_1_1)
+    {
+        return HttpRequest::create($this->httpUri, $this->headers)
+                          ->delete($this->timeout, $version);
+    }
 }
 ?>
