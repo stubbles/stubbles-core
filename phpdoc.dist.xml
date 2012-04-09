@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<docblox>
-  <title>stubbles core API Doc</title>
+<phpdoc>
+  <title>Stubbles Core API Doc</title>
   <parser>
     <target>docs/api</target>
     <default-package-name>net\stubbles</default-package-name>
@@ -11,4 +11,4 @@
   <files>
     <directory>src/main/php/net</directory>
   </files>
-</docblox>
+</phpdoc>
