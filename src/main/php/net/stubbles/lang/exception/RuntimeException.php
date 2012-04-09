@@ -25,7 +25,7 @@ class RuntimeException extends \RuntimeException implements Throwable
      * constructor
      *
      * @param  string  $message
-     * @param  \Exception  $cause
+     * @param  Exception  $cause
      * @param  int  $code
      */
     public function __construct($message, \Exception $cause = null, $code = 0)

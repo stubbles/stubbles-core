@@ -20,7 +20,7 @@ interface ExceptionHandler extends Object
     /**
      * handles the exception
      *
-     * @param  \Exception  $exception  the uncatched exception
+     * @param  Exception  $exception  the uncatched exception
      */
     public function handleException(\Exception $exception);
 }
