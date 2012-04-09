@@ -32,7 +32,7 @@ class ParsedUri extends BaseObject
     /**
      * constructor
      *
-     * @param  string  $uri
+     * @param   string  $uri
      * @throws  MalformedUriException
      */
     public function __construct($uri)
@@ -96,7 +96,7 @@ class ParsedUri extends BaseObject
     /**
      * creates string representation of uri
      *
-     * @param   \Closure  $portCreator
+     * @param   Closure  $portCreator
      * @return  string
      */
     protected function createString(\Closure $portCreator)

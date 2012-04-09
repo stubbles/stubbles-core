@@ -137,7 +137,6 @@ class HttpRequest extends BaseObject
     /**
      * initializes a put request
      *
-     * @param   string   $body     post request body
      * @param   int      $timeout  connection timeout
      * @param   string   $version  http version
      * @return  HttpResponse

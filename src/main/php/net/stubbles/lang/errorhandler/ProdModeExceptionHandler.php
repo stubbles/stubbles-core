@@ -18,7 +18,7 @@ class ProdModeExceptionHandler extends AbstractExceptionHandler
     /**
      * creates response body with useful data for display
      *
-     * @param   \Exception  $exception  the uncatched exception
+     * @param   Exception  $exception  the uncatched exception
      * @return  string
      */
     protected function createResponseBody(\Exception $exception)
