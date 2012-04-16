@@ -1,5 +1,5 @@
 {
-    "hash": "e116118642a379a0ce6f55ede1b85a21",
+    "hash": "2f1e398f353c75d7a38a6c27431b07ea",
     "packages": [
         {
             "package": "mikey179/vfsStream",
@@ -10,5 +10,6 @@
             "version": "1.0.0-beta7"
         }
     ],
+    "packages-dev": [],
     "aliases": []
 }
