@@ -109,6 +109,18 @@ abstract class Uri extends BaseObject
         return $this->parsedUri->asString();
     }
 
+
+    /**
+     * returns a string representation of the uri
+     *
+     * @XmlIgnore
+     * @return  string
+     */
+    public function __toString()
+    {
+        return $this->asString();
+    }
+
     /**
      * Returns uri as string but without port even if originally given.
      *
