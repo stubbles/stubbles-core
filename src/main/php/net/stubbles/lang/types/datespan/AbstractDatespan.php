@@ -114,5 +114,15 @@ abstract class AbstractDatespan extends BaseObject implements Datespan
 
         return true;
     }
+
+    /**
+     * returns string representation of datespan
+     *
+     * @return  string
+     */
+    public function __toString()
+    {
+        return $this->asString();
+    }
 }
 ?>

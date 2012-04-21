@@ -155,6 +155,15 @@ class DayTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function properStringConversion()
+    {
+        $day = new Day('2007-04-04');
+        $this->assertEquals('2007-04-04', (string) $day);
+    }
+
+    /**
+     * @test
+     */
     public function asIntReturnsRepresentationOfDayWithinMonth()
     {
         $day = new Day('2007-05-14');

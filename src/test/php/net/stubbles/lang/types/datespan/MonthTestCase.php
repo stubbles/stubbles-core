@@ -39,6 +39,24 @@ class MonthTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function properStringConversionContainsYearAndMonth()
+    {
+        $month = new Month(2007, 4);
+        $this->assertEquals('2007-04', (string) $month);
+    }
+
+    /**
+     * @test
+     */
+    public function properStringConversionForCorrectMonthNotFixed()
+    {
+        $month = new Month(2007, '04');
+        $this->assertEquals('2007-04', (string) $month);
+    }
+
+    /**
+     * @test
+     */
     public function usesCurrentYearIfNotGiven()
     {
         $month = new Month(null, 10);

@@ -169,5 +169,14 @@ class CustomDatespanTestCase extends \PHPUnit_Framework_TestCase
         $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
         $this->assertEquals('04.04.2006 - 20.04.2006', $customDatespan->asString());
     }
+
+    /**
+     * @test
+     */
+    public function properStringConversion()
+    {
+        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
+        $this->assertEquals('04.04.2006 - 20.04.2006', (string) $customDatespan);
+    }
 }
 ?>

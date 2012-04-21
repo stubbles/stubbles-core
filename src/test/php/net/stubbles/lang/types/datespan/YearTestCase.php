@@ -30,6 +30,15 @@ class YearTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function properStringConversion()
+    {
+        $year = new Year(2007);
+        $this->assertEquals('2007', (string) $year);
+    }
+
+    /**
+     * @test
+     */
     public function usesCurrentYearIfNotGiven()
     {
         $year = new Year();
