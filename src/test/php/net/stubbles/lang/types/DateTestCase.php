@@ -460,7 +460,7 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
     public function toStringConvertsDateTimePropertyIntoReadableDateRepresentation()
     {
         $date = new Date('31.12.1969 00:00 GMT');
-        $this->assertEquals("net\\stubbles\\lang\\types\\Date {\n    dateTime(string): 1969-12-31 00:00:00+0000\n}\n",
+        $this->assertEquals('1969-12-31 00:00:00+0000',
                             (string) $date
         );
     }
