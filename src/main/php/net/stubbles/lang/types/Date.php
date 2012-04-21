@@ -293,7 +293,7 @@ class Date extends BaseObject
      */
     public function __toString()
     {
-        return StringRepresentationBuilder::buildFrom($this, array('dateTime' => $this->format('Y-m-d H:i:sO')));
+        return $this->asString();
     }
 
     /**
