@@ -112,5 +112,14 @@ class WeekTestCase extends \PHPUnit_Framework_TestCase
         $week = new Week('2007-04-02');
         $this->assertEquals('14', $week->asString());
     }
+
+    /**
+     * @test
+     */
+    public function properStringConversion()
+    {
+        $week = new Week('2007-04-02');
+        $this->assertEquals('14', (string) $week);
+    }
 }
 ?>
