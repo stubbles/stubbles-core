@@ -510,6 +510,17 @@ class UriTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @since  2.0.0
+     * @test
+     */
+    public function canBeCastedToString()
+    {
+        $this->assertEquals('http://stubbles.net:80/index.php?content=features#top',
+                            (string) Uri::fromString('http://stubbles.net:80/index.php?content=features#top')
+        );
+    }
+
+    /**
      * @test
      */
     public function asStringReturnsOriginalGivenUri()
