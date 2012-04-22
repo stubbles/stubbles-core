@@ -80,5 +80,16 @@ class LocalizedStringTestCase extends \PHPUnit_Framework_TestCase
                             $this->localizedString->getMessage()
         );
     }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function conversionToStringYieldsMessage()
+    {
+        $this->assertEquals('This is a localized string.',
+                            (string) $this->localizedString
+        );
+    }
 }
 ?>
