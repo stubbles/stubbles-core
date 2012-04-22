@@ -22,13 +22,13 @@ class LocalizedString extends BaseObject
      *
      * @type  string
      */
-    protected $locale;
+    private $locale;
     /**
      * content of the message
      *
      * @type  string
      */
-    protected $message;
+    private $message;
 
     /**
      * constructor
@@ -62,6 +62,16 @@ class LocalizedString extends BaseObject
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * returns a string representation
+     *
+     * @return  string
+     */
+    public function __toString()
+    {
+        return $this->getMessage();
     }
 }
 ?>
