@@ -52,6 +52,10 @@ abstract class MultiBinding extends BaseObject implements Binding
      */
     protected function getValueCreator($value)
     {
+        if (is_string($value) && class_exists($value)) {
+            return function($injector) use($value) { return $injector->getInstance($value); };
+        }
+
         return function() use($value) { return $value; };
     }
 
@@ -112,7 +116,8 @@ abstract class MultiBinding extends BaseObject implements Binding
         foreach ($this->getBindings() as $key => $bindingValue) {
             $value = $bindingValue($injector, $this->name, $key);
             if ($this->isTypeMismatch($type, $value)) {
-                throw new BindingException('Value for ' . ((is_int($key)) ? ('list') : ('map')) . ' named ' . $this->name . ' at position ' . $key . ' is not of type ' . $type->getName());
+                $valueType = ((is_object($value)) ? (get_class($value)) : (gettype($value)));
+                throw new BindingException('Value of type ' . $valueType . ' for ' . ((is_int($key)) ? ('list') : ('map')) . ' named ' . $this->name . ' at position ' . $key . ' is not of type ' . $type->getName());
             }
 
             $resolved[$key] = $value;
