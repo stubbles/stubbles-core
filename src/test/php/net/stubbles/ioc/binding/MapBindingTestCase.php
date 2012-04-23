@@ -106,6 +106,24 @@ class MapBindingTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function classNameIsAddedToTypedList()
+    {
+        $value = new \stdClass();
+        $this->mockInjector->expects($this->once())
+                           ->method('getInstance')
+                           ->with($this->equalTo('\\stdClass'))
+                           ->will($this->returnValue($value));
+        $this->assertEquals(array('x' => $value),
+                            $this->mapBinding->withEntry('x', '\\stdClass')
+                                             ->getInstance($this->mockInjector,
+                                                           new ReflectionClass('\\stdClass')
+                                               )
+        );
+    }
+
+    /**
+     * @test
      * @expectedException  net\stubbles\ioc\binding\BindingException
      */
     public function invalidValueAddedToTypedListThrowsBindingException()
