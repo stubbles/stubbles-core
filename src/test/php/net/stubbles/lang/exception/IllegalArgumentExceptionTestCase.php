@@ -25,5 +25,45 @@ class IllegalArgumentExceptionTestCase extends \PHPUnit_Framework_TestCase
     {
         throw new IllegalArgumentException('error');
     }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function hasNoDetailsIfNotGiven()
+    {
+        $iae = new IllegalArgumentException('error');
+        $this->assertFalse($iae->hasDetails());
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function hasDetailsIfAffectedParamNameGiven()
+    {
+        $iae = new IllegalArgumentException('error', 'param');
+        $this->assertTrue($iae->hasDetails());
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function containsNameOfAffectedParameter()
+    {
+        $iae = new IllegalArgumentException('error', 'param', 'invalid');
+        $this->assertEquals('param', $iae->getAffectedParamName());
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function containsIllegalValue()
+    {
+        $iae = new IllegalArgumentException('error', 'param', 'invalid');
+        $this->assertEquals('invalid', $iae->getIllegalParamValue());
+    }
 }
 ?>
