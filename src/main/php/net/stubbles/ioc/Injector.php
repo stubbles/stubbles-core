@@ -127,6 +127,52 @@ class Injector extends BaseObject
     }
 
     /**
+     * checks whether list binding for given name exists
+     *
+     * @param   string  $name
+     * @return  bool
+     */
+    public function hasList($name)
+    {
+        return $this->bindingIndex->hasList($name);
+    }
+
+    /**
+     * returns list for given name
+     *
+     * @param   string  $name
+     * @return  array
+     */
+    public function getList($name)
+    {
+        return $this->bindingIndex->getListBinding($name)
+                                  ->getInstance($this, $name);
+    }
+
+    /**
+     * checks whether map binding for given name exists
+     *
+     * @param   string  $name
+     * @return  bool
+     */
+    public function hasMap($name)
+    {
+        return $this->bindingIndex->hasMap($name);
+    }
+
+    /**
+     * returns map for given name
+     *
+     * @param   string  $name
+     * @return  array
+     */
+    public function getMap($name)
+    {
+        return $this->bindingIndex->getMapBinding($name)
+                                  ->getInstance($this, $name);
+    }
+
+    /**
      * handle injections for given instance
      *
      * @param   object               $instance

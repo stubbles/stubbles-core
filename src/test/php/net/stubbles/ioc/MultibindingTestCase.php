@@ -38,6 +38,51 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function injectorReturnsFalseForNonAddedListOnCheck()
+    {
+        $binder = new Binder();
+        $this->assertFalse($binder->getInjector()->hasList('listConfig'));
+    }
+
+    /**
+     * @test
+     */
+    public function injectorReturnsTrueForAddedListOnCheck()
+    {
+        $binder = new Binder();
+        $binder->bindList('listConfig')
+               ->withValue(303)
+               ->withValueFromProvider($this->getProviderForValue(313));
+        $this->assertTrue($binder->getInjector()->hasList('listConfig'));
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\ioc\binding\BindingException
+     */
+    public function injectorRetrievesNonAddedListThrowsBindingException()
+    {
+        $binder = new Binder();
+        $this->assertFalse($binder->getInjector()->getList('listConfig'));
+    }
+
+    /**
+     * @test
+     */
+    public function injectorRetrievesAddedList()
+    {
+        $binder = new Binder();
+        $binder->bindList('listConfig')
+               ->withValue(303)
+               ->withValueFromProvider($this->getProviderForValue(313));
+        $this->assertEquals(array(303, 313),
+                            $binder->getInjector()->getList('listConfig')
+        );
+    }
+
+    /**
+     * @test
+     */
     public function bindListTwiceAddsToSameList()
     {
         $binder = new Binder();
@@ -52,6 +97,51 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(array(),
                             $pluginHandler->getConfigMap()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function injectorReturnsFalseForNonAddedMapOnCheck()
+    {
+        $binder = new Binder();
+        $this->assertFalse($binder->getInjector()->hasMap('mapConfig'));
+    }
+
+    /**
+     * @test
+     */
+    public function injectorReturnsTrueForAddedMapOnCheck()
+    {
+        $binder = new Binder();
+        $binder->bindMap('mapConfig')
+               ->withEntry('tb', 303)
+               ->withEntryFromProvider('dd', $this->getProviderForValue(313));
+        $this->assertTrue($binder->getInjector()->hasMap('mapConfig'));
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\ioc\binding\BindingException
+     */
+    public function injectorRetrievesNonAddedMapThrowsBindingException()
+    {
+        $binder = new Binder();
+        $this->assertFalse($binder->getInjector()->getMap('mapConfig'));
+    }
+
+    /**
+     * @test
+     */
+    public function injectorRetrievesAddedMap()
+    {
+        $binder = new Binder();
+        $binder->bindMap('mapConfig')
+               ->withEntry('tb', 303)
+               ->withEntryFromProvider('dd', $this->getProviderForValue(313));
+        $this->assertEquals(array('tb' => 303, 'dd' => 313),
+                            $binder->getInjector()->getMap('mapConfig')
         );
     }
 
@@ -237,7 +327,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
     private function getProviderForValue($value)
     {
         $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
+        $mockProvider->expects($this->any())
                      ->method('get')
                      ->will($this->returnValue($value));
         return $mockProvider;
