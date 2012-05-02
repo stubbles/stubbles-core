@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+$rootDir = require  __DIR__ . '/base.php';
+$removed = org\stubbles\scripts\ClearCache::run($rootDir . '/cache');
+$filetxt = (1 === $removed) ? ('file') : ('files');
+echo 'Removed ' . $removed . ' ' . $filetxt . " from cache\n\n";
+?>

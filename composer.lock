@@ -1,11 +1,7 @@
 {
-    "hash": "44a4674a153d14d112b4a57aaacb8f4a",
+    "hash": "dc4c807649740591827753f448b1e00c",
     "packages": [
-        {
-            "package": "stubbles/scripts",
-            "version": "dev-master",
-            "source-reference": "b4e82543651310b7f7c0aae63b0fd5da12a85e79"
-        }
+
     ],
     "packages-dev": [
         {
