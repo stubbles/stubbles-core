@@ -1,17 +1,19 @@
 {
-    "hash": "84773e99c5ac1c01bd7ce664d219a4dc",
+    "hash": "44a4674a153d14d112b4a57aaacb8f4a",
     "packages": [
         {
             "package": "stubbles/scripts",
             "version": "dev-master",
-            "source-reference": "59e3678b6e8a4538c655d3bf3232eca850a68d44"
+            "source-reference": "b4e82543651310b7f7c0aae63b0fd5da12a85e79"
         }
     ],
     "packages-dev": [
         {
             "package": "mikey179/vfsStream",
-            "version": "1.0.0-beta4"
+            "version": "v1.0.0-beta5"
         }
     ],
-    "aliases": []
+    "aliases": [
+
+    ]
 }
