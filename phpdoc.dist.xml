@@ -10,5 +10,6 @@
   </transformer>
   <files>
     <directory>src/main/php/net</directory>
+    <directory>src/main/php/org/stubbles/scripts</directory>
   </files>
 </phpdoc>
