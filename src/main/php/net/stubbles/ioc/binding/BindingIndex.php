@@ -217,6 +217,28 @@ class BindingIndex extends BaseObject
     }
 
     /**
+     * checks whether list binding for given name exists
+     *
+     * @param   string  $name
+     * @return  bool
+     */
+    public function hasList($name)
+    {
+        return $this->hasBinding(ListBinding::TYPE, $name);
+    }
+
+    /**
+     * checks whether map binding for given name exists
+     *
+     * @param   string  $name
+     * @return  bool
+     */
+    public function hasMap($name)
+    {
+        return $this->hasBinding(MapBinding::TYPE, $name);
+    }
+
+    /**
      * returns the binding for a name and type
      *
      * @param   string  $type
@@ -268,6 +290,28 @@ class BindingIndex extends BaseObject
     public function getConstantBinding($name = null)
     {
         return $this->getBinding(ConstantBinding::TYPE, $name);
+    }
+
+    /**
+     * returns the binding for a list
+     *
+     * @param   string  $name
+     * @return  Binding
+     */
+    public function getListBinding($name)
+    {
+        return $this->getBinding(ListBinding::TYPE, $name);
+    }
+
+    /**
+     * returns the binding for a map
+     *
+     * @param   string  $name
+     * @return  Binding
+     */
+    public function getMapBinding($name)
+    {
+        return $this->getBinding(MapBinding::TYPE, $name);
     }
 
     /**

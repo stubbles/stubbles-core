@@ -2,7 +2,6 @@
     "name": "stubbles/core",
     "type": "library",
     "homepage": "http://stubbles.net/",
-    "version": "2.0.0-beta7",
     "license": "BSD-3",
     "description": "Provides base classes for Stubbles packages.",
     "require": {
