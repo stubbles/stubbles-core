@@ -81,7 +81,7 @@ class ResourceLoader extends BaseObject
      */
     private function getVendorPathes()
     {
-        return require self::getRootPath() . '/vendor/.composer/autoload_namespaces.php';
+        return require self::getRootPath() . '/vendor/composer/autoload_namespaces.php';
     }
 
     /**
@@ -92,7 +92,7 @@ class ResourceLoader extends BaseObject
     public static function getRootPath()
     {
         if (null === self::$rootPath) {
-            if (file_exists(__DIR__ . '/../../../../../../../../.composer/autoload_namespaces.php')) {
+            if (file_exists(__DIR__ . '/../../../../../../../../composer/autoload_namespaces.php')) {
                 self::$rootPath = realpath(__DIR__ . '/../../../../../../../../../');
             } else {
                 self::$rootPath = realpath(__DIR__ . '/../../../../../../');
