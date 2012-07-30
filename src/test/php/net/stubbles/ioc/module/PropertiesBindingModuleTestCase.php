@@ -205,7 +205,7 @@ net.stubbles.webapp.xml.serializeMode=true")
     }
 
     /**
-     * @since  2.0.1
+     * @since  2.1.0
      * @test
      */
     public function doesNotBindCurrentWorkingDirectoryByDefault()
@@ -215,7 +215,7 @@ net.stubbles.webapp.xml.serializeMode=true")
     }
 
     /**
-     * @since  2.0.1
+     * @since  2.1.0
      * @test
      */
     public function bindsCurrentWorkingDirectoryWhenRequested()
@@ -230,7 +230,7 @@ net.stubbles.webapp.xml.serializeMode=true")
     }
 
     /**
-     * @since  2.0.1
+     * @since  2.1.0
      * @test
      */
     public function doesNotBindHostnameByDefault()
@@ -241,7 +241,7 @@ net.stubbles.webapp.xml.serializeMode=true")
     }
 
     /**
-     * @since  2.0.1
+     * @since  2.1.0
      * @test
      */
     public function bindsHostnameWhenRequested()

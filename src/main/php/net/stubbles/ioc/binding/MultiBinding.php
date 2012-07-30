@@ -73,7 +73,7 @@ abstract class MultiBinding extends BaseObject implements Binding
                    {
                        $providerInstance = $injector->getInstance($provider);
                        if (!($providerInstance instanceof InjectionProvider)) {
-                           throw new BindingException('Configured provider class ' . $provider . ' for ' . $name . '[' . $key . '] is not an instance of net\\stubbles\\ioc\\InjectionProvider.');
+                           throw new BindingException('Configured provider class ' . $provider . ' for ' . $name . '[' . $key . '] is not an instance of net\stubbles\ioc\InjectionProvider.');
                        }
 
                        return $providerInstance->get();
@@ -83,7 +83,7 @@ abstract class MultiBinding extends BaseObject implements Binding
             return function() use($provider) { return $provider->get(); };
         }
 
-        throw new IllegalArgumentException('Given provider must either be a instance of net\\stubbles\\ioc\\InjectionProvider or a class name representing such a provider instance.');
+        throw new IllegalArgumentException('Given provider must either be a instance of net\stubbles\ioc\InjectionProvider or a class name representing such a provider instance.');
     }
 
     /**

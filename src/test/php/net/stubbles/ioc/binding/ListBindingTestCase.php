@@ -70,7 +70,7 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(array(),
                             $this->listBinding->getInstance($this->mockInjector,
-                                                            new ReflectionClass('\\stdClass')
+                                                            new ReflectionClass('\stdClass')
                                                 )
         );
     }
@@ -95,7 +95,7 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array($value),
                             $this->listBinding->withValue($value)
                                               ->getInstance($this->mockInjector,
-                                                            new ReflectionClass('\\stdClass')
+                                                            new ReflectionClass('\stdClass')
                                                 )
         );
     }
@@ -108,12 +108,12 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
         $value = new \stdClass();
         $this->mockInjector->expects($this->once())
                            ->method('getInstance')
-                           ->with($this->equalTo('\\stdClass'))
+                           ->with($this->equalTo('\stdClass'))
                            ->will($this->returnValue($value));
         $this->assertEquals(array($value),
-                            $this->listBinding->withValue('\\stdClass')
+                            $this->listBinding->withValue('\stdClass')
                                               ->getInstance($this->mockInjector,
-                                                            new ReflectionClass('\\stdClass')
+                                                            new ReflectionClass('\stdClass')
                                                 )
         );
     }
@@ -138,8 +138,23 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->listBinding->withValue(new \stdClass())
                           ->getInstance($this->mockInjector,
-                                        new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider')
+                                        new ReflectionClass('net\stubbles\ioc\InjectionProvider')
         );
+    }
+
+    /**
+     * creates mocked injection provider which returns given value
+     *
+     * @param   mixed  $value
+     * @return  \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMockInjectionProvider($value)
+    {
+        $mockProvider = $this->getMock('net\stubbles\ioc\InjectionProvider');
+        $mockProvider->expects($this->once())
+                     ->method('get')
+                     ->will($this->returnValue($value));
+        return $mockProvider;
     }
 
     /**
@@ -147,12 +162,8 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function valueFromProviderIsAddedToList()
     {
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue(303));
         $this->assertEquals(array(303),
-                            $this->listBinding->withValueFromProvider($mockProvider)
+                            $this->listBinding->withValueFromProvider($this->getMockInjectionProvider(303))
                                               ->getInstance($this->mockInjector,
                                                             'int'
                                                 )
@@ -164,15 +175,11 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function valueFromProviderIsAddedToTypedList()
     {
-        $value        = new \stdClass();
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue($value));
+        $value = new \stdClass();
         $this->assertEquals(array($value),
-                            $this->listBinding->withValueFromProvider($mockProvider)
+                            $this->listBinding->withValueFromProvider($this->getMockInjectionProvider($value))
                                               ->getInstance($this->mockInjector,
-                                                            new ReflectionClass('\\stdClass')
+                                                            new ReflectionClass('\stdClass')
                                                 )
         );
     }
@@ -183,13 +190,9 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueFromProviderAddedToTypedListThrowsBindingException()
     {
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue(303));
-        $this->listBinding->withValueFromProvider($mockProvider)
+        $this->listBinding->withValueFromProvider($this->getMockInjectionProvider(303))
                           ->getInstance($this->mockInjector,
-                                        new ReflectionClass('\\stdClass')
+                                        new ReflectionClass('\stdClass')
         );
     }
 
@@ -199,13 +202,9 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidObjectFromProviderAddedToTypedListThrowsBindingException()
     {
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue(new \stdClass()));
-        $this->listBinding->withValueFromProvider($mockProvider)
+        $this->listBinding->withValueFromProvider($this->getMockInjectionProvider(new \stdClass()))
                           ->getInstance($this->mockInjector,
-                                        new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider')
+                                        new ReflectionClass('net\stubbles\ioc\InjectionProvider')
         );
     }
 
@@ -214,11 +213,8 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function valueFromProviderClassIsAddedToList()
     {
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue(303));
-        $mockProviderClass = $this->getMockClass('net\\stubbles\\ioc\\InjectionProvider');
+        $mockProvider      = $this->getMockInjectionProvider(303);
+        $mockProviderClass = $this->getMockClass('net\stubbles\ioc\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
         $this->assertEquals(array(303),
                             $this->listBinding->withValueFromProvider($mockProviderClass)
@@ -233,17 +229,14 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function valueFromProviderClassIsAddedToTypedList()
     {
-        $value        = new \stdClass();
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue($value));
-        $mockProviderClass = $this->getMockClass('net\\stubbles\\ioc\\InjectionProvider');
+        $value             = new \stdClass();
+        $mockProvider      = $this->getMockInjectionProvider($value);
+        $mockProviderClass = $this->getMockClass('net\stubbles\ioc\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
         $this->assertEquals(array($value),
                             $this->listBinding->withValueFromProvider($mockProviderClass)
                                               ->getInstance($this->mockInjector,
-                                                            new ReflectionClass('\\stdClass')
+                                                            new ReflectionClass('\stdClass')
                                                 )
         );
     }
@@ -254,15 +247,12 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueFromProviderClassAddedToTypedListThrowsBindingException()
     {
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue(303));
-        $mockProviderClass = $this->getMockClass('net\\stubbles\\ioc\\InjectionProvider');
+        $mockProvider      = $this->getMockInjectionProvider(303);
+        $mockProviderClass = $this->getMockClass('net\stubbles\ioc\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
         $this->listBinding->withValueFromProvider($mockProviderClass)
                           ->getInstance($this->mockInjector,
-                                        new ReflectionClass('\\stdClass')
+                                        new ReflectionClass('\stdClass')
         );
     }
 
@@ -272,15 +262,12 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidObjectFromProviderClassAddedToTypedListThrowsBindingException()
     {
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue(new \stdClass()));
-        $mockProviderClass = $this->getMockClass('net\\stubbles\\ioc\\InjectionProvider');
+        $mockProvider = $this->getMockInjectionProvider(new \stdClass());
+        $mockProviderClass = $this->getMockClass('net\stubbles\ioc\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
         $this->listBinding->withValueFromProvider($mockProviderClass)
                           ->getInstance($this->mockInjector,
-                                        new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider')
+                                        new ReflectionClass('net\stubbles\ioc\InjectionProvider')
                             );
     }
 
@@ -305,14 +292,14 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function addInvalidProviderClassThrowsBindingException()
     {
-        $mockProviderClass = $this->getMockClass('net\\stubbles\\ioc\\InjectionProvider');
+        $mockProviderClass = $this->getMockClass('net\stubbles\ioc\InjectionProvider');
         $this->mockInjector->expects($this->once())
                            ->method('getInstance')
                            ->with($this->equalTo($mockProviderClass))
-                           ->will($this->returnValue('\\stdClass'));
+                           ->will($this->returnValue('\stdClass'));
         $this->listBinding->withValueFromProvider($mockProviderClass)
                           ->getInstance($this->mockInjector,
-                                        new ReflectionClass('net\\stubbles\\ioc\\InjectionProvider')
+                                        new ReflectionClass('net\stubbles\ioc\InjectionProvider')
         );
     }
 
@@ -323,6 +310,63 @@ class ListBindingTestCase extends \PHPUnit_Framework_TestCase
     public function addInvalidProviderValueThrowsIlegalArgumentException()
     {
         $this->listBinding->withValueFromProvider(new \stdClass());
+    }
+
+    /**
+     * @since  2.1.0
+     * @test
+     * @group  issue_31
+     */
+    public function valueFromClosureIsAddedToList()
+    {
+        $this->assertEquals(array(303),
+                            $this->listBinding->withValueFromClosure(function() { return 303; })
+                                              ->getInstance($this->mockInjector, 'int')
+        );
+    }
+
+    /**
+     * @since  2.1.0
+     * @test
+     * @group  issue_31
+     */
+    public function valueFromClosureIsAddedToTypedList()
+    {
+        $value = new \stdClass();
+        $this->assertEquals(array($value),
+                            $this->listBinding->withValueFromClosure(function() use($value) { return $value; })
+                                              ->getInstance($this->mockInjector,
+                                                            new ReflectionClass('\stdClass')
+                                                )
+        );
+    }
+
+    /**
+     * @since  2.1.0
+     * @test
+     * @group  issue_31
+     * @expectedException  net\stubbles\ioc\binding\BindingException
+     */
+    public function invalidValueFromClosureAddedToTypedListThrowsBindingException()
+    {
+        $this->listBinding->withValueFromClosure(function() { return 303; })
+                          ->getInstance($this->mockInjector,
+                                        new ReflectionClass('\stdClass')
+        );
+    }
+
+    /**
+     * @since  2.1.0
+     * @test
+     * @group  issue_31
+     * @expectedException  net\stubbles\ioc\binding\BindingException
+     */
+    public function invalidObjectFromClosureAddedToTypedListThrowsBindingException()
+    {
+        $this->listBinding->withValueFromClosure(function() { return new \stdClass(); })
+                          ->getInstance($this->mockInjector,
+                                        new ReflectionClass('net\stubbles\ioc\InjectionProvider')
+        );
     }
 }
 ?>

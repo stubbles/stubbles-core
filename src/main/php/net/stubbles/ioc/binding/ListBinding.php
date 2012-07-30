@@ -53,6 +53,20 @@ class ListBinding extends MultiBinding
     }
 
     /**
+     * adds a value which is created by given closure
+     *
+     * @api
+     * @param   \Closure  $closure
+     * @return  ListBinding
+     * @since   2.1.0
+     */
+    public function withValueFromClosure(\Closure $closure)
+    {
+        $this->bindings[] = $closure;
+        return $this;
+    }
+
+    /**
      * returns list of bindings for the list to create
      *
      * @return  array

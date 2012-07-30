@@ -21,9 +21,9 @@ class InjectorImplementedByTestCase extends \PHPUnit_Framework_TestCase
     public function createsInstanceFromImplementedByAnnotationIfNoExplicitBindingsSet()
     {
         $binder = new Binder();
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Schst',
+        $this->assertInstanceOf('org\stubbles\test\ioc\Schst',
                                 $binder->getInjector()
-                                       ->getInstance('org\\stubbles\\test\\ioc\\Person')
+                                       ->getInstance('org\stubbles\test\ioc\Person')
         );
     }
 
@@ -33,10 +33,10 @@ class InjectorImplementedByTestCase extends \PHPUnit_Framework_TestCase
     public function explicitBindingOverwritesImplementedByAnnotation()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Person')->to('org\\stubbles\\test\\ioc\\Mikey');
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Mikey',
+        $binder->bind('org\stubbles\test\ioc\Person')->to('org\stubbles\test\ioc\Mikey');
+        $this->assertInstanceOf('org\stubbles\test\ioc\Mikey',
                                 $binder->getInjector()
-                                       ->getInstance('org\\stubbles\\test\\ioc\\Person')
+                                       ->getInstance('org\stubbles\test\ioc\Person')
         );
     }
 }

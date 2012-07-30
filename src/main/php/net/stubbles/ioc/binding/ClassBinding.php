@@ -8,6 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc\binding;
+use net\stubbles\ioc\ClosureInjectionProvider;
 use net\stubbles\ioc\DefaultInjectionProvider;
 use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\ioc\Injector;
@@ -33,49 +34,49 @@ class ClassBinding extends BaseObject implements Binding
      *
      * @type  string
      */
-    protected $type          = null;
+    private $type;
     /**
      * class that implements this binding
      *
      * @type  ReflectionClass
      */
-    protected $impl          = null;
+    private $impl;
     /**
      * Annotated with a name
      *
      * @type  string
      */
-    protected $name          = null;
+    private $name;
     /**
      * scope of the binding
      *
      * @type  BindingScope
      */
-    protected $scope         = null;
+    private $scope;
     /**
      * instance this type is bound to
      *
      * @type  object
      */
-    protected $instance      = null;
+    private $instance;
     /**
      * provider to use for this binding
      *
      * @type  InjectionProvider
      */
-    protected $provider      = null;
+    private $provider;
     /**
      * provider class to use for this binding (will be created via injector)
      *
      * @type  string
      */
-    protected $providerClass = null;
+    private $providerClass;
     /**
      * list of available binding scopes
      *
      * @type  BindingScopes
      */
-    protected $scopes;
+    private $scopes;
 
     /**
      * constructor
@@ -101,7 +102,7 @@ class ClassBinding extends BaseObject implements Binding
     public function to($impl)
     {
         if (!is_string($impl) && !($impl instanceof BaseReflectionClass)) {
-            throw new IllegalArgumentException('$impl must be a string or an instance of net\\stubbles\\lang\\reflect\\BaseReflectionClass');
+            throw new IllegalArgumentException('$impl must be a string or an instance of net\stubbles\lang\reflect\BaseReflectionClass');
         }
 
         $this->impl = $impl;
@@ -115,7 +116,7 @@ class ClassBinding extends BaseObject implements Binding
      * 'toProviderClass()' method.
      *
      * @api
-     * @param   object            $instance
+     * @param   object  $instance
      * @return  ClassBinding
      * @throws  IllegalArgumentException
      */
@@ -159,6 +160,20 @@ class ClassBinding extends BaseObject implements Binding
     {
         $this->providerClass = (($providerClass instanceof BaseReflectionClass) ?
                                     ($providerClass->getName()) : ($providerClass));
+        return $this;
+    }
+
+    /**
+     * sets a closure which can create the instance
+     *
+     * @api
+     * @param   \Closure  $closure
+     * @return  ClassBinding
+     * @since   2.1.0
+     */
+    public function toClosure(\Closure $closure)
+    {
+        $this->provider = new ClosureInjectionProvider($closure);
         return $this;
     }
 
@@ -242,7 +257,7 @@ class ClassBinding extends BaseObject implements Binding
             if (null != $this->providerClass) {
                 $provider = $injector->getInstance($this->providerClass);
                 if (!($provider instanceof InjectionProvider)) {
-                    throw new BindingException('Configured provider class ' . $this->providerClass . ' for type ' . $this->type . ' is not an instance of net\\stubbles\\ioc\\InjectionProvider.');
+                    throw new BindingException('Configured provider class ' . $this->providerClass . ' for type ' . $this->type . ' is not an instance of net\stubbles\ioc\InjectionProvider.');
                 }
 
                 $this->provider = $provider;

@@ -33,7 +33,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->mockIndex = $this->getMock('net\\stubbles\\ioc\\binding\\BindingIndex');
+        $this->mockIndex = $this->getMock('net\stubbles\ioc\binding\BindingIndex');
         $this->binder    = new Binder($this->mockIndex);
     }
 
@@ -42,7 +42,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function passesSessionScopeToBindingIndex()
     {
-        $mockSessionScope = $this->getMock('net\\stubbles\\ioc\\binding\\BindingScope');
+        $mockSessionScope = $this->getMock('net\stubbles\ioc\binding\BindingScope');
         $this->mockIndex->expects($this->once())
                         ->method('setSessionScope')
                         ->with($this->equalTo($mockSessionScope));
@@ -56,7 +56,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function addBindingReturnsAddedBinding()
     {
-        $mockBinding = $this->getMock('net\\stubbles\\ioc\\binding\\Binding');
+        $mockBinding = $this->getMock('net\stubbles\ioc\binding\Binding');
         $this->mockIndex->expects($this->once())
                         ->method('addBinding')
                         ->with($this->equalTo($mockBinding))
@@ -72,13 +72,13 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function bindCreatesBinding()
     {
-        $mockBinding = $this->getMock('net\\stubbles\\ioc\\binding\\Binding');
+        $mockBinding = $this->getMock('net\stubbles\ioc\binding\Binding');
         $this->mockIndex->expects($this->once())
                         ->method('bind')
-                        ->with($this->equalTo('example\\MyInterface'))
+                        ->with($this->equalTo('example\MyInterface'))
                         ->will($this->returnValue($mockBinding));
         $this->assertSame($mockBinding,
-                          $this->binder->bind('example\\MyInterface')
+                          $this->binder->bind('example\MyInterface')
         );
     }
 
@@ -88,7 +88,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function bindConstantCreatesBinding()
     {
-        $mockBinding = $this->getMock('net\\stubbles\\ioc\\binding\\Binding');
+        $mockBinding = $this->getMock('net\stubbles\ioc\binding\Binding');
         $this->mockIndex->expects($this->once())
                         ->method('bindConstant')
                         ->with($this->equalTo('foo'))
@@ -104,7 +104,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function bindListCreatesBinding()
     {
-        $mockBinding = $this->getMock('net\\stubbles\\ioc\\binding\\Binding');
+        $mockBinding = $this->getMock('net\stubbles\ioc\binding\Binding');
         $this->mockIndex->expects($this->once())
                         ->method('bindList')
                         ->with($this->equalTo('foo'))
@@ -120,7 +120,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function bindMapCreatesBinding()
     {
-        $mockBinding = $this->getMock('net\\stubbles\\ioc\\binding\\Binding');
+        $mockBinding = $this->getMock('net\stubbles\ioc\binding\Binding');
         $this->mockIndex->expects($this->once())
                         ->method('bindMap')
                         ->with($this->equalTo('foo'))
@@ -140,7 +140,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
                         ->method('hasBinding')
                         ->with($this->equalTo('\\stdClass'), $this->equalTo('bar'))
                         ->will($this->returnValue(true));
-        $this->assertTrue($this->binder->hasBinding('\\stdClass', 'bar'));
+        $this->assertTrue($this->binder->hasBinding('\stdClass', 'bar'));
     }
 
     /**
@@ -153,7 +153,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
                         ->method('hasExplicitBinding')
                         ->with($this->equalTo('\\stdClass'), $this->equalTo('bar'))
                         ->will($this->returnValue(true));
-        $this->assertTrue($this->binder->hasExplicitBinding('\\stdClass', 'bar'));
+        $this->assertTrue($this->binder->hasExplicitBinding('\stdClass', 'bar'));
     }
 
     /**
@@ -175,16 +175,16 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function addsCreatedInjectorToIndex()
     {
-        $mockClassBinding = $this->getMockBuilder('net\\stubbles\\ioc\\binding\\ClassBinding')
+        $mockClassBinding = $this->getMockBuilder('net\stubbles\ioc\binding\ClassBinding')
                                  ->disableOriginalConstructor()
                                  ->getMock();
         $this->mockIndex->expects($this->once())
                         ->method('bind')
-                        ->with($this->equalTo('net\\stubbles\\ioc\\Injector'))
+                        ->with($this->equalTo('net\stubbles\ioc\Injector'))
                         ->will($this->returnValue($mockClassBinding));
         $mockClassBinding->expects($this->once())
                          ->method('toInstance');
-        $this->assertInstanceOf('net\\stubbles\\ioc\\Injector',
+        $this->assertInstanceOf('net\stubbles\ioc\Injector',
                                 $this->binder->getInjector()
         );
     }
@@ -197,7 +197,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $injector = $binder->getInjector();
-        $this->assertSame($injector, $injector->getInstance('net\\stubbles\\ioc\\Injector'));
+        $this->assertSame($injector, $injector->getInstance('net\stubbles\ioc\Injector'));
     }
 }
 ?>

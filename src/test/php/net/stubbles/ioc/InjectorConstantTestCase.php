@@ -26,8 +26,8 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function assertConstantInjection(Injector $injector)
     {
-        $question = $injector->getInstance('org\\stubbles\\test\\ioc\\Question');
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Question', $question);
+        $question = $injector->getInstance('org\stubbles\test\\ioc\Question');
+        $this->assertInstanceOf('org\stubbles\test\ioc\Question', $question);
         $this->assertEquals(42, $question->getAnswer());
     }
 
@@ -89,7 +89,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
      */
     public function constantViaInjectionProviderInstance()
     {
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
+        $mockProvider = $this->getMock('net\stubbles\ioc\InjectionProvider');
         $mockProvider->expects($this->any())
                      ->method('get')
                      ->will($this->returnValue(42));
@@ -125,7 +125,7 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')
-               ->toProviderClass(new ReflectionClass('org\\stubbles\\test\\ioc\\AnswerConstantProvider'));
+               ->toProviderClass(new ReflectionClass('org\stubbles\test\ioc\AnswerConstantProvider'));
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));
         $this->assertEquals(42, $injector->getConstant('answer'));
@@ -141,11 +141,24 @@ class InjectorConstantTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')
-               ->toProviderClass('org\\stubbles\\test\\ioc\\AnswerConstantProvider');
+               ->toProviderClass('org\stubbles\test\ioc\AnswerConstantProvider');
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));
         $this->assertEquals(42, $injector->getConstant('answer'));
         $this->assertConstantInjection($binder->getInjector());
     }
+
+    /**
+     * @since  2.1.0
+     * @test
+     * @group  issue_31
+     */
+    public function injectConstantViaClosure()
+    {
+        $binder = new Binder();
+        $binder->bindConstant('answer')->toClosure(function() { return 42; });
+        $this->assertConstantInjection($binder->getInjector());
+    }
+
 }
 ?>
