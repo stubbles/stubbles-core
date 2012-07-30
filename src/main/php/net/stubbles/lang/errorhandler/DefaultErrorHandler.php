@@ -12,10 +12,10 @@ namespace net\stubbles\lang\errorhandler;
  * Default collection of PHP error handlers.
  *
  * The collection consists of:
- *  - stubIllegalArgumentErrorHandler
+ *  - IllegalArgumentErrorHandler
  *      throws a stubIllegalArgumentException in case of an E_RECOVERABLE saying
  *      that a type hint was violated
- *  - stubLogErrorHandler
+ *  - LogErrorHandler
  *      logs all remaining errors into the logfile php-errors with log level error
  *
  * @internal
