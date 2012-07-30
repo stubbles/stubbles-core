@@ -8,10 +8,10 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc\binding;
+use net\stubbles\ioc\ClosureInjectionProvider;
 use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\ioc\Injector;
 use net\stubbles\lang\BaseObject;
-use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Binding to bind a property to a constant value.
@@ -102,6 +102,20 @@ class ConstantBinding extends BaseObject implements Binding
     {
         $this->providerClass = (($providerClass instanceof BaseReflectionClass) ?
                                     ($providerClass->getName()) : ($providerClass));
+        return $this;
+    }
+
+    /**
+     * sets a closure which can create the instance
+     *
+     * @api
+     * @param   \Closure  $closure
+     * @return  ConstantBinding
+     * @since   2.1.0
+     */
+    public function toClosure(\Closure $closure)
+    {
+        $this->provider = new ClosureInjectionProvider($closure);
         return $this;
     }
 

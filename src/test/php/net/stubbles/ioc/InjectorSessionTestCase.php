@@ -38,17 +38,17 @@ class InjectorSessionTestCase extends \PHPUnit_Framework_TestCase
      */
     public function storesCreatedInstanceInSession()
     {
-        $this->binder->bind('org\\stubbles\\test\\ioc\\Person2')
-                     ->to('org\\stubbles\\test\\ioc\\Mikey')
+        $this->binder->bind('org\stubbles\test\ioc\Person2')
+                     ->to('org\stubbles\test\ioc\Mikey')
                      ->inSession();
         $injector = $this->binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Person2'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Person2'));
 
-        $text = $injector->getInstance('org\\stubbles\\test\\ioc\\Person2');
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Person2', $text);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Mikey', $text);
-        $this->assertSame($text, $injector->getInstance('org\\stubbles\\test\\ioc\\Person2'));
+        $text = $injector->getInstance('org\stubbles\test\ioc\Person2');
+        $this->assertInstanceOf('org\stubbles\test\ioc\Person2', $text);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Mikey', $text);
+        $this->assertSame($text, $injector->getInstance('org\stubbles\test\ioc\Person2'));
     }
 
     /**
@@ -56,14 +56,14 @@ class InjectorSessionTestCase extends \PHPUnit_Framework_TestCase
      */
     public function usesInstanceFromSessionIfAvailable()
     {
-        $this->binder->bind('org\\stubbles\\test\\ioc\\Person2')
-                     ->to('org\\stubbles\\test\\ioc\\Mikey')
+        $this->binder->bind('org\stubbles\test\ioc\Person2')
+                     ->to('org\stubbles\test\ioc\Mikey')
                      ->inSession();
         $injector = $this->binder->getInjector();
         $text     = new Mikey();
-        SessionBindingScope::$instances['org\\stubbles\\test\\ioc\\Mikey'] = $text;
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Person2'));
-        $this->assertSame($text, $injector->getInstance('org\\stubbles\\test\\ioc\\Person2'));
+        SessionBindingScope::$instances['org\stubbles\test\ioc\Mikey'] = $text;
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Person2'));
+        $this->assertSame($text, $injector->getInstance('org\stubbles\test\ioc\Person2'));
     }
 }
 ?>

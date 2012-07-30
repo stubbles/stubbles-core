@@ -84,7 +84,7 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      *
      * @api
      * @return  PropertiesBindingModule
-     * @since   2.0.1
+     * @since   2.1.0
      */
     public function withCurrentWorkingDirectory()
     {
@@ -100,7 +100,7 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      *
      * @api
      * @return  PropertiesBindingModule
-     * @since   2.0.1
+     * @since   2.1.0
      */
     public function withHostname()
     {

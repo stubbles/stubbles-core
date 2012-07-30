@@ -55,6 +55,20 @@ class MapBinding extends MultiBinding
     }
 
     /**
+     * adds an entry which is created by given closure
+     *
+     * @api
+     * @param   \Closure  $closure
+     * @return  MapBinding
+     * @since   2.1.0
+     */
+    public function withEntryFromClosure($key, \Closure $closure)
+    {
+        $this->bindings[$key] = $closure;
+        return $this;
+    }
+
+    /**
      * returns list of bindings for the map to create
      *
      * @return  array
