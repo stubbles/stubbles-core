@@ -23,21 +23,21 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     public function namedSetterInjectionWithSingleParam()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->named('schst')->to('org\\stubbles\\test\\ioc\\Boss');
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
+        $binder->bind('org\stubbles\test\ioc\Employee')->named('schst')->to('org\stubbles\test\ioc\Boss');
+        $binder->bind('org\stubbles\test\ioc\Employee')->to('org\stubbles\test\ioc\TeamMember');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee', 'schst'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee'));
 
         $group = $injector->getInstance('org\\stubbles\\test\\ioc\\Developers');
 
         $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Developers', $group);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\TeamMember', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->schst);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Boss', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\TeamMember', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Boss', $group->schst);
     }
 
     /**
@@ -48,21 +48,21 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     public function namedSetterInjectionWithMultipleParamAndOneNamedParam()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->named('schst')->to('org\\stubbles\\test\\ioc\\Boss');
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
+        $binder->bind('org\stubbles\test\ioc\Employee')->named('schst')->to('org\stubbles\test\ioc\Boss');
+        $binder->bind('org\stubbles\test\ioc\Employee')->to('org\stubbles\test\ioc\TeamMember');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee', 'schst'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee'));
 
-        $group = $injector->getInstance('org\\stubbles\\test\\ioc\\DevelopersMultipleSetterMethodParams');
+        $group = $injector->getInstance('org\stubbles\test\ioc\DevelopersMultipleSetterMethodParams');
 
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\DevelopersMultipleSetterMethodParams', $group);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\TeamMember', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->schst);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Boss', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\DevelopersMultipleSetterMethodParams', $group);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\TeamMember', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Boss', $group->schst);
     }
 
     /**
@@ -73,21 +73,21 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     public function namedConstructorInjectionWithMultipleParamAndOneNamedParam()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->named('schst')->to('org\\stubbles\\test\\ioc\\Boss');
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
+        $binder->bind('org\stubbles\test\ioc\Employee')->named('schst')->to('org\stubbles\test\ioc\Boss');
+        $binder->bind('org\stubbles\test\ioc\Employee')->to('org\stubbles\test\ioc\TeamMember');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee', 'schst'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee'));
 
-        $group = $injector->getInstance('org\\stubbles\\test\\ioc\\DevelopersMultipleConstructorParams');
+        $group = $injector->getInstance('org\stubbles\test\ioc\DevelopersMultipleConstructorParams');
 
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\DevelopersMultipleConstructorParams', $group);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\TeamMember', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->schst);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Boss', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\DevelopersMultipleConstructorParams', $group);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\TeamMember', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Boss', $group->schst);
     }
 
     /**
@@ -99,18 +99,18 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('boss')->to('role:boss');
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
+        $binder->bind('org\stubbles\test\ioc\Employee')->to('org\stubbles\test\ioc\TeamMember');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee', 'schst'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee'));
 
-        $group = $injector->getInstance('org\\stubbles\\test\\ioc\\DevelopersMultipleSetterMethodParamsWithConstant');
+        $group = $injector->getInstance('org\stubbles\test\ioc\DevelopersMultipleSetterMethodParamsWithConstant');
 
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\DevelopersMultipleSetterMethodParamsWithConstant', $group);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->schst);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\TeamMember', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\DevelopersMultipleSetterMethodParamsWithConstant', $group);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\TeamMember', $group->schst);
         $this->assertEquals('role:boss', $group->role);
     }
 
@@ -123,18 +123,18 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('boss')->to('role:boss');
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
+        $binder->bind('org\stubbles\test\ioc\Employee')->to('org\stubbles\test\ioc\TeamMember');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee', 'schst'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee'));
 
-        $group = $injector->getInstance('org\\stubbles\\test\\ioc\\DevelopersMultipleConstructorParamsWithConstant');
+        $group = $injector->getInstance('org\stubbles\test\ioc\DevelopersMultipleConstructorParamsWithConstant');
 
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\DevelopersMultipleConstructorParamsWithConstant', $group);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->schst);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\TeamMember', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\DevelopersMultipleConstructorParamsWithConstant', $group);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\TeamMember', $group->schst);
         $this->assertEquals('role:boss', $group->role);
     }
 
@@ -146,21 +146,21 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     public function namedSetterInjectionWithMultipleParamAndNamedParamGroup()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->named('schst')->to('org\\stubbles\\test\\ioc\\Boss');
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
+        $binder->bind('org\stubbles\test\ioc\Employee')->named('schst')->to('org\stubbles\test\ioc\Boss');
+        $binder->bind('org\stubbles\test\ioc\Employee')->to('org\stubbles\test\ioc\TeamMember');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee', 'schst'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee'));
 
-        $group = $injector->getInstance('org\\stubbles\\test\\ioc\\DevelopersMultipleSetterMethodParamsGroupedName');
+        $group = $injector->getInstance('org\stubbles\test\ioc\DevelopersMultipleSetterMethodParamsGroupedName');
 
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\DevelopersMultipleSetterMethodParamsGroupedName', $group);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Boss', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->schst);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Boss', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\DevelopersMultipleSetterMethodParamsGroupedName', $group);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Boss', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Boss', $group->schst);
     }
 
     /**
@@ -171,21 +171,21 @@ class InjectorNamedTestCase extends \PHPUnit_Framework_TestCase
     public function namedConstructorInjectionWithMultipleParamAndNamedParamGroup()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->named('schst')->to('org\\stubbles\\test\\ioc\\Boss');
-        $binder->bind('org\\stubbles\\test\\ioc\\Employee')->to('org\\stubbles\\test\\ioc\\TeamMember');
+        $binder->bind('org\stubbles\test\ioc\Employee')->named('schst')->to('org\stubbles\test\ioc\Boss');
+        $binder->bind('org\stubbles\test\ioc\Employee')->to('org\stubbles\test\ioc\TeamMember');
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('org\\stubbles\\test\\ioc\\Employee'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee', 'schst'));
+        $this->assertTrue($injector->hasBinding('org\stubbles\test\ioc\Employee'));
 
-        $group = $injector->getInstance('org\\stubbles\\test\\ioc\\DevelopersMultipleConstructorParamsGroupedName');
+        $group = $injector->getInstance('org\stubbles\test\ioc\DevelopersMultipleConstructorParamsGroupedName');
 
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\DevelopersMultipleConstructorParamsGroupedName', $group);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Boss', $group->mikey);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Employee', $group->schst);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Boss', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\DevelopersMultipleConstructorParamsGroupedName', $group);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Boss', $group->mikey);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Employee', $group->schst);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Boss', $group->schst);
     }
 }
 ?>

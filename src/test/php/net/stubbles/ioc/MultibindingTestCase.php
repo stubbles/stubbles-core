@@ -24,10 +24,11 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindList('listConfig')
                ->withValue(303)
-               ->withValueFromProvider($this->getProviderForValue(313));
+               ->withValueFromProvider($this->getProviderForValue(313))
+               ->withValueFromClosure(function() { return 323; });
         $binder->bindMap('mapConfig');
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(array(303, 313),
+        $this->assertEquals(array(303, 313, 323),
                             $pluginHandler->getConfigList()
         );
         $this->assertEquals(array(),
@@ -52,7 +53,8 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindList('listConfig')
                ->withValue(303)
-               ->withValueFromProvider($this->getProviderForValue(313));
+               ->withValueFromProvider($this->getProviderForValue(313))
+               ->withValueFromClosure(function() { return 323; });
         $this->assertTrue($binder->getInjector()->hasList('listConfig'));
     }
 
@@ -74,8 +76,9 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindList('listConfig')
                ->withValue(303)
-               ->withValueFromProvider($this->getProviderForValue(313));
-        $this->assertEquals(array(303, 313),
+               ->withValueFromProvider($this->getProviderForValue(313))
+               ->withValueFromClosure(function() { return 323; });
+        $this->assertEquals(array(303, 313, 323),
                             $binder->getInjector()->getList('listConfig')
         );
     }
@@ -83,16 +86,18 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function bindListTwiceAddsToSameList()
+    public function bindListMoreThanOnceAddsToSameList()
     {
         $binder = new Binder();
         $binder->bindList('listConfig')
                ->withValue(303);
         $binder->bindList('listConfig')
                ->withValueFromProvider($this->getProviderForValue(313));
+        $binder->bindList('listConfig')
+               ->withValueFromClosure(function() { return 323; });
         $binder->bindMap('mapConfig');
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(array(303, 313),
+        $this->assertEquals(array(303, 313, 323),
                             $pluginHandler->getConfigList()
         );
         $this->assertEquals(array(),
@@ -117,7 +122,8 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindMap('mapConfig')
                ->withEntry('tb', 303)
-               ->withEntryFromProvider('dd', $this->getProviderForValue(313));
+               ->withEntryFromProvider('dd', $this->getProviderForValue(313))
+               ->withEntryFromClosure('hf', function() { return 323; });
         $this->assertTrue($binder->getInjector()->hasMap('mapConfig'));
     }
 
@@ -139,8 +145,9 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindMap('mapConfig')
                ->withEntry('tb', 303)
-               ->withEntryFromProvider('dd', $this->getProviderForValue(313));
-        $this->assertEquals(array('tb' => 303, 'dd' => 313),
+               ->withEntryFromProvider('dd', $this->getProviderForValue(313))
+               ->withEntryFromClosure('hf', function() { return 323; });
+        $this->assertEquals(array('tb' => 303, 'dd' => 313, 'hf' => 323),
                             $binder->getInjector()->getMap('mapConfig')
         );
     }
@@ -154,12 +161,13 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig')
                ->withEntry('tb', 303)
-               ->withEntryFromProvider('dd', $this->getProviderForValue(313));
+               ->withEntryFromProvider('dd', $this->getProviderForValue(313))
+               ->withEntryFromClosure('hf', function() { return 323; });
         $pluginHandler = $this->createPluginHandler($binder);
         $this->assertEquals(array(),
                             $pluginHandler->getConfigList()
         );
-        $this->assertEquals(array('tb' => 303, 'dd' => 313),
+        $this->assertEquals(array('tb' => 303, 'dd' => 313, 'hf' => 323),
                             $pluginHandler->getConfigMap()
         );
     }
@@ -167,7 +175,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function bindMapTwiceAddsToSameMap()
+    public function bindMapMoreThanOnceAddsToSameMap()
     {
         $binder = new Binder();
         $binder->bindList('listConfig');
@@ -175,11 +183,13 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
                ->withEntry('tb', 303);
         $binder->bindMap('mapConfig')
                ->withEntryFromProvider('dd', $this->getProviderForValue(313));
+        $binder->bindMap('mapConfig')
+               ->withEntryFromClosure('hf', function() { return 323; });
         $pluginHandler = $this->createPluginHandler($binder);
         $this->assertEquals(array(),
                             $pluginHandler->getConfigList()
         );
-        $this->assertEquals(array('tb' => 303, 'dd' => 313),
+        $this->assertEquals(array('tb' => 303, 'dd' => 313, 'hf' => 323),
                             $pluginHandler->getConfigMap()
         );
     }
@@ -189,16 +199,18 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createTypedList()
     {
-        $mockPlugin1 = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
-        $mockPlugin2 = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
+        $mockPlugin1 = $this->getMock('org\stubbles\test\ioc\Plugin');
+        $mockPlugin2 = $this->getMock('org\stubbles\test\ioc\Plugin');
+        $mockPlugin3 = $this->getMock('org\stubbles\test\ioc\Plugin');
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindList('org\\stubbles\\test\\ioc\\Plugin')
+        $binder->bindList('org\stubbles\test\ioc\Plugin')
                ->withValue($mockPlugin1)
-               ->withValueFromProvider($this->getProviderForValue($mockPlugin2));
+               ->withValueFromProvider($this->getProviderForValue($mockPlugin2))
+               ->withValueFromClosure(function() use($mockPlugin3) { return $mockPlugin3; });
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(array($mockPlugin1, $mockPlugin2),
+        $this->assertEquals(array($mockPlugin1, $mockPlugin2, $mockPlugin3),
                             $pluginHandler->getPluginList()
         );
     }
@@ -206,10 +218,11 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function bindTypedListTwiceAddsToSameList()
+    public function bindTypedListMoreThanOnceAddsToSameList()
     {
-        $mockPlugin1 = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
-        $mockPlugin2 = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
+        $mockPlugin1 = $this->getMock('org\stubbles\test\\ioc\Plugin');
+        $mockPlugin2 = $this->getMock('org\stubbles\test\\ioc\Plugin');
+        $mockPlugin3 = $this->getMock('org\stubbles\test\ioc\Plugin');
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
@@ -217,8 +230,10 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
                ->withValue($mockPlugin1);
         $binder->bindList('org\\stubbles\\test\\ioc\\Plugin')
                ->withValueFromProvider($this->getProviderForValue($mockPlugin2));
+        $binder->bindList('org\stubbles\test\ioc\Plugin')
+               ->withValueFromClosure(function() use($mockPlugin3) { return $mockPlugin3; });
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(array($mockPlugin1, $mockPlugin2),
+        $this->assertEquals(array($mockPlugin1, $mockPlugin2, $mockPlugin3),
                             $pluginHandler->getPluginList()
         );
     }
@@ -228,16 +243,18 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createTypedMap()
     {
-        $mockPlugin1 = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
-        $mockPlugin2 = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
+        $mockPlugin1 = $this->getMock('org\stubbles\test\ioc\Plugin');
+        $mockPlugin2 = $this->getMock('org\stubbles\test\ioc\Plugin');
+        $mockPlugin3 = $this->getMock('org\stubbles\test\ioc\Plugin');
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindMap('org\\stubbles\\test\\ioc\\Plugin')
+        $binder->bindMap('org\stubbles\test\ioc\Plugin')
                ->withEntry('tb', $mockPlugin1)
-               ->withEntryFromProvider('dd', $this->getProviderForValue($mockPlugin2));
+               ->withEntryFromProvider('dd', $this->getProviderForValue($mockPlugin2))
+               ->withEntryFromClosure('hf', function() use($mockPlugin3) { return $mockPlugin3; });
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(array('tb' => $mockPlugin1, 'dd' => $mockPlugin2),
+        $this->assertEquals(array('tb' => $mockPlugin1, 'dd' => $mockPlugin2, 'hf' => $mockPlugin3),
                             $pluginHandler->getPluginMap()
         );
     }
@@ -245,10 +262,11 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function bindTypedMapTwiceAddsToSameList()
+    public function bindTypedMapMoreThanOnceAddsToSameList()
     {
-        $mockPlugin1 = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
-        $mockPlugin2 = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
+        $mockPlugin1 = $this->getMock('org\stubbles\test\ioc\Plugin');
+        $mockPlugin2 = $this->getMock('org\stubbles\test\ioc\Plugin');
+        $mockPlugin3 = $this->getMock('org\stubbles\test\ioc\Plugin');
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
@@ -256,8 +274,10 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
                ->withEntry('tb', $mockPlugin1);
         $binder->bindMap('org\\stubbles\\test\\ioc\\Plugin')
                ->withEntryFromProvider('dd', $this->getProviderForValue($mockPlugin2));
+        $binder->bindMap('org\stubbles\test\ioc\Plugin')
+               ->withEntryFromClosure('hf', function() use($mockPlugin3) { return $mockPlugin3; });
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(array('tb' => $mockPlugin1, 'dd' => $mockPlugin2),
+        $this->assertEquals(array('tb' => $mockPlugin1, 'dd' => $mockPlugin2, 'hf' => $mockPlugin3),
                             $pluginHandler->getPluginMap()
         );
     }
@@ -271,7 +291,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindList('org\\stubbles\\test\\ioc\\Plugin')
+        $binder->bindList('org\stubbles\test\ioc\Plugin')
                ->withValue(303);
         $this->createPluginHandler($binder);
     }
@@ -285,7 +305,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindMap('org\\stubbles\\test\\ioc\\Plugin')
+        $binder->bindMap('org\stubbles\test\ioc\Plugin')
                ->withEntry('tb', 303);
         $this->createPluginHandler($binder);
     }
@@ -295,11 +315,11 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
      */
     public function mixedAnnotations()
     {
-        $mockPlugin = $this->getMock('org\\stubbles\\test\\ioc\\Plugin');
+        $mockPlugin = $this->getMock('org\stubbles\test\ioc\Plugin');
         $binder     = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bind('org\\stubbles\\test\\ioc\\Plugin')
+        $binder->bind('org\stubbles\test\ioc\Plugin')
                ->named('foo')
                ->toInstance($mockPlugin);
         $binder->bindConstant('foo')
@@ -326,7 +346,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
      */
     private function getProviderForValue($value)
     {
-        $mockProvider = $this->getMock('net\\stubbles\\ioc\\InjectionProvider');
+        $mockProvider = $this->getMock('net\stubbles\ioc\InjectionProvider');
         $mockProvider->expects($this->any())
                      ->method('get')
                      ->will($this->returnValue($value));
@@ -341,7 +361,7 @@ class MultibindingTestCase extends \PHPUnit_Framework_TestCase
      */
     private function createPluginHandler(Binder $binder)
     {
-        return $binder->getInjector()->getInstance('org\\stubbles\\test\\ioc\\PluginHandler');
+        return $binder->getInjector()->getInstance('org\stubbles\test\ioc\PluginHandler');
     }
 }
 ?>

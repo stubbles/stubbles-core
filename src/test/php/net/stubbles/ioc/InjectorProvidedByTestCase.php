@@ -23,9 +23,9 @@ class InjectorProvidedByTestCase extends \PHPUnit_Framework_TestCase
     public function annotatedProviderClassIsUsedWhenNoExplicitBindingSpecified()
     {
         $binder = new Binder();
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Schst',
+        $this->assertInstanceOf('org\stubbles\test\ioc\Schst',
                                 $binder->getInjector()
-                                       ->getInstance('org\\stubbles\\test\\ioc\\Person2')
+                                       ->getInstance('org\stubbles\test\ioc\Person2')
         );
     }
 
@@ -35,10 +35,10 @@ class InjectorProvidedByTestCase extends \PHPUnit_Framework_TestCase
     public function explicitBindingOverwritesProvidedByAnnotation()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Person2')->to('org\\stubbles\\test\\ioc\\Mikey');
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Mikey',
+        $binder->bind('org\stubbles\test\ioc\Person2')->to('org\stubbles\test\ioc\Mikey');
+        $this->assertInstanceOf('org\stubbles\test\ioc\Mikey',
                                 $binder->getInjector()
-                                       ->getInstance('org\\stubbles\\test\\ioc\\Person2')
+                                       ->getInstance('org\stubbles\test\ioc\Person2')
         );
     }
 }

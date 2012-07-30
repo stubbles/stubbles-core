@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\ioc\Binder;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
@@ -63,7 +62,7 @@ class DefaultInjectionProvider extends BaseObject implements InjectionProvider
      *
      * @return  mixed
      */
-    protected function createInstance()
+    private function createInstance()
     {
         $constructor = $this->impl->getConstructor();
         if (null === $constructor || !$constructor->hasAnnotation('Inject')) {

@@ -30,7 +30,7 @@ class ModeBindingModuleTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->mockMode = $this->getMock('net\\stubbles\\lang\\Mode');
+        $this->mockMode = $this->getMock('net\stubbles\lang\Mode');
     }
 
     /**
@@ -56,10 +56,10 @@ class ModeBindingModuleTestCase extends \PHPUnit_Framework_TestCase
         $modeBindingModule = new ModeBindingModule('/tmp', $this->mockMode);
         $binder            = new Binder();
         $modeBindingModule->configure($binder);
-        $this->assertTrue($binder->hasExplicitBinding('net\\stubbles\\lang\\Mode'));
+        $this->assertTrue($binder->hasExplicitBinding('net\stubbles\lang\Mode'));
         $this->assertSame($this->mockMode,
                           $binder->getInjector()
-                                 ->getInstance('net\\stubbles\\lang\\Mode')
+                                 ->getInstance('net\stubbles\lang\Mode')
         );
     }
 
@@ -71,10 +71,10 @@ class ModeBindingModuleTestCase extends \PHPUnit_Framework_TestCase
         $modeBindingModule = new ModeBindingModule('/tmp');
         $binder            = new Binder();
         $modeBindingModule->configure($binder);
-        $this->assertTrue($binder->hasExplicitBinding('net\\stubbles\\lang\\Mode'));
+        $this->assertTrue($binder->hasExplicitBinding('net\stubbles\lang\Mode'));
         $this->assertEquals('PROD',
                             $binder->getInjector()
-                                   ->getInstance('net\\stubbles\\lang\\Mode')
+                                   ->getInstance('net\stubbles\lang\Mode')
                                    ->name()
         );
         restore_error_handler();

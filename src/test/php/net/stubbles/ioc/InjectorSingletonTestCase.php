@@ -24,10 +24,10 @@ class InjectorSingletonTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function assertSlotMachineIsBuildCorrect(SlotMachine $slot, $numberClass)
     {
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\SlotMachine', $slot);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Number', $slot->number1);
+        $this->assertInstanceOf('org\stubbles\test\ioc\SlotMachine', $slot);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Number', $slot->number1);
         $this->assertInstanceOf($numberClass, $slot->number1);
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\Number', $slot->number2);
+        $this->assertInstanceOf('org\stubbles\test\ioc\Number', $slot->number2);
         $this->assertInstanceOf($numberClass, $slot->number2);
         $this->identicalTo($slot->number1, $slot->number2);
     }
@@ -38,12 +38,29 @@ class InjectorSingletonTestCase extends \PHPUnit_Framework_TestCase
     public function assigningSingletonScopeToBindingWillReuseInitialInstance()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Number')
-               ->to('org\\stubbles\\test\\ioc\\Random')
+        $binder->bind('org\stubbles\test\ioc\Number')
+               ->to('org\stubbles\test\ioc\Random')
                ->asSingleton();
         $this->assertSlotMachineIsBuildCorrect($binder->getInjector()
-                                                      ->getInstance('org\\stubbles\\test\\ioc\\SlotMachine'),
-                                               'org\\stubbles\\test\\ioc\\Random'
+                                                      ->getInstance('org\stubbles\test\ioc\SlotMachine'),
+                                               'org\stubbles\test\ioc\Random'
+        );
+    }
+
+    /**
+     * @since  2.1.0
+     * @test
+     * @group  issue_31
+     */
+    public function assigningSingletonScopeToClosureBindingWillReuseInitialInstance()
+    {
+        $binder = new Binder();
+        $binder->bind('org\stubbles\test\ioc\Number')
+               ->toClosure(function() { return new \org\stubbles\test\ioc\Random(); })
+               ->asSingleton();
+        $this->assertSlotMachineIsBuildCorrect($binder->getInjector()
+                                                      ->getInstance('org\stubbles\test\ioc\SlotMachine'),
+                                               'org\stubbles\test\ioc\Random'
         );
     }
 
@@ -53,11 +70,11 @@ class InjectorSingletonTestCase extends \PHPUnit_Framework_TestCase
     public function classAnnotatedWithSingletonWillOnlyBeCreatedOnce()
     {
         $binder = new Binder();
-        $binder->bind('org\\stubbles\\test\\ioc\\Number')
-               ->to('org\\stubbles\\test\\ioc\\RandomSingleton');
+        $binder->bind('org\stubbles\test\ioc\Number')
+               ->to('org\stubbles\test\ioc\RandomSingleton');
         $this->assertSlotMachineIsBuildCorrect($binder->getInjector()
-                                                      ->getInstance('org\\stubbles\\test\\ioc\\SlotMachine'),
-                                               'org\\stubbles\\test\\ioc\\RandomSingleton'
+                                                      ->getInstance('org\stubbles\test\ioc\SlotMachine'),
+                                               'org\stubbles\test\ioc\RandomSingleton'
         );
     }
 }
