@@ -179,9 +179,9 @@ net.stubbles.webapp.xml.serializeMode=true")
     public function propertiesAvailableViaInstance()
     {
         $this->propertiesBindingModule->configure($this->binder);
-        $this->assertTrue($this->binder->hasExplicitBinding('net\\stubbles\\lang\\Properties', 'config'));
+        $this->assertTrue($this->binder->hasExplicitBinding('net\stubbles\lang\Properties', 'config'));
         $properties = $this->binder->getInjector()
-                                   ->getInstance('net\\stubbles\\lang\\Properties', 'config');
+                                   ->getInstance('net\stubbles\lang\Properties', 'config');
         /* @var  $properties  \net\stubbles\lang\Properties */
         $this->assertTrue($properties->hasValue('config', 'net.stubbles.locale'));
         $this->assertTrue($properties->hasValue('config', 'net.stubbles.number.decimals'));
@@ -201,7 +201,32 @@ net.stubbles.webapp.xml.serializeMode=true")
         vfsStream::setup();
         $propertiesBindingModule = PropertiesBindingModule::create(vfsStream::url('root'));
         $propertiesBindingModule->configure($this->binder);
-        $this->assertFalse($this->binder->hasExplicitBinding('net\\stubbles\\lang\\Properties', 'config'));
+        $this->assertFalse($this->binder->hasExplicitBinding('net\stubbles\lang\Properties', 'config'));
+    }
+
+    /**
+     * @since  2.0.1
+     * @test
+     */
+    public function doesNotBindCurrentWorkingDirectoryByDefault()
+    {
+        $this->propertiesBindingModule->configure($this->binder);
+        $this->assertFalse($this->binder->hasConstant('net.stubbles.cwd'));
+    }
+
+    /**
+     * @since  2.0.1
+     * @test
+     */
+    public function bindsCurrentWorkingDirectoryWhenRequested()
+    {
+        $this->propertiesBindingModule->withCurrentWorkingDirectory()
+                                      ->configure($this->binder);
+        $this->assertTrue($this->binder->hasConstant('net.stubbles.cwd'));
+        $this->assertEquals(getcwd(),
+                            $this->binder->getInjector()
+                                         ->getConstant('net.stubbles.cwd')
+        );
     }
 }
 ?>

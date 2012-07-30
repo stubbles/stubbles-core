@@ -32,6 +32,8 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      */
     private $projectPath;
 
+    private $cwd;
+
     /**
      * constructor
      *
@@ -72,6 +74,19 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
     }
 
     /**
+     * ensures current working directory is bound
+     *
+     * @api
+     * @return  PropertiesBindingModule
+     * @since   2.0.1
+     */
+    public function withCurrentWorkingDirectory()
+    {
+        $this->cwd = getcwd();
+        return $this;
+    }
+
+    /**
      * configure the binder
      *
      * @param  Binder  $binder
@@ -89,17 +104,20 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
             }
         }
 
-        if (!$this->propertiesAvailable($configPath)) {
-            return;
+        if ($this->propertiesAvailable($configPath)) {
+            $properties = $this->getProperties($configPath);
+            $binder->bind('net\stubbles\lang\Properties')
+                   ->named('config')
+                   ->toInstance($properties);
+            foreach ($properties->getSection('config') as $key => $value) {
+                $binder->bindConstant($key)
+                       ->to($value);
+            }
         }
 
-        $properties = $this->getProperties($configPath);
-        $binder->bind('net\\stubbles\\lang\\Properties')
-               ->named('config')
-               ->toInstance($properties);
-        foreach ($properties->getSection('config') as $key => $value) {
-            $binder->bindConstant($key)
-                   ->to($value);
+        if (null !== $this->cwd) {
+            $binder->bindConstant('net.stubbles.cwd')
+                   ->to($this->cwd);
         }
     }
 
