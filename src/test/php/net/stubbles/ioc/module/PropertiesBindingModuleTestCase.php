@@ -228,5 +228,28 @@ net.stubbles.webapp.xml.serializeMode=true")
                                          ->getConstant('net.stubbles.cwd')
         );
     }
+
+    /**
+     * @since  2.0.1
+     * @test
+     */
+    public function doesNotBindHostnameByDefault()
+    {
+        $this->propertiesBindingModule->configure($this->binder);
+        $this->assertFalse($this->binder->hasConstant('net.stubbles.hostname.nq'));
+        $this->assertFalse($this->binder->hasConstant('net.stubbles.hostname.fq'));
+    }
+
+    /**
+     * @since  2.0.1
+     * @test
+     */
+    public function bindsHostnameWhenRequested()
+    {
+        $this->propertiesBindingModule->withHostname()
+                                      ->configure($this->binder);
+        $this->assertTrue($this->binder->hasConstant('net.stubbles.hostname.nq'));
+        $this->assertTrue($this->binder->hasConstant('net.stubbles.hostname.fq'));
+    }
 }
 ?>

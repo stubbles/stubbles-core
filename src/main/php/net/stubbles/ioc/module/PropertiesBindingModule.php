@@ -21,18 +21,22 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      *
      * @type  string[]
      */
-    private $pathTypes   = array('cache',
-                                 'config',
-                                 'log'
-                           );
+    private $pathTypes       = array('cache',
+                                     'config',
+                                     'log'
+                               );
     /**
      * path to project files
      *
      * @type  string
      */
     private $projectPath;
-
-    private $cwd;
+    /**
+     * current working directory
+     *
+     * @type  array
+     */
+    private $otherProperties = array();
 
     /**
      * constructor
@@ -74,7 +78,9 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
     }
 
     /**
-     * ensures current working directory is bound
+     * ensures current working directory gets bound
+     *
+     * Will be bound to name <net.stubbles.cwd>.
      *
      * @api
      * @return  PropertiesBindingModule
@@ -82,7 +88,40 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      */
     public function withCurrentWorkingDirectory()
     {
-        $this->cwd = getcwd();
+        $this->otherProperties['net.stubbles.cwd'] = getcwd();
+        return $this;
+    }
+
+    /**
+     * ensures hostname gets bound in non- and fully qualified form
+     *
+     * Will be bound to name <net.stubbles.hostname.nq> (non qualified) and
+     * <net.stubbles.hostname.fq> (fully qualified).
+     *
+     * @api
+     * @return  PropertiesBindingModule
+     * @since   2.0.1
+     */
+    public function withHostname()
+    {
+        if (extension_loaded('posix')) {
+            $uname  = posix_uname();
+            $this->otherProperties['net.stubbles.hostname.nq'] = $uname['nodename'];
+            $this->otherProperties['net.stubbles.hostname.fq'] = $uname['nodename'];
+            if (isset($uname['domainname'])) {
+                $this->otherProperties['net.stubbles.hostname.fq'] .= '.' . $uname['domainname'];
+            }
+        } elseif (DIRECTORY_SEPARATOR === '\\') {
+            $this->otherProperties['net.stubbles.hostname.nq'] = $_SERVER['COMPUTERNAME'];
+            $this->otherProperties['net.stubbles.hostname.fq'] = $_SERVER['COMPUTERNAME'];
+            if (isset($_SERVER['USERDNSDOMAIN'])) {
+                $this->otherProperties['net.stubbles.hostname.fq'] .= '.' . $_SERVER['USERDNSDOMAIN'];
+            }
+        } else {
+            $this->otherProperties['net.stubbles.hostname.nq'] = php_uname('n');
+            $this->otherProperties['net.stubbles.hostname.fq'] = exec('hostname -f');
+        }
+
         return $this;
     }
 
@@ -115,9 +154,9 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
             }
         }
 
-        if (null !== $this->cwd) {
-            $binder->bindConstant('net.stubbles.cwd')
-                   ->to($this->cwd);
+        foreach ($this->otherProperties as $name => $value) {
+            $binder->bindConstant($name)
+                   ->to($value);
         }
     }
 
