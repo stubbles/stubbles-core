@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\lang\BaseObject;
 use org\stubbles\test\ioc\AppClassWithBindings;
 use org\stubbles\test\ioc\AppUsingBindingModule;
 /**
@@ -25,7 +24,7 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
     public function createCreatesInstanceUsingBindings()
     {
         $appCommandWithBindings = AppClassWithBindings::create('projectPath');
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\AppClassWithBindings',
+        $this->assertInstanceOf('org\stubbles\test\ioc\AppClassWithBindings',
                                 $appCommandWithBindings
         );
         $this->assertEquals('projectPath', AppClassWithBindings::getProjectPath());
@@ -36,10 +35,10 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceCreatesInstanceUsingBindings()
     {
-        $appCommandWithBindings = App::createInstance('org\\stubbles\\test\\ioc\\AppClassWithBindings',
+        $appCommandWithBindings = App::createInstance('org\stubbles\test\ioc\AppClassWithBindings',
                                                       'projectPath'
                                   );
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\AppClassWithBindings',
+        $this->assertInstanceOf('org\stubbles\test\ioc\AppClassWithBindings',
                                 $appCommandWithBindings
         );
         $this->assertEquals('projectPath', AppClassWithBindings::getProjectPath());
@@ -50,19 +49,20 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceCreatesInstanceWithoutBindings()
     {
-        $this->assertInstanceOf('org\\stubbles\\test\\ioc\\AppTestBindingModuleTwo',
-                                App::createInstance('org\\stubbles\\test\\ioc\\AppTestBindingModuleTwo',
+        $this->assertInstanceOf('org\stubbles\test\ioc\AppTestBindingModuleTwo',
+                                App::createInstance('org\stubbles\test\ioc\AppTestBindingModuleTwo',
                                                     'projectPath'
                                 )
         );
     }
+
     /**
      * @since  2.0.0
      * @test
      */
     public function canCreateModeBindingModule()
     {
-        $this->assertInstanceOf('net\\stubbles\\ioc\\module\\ModeBindingModule',
+        $this->assertInstanceOf('net\stubbles\ioc\module\ModeBindingModule',
                                 AppUsingBindingModule::getModeBindingModule()
         );
     }
@@ -73,8 +73,21 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canCreatePropertiesBindingModule()
     {
-        $this->assertInstanceOf('net\\stubbles\\ioc\\module\\PropertiesBindingModule',
+        $this->assertInstanceOf('net\stubbles\ioc\module\PropertiesBindingModule',
                                 AppUsingBindingModule::getPropertiesBindingModule(__DIR__)
+        );
+    }
+
+    /**
+     * @since  2.1.0
+     * @group  issue_33
+     * @test
+     */
+    public function dynamicBindingViaClosure()
+    {
+        $this->assertEquals('closure',
+                            AppClassWithBindings::create('projectPath')
+                                                ->wasBoundBy()
         );
     }
 }

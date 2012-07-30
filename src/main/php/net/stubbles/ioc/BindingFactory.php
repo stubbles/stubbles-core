@@ -22,7 +22,7 @@ class BindingFactory extends BaseObject
     /**
      * configures the injectpr using the given binding modules
      *
-     * @param   array|string...
+     * @param   mixed...
      * @return  Injector
      */
     public static function createInjector()
@@ -48,12 +48,13 @@ class BindingFactory extends BaseObject
                 $bindingModule = new $bindingModule();
             }
 
-            if (!($bindingModule instanceof BindingModule)) {
+            if ($bindingModule instanceof BindingModule) {
+                $bindingModule->configure($binder);
+            } elseif ($bindingModule instanceof \Closure) {
+                $bindingModule($binder);
+            } else {
                 throw new IllegalArgumentException('Given module class ' . get_class($bindingModule) . ' is not an instance of net\\stubbles\\ioc\\module\\BindingModule');
             }
-
-            /* @type  $bindingModule  BindingModule */
-            $bindingModule->configure($binder);
         }
 
         return $binder;
