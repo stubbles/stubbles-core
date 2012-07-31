@@ -104,16 +104,9 @@ class PropertiesBindingModule extends BaseObject implements BindingModule
      */
     public function withHostname()
     {
-        if (extension_loaded('posix')) {
-            $uname  = posix_uname();
-            $this->otherProperties['net.stubbles.hostname.nq'] = $uname['nodename'];
-            $this->otherProperties['net.stubbles.hostname.fq'] = $uname['nodename'];
-            if (isset($uname['domainname'])) {
-                $this->otherProperties['net.stubbles.hostname.fq'] .= '.' . $uname['domainname'];
-            }
-        } elseif (DIRECTORY_SEPARATOR === '\\') {
-            $this->otherProperties['net.stubbles.hostname.nq'] = $_SERVER['COMPUTERNAME'];
-            $this->otherProperties['net.stubbles.hostname.fq'] = $_SERVER['COMPUTERNAME'];
+        if (DIRECTORY_SEPARATOR === '\\') {
+            $this->otherProperties['net.stubbles.hostname.nq'] = php_uname('n');
+            $this->otherProperties['net.stubbles.hostname.fq'] = php_uname('n');
             if (isset($_SERVER['USERDNSDOMAIN'])) {
                 $this->otherProperties['net.stubbles.hostname.fq'] .= '.' . $_SERVER['USERDNSDOMAIN'];
             }
