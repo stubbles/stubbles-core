@@ -873,5 +873,75 @@ class UriTestCase extends \PHPUnit_Framework_TestCase
         $parsedUri = new ParsedUri('://example.org/?wsdl#top');
         $this->assertNull($parsedUri->getScheme());
     }
+
+    /**
+     * @since  2.1.2
+     * @test
+     */
+    public function hasNoQueryStringIfNoneGiven()
+    {
+        $this->assertFalse(Uri::fromString('http://example.org/foo')
+                              ->hasQueryString()
+        );
+    }
+
+    /**
+     * @since  2.1.2
+     * @test
+     */
+    public function hasQueryStringIfGiven()
+    {
+        $this->assertTrue(Uri::fromString('http://example.org/?foo=bar&baz=true')
+                             ->hasQueryString()
+        );
+    }
+
+    /**
+     * @since  2.1.2
+     * @test
+     */
+    public function hasQueryStringIfParamAdded()
+    {
+        $this->assertTrue(Uri::fromString('http://example.org/')
+                             ->addParam('foo', 'bar')
+                             ->hasQueryString()
+        );
+    }
+
+    /**
+     * @since  2.1.2
+     * @test
+     */
+    public function queryStringIsEmptyIfNoneGiven()
+    {
+        $this->assertNull(Uri::fromString('http://example.org/foo')
+                             ->getQueryString()
+        );
+    }
+
+    /**
+     * @since  2.1.2
+     * @test
+     */
+    public function queryStringEqualsGivenQueryString()
+    {
+        $this->assertEquals('foo=bar&baz=true',
+                            Uri::fromString('http://example.org/?foo=bar&baz=true')
+                               ->getQueryString()
+        );
+    }
+
+    /**
+     * @since  2.1.2
+     * @test
+     */
+    public function queryStringEqualsAddedParameters()
+    {
+        $this->assertEquals('foo=bar',
+                            Uri::fromString('http://example.org/')
+                               ->addParam('foo', 'bar')
+                               ->getQueryString()
+        );
+    }
 }
 ?>

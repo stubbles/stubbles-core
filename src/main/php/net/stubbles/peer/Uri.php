@@ -241,6 +241,17 @@ abstract class Uri extends BaseObject
     }
 
     /**
+     * returns query string
+     *
+     * @return  string
+     * @since   2.1.2
+     */
+    public function getQueryString()
+    {
+        return $this->parsedUri->queryString()->build();
+    }
+
+    /**
      * add a parameter to the uri
      *
      * @param   string  $name   name of parameter
