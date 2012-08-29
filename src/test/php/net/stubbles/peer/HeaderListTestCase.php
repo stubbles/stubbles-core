@@ -126,6 +126,23 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @since 2.1.2
+     * @test
+     */
+    public function doubleOccurenceOfColonSplitsOnFirstColon()
+    {
+        $headerList = HeaderList::fromString("Binford: 6100\r\nX-Powered-By: Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710231031)/Tomcat-5.5\r\nContent-Type: text/html\r\n");
+        $this->assertTrue($headerList->containsKey('Binford'));
+        $this->assertEquals('6100', $headerList->get('Binford'));
+        $this->assertTrue($headerList->containsKey('X-Powered-By'));
+        $this->assertEquals('Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710231031)/Tomcat-5.5',
+                            $headerList->get('X-Powered-By')
+        );
+        $this->assertTrue($headerList->containsKey('Content-Type'));
+        $this->assertEquals('text/html', $headerList->get('Content-Type'));
+    }
+
+    /**
      * @since  2.0.0
      * @test
      * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
