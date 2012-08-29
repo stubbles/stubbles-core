@@ -185,9 +185,10 @@ class HttpResponse extends BaseObject
             $headers = '';
             $line    = '';
             while (!$this->inputStream->eof() && Http::END_OF_LINE !== $line) {
-                $line     = $this->inputStream->readLine() . "\n";
+                $line     = $this->inputStream->readLine() . Http::END_OF_LINE;
                 $headers .= $line;
             }
+
             $this->headers->append($headers);
         } while ($this->requireContinue());
         return $this;

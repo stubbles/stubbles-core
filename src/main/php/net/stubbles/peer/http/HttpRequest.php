@@ -11,7 +11,6 @@ namespace net\stubbles\peer\http;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\peer\HeaderList;
-use net\stubbles\peer\Socket;
 use net\stubbles\streams\OutputStream;
 /**
  * Class for sending a HTTP request.
@@ -179,13 +178,29 @@ class HttpRequest extends BaseObject
             throw new IllegalArgumentException("Invalid HTTP version " . $version . ', please use either ' . Http::VERSION_1_0 . ' or ' . Http::VERSION_1_1);
         }
 
-        $out->write(Http::line($method . ' ' . $this->httpUri->getPath() . ' ' . $version));
+        $path = $this->httpUri->getPath();
+        if ($this->httpUri->hasQueryString() && $this->methodAllowsQueryString($method)) {
+            $path .= '?' . $this->httpUri->getQueryString();
+        }
+
+        $out->write(Http::line($method . ' ' . $path . ' ' . $version));
         $out->write(Http::line('Host: ' . $this->httpUri->getHost()));
         foreach ($this->headers as $key => $value) {
             $out->write(Http::line($key . ': ' . $value));
         }
 
         $out->write(Http::emptyLine());
+    }
+
+    /**
+     * checks if given method allows a query string
+     *
+     * @param   string  $method
+     * @return  bool
+     */
+    private function methodAllowsQueryString($method)
+    {
+        return (Http::GET === $method || Http::HEAD === $method);
     }
 }
 ?>

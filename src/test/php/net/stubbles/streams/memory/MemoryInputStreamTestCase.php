@@ -33,8 +33,6 @@ class MemoryInputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * write() puts data into buffer
-     *
      * @test
      */
     public function read()
@@ -49,11 +47,9 @@ class MemoryInputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * writeLine() puts data into buffer
-     *
      * @test
      */
-    public function readLine()
+    public function readLineSplitsOnLineBreak()
     {
         $this->assertFalse($this->memoryInputStream->eof());
         $this->assertEquals(11, $this->memoryInputStream->bytesLeft());
@@ -69,21 +65,37 @@ class MemoryInputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * close() does nothing
-     *
+     * @since  2.1.2
      * @test
      */
-    public function close()
+    public function readLineWithBothLineBreaks()
+    {
+        $this->memoryInputStream = new MemoryInputStream("hello\r\nworld");
+        $this->assertFalse($this->memoryInputStream->eof());
+        $this->assertEquals(12, $this->memoryInputStream->bytesLeft());
+        $this->assertEquals(0, $this->memoryInputStream->tell());
+        $this->assertEquals('hello', $this->memoryInputStream->readLine());
+        $this->assertFalse($this->memoryInputStream->eof());
+        $this->assertEquals(5, $this->memoryInputStream->bytesLeft());
+        $this->assertEquals(7, $this->memoryInputStream->tell());
+        $this->assertEquals('world', $this->memoryInputStream->readLine());
+        $this->assertTrue($this->memoryInputStream->eof());
+        $this->assertEquals(0, $this->memoryInputStream->bytesLeft());
+        $this->assertEquals(12, $this->memoryInputStream->tell());
+    }
+
+    /**
+     * @test
+     */
+    public function closeDoesNothing()
     {
         $this->memoryInputStream->close();
     }
 
     /**
-     * seek() sets position of of buffer
-     *
      * @test
      */
-    public function seek_SET()
+    public function seekCanSetPosition()
     {
         $this->memoryInputStream->seek(6);
         $this->assertEquals(6, $this->memoryInputStream->tell());
@@ -101,7 +113,7 @@ class MemoryInputStreamTestCase extends \PHPUnit_Framework_TestCase
      *
      * @test
      */
-    public function seek_CURRENT()
+    public function seekCanSetPositionFromCurrentPosition()
     {
         $this->memoryInputStream->read(4);
         $this->memoryInputStream->seek(2, Seekable::CURRENT);
@@ -112,11 +124,9 @@ class MemoryInputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * seek() sets position of of buffer
-     *
      * @test
      */
-    public function seek_END()
+    public function seekCanSetPositionFromEnd()
     {
         $this->memoryInputStream->seek(-5, Seekable::END);
         $this->assertEquals(6, $this->memoryInputStream->tell());
@@ -126,12 +136,10 @@ class MemoryInputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * seek() sets position of of buffer
-     *
      * @test
      * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
      */
-    public function seek_invalidWhence()
+    public function seekThrowsIllegalArgumentExceptionForInvalidWhence()
     {
         $this->memoryInputStream->seek(6, 66);
     }
