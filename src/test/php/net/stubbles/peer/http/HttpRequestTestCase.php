@@ -9,8 +9,6 @@
  */
 namespace net\stubbles\peer\http;
 use net\stubbles\peer\HeaderList;
-use net\stubbles\peer\Socket;
-use net\stubbles\peer\ParsedUri;
 use net\stubbles\streams\memory\MemoryOutputStream;
 /**
  * Test for net\stubbles\peer\http\HttpRequest.
@@ -20,12 +18,6 @@ use net\stubbles\streams\memory\MemoryOutputStream;
  */
 class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * instance to test
-     *
-     * @type  HttpRequest
-     */
-    private $httpRequest;
     /**
      * memory stream to write http request to
      *
@@ -39,11 +31,23 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->memoryOutputStream = new MemoryOutputStream();
-        $mockHttpUri              = $this->getMock('net\\stubbles\\peer\\http\\HttpUri');
-        $mockSocket               = $this->getMock('net\\stubbles\\peer\\Socket', array(), array('example.com'));
+    }
+
+    /**
+     * creates instance to test
+     *
+     * @param   string  $queryString
+     * @return  HttpRequest
+     */
+    private function createHttpRequest($queryString = null)
+    {
+        $mockHttpUri              = $this->getMock('net\stubbles\peer\http\HttpUri');
+        $mockSocket               = $this->getMockBuilder('net\stubbles\peer\Socket')
+                                         ->disableOriginalConstructor()
+                                         ->getMock();
         $mockSocket->expects($this->any())
                    ->method('getInputStream')
-                   ->will($this->returnValue($this->getMock('net\\stubbles\\streams\\InputStream')));
+                   ->will($this->returnValue($this->getMock('net\stubbles\streams\InputStream')));
         $mockSocket->expects(($this->any()))
                    ->method('getOutputStream')
                    ->will($this->returnValue($this->memoryOutputStream));
@@ -53,14 +57,21 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
         $mockHttpUri->expects($this->any())
                     ->method('getPath')
                     ->will($this->returnValue('/foo/resource'));
+        if (null !== $queryString) {
+            $mockHttpUri->expects($this->any())
+                    ->method('hasQueryString')
+                    ->will($this->returnValue(true));
+            $mockHttpUri->expects($this->any())
+                    ->method('getQueryString')
+                    ->will($this->returnValue($queryString));
+        }
+
         $mockHttpUri->expects($this->any())
                     ->method('getHost')
                     ->will($this->returnValue('example.com'));
-        $this->httpRequest = HttpRequest::create($mockHttpUri,
-                                                 new HeaderList(array('X-Binford' => 6100))
-                             );
-
-
+        return HttpRequest::create($mockHttpUri,
+                                   new HeaderList(array('X-Binford' => 6100))
+        );
     }
 
     /**
@@ -68,10 +79,27 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getWritesCorrectRequest()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->get()
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->get()
         );
         $this->assertEquals(Http::line('GET /foo/resource HTTP/1.1')
+                          . Http::line('Host: example.com')
+                          . Http::line('X-Binford: 6100')
+                          . Http::emptyLine(),
+                            $this->memoryOutputStream->getBuffer()
+        );
+    }
+
+    /**
+     * @since   2.1.2
+     * @test
+     */
+    public function getWritesCorrectRequestWithQueryString()
+    {
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest('foo=bar&baz=1')->get()
+        );
+        $this->assertEquals(Http::line('GET /foo/resource?foo=bar&baz=1 HTTP/1.1')
                           . Http::line('Host: example.com')
                           . Http::line('X-Binford: 6100')
                           . Http::emptyLine(),
@@ -84,8 +112,8 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->get(5, Http::VERSION_1_0)
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->get(5, Http::VERSION_1_0)
         );
         $this->assertEquals(Http::line('GET /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -101,7 +129,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
-        $this->httpRequest->get(5, 'invalid');
+        $this->createHttpRequest()->get(5, 'invalid');
     }
 
     /**
@@ -109,10 +137,28 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function headWritesCorrectRequest()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->head()
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->head()
         );
         $this->assertEquals(Http::line('HEAD /foo/resource HTTP/1.1')
+                          . Http::line('Host: example.com')
+                          . Http::line('X-Binford: 6100')
+                          . Http::line('Connection: close')
+                          . Http::emptyLine(),
+                            $this->memoryOutputStream->getBuffer()
+        );
+    }
+
+    /**
+     * @since   2.1.2
+     * @test
+     */
+    public function headWritesCorrectRequestWithQueryString()
+    {
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest('foo=bar&baz=1')->head()
+        );
+        $this->assertEquals(Http::line('HEAD /foo/resource?foo=bar&baz=1 HTTP/1.1')
                           . Http::line('Host: example.com')
                           . Http::line('X-Binford: 6100')
                           . Http::line('Connection: close')
@@ -126,8 +172,8 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function headWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->head(5, Http::VERSION_1_0)
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->head(5, Http::VERSION_1_0)
         );
         $this->assertEquals(Http::line('HEAD /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -144,7 +190,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function headWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
-        $this->httpRequest->head(5, 'invalid');
+        $this->createHttpRequest()->head(5, 'invalid');
     }
 
     /**
@@ -152,8 +198,27 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequest()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->post('foobar')
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->post('foobar')
+        );
+        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
+                          . Http::line('Host: example.com')
+                          . Http::line('X-Binford: 6100')
+                          . Http::line('Content-Length: 6')
+                          . Http::emptyLine()
+                          . 'foobar',
+                            $this->memoryOutputStream->getBuffer()
+        );
+    }
+
+    /**
+     * @since   2.1.2
+     * @test
+     */
+    public function postIgnoresQueryString()
+    {
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest('foo=bar&baz=1')->post('foobar')
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
@@ -170,8 +235,8 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->post('foobar', 5, Http::VERSION_1_0)
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->post('foobar', 5, Http::VERSION_1_0)
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -188,8 +253,8 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingEmptyPostValues()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->post(array())
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->post(array())
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
@@ -206,8 +271,8 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingPostValues()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->post(array('foo' => 'bar', 'ba z' => 'dum my'))
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->post(array('foo' => 'bar', 'ba z' => 'dum my'))
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
@@ -225,8 +290,8 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingPostValuesWithVersion()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->post(array('foo' => 'bar', 'ba z' => 'dum my'), 5, Http::VERSION_1_0)
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->post(array('foo' => 'bar', 'ba z' => 'dum my'), 5, Http::VERSION_1_0)
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -245,7 +310,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function postWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
-        $this->httpRequest->post('foobar', 5, 'invalid');
+        $this->createHttpRequest()->post('foobar', 5, 'invalid');
     }
 
     /**
@@ -254,8 +319,27 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function putWritesCorrectRequest()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->put('foobar')
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->put('foobar')
+        );
+        $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.1')
+                          . Http::line('Host: example.com')
+                          . Http::line('X-Binford: 6100')
+                          . Http::line('Content-Length: 6')
+                          . Http::emptyLine()
+                          . 'foobar',
+                            $this->memoryOutputStream->getBuffer()
+        );
+    }
+
+    /**
+     * @since   2.1.2
+     * @test
+     */
+    public function putIgnoresQueryString()
+    {
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest('foo=bar&baz=1')->put('foobar')
         );
         $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
@@ -273,8 +357,8 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function putWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->put('foobar', 5, Http::VERSION_1_0)
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->put('foobar', 5, Http::VERSION_1_0)
         );
         $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -293,7 +377,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function putWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
-        $this->httpRequest->put('foobar', 5, 'invalid');
+        $this->createHttpRequest()->put('foobar', 5, 'invalid');
     }
 
     /**
@@ -302,8 +386,25 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function deleteWritesCorrectRequest()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->delete()
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->delete()
+        );
+        $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.1')
+                          . Http::line('Host: example.com')
+                          . Http::line('X-Binford: 6100')
+                          . Http::emptyLine(),
+                            $this->memoryOutputStream->getBuffer()
+        );
+    }
+
+    /**
+     * @since   2.1.2
+     * @test
+     */
+    public function deleteIgnoresQueryString()
+    {
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest('foo=bar&baz=1')->delete()
         );
         $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
@@ -319,8 +420,8 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function deleteWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('net\\stubbles\\peer\\http\\HttpResponse',
-                                $this->httpRequest->delete(5, Http::VERSION_1_0)
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpResponse',
+                                $this->createHttpRequest()->delete(5, Http::VERSION_1_0)
         );
         $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -337,7 +438,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
      */
     public function deleteWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
-        $this->httpRequest->delete(5, 'invalid');
+        $this->createHttpRequest()->delete(5, 'invalid');
     }
 }
 ?>

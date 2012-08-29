@@ -85,6 +85,10 @@ class QueryString extends BaseObject
      */
     public function build()
     {
+        if (count($this->parameters) === 0) {
+            return null;
+        }
+
         $queryString = '';
         foreach ($this->parameters as $name => $value) {
             $queryString .= $this->buildQuery($name, $value);
