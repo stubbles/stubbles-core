@@ -65,6 +65,7 @@ class MemoryInputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @since  2.1.2
      * @test
      */
     public function readLineWithBothLineBreaks()
