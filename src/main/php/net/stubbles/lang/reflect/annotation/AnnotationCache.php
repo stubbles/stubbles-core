@@ -55,7 +55,7 @@ class AnnotationCache
      */
     public static function __static()
     {
-        if (Phar::running() !== '') {
+        if (\Phar::running() !== '') {
             return; // don't cache when run from a phar
         }
 

@@ -91,7 +91,7 @@ class ResourceLoader extends BaseObject
     public static function getRootPath()
     {
         if (null === self::$rootPath) {
-            if (Phar::running() !== '') {
+            if (\Phar::running() !== '') {
                 self::$rootPath = dirname(Phar::running(false));
             } elseif (file_exists(__DIR__ . '/../../../../../../../../composer/autoload_namespaces.php')) {
                 self::$rootPath = realpath(__DIR__ . '/../../../../../../../../../');
