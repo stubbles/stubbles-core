@@ -55,6 +55,10 @@ class AnnotationCache
      */
     public static function __static()
     {
+        if (Phar::running() !== '') {
+            return; // don't cache when run from a phar
+        }
+
         self::$cacheFile = ResourceLoader::getRootPath() . '/cache/annotations.cache';
         if (file_exists(self::$cacheFile) == true) {
             self::$annotations = unserialize(file_get_contents(self::$cacheFile));
