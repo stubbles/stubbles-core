@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang;
-use net\stubbles\Bootstrap;
 use net\stubbles\lang\BaseObject;
 /**
  * Class to load resources from arbitrary locations.

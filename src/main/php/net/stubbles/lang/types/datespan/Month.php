@@ -57,14 +57,6 @@ class Month extends CustomDatespan
 
         if (null === $month) {
             $month = (int) date('m');
-            if ($this->isFirstOfMonth()) {
-                if ($this->isJanuary($month)) {
-                    $month = 12;
-                    $year--;
-                } else {
-                    $month--;
-                }
-            }
         }
 
         $start              = new Date($year . '-' . $month . '-1 00:00:00');
@@ -74,27 +66,6 @@ class Month extends CustomDatespan
         parent::__construct($start,
                             new Date($year . '-' . $month . '-' . $this->amountOfDays . ' 23:59:59')
         );
-    }
-
-    /**
-     * checks whether day is first of month
-     *
-     * @return  bool
-     */
-    private function isFirstOfMonth()
-    {
-        return 1 === (int) date('d');
-    }
-
-    /**
-     * checks whether month is january
-     *
-     * @param   int  $month
-     * @return  bool
-     */
-    private function isJanuary($month)
-    {
-        return 1 === $month;
     }
 
     /**
