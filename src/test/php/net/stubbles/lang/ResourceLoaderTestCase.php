@@ -66,5 +66,15 @@ class ResourceLoaderTestCase extends \PHPUnit_Framework_TestCase
                             $this->resourceLoader->getResourceUris('doesnot.exist')
         );
     }
+
+    /**
+     * @test
+     */
+    public function returnsRootPathBothStaticAndNonStatic()
+    {
+        $this->assertEquals(ResourceLoader::getRootPath(),
+                            $this->resourceLoader->getRoot()
+        );
+    }
 }
 ?>
