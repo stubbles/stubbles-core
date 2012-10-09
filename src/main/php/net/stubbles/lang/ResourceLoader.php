@@ -102,5 +102,15 @@ class ResourceLoader extends BaseObject
 
         return self::$rootPath;
     }
+
+    /**
+     * returns root path for non-static mockable calls
+     *
+     * @return  string
+     */
+    public function getRoot()
+    {
+        return self::getRootPath();
+    }
 }
 ?>
