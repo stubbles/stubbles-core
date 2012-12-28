@@ -73,7 +73,7 @@ class MemoryInputStream extends BaseObject implements InputStream, Seekable
             $this->position += strlen($line);
         }
 
-        return $line;
+        return rtrim($line);
     }
 
     /**

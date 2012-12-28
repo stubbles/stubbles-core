@@ -56,7 +56,7 @@ class HeaderList extends BaseObject implements \IteratorAggregate
     {
         $header  = array();
         $matches = array();
-        preg_match_all('=^(.+): ([^\r\n]*)=m', $headers, $matches, PREG_SET_ORDER);
+        preg_match_all('=^(.[^: ]+): ([^\r\n]*)=m', $headers, $matches, PREG_SET_ORDER);
         foreach ($matches as $line) {
             $header[$line[1]] = $line[2];
         }
