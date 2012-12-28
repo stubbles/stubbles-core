@@ -275,5 +275,22 @@ class BaseObjectTestCase extends \PHPUnit_Framework_TestCase
                             StringRepresentationBuilder::buildFrom(new stub4BaseObject())
         );
     }
+
+    /**
+     * @since  2.1.3
+     * @test
+     */
+    public function toStringWithArrayProperty()
+    {
+        $object = new stub1BaseObject();
+        $object->foo = array('bar' => 'baz');
+        $this->assertEquals('net\\stubbles\\lang\\stub1BaseObject {
+    bar(integer): 5
+    foo(array): [..](1)
+}
+',
+                            (string) $object
+        );
+    }
 }
 ?>
