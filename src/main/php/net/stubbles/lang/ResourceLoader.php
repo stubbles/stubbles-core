@@ -91,7 +91,9 @@ class ResourceLoader extends BaseObject
     public static function getRootPath()
     {
         if (null === self::$rootPath) {
-            if (file_exists(__DIR__ . '/../../../../../../../../composer/autoload_namespaces.php')) {
+            if (\Phar::running() !== '') {
+                self::$rootPath = dirname(\Phar::running(false));
+            } elseif (file_exists(__DIR__ . '/../../../../../../../../composer/autoload_namespaces.php')) {
                 self::$rootPath = realpath(__DIR__ . '/../../../../../../../../../');
             } else {
                 self::$rootPath = realpath(__DIR__ . '/../../../../../../');
@@ -99,6 +101,16 @@ class ResourceLoader extends BaseObject
         }
 
         return self::$rootPath;
+    }
+
+    /**
+     * returns root path for non-static mockable calls
+     *
+     * @return  string
+     */
+    public function getRoot()
+    {
+        return self::getRootPath();
     }
 }
 ?>
