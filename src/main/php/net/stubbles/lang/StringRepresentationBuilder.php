@@ -49,6 +49,8 @@ class StringRepresentationBuilder extends BaseObject
             $string .= '    ' . $name . '(' . self::determineType($value) . '): ';
             if (is_resource($value)) {
                 $string .= "resource\n";
+            } elseif (is_array($value)) {
+                $string .= '[..](' .count($value). ")\n";
             } elseif (!($value instanceof Object)) {
                 $string .= $value . "\n";
             } else {
