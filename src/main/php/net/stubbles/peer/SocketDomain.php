@@ -121,8 +121,8 @@ class SocketDomain extends Enum
      */
     public function connect($fp, $host, $port)
     {
-        $function = $this->connect;
-        if (!$function($fp, $host, $port)) {
+        $connect = $this->connect;
+        if (!$connect($fp, $host, $port)) {
             $e = socket_last_error($fp);
             throw new ConnectionException('Connect to ' . $host . ':' .$port . ' failed: ' . $e . ': ' . socket_strerror($e));
         }
