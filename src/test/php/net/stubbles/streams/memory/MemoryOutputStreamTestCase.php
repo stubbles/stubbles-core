@@ -62,7 +62,7 @@ class MemoryOutputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function close()
     {
-        $this->memoryOutputStream->close();
+        $this->assertNull($this->memoryOutputStream->close());
     }
 }
 ?>

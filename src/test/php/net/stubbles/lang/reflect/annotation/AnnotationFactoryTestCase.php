@@ -225,8 +225,10 @@ protected $commentComplexForArgument = '/**
      */
     public function reflectionClass()
     {
-        $class = new ReflectionClass('net\\stubbles\\lang\\reflect\\annotation\\AnotherTestClass');
-        $anno  = $class->getAnnotation('MyAnnotation');
+        $class = new ReflectionClass('net\stubbles\lang\reflect\annotation\AnotherTestClass');
+        $this->assertInstanceOf('net\stubbles\lang\reflect\annotation\Annotation',
+                                $class->getAnnotation('MyAnnotation')
+        );
     }
 
     /**
