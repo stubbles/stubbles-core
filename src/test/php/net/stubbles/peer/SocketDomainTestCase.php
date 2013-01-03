@@ -12,7 +12,7 @@ namespace net\stubbles\peer;
  * Test for net\stubbles\peer\SocketDomain.
  *
  * @since  2.0.0
- * @group  peer
+ * @group  peer_1
  */
 class SocketDomainTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -47,21 +47,22 @@ class SocketDomainTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getNames()
     {
-        return array(array(SocketDomain::$AF_INET, 'AF_INET'),
-                     array(SocketDomain::$AF_INET6, 'AF_INET6'),
-                     array(SocketDomain::$AF_UNIX, 'AF_UNIX')
+        return array(array('AF_INET'),
+                     array('AF_INET6'),
+                     array('AF_UNIX')
         );
     }
 
     /**
-     * @param  SocketDomain  $domain
      * @param  string        $expectedName
      * @test
      * @dataProvider  getNames
      */
-    public function namesAreCorrect(SocketDomain $domain, $expectedName)
+    public function namesAreCorrect($expectedName)
     {
-        $this->assertEquals($expectedName, $domain->name());
+        $this->assertEquals($expectedName,
+                            SocketDomain::forName($expectedName)->name()
+        );
     }
 
     /**
@@ -71,21 +72,22 @@ class SocketDomainTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getValues()
     {
-        return array(array(SocketDomain::$AF_INET, AF_INET),
-                     array(SocketDomain::$AF_INET6, AF_INET6),
-                     array(SocketDomain::$AF_UNIX, AF_UNIX)
+        return array(array(AF_INET),
+                     array(AF_INET6),
+                     array(AF_UNIX)
         );
     }
 
     /**
-     * @param  SocketDomain  $domain
-     * @param  string        $expectedName
+     * @param  int  $expectedValue
      * @test
      * @dataProvider  getValues
      */
-    public function valuesAreCorrect(SocketDomain $domain, $expectedName)
+    public function valuesAreCorrect($expectedValue)
     {
-        $this->assertEquals($expectedName, $domain->value());
+        $this->assertEquals($expectedValue,
+                            SocketDomain::forValue($expectedValue)->value()
+        );
     }
 }
 ?>
