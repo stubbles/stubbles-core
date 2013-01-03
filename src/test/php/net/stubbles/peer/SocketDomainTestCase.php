@@ -12,7 +12,7 @@ namespace net\stubbles\peer;
  * Test for net\stubbles\peer\SocketDomain.
  *
  * @since  2.0.0
- * @group  peer_1
+ * @group  peer
  */
 class SocketDomainTestCase extends \PHPUnit_Framework_TestCase
 {
