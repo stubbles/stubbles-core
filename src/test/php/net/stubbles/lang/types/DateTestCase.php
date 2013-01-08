@@ -481,8 +481,9 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function classIsAnnotatedWithXmlTag()
     {
-        Date::now()->getClass()
-                   ->hasAnnotation('XmlTag');
+        $this->assertTrue(Date::now()->getClass()
+                                     ->hasAnnotation('XmlTag')
+        );
     }
 
     /**
@@ -490,9 +491,10 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getHandleIsAnnotatedWithXmlIgnore()
     {
-        Date::now()->getClass()
-                   ->getMethod('getHandle')
-                   ->hasAnnotation('XmlIgnore');
+        $this->assertTrue(Date::now()->getClass()
+                                     ->getMethod('getHandle')
+                                     ->hasAnnotation('XmlIgnore')
+        );
     }
 
     /**
@@ -522,9 +524,10 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function methodIsAnnotatedWithXmlIgnore($method)
     {
-        Date::now()->getClass()
-                   ->getMethod($method)
-                   ->hasAnnotation('XmlIgnore');
+        $this->assertTrue(Date::now()->getClass()
+                                     ->getMethod($method)
+                                     ->hasAnnotation('XmlIgnore')
+        );
     }
 
     /**
@@ -532,9 +535,10 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function asStringIsAnnotatedWithXmlAttribute()
     {
-        Date::now()->getClass()
-                   ->getMethod('asString')
-                   ->hasAnnotation('@XmlAttribute');
+        $this->assertTrue(Date::now()->getClass()
+                                     ->getMethod('asString')
+                                     ->hasAnnotation('XmlAttribute')
+        );
     }
 }
 ?>
