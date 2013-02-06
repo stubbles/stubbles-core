@@ -14,7 +14,7 @@
          stopOnFailure="false"
          stopOnIncomplete="false"
          stopOnSkipped="false"
-         strict="false"
+         strict="true"
          verbose="true">
   <testsuites>
     <testsuite>
@@ -33,7 +33,8 @@
     <log type="coverage-html" target="docs/coverage" charset="UTF-8"
          yui="true" highlight="false"
          lowUpperBound="35" highLowerBound="70"/>
-    <log type="junit" target="docs/phpunit/junit.xml" logIncompleteSkipped="false"/>
+    <log type="junit" target="docs/phpunit/junit.xml"/>
+    <log type="tap" target="docs/phpunit/tap.txt"/>
     <log type="testdox-html" target="docs/phpunit/testdox.html"/>
   </logging>
 

@@ -10,7 +10,6 @@
 namespace net\stubbles\lang\reflect\annotation\parser;
 use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\Enum;
-define('ANNOTATION_TEST_CONSTANT', 'baz');
 /**
  * This is a test class that has many annotations.
  *
@@ -22,8 +21,7 @@ define('ANNOTATION_TEST_CONSTANT', 'baz');
  * @TwoParams(foo='bar', test=42)
  * @InvalidChars(foo='ba@r=,')
  * @SingleValue(42)
- * @Constant(foo=ANNOTATION_TEST_CONSTANT)
- * @Constant2(foo=net\stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT)
+ * @Constant(foo=net\stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT)
  * @Enum(foo=net\stubbles\lang\reflect\annotation\parser\MyTestClass::$FOO)
  * @SingleStringValue('This is a string with chars like = or ,')
  * @WithEscaped(foo='This string contains \' and \\, which is possible using escaping...')
@@ -129,10 +127,7 @@ class AnnotationStateParserTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('__value' => 42), $annotations['SingleValue']['params']);
         $this->assertTrue(isset($annotations['Constant']));
         $this->assertEquals('Constant', $annotations['Constant']['type']);
-        $this->assertEquals(array('foo' => ANNOTATION_TEST_CONSTANT), $annotations['Constant']['params']);
-        $this->assertTrue(isset($annotations['Constant2']));
-        $this->assertEquals('Constant2', $annotations['Constant2']['type']);
-        $this->assertEquals(array('foo' => MyTestClass::TEST_CONSTANT), $annotations['Constant2']['params']);
+        $this->assertEquals(array('foo' => MyTestClass::TEST_CONSTANT), $annotations['Constant']['params']);
         $this->assertTrue(isset($annotations['Enum']));
         $this->assertEquals('Enum', $annotations['Enum']['type']);
         $this->assertEquals(array('foo' => MyTestClass::$FOO), $annotations['Enum']['params']);

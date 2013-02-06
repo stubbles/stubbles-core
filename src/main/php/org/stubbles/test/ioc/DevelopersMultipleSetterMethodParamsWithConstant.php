@@ -11,32 +11,23 @@ namespace org\stubbles\test\ioc;
 /**
  * Helper class for the test.
  */
-class Developers
+class DevelopersMultipleSetterMethodParamsWithConstant
 {
-    public $mikey;
+    public $role;
     public $schst;
 
     /**
-     * Setter method with Named() annotation
+     * setter method with Named() annotation on a specific param
      *
      * @param  Employee  $schst
+     * @param  string                            $role
      * @Inject
-     * @Named('schst')
+     * @Named{role}('boss')
      */
-    public function setSchst(Employee $schst)
+    public function setDevelopers(Employee $schst, $role)
     {
         $this->schst = $schst;
-    }
-
-    /**
-     * Setter method without Named() annotation
-     *
-     * @param  Employee  $schst
-     * @Inject
-     */
-    public function setMikey(Employee $mikey)
-    {
-        $this->mikey = $mikey;
+        $this->role  = $role;
     }
 }
 ?>
