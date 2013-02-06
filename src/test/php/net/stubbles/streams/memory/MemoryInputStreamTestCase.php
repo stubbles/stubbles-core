@@ -89,7 +89,7 @@ class MemoryInputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function closeDoesNothing()
     {
-        $this->memoryInputStream->close();
+        $this->assertNull($this->memoryInputStream->close());
     }
 
     /**
