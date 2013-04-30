@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation;
-use net\stubbles\lang\ResourceLoader;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\lang\reflect\annotation\AnnotationCache.
@@ -25,9 +24,8 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         AnnotationCache::flush();
-        AnnotationCache::refresh();
         vfsStream::setup();
-        AnnotationCache::setCacheFile(vfsStream::url('root/annotations.cache'));
+        AnnotationCache::start(vfsStream::url('root/annotations.cache'));
     }
 
     /**
@@ -35,7 +33,7 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        AnnotationCache::setCacheFile(ResourceLoader::getRootPath() . '/cache/annotations.cache');
+        AnnotationCache::stop();
     }
 
     /**
@@ -61,6 +59,20 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($data[Annotation::TARGET_CLASS]['foo']));
         $this->assertTrue(isset($data[Annotation::TARGET_CLASS]['foo']['annotationName']));
         $this->assertEquals($annotation, unserialize($data[Annotation::TARGET_CLASS]['foo']['annotationName']));
+    }
+
+    /**
+     * @test
+     * @group  issue_58
+     * @since  2.2.0
+     */
+    public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown()
+    {
+        $annotation = new Annotation('annotationName');
+        AnnotationCache::put(Annotation::TARGET_CLASS, 'foo', 'annotationName', $annotation);
+        AnnotationCache::stop();
+        AnnotationCache::__shutdown();
+        $this->assertFalse(file_exists(vfsStream::url('root/annotations.cache')));
     }
 
     /**

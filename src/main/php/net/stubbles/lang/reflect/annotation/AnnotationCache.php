@@ -44,6 +44,7 @@ class AnnotationCache
      * sets cache file to be used
      *
      * @param  string  $cacheFile
+     * @deprecated  use AnnotationCache::start() instead, will be removed with 2.3.0
      */
     public static function setCacheFile($cacheFile)
     {
@@ -51,7 +52,42 @@ class AnnotationCache
     }
 
     /**
+     * start annotation cache with given cache file
+     *
+     * Calling this method will also flush the cache. If this method is never
+     * called the annotation cache will not be persistent but only as long as
+     * the current request is running.
+     *
+     * @param  string  $cacheFile  path to annotation cache file
+     * @since  2.2.0
+     */
+    public static function start($cacheFile)
+    {
+        self::$cacheFile = $cacheFile;
+        if (file_exists(self::$cacheFile)) {
+            self::$annotations  = unserialize(file_get_contents(self::$cacheFile));
+        } else {
+            self::flush();
+        }
+
+        self::$cacheChanged = false;
+        register_shutdown_function(array(__CLASS__, '__shutdown'));
+    }
+
+    /**
+     * stops annotation cache persistence
+     *
+     * @since  2.2.0
+     */
+    public static function stop()
+    {
+        self::$cacheFile = null;
+    }
+
+    /**
      * static initializer
+     *
+     * @deprecated  use AnnotationCache::start() instead, will be removed with 2.3.0
      */
     public static function __static()
     {
@@ -59,12 +95,7 @@ class AnnotationCache
             return; // don't cache when run from a phar
         }
 
-        self::$cacheFile = ResourceLoader::getRootPath() . '/cache/annotations.cache';
-        if (file_exists(self::$cacheFile) == true) {
-            self::$annotations = unserialize(file_get_contents(self::$cacheFile));
-        }
-
-        register_shutdown_function(array(__CLASS__, '__shutdown'));
+        self::start(ResourceLoader::getRootPath() . '/cache/annotations.cache');
     }
 
     /**
@@ -72,13 +103,15 @@ class AnnotationCache
      */
     public static function __shutdown()
     {
-        if (true === self::$cacheChanged) {
+        if (self::$cacheChanged && null !== self::$cacheFile) {
             file_put_contents(self::$cacheFile, serialize(self::$annotations));
         }
     }
 
     /**
      * refreshes cache data
+     *
+     * @deprecated  not required any more, will be removed with 2.3.0
      */
     public static function refresh()
     {
@@ -182,5 +215,4 @@ class AnnotationCache
         return null;
     }
 }
-AnnotationCache::__static();
 ?>
