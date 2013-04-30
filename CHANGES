@@ -1,3 +1,15 @@
+2.2.0, 2013-??-??
+==================
+BC breaks:
+- implemented #58: make annotation cache configurable
+  Please note that annotations are not cached inbetween requests automatically
+  any more. To retain the old behaviour, you need to call
+  \net\stubbles\lang\reflect\annotation\AnnotationCache::start($projectPath . '/cache/annotations.cache');
+  In case you have an App instance you can call the new
+  App::persistAnnotationCache() method, it expects a path to the annotation cache
+  file.
+
+
 2.1.3, 2012-12-28
 ==================
 - changed net\stubbles\lang\types\datespan\Month to always use current month,
