@@ -25,7 +25,7 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     {
         AnnotationCache::flush();
         vfsStream::setup();
-        AnnotationCache::start(vfsStream::url('root/annotations.cache'));
+        AnnotationCache::startFromFileCache(vfsStream::url('root/annotations.cache'));
     }
 
     /**
@@ -62,9 +62,9 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
-     * @group  issue_58
      * @since  2.2.0
+     * @group  issue_58
+     * @test
      */
     public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown()
     {
@@ -81,6 +81,28 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     public function retrieveUncachedAnnotationReturnsNull()
     {
         $this->assertNull(AnnotationCache::get(Annotation::TARGET_CLASS, 'DoesNotExist', 'annotationName'));
+    }
+
+    /**
+     * @since  2.2.0
+     * @group  issue_58
+     * @test
+     * @expectedException  \net\stubbles\lang\exception\RuntimeException
+     */
+    public function startAnnotationCacheWithInvalidCacheDataThrowsRuntimeException()
+    {
+        AnnotationCache::start(function() { return serialize('foo'); }, function() {});
+    }
+
+    /**
+     * @since  2.2.0
+     * @group  issue_58
+     * @test
+     * @expectedException  \net\stubbles\lang\exception\RuntimeException
+     */
+    public function startAnnotationCacheWithNonSerializedCacheDataThrowsRuntimeException()
+    {
+        AnnotationCache::start(function() { return 'foo'; }, function() {});
     }
 }
 ?>

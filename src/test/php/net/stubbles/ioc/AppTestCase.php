@@ -97,7 +97,7 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
      * @group  issue_58
      * @test
      */
-    public function canCreateAppInstanceWithPersistentAnnotationCache()
+    public function canCreateAppInstanceWithFileAnnotationCache()
     {
         $root = \org\bovigo\vfs\vfsStream::setup();
         $appClass = AppClassWithAnnotationCache::create($root->url());

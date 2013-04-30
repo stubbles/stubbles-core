@@ -4,9 +4,9 @@ BC breaks:
 - implemented #58: make annotation cache configurable
   Please note that annotations are not cached inbetween requests automatically
   any more. To retain the old behaviour, you need to call
-  \net\stubbles\lang\reflect\annotation\AnnotationCache::start($projectPath . '/cache/annotations.cache');
+  \net\stubbles\lang\reflect\annotation\AnnotationCache::startFromFileCache($projectPath . '/cache/annotations.cache');
   In case you have an App instance you can call the new
-  App::persistAnnotationCache() method, it expects a path to the annotation cache
+  App::useFileAnnotationCache() method, it expects a path to the annotation cache
   file.
 
 

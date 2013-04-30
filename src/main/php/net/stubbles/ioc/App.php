@@ -82,9 +82,9 @@ abstract class App extends BaseObject
      * @param  string  $cacheFile
      * @since  2.2.0
      */
-    protected static function persistAnnotationCache($cacheFile)
+    protected static function useFileAnnotationCache($cacheFile)
     {
-        \net\stubbles\lang\reflect\annotation\AnnotationCache::start($cacheFile);
+        \net\stubbles\lang\reflect\annotation\AnnotationCache::startFromFileCache($cacheFile);
     }
 
     /**

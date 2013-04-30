@@ -8,7 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation;
-use net\stubbles\lang\ResourceLoader;
+use \net\stubbles\lang\exception\RuntimeException;
 /**
  * Static cache for annotations
  *
@@ -34,44 +34,89 @@ class AnnotationCache
      */
     private static $cacheChanged = false;
     /**
-     * file where annotation cache should be stored
+     * closure which stores the current annotation cache
      *
-     * @type  string
+     * @type  Closure
      */
-    private static $cacheFile;
+    private static $storeCache;
 
     /**
-     * sets cache file to be used
-     *
-     * @param  string  $cacheFile
-     * @deprecated  use AnnotationCache::start() instead, will be removed with 2.3.0
-     */
-    public static function setCacheFile($cacheFile)
-    {
-        self::$cacheFile = $cacheFile;
-    }
-
-    /**
-     * start annotation cache with given cache file
+     * start annotation cache with given cache storage logic
      *
      * Calling this method will also flush the cache. If this method is never
-     * called the annotation cache will not be persistent but only as long as
-     * the current request is running.
+     * called the annotation cache will not be persistent but only last as long
+     * as the current request is running.
      *
-     * @param  string  $cacheFile  path to annotation cache file
-     * @since  2.2.0
+     * The $readCache closure must return the stored annotation data. If no such
+     * data is present it must return null. In case the stored annotation data
+     * can't be unserialized into an array a
+     * net\stubbles\lang\exception\RuntimeException will be thrown.
+     *
+     * The $storeCache closure must store passed annotation data. It doesn't
+     * need to take care about serialization, as it already receives a
+     * serialized representation.
+     *
+     * A possible implementation for the file cache would look like this:
+     * <code>
+     * AnnotationCache::start(function() use($cacheFile)
+     *                        {
+     *                            if (file_exists($cacheFile)) {
+     *                                return file_get_contents($cacheFile);
+     *                            }
+     *
+     *                            return null;
+     *                        },
+     *                        function($annotationData) use($cacheFile)
+     *                        {
+     *                            file_put_contents($cacheFile, $annotationData);
+     *                        }
+     * );
+     * </code>
+     *
+     * @param   Closure  $readCache   function which can return cached annotation data
+     * @param   Closure  $storeCache  function which takes cached annotation data and stores it
+     * @throws  RuntimeException
+     * @since   2.2.0
      */
-    public static function start($cacheFile)
+    public static function start(\Closure $readCache, \Closure $storeCache)
     {
-        self::$cacheFile = $cacheFile;
-        if (file_exists(self::$cacheFile)) {
-            self::$annotations  = unserialize(file_get_contents(self::$cacheFile));
+        $annotationData = $readCache();
+        if (null != $annotationData) {
+            self::$annotations  = @unserialize($annotationData);
+            if (!is_array(self::$annotations)) {
+                self::flush();
+                throw new RuntimeException('Cached annotation data is not an array');
+            }
         } else {
             self::flush();
         }
 
         self::$cacheChanged = false;
+        self::$storeCache   = $storeCache;
         register_shutdown_function(array(__CLASS__, '__shutdown'));
+    }
+
+    /**
+     * starts annotation cache with given cache file
+     *
+     * @param  string  $cacheFile  path to file wherein cached annotation data is stored
+     * @since  2.2.0
+     */
+    public static function startFromFileCache($cacheFile)
+    {
+        self::start(function() use($cacheFile)
+                    {
+                        if (file_exists($cacheFile)) {
+                            return file_get_contents($cacheFile);
+                        }
+
+                        return null;
+                    },
+                    function($annotationData) use($cacheFile)
+                    {
+                        file_put_contents($cacheFile, $annotationData);
+                    }
+        );
     }
 
     /**
@@ -81,21 +126,7 @@ class AnnotationCache
      */
     public static function stop()
     {
-        self::$cacheFile = null;
-    }
-
-    /**
-     * static initializer
-     *
-     * @deprecated  use AnnotationCache::start() instead, will be removed with 2.3.0
-     */
-    public static function __static()
-    {
-        if (\Phar::running() !== '') {
-            return; // don't cache when run from a phar
-        }
-
-        self::start(ResourceLoader::getRootPath() . '/cache/annotations.cache');
+        self::$storeCache = null;
     }
 
     /**
@@ -103,21 +134,10 @@ class AnnotationCache
      */
     public static function __shutdown()
     {
-        if (self::$cacheChanged && null !== self::$cacheFile) {
-            file_put_contents(self::$cacheFile, serialize(self::$annotations));
+        if (self::$cacheChanged && null !== self::$storeCache) {
+            $storeCache = self::$storeCache;
+            $storeCache(serialize(self::$annotations));
         }
-    }
-
-    /**
-     * refreshes cache data
-     *
-     * @deprecated  not required any more, will be removed with 2.3.0
-     */
-    public static function refresh()
-    {
-        file_put_contents(self::$cacheFile, serialize(self::$annotations));
-        self::$annotations  = unserialize(file_get_contents(self::$cacheFile));
-        self::$cacheChanged = false;
     }
 
     /**
@@ -143,6 +163,10 @@ class AnnotationCache
      */
     public static function put($target, $targetName, $annotationName, Annotation $annotation = null)
     {
+        if (!isset(self::$annotations[$target])) {
+            self::$annotations[$target] = array();
+        }
+
         if (!isset(self::$annotations[$target][$targetName])) {
             self::$annotations[$target][$targetName] = array();
         }
@@ -166,6 +190,10 @@ class AnnotationCache
      */
     public static function has($target, $targetName, $annotationName)
     {
+        if (!isset(self::$annotations[$target])) {
+            return false;
+        }
+
         if (!isset(self::$annotations[$target][$targetName])) {
             return false;
         }
@@ -187,11 +215,15 @@ class AnnotationCache
      */
     public static function hasNot($target, $targetName, $annotationName)
     {
-        if (isset(self::$annotations[$target][$targetName]) == false) {
+        if (!isset(self::$annotations[$target])) {
             return false;
         }
 
-        if (isset(self::$annotations[$target][$targetName][$annotationName]) == false) {
+        if (!isset(self::$annotations[$target][$targetName])) {
+            return false;
+        }
+
+        if (!isset(self::$annotations[$target][$targetName][$annotationName])) {
             return false;
         }
 

@@ -23,7 +23,7 @@ class AppClassWithAnnotationCache extends App
      */
     public static function __bindings($projectPath)
     {
-        self::persistAnnotationCache($projectPath . '/annotations.cache');
+        self::useFileAnnotationCache($projectPath . '/annotations.cache');
         return array();
     }
 
