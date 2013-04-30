@@ -77,6 +77,17 @@ abstract class App extends BaseObject
     }
 
     /**
+     * enable persistent annotation cache by telling where to store cache data
+     *
+     * @param  string  $cacheFile
+     * @since  2.2.0
+     */
+    protected static function persistAnnotationCache($cacheFile)
+    {
+        \net\stubbles\lang\reflect\annotation\AnnotationCache::start($cacheFile);
+    }
+
+    /**
      * creates mode binding module
      *
      * @api

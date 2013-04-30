@@ -8,6 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
+use org\stubbles\test\ioc\AppClassWithAnnotationCache;
 use org\stubbles\test\ioc\AppClassWithBindings;
 use org\stubbles\test\ioc\AppUsingBindingModule;
 /**
@@ -89,6 +90,28 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
                             AppClassWithBindings::create('projectPath')
                                                 ->wasBoundBy()
         );
+    }
+
+    /**
+     * @since  2.2.0
+     * @group  issue_58
+     * @test
+     */
+    public function canCreateAppInstanceWithPersistentAnnotationCache()
+    {
+        $root = \org\bovigo\vfs\vfsStream::setup();
+        $appClass = AppClassWithAnnotationCache::create($root->url());
+        $this->assertInstanceOf('org\stubbles\test\ioc\AppClassWithAnnotationCache',
+                                $appClass
+        );
+    }
+
+    /**
+     * clean up test environment
+     */
+    public function tearDown()
+    {
+        \net\stubbles\lang\reflect\annotation\AnnotationCache::stop();
     }
 }
 ?>
