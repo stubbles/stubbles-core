@@ -105,7 +105,8 @@ abstract class App
      * );
      * </code>
      *
-     * @param  string  $cacheFile
+     * @param  \Closure  $readCache
+     * @param  \Closure  $storeCache
      * @since  3.0.0
      */
     protected static function persistAnnotations(\Closure $readCache, \Closure $storeCache)

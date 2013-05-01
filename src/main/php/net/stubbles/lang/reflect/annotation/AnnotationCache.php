@@ -73,8 +73,8 @@ class AnnotationCache
      * );
      * </code>
      *
-     * @param   Closure  $readCache   function which can return cached annotation data
-     * @param   Closure  $storeCache  function which takes cached annotation data and stores it
+     * @param   \Closure  $readCache   function which can return cached annotation data
+     * @param   \Closure  $storeCache  function which takes cached annotation data and stores it
      * @throws  RuntimeException
      * @since   3.0.0
      */

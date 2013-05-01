@@ -29,11 +29,11 @@ class IllegalArgumentException extends Exception
     /**
      * constructor
      *
-     * @param  string     $message
-     * @param  string     $paramName  name of affected parameter
-     * @param  mixed      $value      illegal value that was passed for the affected parameter
-     * @param  Exception  $cause
-     * @param  int        $code
+     * @param  string      $message
+     * @param  string      $paramName  name of affected parameter
+     * @param  mixed       $value      illegal value that was passed for the affected parameter
+     * @param  \Exception  $cause
+     * @param  int         $code
      */
     public function __construct($message, $paramName = null, $value = null, \Exception $cause = null, $code = 0)
     {

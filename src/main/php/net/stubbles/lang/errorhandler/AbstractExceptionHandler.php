@@ -85,7 +85,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
     /**
      * handles the exception
      *
-     * @param  Exception  $exception  the uncatched exception
+     * @param  \Exception  $exception  the uncatched exception
      */
     public function handleException(\Exception $exception)
     {
@@ -105,7 +105,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
     /**
      * logs the exception into a logfile
      *
-     * @param  Exception  $exception  the uncatched exception
+     * @param  \Exception  $exception  the uncatched exception
      */
     protected function log(\Exception $exception)
     {
@@ -135,7 +135,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
     /**
      * creates response body with useful data for display
      *
-     * @param   Exception     $exception  the uncatched exception
+     * @param   \Exception  $exception  the uncatched exception
      * @return  string
      */
     protected abstract function createResponseBody(\Exception $exception);
