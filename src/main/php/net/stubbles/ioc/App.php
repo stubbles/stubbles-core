@@ -79,7 +79,7 @@ abstract class App
      * enable persistent annotation cache by telling where to store cache data
      *
      * @param  string  $cacheFile
-     * @since  2.2.0
+     * @since  3.0.0
      */
     protected static function useFileAnnotationCache($cacheFile)
     {
