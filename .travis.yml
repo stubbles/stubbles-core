@@ -10,4 +10,4 @@ before_script:
   - cp .travis.composer.config.json ~/.composer/config.json
   - composer install --dev
 
-script: phpunit --coverage-text
+script: vendor/bin/phpunit --coverage-text
