@@ -2,7 +2,7 @@
     "name": "stubbles/core",
     "type": "library",
     "homepage": "http://stubbles.net/",
-    "license": "BSD-3",
+    "license": "BSD-3-Clause",
     "description": "Provides base classes for Stubbles packages.",
     "require": {
         "php": ">=5.3.0"
