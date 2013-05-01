@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\errorhandler;
-use net\stubbles\lang\Object;
 /**
  * Interface for PHP error handlers.
  *
  * @api
  * @see  http://php.net/set_error_handler
  */
-interface ErrorHandler extends Object
+interface ErrorHandler
 {
     /**
      * constant to signal that php's internal error handling should take over

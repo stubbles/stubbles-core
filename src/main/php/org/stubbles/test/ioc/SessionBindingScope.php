@@ -10,12 +10,11 @@
 namespace org\stubbles\test\ioc;
 use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\ioc\binding\BindingScope;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Session binding scope for the purpose of this test.
  */
-class SessionBindingScope extends BaseObject implements BindingScope
+class SessionBindingScope implements BindingScope
 {
     /**
      * simulate session, sufficient for purpose of this test

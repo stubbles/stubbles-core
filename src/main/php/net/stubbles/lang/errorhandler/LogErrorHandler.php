@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\errorhandler;
-use net\stubbles\lang\BaseObject;
 /**
  * Error handler that logs all errors.
  *
@@ -18,7 +17,7 @@ use net\stubbles\lang\BaseObject;
  *
  * @internal
  */
-class LogErrorHandler extends BaseObject implements ErrorHandler
+class LogErrorHandler implements ErrorHandler
 {
     /**
      * list of error levels and their string representation

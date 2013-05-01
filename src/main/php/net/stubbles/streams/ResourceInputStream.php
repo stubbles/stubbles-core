@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\exception\IllegalStateException;
 use net\stubbles\lang\exception\IOException;
@@ -17,7 +16,7 @@ use net\stubbles\lang\exception\IOException;
  *
  * @internal
  */
-abstract class ResourceInputStream extends BaseObject implements InputStream
+abstract class ResourceInputStream implements InputStream
 {
     /**
      * the descriptor for the stream

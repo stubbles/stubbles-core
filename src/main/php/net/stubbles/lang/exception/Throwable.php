@@ -8,11 +8,10 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\exception;
-use net\stubbles\lang\Object;
 /**
  * Base interface for all exception classes.
  */
-interface Throwable extends Object
+interface Throwable
 {
     // intentionally empty
 }

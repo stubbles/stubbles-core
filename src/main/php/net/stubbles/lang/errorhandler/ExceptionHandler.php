@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\errorhandler;
-use net\stubbles\lang\Object;
 /**
  * Interface for exception handlers.
  *
  * @api
  * @see  http://php.net/set_exception_handler
  */
-interface ExceptionHandler extends Object
+interface ExceptionHandler
 {
     /**
      * handles the exception

@@ -477,13 +477,21 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * creates reflection instance for class under test
+     *
+     * @return  \net\stubbles\lang\reflect\ReflectionClass
+     */
+    private function getDateReflectionClass()
+    {
+        return new \net\stubbles\lang\reflect\ReflectionClass('net\stubbles\lang\types\Date');
+    }
+
+    /**
      * @test
      */
     public function classIsAnnotatedWithXmlTag()
     {
-        $this->assertTrue(Date::now()->getClass()
-                                     ->hasAnnotation('XmlTag')
-        );
+        $this->assertTrue($this->getDateReflectionClass()->hasAnnotation('XmlTag'));
     }
 
     /**
@@ -491,9 +499,9 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getHandleIsAnnotatedWithXmlIgnore()
     {
-        $this->assertTrue(Date::now()->getClass()
-                                     ->getMethod('getHandle')
-                                     ->hasAnnotation('XmlIgnore')
+        $this->assertTrue($this->getDateReflectionClass()
+                               ->getMethod('getHandle')
+                               ->hasAnnotation('XmlIgnore')
         );
     }
 
@@ -524,9 +532,9 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function methodIsAnnotatedWithXmlIgnore($method)
     {
-        $this->assertTrue(Date::now()->getClass()
-                                     ->getMethod($method)
-                                     ->hasAnnotation('XmlIgnore')
+        $this->assertTrue($this->getDateReflectionClass()
+                               ->getMethod($method)
+                               ->hasAnnotation('XmlIgnore')
         );
     }
 
@@ -535,9 +543,9 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function asStringIsAnnotatedWithXmlAttribute()
     {
-        $this->assertTrue(Date::now()->getClass()
-                                     ->getMethod('asString')
-                                     ->hasAnnotation('XmlAttribute')
+        $this->assertTrue($this->getDateReflectionClass()
+                               ->getMethod('asString')
+                               ->hasAnnotation('XmlAttribute')
         );
     }
 }

@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\matcher;
-use net\stubbles\lang\Object;
 use net\stubbles\lang\reflect\ReflectionProperty;
 /**
  * Interface for matching properties.
  *
  * @api
  */
-interface PropertyMatcher extends Object
+interface PropertyMatcher
 {
     /**
      * checks whether the matcher is satisfied with the given property

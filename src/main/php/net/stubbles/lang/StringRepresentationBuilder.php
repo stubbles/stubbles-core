@@ -11,9 +11,9 @@ namespace net\stubbles\lang;
 /**
  * Class to build a string representation from an object.
  *
- * @internal
+ * @api
  */
-class StringRepresentationBuilder extends BaseObject
+class StringRepresentationBuilder
 {
     /**
      * returns a string representation of the class
@@ -34,25 +34,27 @@ class StringRepresentationBuilder extends BaseObject
      * its values. If not set only public properties can be extracted due to the
      * behaviour of get_object_vars().
      *
-     * @param   Object  $object      the object to convert to a string
+     * @param   mixed   $data        data to convert to a string
      * @param   array   $properties  the properties, if not set they will be retrieved
      * @return  string
      */
-    public static function buildFrom(Object $object, array $properties = null)
+    public static function buildFrom($data, array $properties = null)
     {
-        if (null === $properties) {
-            $properties = ObjectParser::extractProperties($object);
+        if (!is_object($data)) {
+            return "{\n    (" . self::determineType($data) . '): '. self::convertToStringRepresentation($data) . "}\n";
         }
 
-        $string = $object->getClassName() . " {\n";
+        if (null === $properties) {
+            $properties = ObjectParser::extractProperties($data);
+        }
+
+        $string = get_class($data) . " {\n";
         foreach ($properties as $name => $value) {
             $string .= '    ' . $name . '(' . self::determineType($value) . '): ';
             if (is_resource($value)) {
                 $string .= "resource\n";
             } elseif (is_array($value)) {
                 $string .= '[..](' .count($value). ")\n";
-            } elseif (!($value instanceof Object)) {
-                $string .= $value . "\n";
             } else {
                 $string .= self::convertToStringRepresentation($value);
             }

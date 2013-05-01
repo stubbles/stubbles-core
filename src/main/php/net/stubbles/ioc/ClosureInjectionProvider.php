@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\lang\BaseObject;
 /**
  * Injection provider which uses a closure to create the instance.
  *
  * @internal
  * @since     2.1.0
  */
-class ClosureInjectionProvider extends BaseObject implements InjectionProvider
+class ClosureInjectionProvider implements InjectionProvider
 {
     /**
      * closure to use

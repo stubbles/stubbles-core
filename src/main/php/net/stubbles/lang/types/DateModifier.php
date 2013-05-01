@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\types;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for date/time modifications.
  *
  * @since   1.7.0
  */
-class DateModifier extends BaseObject
+class DateModifier
 {
     /**
      * original date to base modifications on

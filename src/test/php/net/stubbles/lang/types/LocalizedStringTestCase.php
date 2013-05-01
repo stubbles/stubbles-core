@@ -32,13 +32,21 @@ class LocalizedStringTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * creates reflection instance for class under test
+     *
+     * @return  \net\stubbles\lang\reflect\ReflectionClass
+     */
+    private function getReflectionClass()
+    {
+        return new \net\stubbles\lang\reflect\ReflectionObject($this->localizedString);
+    }
+
+    /**
      * @test
      */
     public function annotationPresentOnClass()
     {
-        $this->assertTrue($this->localizedString->getClass()
-                                                ->hasAnnotation('XmlTag')
-        );
+        $this->assertTrue($this->getReflectionClass()->hasAnnotation('XmlTag'));
     }
 
     /**
@@ -46,9 +54,9 @@ class LocalizedStringTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationPresentOnGetLocaleMethod()
     {
-        $this->assertTrue($this->localizedString->getClass()
-                                                ->getMethod('getLocale')
-                                                ->hasAnnotation('XmlAttribute')
+        $this->assertTrue($this->getReflectionClass()
+                               ->getMethod('getLocale')
+                               ->hasAnnotation('XmlAttribute')
         );
     }
 
@@ -57,9 +65,9 @@ class LocalizedStringTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationPresentOngetMessageMethod()
     {
-        $this->assertTrue($this->localizedString->getClass()
-                                                ->getMethod('getMessage')
-                                                ->hasAnnotation('XmlTag')
+        $this->assertTrue($this->getReflectionClass()
+                               ->getMethod('getMessage')
+                               ->hasAnnotation('XmlTag')
         );
     }
 

@@ -8,17 +8,14 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\Clonable;
-use net\stubbles\lang\exception\IllegalArgumentException;
-use net\stubbles\lang\exception\IllegalStateException;
 /**
  * Class for operations on bsd-style sockets.
  *
  * @since     2.0.0
  * @internal
  */
-class SocketOptions extends BaseObject implements Clonable
+class SocketOptions implements Clonable
 {
     /**
      * list of options for the socket

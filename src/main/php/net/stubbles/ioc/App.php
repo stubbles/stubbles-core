@@ -10,12 +10,11 @@
 namespace net\stubbles\ioc;
 use net\stubbles\ioc\module\ModeBindingModule;
 use net\stubbles\ioc\module\PropertiesBindingModule;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\Mode;
 /**
  * Application base class.
  */
-abstract class App extends BaseObject
+abstract class App
 {
     /**
      * runs the application

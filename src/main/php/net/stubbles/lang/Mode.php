@@ -15,7 +15,7 @@ namespace net\stubbles\lang;
  * which error handler should be used, else well as whether caching is enabled
  * or not.
  */
-interface Mode extends Object
+interface Mode
 {
     /**
      * constant for enabled cache

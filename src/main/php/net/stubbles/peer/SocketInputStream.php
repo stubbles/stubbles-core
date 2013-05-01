@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\streams\InputStream;
 /**
  * Input stream for reading sockets.
  *
  * @api
  */
-class SocketInputStream extends BaseObject implements InputStream
+class SocketInputStream implements InputStream
 {
     /**
      * socket to read from

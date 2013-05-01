@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\MethodNotSupportedException;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 use net\stubbles\lang\reflect\ReflectionClass;
 /**
  * Interface for an annotation.
  */
-class Annotation extends BaseObject
+class Annotation
 {
     /**
      * annotation is applicable for classes
@@ -242,6 +241,17 @@ class Annotation extends BaseObject
                 $this->properties[$propertyName] = new ReflectionClass($value->getName());
             }
         }
+    }
+
+    /**
+     * returns a string representation of the class
+     *
+     * @XmlIgnore
+     * @return  string
+     */
+    public function __toString()
+    {
+        return \net\stubbles\lang\StringRepresentationBuilder::buildFrom($this);
     }
 }
 ?>

@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\exception\IllegalStateException;
 /**
@@ -16,7 +15,7 @@ use net\stubbles\lang\exception\IllegalStateException;
  *
  * @api
  */
-class Socket extends BaseObject
+class Socket
 {
     /**
      * host to open socket to

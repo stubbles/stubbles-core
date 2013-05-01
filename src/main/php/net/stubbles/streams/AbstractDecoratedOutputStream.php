@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams;
-use net\stubbles\lang\BaseObject;
 /**
  * Abstract base class for decorated output streams.
  *
  * @api
  */
-abstract class AbstractDecoratedOutputStream extends BaseObject implements OutputStream
+abstract class AbstractDecoratedOutputStream implements OutputStream
 {
     /**
      * input stream to encode into internal encoding

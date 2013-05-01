@@ -9,14 +9,13 @@
  */
 namespace net\stubbles\ioc\binding;
 use net\stubbles\ioc\InjectionProvider;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Ensures that an object instance is only created once.
  *
  * @internal
  */
-class SingletonBindingScope extends BaseObject implements BindingScope
+class SingletonBindingScope implements BindingScope
 {
     /**
      * instances in this scope

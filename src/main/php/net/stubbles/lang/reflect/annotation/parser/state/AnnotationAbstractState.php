@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation\parser\state;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\annotation\parser\AnnotationParser;
 /**
  * Abstract base class for annotion parser states.
  *
  * @internal
  */
-abstract class AnnotationAbstractState extends BaseObject
+abstract class AnnotationAbstractState
 {
     /**
      * the parser this state belongs to

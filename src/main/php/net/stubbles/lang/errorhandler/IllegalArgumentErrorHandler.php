@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\errorhandler;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Error handler for illegal arguments.
@@ -19,7 +18,7 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  *
  * @internal
  */
-class IllegalArgumentErrorHandler extends BaseObject implements ErrorHandler
+class IllegalArgumentErrorHandler implements ErrorHandler
 {
     /**
      * checks whether this error handler is responsible for the given error

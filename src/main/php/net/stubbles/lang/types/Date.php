@@ -8,8 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\types;
-use net\stubbles\lang\BaseObject;
-use net\stubbles\lang\StringRepresentationBuilder;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for date/time handling.
@@ -20,7 +18,7 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  * @api
  * @XmlTag(tagName='date')
  */
-class Date extends BaseObject
+class Date
 {
     /**
      * internal date/time handle

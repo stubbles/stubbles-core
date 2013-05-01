@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\streams\OutputStream;
 /**
  * Output stream for writing to sockets.
  *
  * @api
  */
-class SocketOutputStream extends BaseObject implements OutputStream
+class SocketOutputStream implements OutputStream
 {
     /**
      * socket to read from

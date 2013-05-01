@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer\http;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Container for http constants.
  *
  * @since  2.0.0
  */
-class Http extends BaseObject
+class Http
 {
     /**
      * default uri scheme

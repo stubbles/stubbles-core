@@ -10,6 +10,8 @@
 namespace net\stubbles\lang;
 /**
  * Helper class for the test.
+ *
+ * @deprecated  since 3.0.0, will be removed with 4.0.0
  */
 class stub1BaseObject extends BaseObject
 {
@@ -22,6 +24,8 @@ class stub1BaseObject extends BaseObject
 }
 /**
  * Helper class for the test.
+ *
+ * @deprecated  since 3.0.0, will be removed with 4.0.0
  */
 class stub2BaseObject extends BaseObject
 {
@@ -52,6 +56,7 @@ class stub2BaseObject extends BaseObject
  * Helper class for the test.
  *
  * @since  2.0.0
+ * @deprecated  since 3.0.0, will be removed with 4.0.0
  */
 class stub3BaseObject extends BaseObject
 {
@@ -121,6 +126,7 @@ class stub3BaseObject extends BaseObject
  * Helper class for the test.
  *
  * @since  2.0.0
+ * @deprecated  since 3.0.0, will be removed with 4.0.0
  */
 class stub4BaseObject extends BaseObject implements Clonable
 {
@@ -131,6 +137,7 @@ class stub4BaseObject extends BaseObject implements Clonable
  *
  * @group  lang
  * @group  lang_core
+ * @deprecated  since 3.0.0, will be removed with 4.0.0
  */
 class BaseObjectTestCase extends \PHPUnit_Framework_TestCase
 {

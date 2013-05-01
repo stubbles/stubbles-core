@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\lang\BaseObject;
 use org\stubbles\test\ioc\AppTestBindingModuleOne;
 /**
  * Test for net\stubbles\ioc\App.

@@ -13,7 +13,7 @@ use net\stubbles\lang\exception\RuntimeException;
 /**
  * Base class for enums.
  */
-abstract class Enum extends BaseObject
+abstract class Enum
 {
     /**
      * name of the enum
@@ -161,7 +161,7 @@ abstract class Enum extends BaseObject
     public function equals($compare)
     {
         if ($compare instanceof self) {
-            return ($compare->getClassName() === $this->getClassName() && $compare->name() === $this->name);
+            return (get_class($compare) === get_class($this) && $compare->name() === $this->name);
         }
 
         return false;
@@ -175,7 +175,7 @@ abstract class Enum extends BaseObject
      */
     public function __toString()
     {
-        $string  = $this->getClassName() . " {\n";
+        $string  = get_class($this) . " {\n";
         $string .= '    ' . $this->name . "\n";
         $string .= '    ' . $this->value . "\n";
         $string .= "}\n";

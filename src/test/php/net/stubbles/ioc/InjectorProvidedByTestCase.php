@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\lang\BaseObject;
 /**
  * Test for net\stubbles\ioc\Injector with the ProvidedBy annotation.
  *

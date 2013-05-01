@@ -8,6 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang;
+use net\stubbles\lang\reflect\ReflectionObject;
 /**
  * Tests for net\stubbles\lang\ResourceLoader.
  *
@@ -37,8 +38,8 @@ class ResourceLoaderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isAnnotatedAsSingleton()
     {
-        $this->assertTrue($this->resourceLoader->getClass()
-                                               ->hasAnnotation('Singleton')
+        $this->assertTrue(ReflectionObject::fromInstance($this->resourceLoader)
+                                          ->hasAnnotation('Singleton')
         );
     }
 
