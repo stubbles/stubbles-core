@@ -9,12 +9,11 @@
  */
 namespace net\stubbles\ioc\module;
 use net\stubbles\ioc\Binder;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\Mode;
 /**
  * Binding module to configure the binder with a runtime mode.
  */
-class ModeBindingModule extends BaseObject implements BindingModule
+class ModeBindingModule implements BindingModule
 {
     /**
      * mode instance to bind

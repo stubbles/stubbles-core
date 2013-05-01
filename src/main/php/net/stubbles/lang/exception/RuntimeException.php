@@ -8,9 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\exception;
-use net\stubbles\lang\ClassLoader;
-use net\stubbles\lang\Object;
-use net\stubbles\lang\reflect\ReflectionObject;
 /**
  * Base exception class for all stubbles runtime exceptions.
  *
@@ -31,54 +28,6 @@ class RuntimeException extends \RuntimeException implements Throwable
     public function __construct($message, \Exception $cause = null, $code = 0)
     {
         parent::__construct($message, $code, $cause);
-    }
-
-    /**
-     * returns class informations
-     *
-     * @return  ReflectionObject
-     * @XmlIgnore
-     */
-    public function getClass()
-    {
-        return new ReflectionObject($this);
-    }
-
-    /**
-     * returns the full qualified class name
-     *
-     * @return  string
-     * @XmlIgnore
-     */
-    public function getClassName()
-    {
-        return get_class($this);
-    }
-
-    /**
-     * returns a unique hash code for the class
-     *
-     * @return  string
-     * @XmlIgnore
-     */
-    public function hashCode()
-    {
-        return spl_object_hash($this);
-    }
-
-    /**
-     * checks whether a value is equal to the class
-     *
-     * @param   mixed  $compare
-     * @return  bool
-     */
-    public function equals($compare)
-    {
-        if ($compare instanceof Object) {
-            return ($this->hashCode() == $compare->hashCode());
-        }
-
-        return false;
     }
 
     /**

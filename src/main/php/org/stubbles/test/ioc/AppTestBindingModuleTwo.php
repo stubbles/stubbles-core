@@ -10,11 +10,10 @@
 namespace org\stubbles\test\ioc;
 use net\stubbles\ioc\Binder;
 use net\stubbles\ioc\module\BindingModule;
-use net\stubbles\lang\BaseObject;
 /**
  * Helper class for ioc tests.
  */
-class AppTestBindingModuleTwo extends BaseObject implements BindingModule
+class AppTestBindingModuleTwo implements BindingModule
 {
     /**
      * configure the binder

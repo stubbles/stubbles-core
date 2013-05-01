@@ -9,13 +9,12 @@
  */
 namespace net\stubbles\ioc\binding;
 use net\stubbles\ioc\Injector;
-use net\stubbles\lang\Object;
 /**
  * A binding knows how to deliver a concrete instance.
  *
  * @api
  */
-interface Binding extends Object
+interface Binding
 {
     /**
      * returns the created instance

@@ -8,12 +8,11 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer\http;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\peer\HeaderList;
 /**
  * Class for connections to URIs of HTTP/HTTPS.
  */
-class HttpConnection extends BaseObject
+class HttpConnection
 {
     /**
      * request object to open connection

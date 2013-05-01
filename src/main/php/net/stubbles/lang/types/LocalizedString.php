@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\types;
-use net\stubbles\lang\BaseObject;
 /**
  * Class containing a localized string.
  *
  * @api
  * @XmlTag(tagName='string')
  */
-class LocalizedString extends BaseObject
+class LocalizedString
 {
     /**
      * locale of the message

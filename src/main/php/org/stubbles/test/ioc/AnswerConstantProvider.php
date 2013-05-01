@@ -9,13 +9,12 @@
  */
 namespace org\stubbles\test\ioc;
 use net\stubbles\ioc\InjectionProvider;
-use net\stubbles\lang\BaseObject;
 /**
  * Helper class for ioc tests.
  *
  * @since  1.6.0
  */
-class AnswerConstantProvider extends BaseObject implements InjectionProvider
+class AnswerConstantProvider implements InjectionProvider
 {
     /**
      * returns the value to provide

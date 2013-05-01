@@ -10,7 +10,6 @@
 namespace net\stubbles\ioc\binding;
 use net\stubbles\ioc\Injector;
 use net\stubbles\ioc\InjectionProvider;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
@@ -18,7 +17,7 @@ use net\stubbles\lang\reflect\BaseReflectionClass;
  *
  * @since  2.0.0
  */
-abstract class MultiBinding extends BaseObject implements Binding
+abstract class MultiBinding implements Binding
 {
     /**
      * name of the list or map

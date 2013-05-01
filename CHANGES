@@ -15,6 +15,14 @@ BC breaks:
 - Removed support for post-install-cmd and post-update-cmd. You should remove
   any such entries in your composer.json.
 - Removed package net\stubbles\cache, doesn't belong into core
+- Deprecated net\stubbles\lang\Object and net\stubbles\lang\BaseObject, no core
+  class implements the interface or extends from the base class any more
+
+Other changes:
+- added ReflectionClass::fromName()
+- added ReflectionObject::fromInstance()
+- changed status of net\stubbles\lang\StringRepresentationBuilder from @internal
+  to @api
 
 
 2.1.3, 2012-12-28

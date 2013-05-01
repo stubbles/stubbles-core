@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams;
-use net\stubbles\lang\Object;
 /**
  * A seekable stream may be altered in its position to read data.
  *
  * @api
  */
-interface Seekable extends Object
+interface Seekable
 {
     /**
      * set position equal to offset  bytes

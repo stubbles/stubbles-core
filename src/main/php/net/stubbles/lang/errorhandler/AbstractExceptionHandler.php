@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\errorhandler;
-use net\stubbles\lang\BaseObject;
 /**
  * Abstract base implementation for exception handlers, containing logging of exceptions.
  *
  * @internal
  */
-abstract class AbstractExceptionHandler extends BaseObject implements ExceptionHandler
+abstract class AbstractExceptionHandler implements ExceptionHandler
 {
     /**
      * path to project

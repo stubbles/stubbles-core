@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Container for list of headers.
  *
  * @api
  */
-class HeaderList extends BaseObject implements \IteratorAggregate
+class HeaderList implements \IteratorAggregate
 {
     /**
      * list of headers
@@ -267,6 +266,17 @@ class HeaderList extends BaseObject implements \IteratorAggregate
     public function size()
     {
         return count($this->headers);
+    }
+
+    /**
+     * returns a string representation of the class
+     *
+     * @XmlIgnore
+     * @return  string
+     */
+    public function __toString()
+    {
+        return \net\stubbles\lang\StringRepresentationBuilder::buildFrom($this);
     }
 }
 ?>

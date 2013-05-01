@@ -8,8 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\types\datespan;
-use net\stubbles\lang\exception\IllegalArgumentException;
-use net\stubbles\lang\types\Date;
 /**
  * Datespan with a custom start and end date.
  *

@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\types\datespan;
-use net\stubbles\lang\Object;
 use net\stubbles\lang\types\Date;
 /**
  * Interface for the datespan classes.
  *
  * @api
  */
-interface Datespan extends Object
+interface Datespan
 {
     /**
      * returns the start date

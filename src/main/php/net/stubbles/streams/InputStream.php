@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams;
-use net\stubbles\lang\Object;
 /**
  * Interface for input streams.
  *
  * @api
  */
-interface InputStream extends Object
+interface InputStream
 {
     /**
      * reads given amount of bytes

@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\lang\Object;
 /**
  * Interface for providers that create objects that are required by the
  * Inversion of Control features of Stubbles.
  *
  * @api
  */
-interface InjectionProvider extends Object
+interface InjectionProvider
 {
     /**
      * returns the value to provide

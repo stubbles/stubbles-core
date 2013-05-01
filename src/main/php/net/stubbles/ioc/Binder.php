@@ -11,13 +11,12 @@ namespace net\stubbles\ioc;
 use net\stubbles\ioc\binding\Binding;
 use net\stubbles\ioc\binding\BindingIndex;
 use net\stubbles\ioc\binding\BindingScope;
-use net\stubbles\lang\BaseObject;
 /**
  * Binder for the IoC functionality.
  *
  * @api
  */
-class Binder extends BaseObject
+class Binder
 {
     /**
      * index for faster access to bindings
@@ -164,7 +163,7 @@ class Binder extends BaseObject
     public function getInjector()
     {
         $injector = new Injector($this->bindingIndex);
-        $this->bindingIndex->bind($injector->getClassName())
+        $this->bindingIndex->bind(get_class($injector))
                            ->toInstance($injector);
         return $injector;
     }

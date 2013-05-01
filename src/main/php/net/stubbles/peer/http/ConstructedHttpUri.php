@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer\http;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\peer\ParsedUri;
 /**
  * Class for URIs and methods on URIs.

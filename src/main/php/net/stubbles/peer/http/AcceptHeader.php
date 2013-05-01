@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer\http;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class to work with all kinds of Accept* headers.
  *
  * @api
  */
-class AcceptHeader extends BaseObject implements \Countable
+class AcceptHeader implements \Countable
 {
     /**
      * list of acceptables
@@ -224,6 +223,17 @@ class AcceptHeader extends BaseObject implements \Countable
         }
 
         return join(',', $parts);
+    }
+
+    /**
+     * returns a string representation of the class
+     *
+     * @XmlIgnore
+     * @return  string
+     */
+    public function __toString()
+    {
+        return \net\stubbles\lang\StringRepresentationBuilder::buildFrom($this);
     }
 }
 ?>

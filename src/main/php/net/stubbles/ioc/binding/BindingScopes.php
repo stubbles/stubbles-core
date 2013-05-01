@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc\binding;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\RuntimeException;
 /**
  * All built-in scopes.
  *
  * @internal
  */
-class BindingScopes extends BaseObject
+class BindingScopes
 {
     /**
      * scope for singleton objects

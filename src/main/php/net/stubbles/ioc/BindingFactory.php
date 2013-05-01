@@ -9,7 +9,6 @@
  */
 namespace net\stubbles\ioc;
 use net\stubbles\ioc\module\BindingModule;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for starting the application by configuring the IoC container.
@@ -17,7 +16,7 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  * @since     2.0.0
  * @internal
  */
-class BindingFactory extends BaseObject
+class BindingFactory
 {
     /**
      * configures the injectpr using the given binding modules

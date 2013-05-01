@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams;
-use net\stubbles\lang\Object;
 /**
  * Interface for output streams.
  *
  * @api
  */
-interface OutputStream extends Object
+interface OutputStream
 {
     /**
      * writes given bytes

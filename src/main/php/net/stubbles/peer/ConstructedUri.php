@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\BaseObject;
 /**
  * Class for URIs and methods on URIs.
  *

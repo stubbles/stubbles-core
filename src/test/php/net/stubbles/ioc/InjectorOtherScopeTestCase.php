@@ -7,8 +7,7 @@
  *
  * @package  net\stubbles
  */
-namespace net\stubbles\ioc;
-use net\stubbles\lang\BaseObject;
+namespace net\stubbles\ioc;;
 /**
  * Test for net\stubbles\ioc\Injector with the session scope.
  *

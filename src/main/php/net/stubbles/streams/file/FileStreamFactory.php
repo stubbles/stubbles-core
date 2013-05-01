@@ -8,12 +8,11 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams\file;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\streams\StreamFactory;
 /**
  * Factory for file streams.
  */
-class FileStreamFactory extends BaseObject implements StreamFactory
+class FileStreamFactory implements StreamFactory
 {
     /**
      * default file mode if directory for output stream should be created

@@ -8,13 +8,11 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation\parser;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\ReflectionClass;
 use net\stubbles\lang\reflect\annotation\parser\state\AnnotationState;
 use net\stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationState;
 use net\stubbles\lang\reflect\annotation\parser\state\AnnotationArgumentState;
 use net\stubbles\lang\reflect\annotation\parser\state\AnnotationDocblockState;
-use net\stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationStat;
 use net\stubbles\lang\reflect\annotation\parser\state\AnnotationNameState;
 use net\stubbles\lang\reflect\annotation\parser\state\AnnotationParamNameState;
 use net\stubbles\lang\reflect\annotation\parser\state\AnnotationParamsState;
@@ -26,7 +24,7 @@ use net\stubbles\lang\reflect\annotation\parser\state\AnnotationTypeState;
  *
  * @internal
  */
-class AnnotationStateParser extends BaseObject implements AnnotationParser
+class AnnotationStateParser implements AnnotationParser
 {
     /**
      * possible states
@@ -113,7 +111,7 @@ class AnnotationStateParser extends BaseObject implements AnnotationParser
 
         if (($this->currentState instanceof AnnotationDocblockState) == false
           && ($this->currentState instanceof AnnotationTextState) == false) {
-            throw new \ReflectionException('Annotation parser finished in wrong state, last annotation probably closed incorrectly, last state was ' . $this->currentState->getClassName());
+            throw new \ReflectionException('Annotation parser finished in wrong state, last annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
         }
 
         return $this->annotations;

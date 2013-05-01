@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams\memory;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\streams\InputStream;
 use net\stubbles\streams\Seekable;
@@ -17,7 +16,7 @@ use net\stubbles\streams\Seekable;
  *
  * @api
  */
-class MemoryInputStream extends BaseObject implements InputStream, Seekable
+class MemoryInputStream implements InputStream, Seekable
 {
     /**
      * written data

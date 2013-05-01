@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\BaseObject;
 /**
  * Represents a parses uri.
  *
  * @internal
  */
-class ParsedUri extends BaseObject
+class ParsedUri
 {
     /**
      * internal representation after parse_url()
@@ -311,6 +310,17 @@ class ParsedUri extends BaseObject
         }
 
         return null;
+    }
+
+    /**
+     * returns a string representation of the class
+     *
+     * @XmlIgnore
+     * @return  string
+     */
+    public function __toString()
+    {
+        return \net\stubbles\lang\StringRepresentationBuilder::buildFrom($this);
     }
 }
 ?>

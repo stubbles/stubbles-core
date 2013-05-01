@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Default injection provider.
@@ -17,7 +16,7 @@ use net\stubbles\lang\reflect\BaseReflectionClass;
  *
  * @internal
  */
-class DefaultInjectionProvider extends BaseObject implements InjectionProvider
+class DefaultInjectionProvider implements InjectionProvider
 {
     /**
      * injector to use for dependencies

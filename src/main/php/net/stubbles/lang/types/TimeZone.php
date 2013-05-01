@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\types;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\StringRepresentationBuilder;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
@@ -19,7 +18,7 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  *
  * @api
  */
-class TimeZone extends BaseObject
+class TimeZone
 {
     /**
      * internal time zone handle
