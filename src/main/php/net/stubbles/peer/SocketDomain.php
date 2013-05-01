@@ -96,10 +96,10 @@ class SocketDomain extends Enum
     /**
      * constructor
      *
-     * @param  string   $name
-     * @param  int      $value
-     * @param  Closure  $connect
-     * @param  bool     $portRequired
+     * @param  string    $name
+     * @param  int       $value
+     * @param  \Closure  $connect
+     * @param  bool      $portRequired
      */
     protected function __construct($name, $value, \Closure $connect, $portRequired)
     {

@@ -54,6 +54,7 @@ abstract class App
      */
     public static function createInstance($className, $projectPath)
     {
+        self::enforceInternalEncoding();
         return BindingFactory::createInjector(self::getBindingsForApp($className, $projectPath))
                              ->getInstance($className);
     }
@@ -76,12 +77,50 @@ abstract class App
     }
 
     /**
+     * enable persistent annotation cache with given cache storage logic
+     *
+     * The $readCache closure must return the stored annotation data. If no such
+     * data is present it must return null. In case the stored annotation data
+     * can't be unserialized into an array a
+     * net\stubbles\lang\exception\RuntimeException will be thrown.
+     *
+     * The $storeCache closure must store passed annotation data. It doesn't
+     * need to take care about serialization, as it already receives a
+     * serialized representation.
+     *
+     * A possible implementation for the file cache would look like this:
+     * <code>
+     * self::persistAnnotations(function() use($cacheFile)
+     *                          {
+     *                              if (file_exists($cacheFile)) {
+     *                                  return file_get_contents($cacheFile);
+     *                              }
+     *
+     *                              return null;
+     *                          },
+     *                          function($annotationData) use($cacheFile)
+     *                          {
+     *                              file_put_contents($cacheFile, $annotationData);
+     *                          }
+     * );
+     * </code>
+     *
+     * @param  \Closure  $readCache
+     * @param  \Closure  $storeCache
+     * @since  3.0.0
+     */
+    protected static function persistAnnotations(\Closure $readCache, \Closure $storeCache)
+    {
+        \net\stubbles\lang\reflect\annotation\AnnotationCache::start($readCache, $storeCache);
+    }
+
+    /**
      * enable persistent annotation cache by telling where to store cache data
      *
      * @param  string  $cacheFile
-     * @since  2.2.0
+     * @since  3.0.0
      */
-    protected static function useFileAnnotationCache($cacheFile)
+    protected static function persistAnnotationsInFile($cacheFile)
     {
         \net\stubbles\lang\reflect\annotation\AnnotationCache::startFromFileCache($cacheFile);
     }
@@ -110,6 +149,39 @@ abstract class App
     protected static function createPropertiesBindingModule($projectPath)
     {
         return new PropertiesBindingModule($projectPath);
+    }
+
+    /**
+     * switch whether internal encoding already set
+     *
+     * @type  bool
+     */
+    private static $encodingEnforced = false;
+
+    /**
+     * enforces internal encoding to be UTF-8
+     */
+    private static function enforceInternalEncoding()
+    {
+        if (self::$encodingEnforced) {
+            return;
+        }
+
+        iconv_set_encoding('internal_encoding', 'UTF-8');
+        if (($ctype = getenv('LC_CTYPE')) || ($ctype = setlocale(LC_CTYPE, 0))) {
+            $language = $charset = null;
+            sscanf($ctype, '%[^.].%s', $language, $charset);
+            if (is_numeric($charset)) {
+                $charset = 'CP' . $charset;
+            } elseif (null == $charset) {
+                $charset = 'iso-8859-1';
+            }
+
+            iconv_set_encoding('output_encoding', $charset);
+            iconv_set_encoding('input_encoding', $charset);
+        }
+
+        self::$encodingEnforced = true;
     }
 }
 ?>

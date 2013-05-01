@@ -5,9 +5,9 @@ BC breaks:
   Please note that annotations are not cached inbetween requests automatically
   any more. To retain the old behaviour, you need to call
   \net\stubbles\lang\reflect\annotation\AnnotationCache::startFromFileCache($projectPath . '/cache/annotations.cache');
-  In case you have an App instance you can call the new
-  App::useFileAnnotationCache() method, it expects a path to the annotation cache
-  file. See also updated documentation about annotation cache at
+  In case you have an App instance you can call the new App::persistAnnotations()
+  or App::persistAnnotationsInFile() method. See also updated documentation
+  about annotation cache at
   https://github.com/stubbles/stubbles-core/wiki/Annotations#annotation-cache
 - Removed vendor/bin/clearCache. Due to changed annotation cache a generic
   mechanism for clearing the cache can't be provided any longer, applications
@@ -17,6 +17,11 @@ BC breaks:
 - Removed package net\stubbles\cache, doesn't belong into core
 - Deprecated net\stubbles\lang\Object and net\stubbles\lang\BaseObject, no core
   class implements the interface or extends from the base class any more
+- Previously UTF-8 as internal encoding was always enforced, even if only one
+  class was loaded. Now, UTF-8 is only enforced when creating an app instance
+  via net\stubbles\ioc\App::create() or net\stubbles\ioc\App::createInstance().
+  If your application doesn't use one of these methods you need to enforce UTF-8
+  as internal encoding yourself.
 
 Other changes:
 - added ReflectionClass::fromName()
