@@ -54,6 +54,7 @@ abstract class App
      */
     public static function createInstance($className, $projectPath)
     {
+        self::enforceInternalEncoding();
         return BindingFactory::createInjector(self::getBindingsForApp($className, $projectPath))
                              ->getInstance($className);
     }
@@ -147,6 +148,39 @@ abstract class App
     protected static function createPropertiesBindingModule($projectPath)
     {
         return new PropertiesBindingModule($projectPath);
+    }
+
+    /**
+     * switch whether internal encoding already set
+     *
+     * @type  bool
+     */
+    private static $encodingEnforced = false;
+
+    /**
+     * enforces internal encoding to be UTF-8
+     */
+    private static function enforceInternalEncoding()
+    {
+        if (self::$encodingEnforced) {
+            return;
+        }
+
+        iconv_set_encoding('internal_encoding', 'UTF-8');
+        if (($ctype = getenv('LC_CTYPE')) || ($ctype = setlocale(LC_CTYPE, 0))) {
+            $language = $charset = null;
+            sscanf($ctype, '%[^.].%s', $language, $charset);
+            if (is_numeric($charset)) {
+                $charset = 'CP' . $charset;
+            } elseif (null == $charset) {
+                $charset = 'iso-8859-1';
+            }
+
+            iconv_set_encoding('output_encoding', $charset);
+            iconv_set_encoding('input_encoding', $charset);
+        }
+
+        self::$encodingEnforced = true;
     }
 }
 ?>

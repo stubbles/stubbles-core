@@ -17,6 +17,11 @@ BC breaks:
 - Removed package net\stubbles\cache, doesn't belong into core
 - Deprecated net\stubbles\lang\Object and net\stubbles\lang\BaseObject, no core
   class implements the interface or extends from the base class any more
+- Previously UTF-8 as internal encoding was always enforced, even if only one
+  class was loaded. Now, UTF-8 is only enforced when creating an app instance
+  via net\stubbles\ioc\App::create() or net\stubbles\ioc\App::createInstance().
+  If your application doesn't use one of these methods you need to enforce UTF-8
+  as internal encoding yourself.
 
 Other changes:
 - added ReflectionClass::fromName()
