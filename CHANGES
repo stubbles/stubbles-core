@@ -1,3 +1,22 @@
+3.0.0, 2013-??-??
+==================
+BC breaks:
+- implemented #58: make annotation cache configurable
+  Please note that annotations are not cached inbetween requests automatically
+  any more. To retain the old behaviour, you need to call
+  \net\stubbles\lang\reflect\annotation\AnnotationCache::startFromFileCache($projectPath . '/cache/annotations.cache');
+  In case you have an App instance you can call the new
+  App::useFileAnnotationCache() method, it expects a path to the annotation cache
+  file. See also updated documentation about annotation cache at
+  https://github.com/stubbles/stubbles-core/wiki/Annotations#annotation-cache
+- Removed vendor/bin/clearCache. Due to changed annotation cache a generic
+  mechanism for clearing the cache can't be provided any longer, applications
+  have to implement their own solution.
+- Removed support for post-install-cmd and post-update-cmd. You should remove
+  any such entries in your composer.json.
+- Removed package net\stubbles\cache, doesn't belong into core
+
+
 2.1.3, 2012-12-28
 ==================
 - changed net\stubbles\lang\types\datespan\Month to always use current month,
