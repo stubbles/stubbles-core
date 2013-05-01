@@ -1,4 +1,4 @@
-2.2.0, 2013-??-??
+3.0.0, 2013-??-??
 ==================
 BC breaks:
 - implemented #58: make annotation cache configurable
@@ -14,6 +14,7 @@ BC breaks:
   have to implement their own solution.
 - Removed support for post-install-cmd and post-update-cmd. You should remove
   any such entries in your composer.json.
+- Removed package net\stubbles\cache, doesn't belong into core
 
 
 2.1.3, 2012-12-28
