@@ -58,6 +58,7 @@ class MapBinding extends MultiBinding
      * adds an entry which is created by given closure
      *
      * @api
+     * @param   string    $key
      * @param   \Closure  $closure
      * @return  MapBinding
      * @since   2.1.0

@@ -95,7 +95,7 @@ class ParsedUri
     /**
      * creates string representation of uri
      *
-     * @param   Closure  $portCreator
+     * @param   \Closure  $portCreator
      * @return  string
      */
     protected function createString(\Closure $portCreator)

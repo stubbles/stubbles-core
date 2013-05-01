@@ -73,10 +73,10 @@ class AnnotationCache
      * );
      * </code>
      *
-     * @param   Closure  $readCache   function which can return cached annotation data
-     * @param   Closure  $storeCache  function which takes cached annotation data and stores it
+     * @param   \Closure  $readCache   function which can return cached annotation data
+     * @param   \Closure  $storeCache  function which takes cached annotation data and stores it
      * @throws  RuntimeException
-     * @since   2.2.0
+     * @since   3.0.0
      */
     public static function start(\Closure $readCache, \Closure $storeCache)
     {
@@ -100,7 +100,7 @@ class AnnotationCache
      * starts annotation cache with given cache file
      *
      * @param  string  $cacheFile  path to file wherein cached annotation data is stored
-     * @since  2.2.0
+     * @since  3.0.0
      */
     public static function startFromFileCache($cacheFile)
     {
@@ -122,7 +122,7 @@ class AnnotationCache
     /**
      * stops annotation cache persistence
      *
-     * @since  2.2.0
+     * @since  3.0.0
      */
     public static function stop()
     {

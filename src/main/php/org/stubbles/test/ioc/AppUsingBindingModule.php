@@ -41,6 +41,29 @@ class AppUsingBindingModule extends App
     }
 
     /**
+     * enables annotation persistence
+     *
+     * @param  Closure  $readCache
+     * @param  Closure  $storeCache
+     * @since  3.0.0
+     */
+    public static function callAnnotationPersistence(\Closure $readCache, \Closure $storeCache)
+    {
+        self::persistAnnotations($readCache, $storeCache);
+    }
+
+    /**
+     * enabled annotation file persistence
+     *
+     * @param  string  $cacheFile
+     * @since  3.0.0
+     */
+    public static function callAnnotationFilePersistence($cacheFile)
+    {
+        self::persistAnnotationsInFile($cacheFile);
+    }
+
+    /**
      * runs the command
      */
     public function run() { }

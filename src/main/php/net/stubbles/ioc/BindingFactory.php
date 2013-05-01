@@ -19,9 +19,14 @@ use net\stubbles\lang\exception\IllegalArgumentException;
 class BindingFactory
 {
     /**
-     * configures the injectpr using the given binding modules
+     * configures the injector using the given binding modules
      *
-     * @param   mixed...
+     * An arbitrary list of modules can be provided. For example, to provide
+     * three different modules:
+     * <code>
+     * BindingFactory::createInjector($module1, $module2, $module3);
+     * </code>
+     *
      * @return  Injector
      */
     public static function createInjector()

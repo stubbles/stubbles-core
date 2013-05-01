@@ -8,7 +8,9 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use org\stubbles\test\ioc\AppClassWithAnnotationCache;
+use net\stubbles\lang\reflect\annotation\Annotation;
+use net\stubbles\lang\reflect\annotation\AnnotationCache;
+use org\bovigo\vfs\vfsStream;
 use org\stubbles\test\ioc\AppClassWithBindings;
 use org\stubbles\test\ioc\AppUsingBindingModule;
 /**
@@ -93,17 +95,47 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @since  2.2.0
+     * creates a annotation cache with one annotation
+     *
+     * @return  string
+     */
+    private function createdCachedAnnotation()
+    {
+        return serialize(array(Annotation::TARGET_CLASS => array('foo' => array('bar' => new Annotation('bar')))));
+    }
+
+    /**
+     * @since  3.0.0
      * @group  issue_58
      * @test
      */
     public function canCreateAppInstanceWithFileAnnotationCache()
     {
-        $root = \org\bovigo\vfs\vfsStream::setup();
-        $appClass = AppClassWithAnnotationCache::create($root->url());
-        $this->assertInstanceOf('org\stubbles\test\ioc\AppClassWithAnnotationCache',
-                                $appClass
+        $root = vfsStream::setup();
+        $file = vfsStream::newFile('annotations.cache')
+                         ->withContent($this->createdCachedAnnotation())
+                         ->at($root);
+        AppUsingBindingModule::callAnnotationFilePersistence($file->url());
+        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, 'foo', 'bar'));
+
+    }
+
+    /**
+     * @since  3.0.0
+     * @group  issue_58
+     * @test
+     */
+    public function canCreateAppInstanceWithOtherAnnotationCache()
+    {
+        $foo = $this;
+        AppUsingBindingModule::callAnnotationPersistence(function() use($foo)
+                                                         {
+                                                             return $foo->createdCachedAnnotation();
+
+                                                         },
+                                                         function($data) {}
         );
+        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, 'foo', 'bar'));
     }
 
     /**
@@ -111,7 +143,7 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        \net\stubbles\lang\reflect\annotation\AnnotationCache::stop();
+        AnnotationCache::stop();
     }
 }
 ?>
