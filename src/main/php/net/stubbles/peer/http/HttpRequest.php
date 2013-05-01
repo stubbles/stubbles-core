@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer\http;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\peer\HeaderList;
 use net\stubbles\streams\OutputStream;
@@ -17,7 +16,7 @@ use net\stubbles\streams\OutputStream;
  *
  * @internal
  */
-class HttpRequest extends BaseObject
+class HttpRequest
 {
     /**
      * the http address to setup a connection to

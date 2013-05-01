@@ -12,6 +12,8 @@ use net\stubbles\lang\reflect\ReflectionObject;
 /**
  * Base class for all other stubbles classes except static ones and classes
  * extending php built-in classes.
+ *
+ * @deprecated  since 3.0.0, will be removed with 4.0.0
  */
 abstract class BaseObject implements Object
 {

@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc\binding;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\ReflectionClass;
 /**
  * Stores list of all available bindings.
  *
  * @since  2.0.0
  */
-class BindingIndex extends BaseObject
+class BindingIndex
 {
     /**
      * list of available binding scopes

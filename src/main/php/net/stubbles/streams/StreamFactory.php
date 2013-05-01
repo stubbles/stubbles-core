@@ -8,11 +8,10 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams;
-use net\stubbles\lang\Object;
 /**
  * Interface for stream factories.
  */
-interface StreamFactory extends Object
+interface StreamFactory
 {
     /**
      * creates an input stream for given source

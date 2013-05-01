@@ -11,12 +11,11 @@ namespace net\stubbles\ioc\binding;
 use net\stubbles\ioc\ClosureInjectionProvider;
 use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\ioc\Injector;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Binding to bind a property to a constant value.
  */
-class ConstantBinding extends BaseObject implements Binding
+class ConstantBinding implements Binding
 {
     /**
      * This string is used when generating the key for a constant binding.

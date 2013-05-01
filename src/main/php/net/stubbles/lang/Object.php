@@ -11,6 +11,8 @@ namespace net\stubbles\lang;
 /**
  * Base interface for all stubbles classes except static ones and classes
  * extending php built-in classes.
+ *
+ * @deprecated  since 3.0.0, will be removed with 4.0.0
  */
 interface Object
 {

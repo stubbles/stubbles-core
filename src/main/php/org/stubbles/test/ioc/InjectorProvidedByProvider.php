@@ -9,11 +9,10 @@
  */
 namespace org\stubbles\test\ioc;
 use net\stubbles\ioc\InjectionProvider;
-use net\stubbles\lang\BaseObject;
 /**
  * Provider class for the test.
  */
-class InjectorProvidedByProvider extends BaseObject implements InjectionProvider
+class InjectorProvidedByProvider implements InjectionProvider
 {
     /**
      * returns the value to provide

@@ -20,6 +20,18 @@ use net\stubbles\lang\reflect\matcher\PropertyMatcher;
 class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
 {
     /**
+     * creates a new instance for given class name
+     *
+     * @param   string  $className
+     * @return  ReflectionClass
+     * @since   3.0.0
+     */
+    public static function fromName($className)
+    {
+        return new self($className);
+    }
+
+    /**
      * check whether the class has the given annotation or not
      *
      * @param   string  $annotationName

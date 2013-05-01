@@ -8,12 +8,11 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams\memory;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\streams\StreamFactory;
 /**
  * Factory for memory streams.
  */
-class MemoryStreamFactory extends BaseObject implements StreamFactory
+class MemoryStreamFactory implements StreamFactory
 {
     /**
      * creates an input stream for given source

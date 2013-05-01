@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Query string handling.
  *
  * @internal
  */
-class QueryString extends BaseObject
+class QueryString
 {
     /**
      * parameters for uri
@@ -197,6 +196,17 @@ class QueryString extends BaseObject
         }
 
         return $defaultValue;
+    }
+
+    /**
+     * returns a string representation of the class
+     *
+     * @XmlIgnore
+     * @return  string
+     */
+    public function __toString()
+    {
+        return \net\stubbles\lang\StringRepresentationBuilder::buildFrom($this);
     }
 }
 ?>

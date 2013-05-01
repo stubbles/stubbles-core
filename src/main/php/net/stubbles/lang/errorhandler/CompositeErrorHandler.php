@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\errorhandler;
-use net\stubbles\lang\BaseObject;
 /**
  * Container for a collection of PHP error handlers.
  *
  * @api
  */
-class CompositeErrorHandler extends BaseObject implements ErrorHandler
+class CompositeErrorHandler implements ErrorHandler
 {
     /**
      * list of registered error handlers

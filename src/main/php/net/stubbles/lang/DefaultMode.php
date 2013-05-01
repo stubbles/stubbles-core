@@ -54,7 +54,7 @@ use net\stubbles\lang\exception\IllegalArgumentException;
  * this is not done automatically, regardless whether you set your own ones or
  * not. Use registerExceptionHandler() and registerErrorHandler() to do so.
  */
-class DefaultMode extends BaseObject implements Mode
+class DefaultMode implements Mode
 {
     /**
      * name of mode

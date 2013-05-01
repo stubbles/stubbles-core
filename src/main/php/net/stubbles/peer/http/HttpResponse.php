@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer\http;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\peer\HeaderList;
 use net\stubbles\streams\InputStream;
 /**
  * Class for reading a HTTP response.
  */
-class HttpResponse extends BaseObject
+class HttpResponse
 {
     /**
      * the socket we read the response from

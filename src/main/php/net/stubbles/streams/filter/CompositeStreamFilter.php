@@ -8,13 +8,12 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams\filter;
-use net\stubbles\lang\BaseObject;
 /**
  * Composite to combine a list of stream filters.
  *
  * @api
  */
-class CompositeStreamFilter extends BaseObject implements StreamFilter
+class CompositeStreamFilter implements StreamFilter
 {
     /**
      * list of stream filters to apply

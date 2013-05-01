@@ -11,7 +11,7 @@ namespace net\stubbles\lang;
 /**
  * Marker interface for clonable classes.
  */
-interface Clonable extends Object
+interface Clonable
 {
     // intentionally empty
 }

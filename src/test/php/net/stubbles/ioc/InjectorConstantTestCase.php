@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\ReflectionClass;
 /**
  * Helper class for the test.

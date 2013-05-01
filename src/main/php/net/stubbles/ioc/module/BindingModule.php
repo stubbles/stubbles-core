@@ -9,13 +9,12 @@
  */
 namespace net\stubbles\ioc\module;
 use net\stubbles\ioc\Binder;
-use net\stubbles\lang\Object;
 /**
  * Interface for modules which configure the binder.
  *
  * @api
  */
-interface BindingModule extends Object
+interface BindingModule
 {
     /**
      * configure the binder

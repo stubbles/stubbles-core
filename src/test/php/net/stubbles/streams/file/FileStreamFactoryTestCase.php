@@ -8,6 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams\file;
+use net\stubbles\lang\reflect\ReflectionObject;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\streams\file\FileStreamFactory.
@@ -53,7 +54,8 @@ class FileStreamFactoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresent()
     {
-        $constructor = $this->fileStreamFactory->getClass()->getConstructor();
+        $constructor = ReflectionObject::fromInstance($this->fileStreamFactory)
+                                       ->getConstructor();
         $this->assertTrue($constructor->hasAnnotation('Inject'));
         $this->assertTrue($constructor->getAnnotation('Inject')->isOptional());
         $this->assertTrue($constructor->hasAnnotation('Named'));

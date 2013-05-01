@@ -12,7 +12,6 @@ use net\stubbles\ioc\ClosureInjectionProvider;
 use net\stubbles\ioc\DefaultInjectionProvider;
 use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\ioc\Injector;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 use net\stubbles\lang\reflect\ReflectionClass;
@@ -27,7 +26,7 @@ use net\stubbles\lang\reflect\ReflectionClass;
  * 3. Provider class
  * 4. Concrete implementation class
  */
-class ClassBinding extends BaseObject implements Binding
+class ClassBinding implements Binding
 {
     /**
      * type for this binding

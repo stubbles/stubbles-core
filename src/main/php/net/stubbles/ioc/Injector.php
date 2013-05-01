@@ -10,7 +10,6 @@
 namespace net\stubbles\ioc;
 use net\stubbles\ioc\binding\BindingException;
 use net\stubbles\ioc\binding\BindingIndex;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 use net\stubbles\lang\reflect\ReflectionClass;
 use net\stubbles\lang\reflect\ReflectionMethod;
@@ -21,7 +20,7 @@ use net\stubbles\lang\reflect\ReflectionParameter;
  *
  * Used to create the instances.
  */
-class Injector extends BaseObject
+class Injector
 {
     /**
      * index for faster access to bindings

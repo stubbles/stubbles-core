@@ -9,12 +9,11 @@
  */
 namespace net\stubbles\ioc\module;
 use net\stubbles\ioc\Binder;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\Properties;
 /**
  * Module to read properties from a file and bind them.
  */
-class PropertiesBindingModule extends BaseObject implements BindingModule
+class PropertiesBindingModule implements BindingModule
 {
     /**
      * different path types

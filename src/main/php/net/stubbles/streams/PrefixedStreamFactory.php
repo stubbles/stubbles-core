@@ -8,11 +8,10 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\streams;
-use net\stubbles\lang\BaseObject;
 /**
  * Stream factory which prefixes source and target before calling another stream factory.
  */
-class PrefixedStreamFactory extends BaseObject implements StreamFactory
+class PrefixedStreamFactory implements StreamFactory
 {
     /**
      * decorated stream factory

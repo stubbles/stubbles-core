@@ -39,6 +39,18 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
     }
 
     /**
+     * creates new instance for given object
+     *
+     * @param   object  $object
+     * @return  ReflectionObject
+     * @since   3.0.0
+     */
+    public static function fromInstance($object)
+    {
+        return new self($object);
+    }
+
+    /**
      * check whether the class has the given annotation or not
      *
      * @param   string  $annotationName

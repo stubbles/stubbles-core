@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\FileNotFoundException;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\exception\IOException;
@@ -22,7 +21,7 @@ use net\stubbles\lang\exception\IOException;
  * }
  * </code>
  */
-class Properties extends BaseObject implements \Iterator
+class Properties implements \Iterator
 {
     /**
      * property data
