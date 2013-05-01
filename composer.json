@@ -15,6 +15,5 @@
             "net\\stubbles": "src/main/php",
             "org\\stubbles": "src/main/php"
         }
-    },
-    "bin": ["bin/clearCache"]
+    }
 }

@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation;
-use net\stubbles\lang\ResourceLoader;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\lang\reflect\annotation\AnnotationCache.
@@ -25,9 +24,8 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         AnnotationCache::flush();
-        AnnotationCache::refresh();
         vfsStream::setup();
-        AnnotationCache::setCacheFile(vfsStream::url('root/annotations.cache'));
+        AnnotationCache::startFromFileCache(vfsStream::url('root/annotations.cache'));
     }
 
     /**
@@ -35,7 +33,7 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        AnnotationCache::setCacheFile(ResourceLoader::getRootPath() . '/cache/annotations.cache');
+        AnnotationCache::stop();
     }
 
     /**
@@ -64,11 +62,47 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @since  2.2.0
+     * @group  issue_58
+     * @test
+     */
+    public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown()
+    {
+        $annotation = new Annotation('annotationName');
+        AnnotationCache::put(Annotation::TARGET_CLASS, 'foo', 'annotationName', $annotation);
+        AnnotationCache::stop();
+        AnnotationCache::__shutdown();
+        $this->assertFalse(file_exists(vfsStream::url('root/annotations.cache')));
+    }
+
+    /**
      * @test
      */
     public function retrieveUncachedAnnotationReturnsNull()
     {
         $this->assertNull(AnnotationCache::get(Annotation::TARGET_CLASS, 'DoesNotExist', 'annotationName'));
+    }
+
+    /**
+     * @since  2.2.0
+     * @group  issue_58
+     * @test
+     * @expectedException  \net\stubbles\lang\exception\RuntimeException
+     */
+    public function startAnnotationCacheWithInvalidCacheDataThrowsRuntimeException()
+    {
+        AnnotationCache::start(function() { return serialize('foo'); }, function() {});
+    }
+
+    /**
+     * @since  2.2.0
+     * @group  issue_58
+     * @test
+     * @expectedException  \net\stubbles\lang\exception\RuntimeException
+     */
+    public function startAnnotationCacheWithNonSerializedCacheDataThrowsRuntimeException()
+    {
+        AnnotationCache::start(function() { return 'foo'; }, function() {});
     }
 }
 ?>
