@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace org\stubbles\test\lang\reflect;
-use net\stubbles\lang\BaseObject;
 /**
  * Class to test net\stubbles\lang\reflect.
  *
