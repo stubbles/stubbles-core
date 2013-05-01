@@ -26,7 +26,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
      * @return  ReflectionClass
      * @since   3.0.0
      */
-    public static function forName($className)
+    public static function fromName($className)
     {
         return new self($className);
     }

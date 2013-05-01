@@ -34,8 +34,8 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->refClass1 = ReflectionClass::forName('org\stubbles\test\lang\reflect\TestWithMethodsAndProperties');
-        $this->refClass2 = ReflectionClass::forName('org\stubbles\test\lang\reflect\TestWithoutMethodsAndProperties');
+        $this->refClass1 = ReflectionClass::fromName('org\stubbles\test\lang\reflect\TestWithMethodsAndProperties');
+        $this->refClass2 = ReflectionClass::fromName('org\stubbles\test\lang\reflect\TestWithoutMethodsAndProperties');
     }
 
     /**
@@ -52,7 +52,7 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
      */
     public function reflectionClassIsEqualToAnotherInstanceForSameReflectedClass()
     {
-        $refClass = ReflectionClass::forName('org\stubbles\test\lang\reflect\TestWithMethodsAndProperties');
+        $refClass = ReflectionClass::fromName('org\stubbles\test\lang\reflect\TestWithMethodsAndProperties');
         $this->assertTrue($this->refClass1->equals($refClass));
         $this->assertTrue($refClass->equals($this->refClass1));
     }
@@ -310,9 +310,9 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getExtensionReturnsReflectionExtensionIfClassIsPartOfAnExtension()
     {
-        $refClass = ReflectionClass::forName('\ArrayIterator');
         $this->assertInstanceOf('net\stubbles\lang\reflect\ReflectionExtension',
-                                $refClass->getExtension()
+                                ReflectionClass::fromName('\ArrayIterator')
+                                               ->getExtension()
         );
     }
 

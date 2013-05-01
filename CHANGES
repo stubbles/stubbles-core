@@ -17,7 +17,8 @@ BC breaks:
 - Removed package net\stubbles\cache, doesn't belong into core
 
 Other changes:
-- added ReflectionClass::forName()
+- added ReflectionClass::fromName()
+- added ReflectionObject::fromInstance()
 
 
 2.1.3, 2012-12-28
