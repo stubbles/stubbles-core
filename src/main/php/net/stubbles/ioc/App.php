@@ -76,12 +76,49 @@ abstract class App
     }
 
     /**
+     * enable persistent annotation cache with given cache storage logic
+     *
+     * The $readCache closure must return the stored annotation data. If no such
+     * data is present it must return null. In case the stored annotation data
+     * can't be unserialized into an array a
+     * net\stubbles\lang\exception\RuntimeException will be thrown.
+     *
+     * The $storeCache closure must store passed annotation data. It doesn't
+     * need to take care about serialization, as it already receives a
+     * serialized representation.
+     *
+     * A possible implementation for the file cache would look like this:
+     * <code>
+     * self::persistAnnotations(function() use($cacheFile)
+     *                          {
+     *                              if (file_exists($cacheFile)) {
+     *                                  return file_get_contents($cacheFile);
+     *                              }
+     *
+     *                              return null;
+     *                          },
+     *                          function($annotationData) use($cacheFile)
+     *                          {
+     *                              file_put_contents($cacheFile, $annotationData);
+     *                          }
+     * );
+     * </code>
+     *
+     * @param  string  $cacheFile
+     * @since  3.0.0
+     */
+    protected static function persistAnnotations(\Closure $readCache, \Closure $storeCache)
+    {
+        \net\stubbles\lang\reflect\annotation\AnnotationCache::start($readCache, $storeCache);
+    }
+
+    /**
      * enable persistent annotation cache by telling where to store cache data
      *
      * @param  string  $cacheFile
      * @since  3.0.0
      */
-    protected static function useFileAnnotationCache($cacheFile)
+    protected static function persistAnnotationsInFile($cacheFile)
     {
         \net\stubbles\lang\reflect\annotation\AnnotationCache::startFromFileCache($cacheFile);
     }

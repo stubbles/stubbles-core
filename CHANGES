@@ -5,9 +5,9 @@ BC breaks:
   Please note that annotations are not cached inbetween requests automatically
   any more. To retain the old behaviour, you need to call
   \net\stubbles\lang\reflect\annotation\AnnotationCache::startFromFileCache($projectPath . '/cache/annotations.cache');
-  In case you have an App instance you can call the new
-  App::useFileAnnotationCache() method, it expects a path to the annotation cache
-  file. See also updated documentation about annotation cache at
+  In case you have an App instance you can call the new App::persistAnnotations()
+  or App::persistAnnotationsInFile() method. See also updated documentation
+  about annotation cache at
   https://github.com/stubbles/stubbles-core/wiki/Annotations#annotation-cache
 - Removed vendor/bin/clearCache. Due to changed annotation cache a generic
   mechanism for clearing the cache can't be provided any longer, applications

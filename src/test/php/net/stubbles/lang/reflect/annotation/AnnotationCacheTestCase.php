@@ -62,7 +62,7 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @since  2.2.0
+     * @since  3.0.0
      * @group  issue_58
      * @test
      */
@@ -84,7 +84,7 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @since  2.2.0
+     * @since  3.0.0
      * @group  issue_58
      * @test
      * @expectedException  \net\stubbles\lang\exception\RuntimeException
@@ -95,7 +95,7 @@ class AnnotationCacheTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @since  2.2.0
+     * @since  3.0.0
      * @group  issue_58
      * @test
      * @expectedException  \net\stubbles\lang\exception\RuntimeException
