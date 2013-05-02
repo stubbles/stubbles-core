@@ -127,10 +127,10 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canCreateAppInstanceWithOtherAnnotationCache()
     {
-        $foo = $this;
-        AppUsingBindingModule::callAnnotationPersistence(function() use($foo)
+        $annotationData = $this->createdCachedAnnotation();
+        AppUsingBindingModule::callAnnotationPersistence(function() use($annotationData)
                                                          {
-                                                             return $foo->createdCachedAnnotation();
+                                                             return $annotationData;
 
                                                          },
                                                          function($data) {}
