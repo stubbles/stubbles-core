@@ -1,4 +1,4 @@
-3.0.0, 2013-??-??
+3.0.0, 2013-05-02
 ==================
 BC breaks:
 - implemented #58: make annotation cache configurable
