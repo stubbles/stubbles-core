@@ -48,7 +48,7 @@ namespace net\stubbles\lang {
      * @since   3.1.0
      * @api
      */
-    function readPropertyFile($propertiesFile)
+    function parsePropertiesFile($propertiesFile)
     {
         return Properties::fromFile($propertiesFile);
     }

@@ -20,8 +20,7 @@ class PropertiesBindingModule implements BindingModule
      *
      * @type  string[]
      */
-    private $pathTypes       = array('cache',
-                                     'config',
+    private $pathTypes       = array('config',
                                      'log'
                                );
     /**
