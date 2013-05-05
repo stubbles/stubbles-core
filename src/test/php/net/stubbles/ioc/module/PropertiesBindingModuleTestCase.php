@@ -9,7 +9,6 @@
  */
 namespace net\stubbles\ioc\module;
 use net\stubbles\ioc\Binder;
-use net\stubbles\ioc\Injector;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\ioc\module\PropertiesBindingModule.
@@ -73,8 +72,7 @@ net.stubbles.webapp.xml.serializeMode=true")
      */
     public function getConstants()
     {
-        return array('cache'  => array('cache', 'net.stubbles.cache.path', ),
-                     'config' => array('config', 'net.stubbles.config.path'),
+        return array('config' => array('config', 'net.stubbles.config.path'),
                      'log'    => array('log', 'net.stubbles.log.path')
         );
     }
