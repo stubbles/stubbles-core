@@ -274,7 +274,7 @@ namespace net\stubbles\lang {
             }
 
             if (0 != $lineCounter) {
-                $string .= ' ' . $line . "\n";
+                $string .= '    ' . $line . "\n";
             } else {
                 $string .= $line . "\n";
             }
