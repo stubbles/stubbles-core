@@ -53,7 +53,7 @@ class FileStreamFactoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresent()
     {
-        $constructor = \net\stubbles\lang\reflect($this->fileStreamFactory)->getConstructor();
+        $constructor = \net\stubbles\lang\reflectConstructor($this->fileStreamFactory);
         $this->assertTrue($constructor->hasAnnotation('Inject'));
         $this->assertTrue($constructor->getAnnotation('Inject')->isOptional());
         $this->assertTrue($constructor->hasAnnotation('Named'));
