@@ -11,7 +11,7 @@
   * Deprecated `net\stubbles\ioc\App::persistAnnotationsInFile()` in favor of `\net\stubbles\lang\persistAnnotationsInFile()`, will be removed with 4.0.0
   * Deprecated `net\stubbles\lang\StringRepresentationBuilder` in favor of `\net\stubbles\lang\__toString()`, will be removed with 4.0.0
   * Introduced new functions in `net\stubbles\lang`
-     * `properties()`, parseProperties()` and readPropertyFile()`
+     * `properties()`, `parseProperties()` and `readPropertyFile()`
      * `reflect()`
      * `persistAnnotations()` and persistAnnotationsInFile()`
      * `enforceInternalEncoding()`
