@@ -98,11 +98,11 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->refMethod1 = new ReflectionMethod('net\\stubbles\\lang\\reflect\\TestMethodCollection', 'methodWithoutParams');
-        $this->refMethod2 = new ReflectionMethod('net\\stubbles\\lang\\reflect\\TestMethodCollection', 'methodWithParams');
-        $this->refMethod3 = new ReflectionMethod('net\\stubbles\\lang\\reflect\\TestMethodCollection2', 'methodWithoutParams');
-        $this->refMethod4 = new ReflectionMethod('net\\stubbles\\lang\\reflect\\TestMethodCollection2', 'methodWithParams');
-        $this->refMethod5 = new ReflectionMethod('net\\stubbles\\lang\\reflect\\TestMethodCollection2', 'methodWithParams2');
+        $this->refMethod1 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection', 'methodWithoutParams');
+        $this->refMethod2 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection', 'methodWithParams');
+        $this->refMethod3 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithoutParams');
+        $this->refMethod4 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithParams');
+        $this->refMethod5 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithParams2');
     }
 
     /**

@@ -46,6 +46,7 @@ class AppUsingBindingModule extends App
      * @param  Closure  $readCache
      * @param  Closure  $storeCache
      * @since  3.0.0
+     * @deprecated  since 3.1.0, will be removed with 4.0.0
      */
     public static function callAnnotationPersistence(\Closure $readCache, \Closure $storeCache)
     {
@@ -57,6 +58,7 @@ class AppUsingBindingModule extends App
      *
      * @param  string  $cacheFile
      * @since  3.0.0
+     * @deprecated  since 3.1.0, will be removed with 4.0.0
      */
     public static function callAnnotationFilePersistence($cacheFile)
     {

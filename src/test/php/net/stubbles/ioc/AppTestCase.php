@@ -98,6 +98,7 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
      * creates a annotation cache with one annotation
      *
      * @return  string
+     * @deprecated  since 3.1.0, will be removed with 4.0.0
      */
     private function createdCachedAnnotation()
     {
@@ -105,6 +106,7 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @deprecated  since 3.1.0, will be removed with 4.0.0
      * @since  3.0.0
      * @group  issue_58
      * @test
@@ -121,6 +123,7 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @deprecated  since 3.1.0, will be removed with 4.0.0
      * @since  3.0.0
      * @group  issue_58
      * @test
@@ -140,6 +143,8 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * clean up test environment
+     *
+     * @deprecated  since 3.1.0, will be removed with 4.0.0
      */
     public function tearDown()
     {

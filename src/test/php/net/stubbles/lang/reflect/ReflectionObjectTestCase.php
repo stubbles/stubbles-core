@@ -49,9 +49,9 @@ class ReflectionObjectTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->reflectedObject1 = new TestWithMethodsAndProperties();
-        $this->refClass1        = ReflectionObject::fromInstance($this->reflectedObject1);
+        $this->refClass1        = \net\stubbles\lang\reflect($this->reflectedObject1);
         $this->reflectedObject2 = new TestWithOutMethodsAndProperties();
-        $this->refClass2        = ReflectionObject::fromInstance($this->reflectedObject2);
+        $this->refClass2        = \net\stubbles\lang\reflect($this->reflectedObject2);
     }
 
     /**
@@ -78,7 +78,7 @@ class ReflectionObjectTestCase extends \PHPUnit_Framework_TestCase
      */
     public function reflectionClassIsNotEqualToAnotherInstanceForSameReflectedClass()
     {
-        $refClass = ReflectionObject::fromInstance(new TestWithMethodsAndProperties());
+        $refClass = \net\stubbles\lang\reflect(new TestWithMethodsAndProperties());
         $this->assertFalse($this->refClass1->equals($refClass));
         $this->assertFalse($refClass->equals($this->refClass1));
     }
