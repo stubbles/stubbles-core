@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 3.1.0, 2013-??-??
 ==================
 BC breaks:
@@ -29,6 +30,9 @@ Other changes:
 
 
 3.0.0, 2013-??-??
+=======
+3.0.0, 2013-05-02
+>>>>>>> upstream/master
 ==================
 BC breaks:
 - implemented #58: make annotation cache configurable
