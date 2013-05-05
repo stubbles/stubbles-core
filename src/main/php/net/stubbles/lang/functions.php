@@ -214,7 +214,7 @@ namespace net\stubbles\lang {
     function __toString($data, array $properties = null)
     {
         if (!is_object($data)) {
-            return "{\n    (" . determineType($data) . '): '. convertToStringRepresentation($data) . "}\n";
+            return "{\n    (" . getType($data) . '): '. convertToStringRepresentation($data) . "}\n";
         }
 
         if (null === $properties) {
@@ -223,7 +223,7 @@ namespace net\stubbles\lang {
 
         $string = get_class($data) . " {\n";
         foreach ($properties as $name => $value) {
-            $string .= '    ' . $name . '(' . determineType($value) . '): ';
+            $string .= '    ' . $name . '(' . getType($value) . '): ';
             if (is_resource($value)) {
                 $string .= "resource\n";
             } elseif (is_array($value)) {
@@ -244,7 +244,7 @@ namespace net\stubbles\lang {
      * @return  string
      * @since   3.1.0
      */
-    function determineType(&$value)
+    function getType(&$value)
     {
         if (is_object($value)) {
             return get_class($value);
@@ -254,7 +254,7 @@ namespace net\stubbles\lang {
             return 'resource[' . get_resource_type($value) . ']';
         }
 
-        return gettype($value);
+        return \gettype($value);
     }
 
     /**
@@ -266,21 +266,18 @@ namespace net\stubbles\lang {
      */
     function convertToStringRepresentation($value)
     {
-        $string      = '';
-        $lines       = explode("\n", (string) $value);
-        $lineCounter = 0;
-        foreach ($lines as $line) {
+        $string = '';
+        $lines = explode("\n", (string) $value);
+        foreach ($lines as $lineCounter => $line) {
             if (empty($line)) {
                 continue;
             }
 
             if (0 != $lineCounter) {
-                $string .= '    ' . $line . "\n";
+                $string .= ' ' . $line . "\n";
             } else {
                 $string .= $line . "\n";
             }
-
-            $lineCounter++;
         }
 
         return $string;
