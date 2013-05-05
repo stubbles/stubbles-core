@@ -1116,7 +1116,7 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function fromNonExistantFileThrowsFileNotFoundException()
     {
-        readPropertyFile(__DIR__ . '/doesNotExist.ini');
+        parsePropertiesFile(__DIR__ . '/doesNotExist.ini');
     }
 
     /**
@@ -1129,7 +1129,7 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('invalid.ini')
                  ->at($root)
                  ->withContent("[invalid{");
-        readPropertyFile(vfsStream::url('config/invalid.ini'));
+        parsePropertiesFile(vfsStream::url('config/invalid.ini'));
     }
 
     /**
@@ -1141,7 +1141,7 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('test.ini')
                  ->at($root)
                  ->withContent("[foo]\nbar=baz");
-        $properties = readPropertyFile(vfsStream::url('config/test.ini'));
+        $properties = parsePropertiesFile(vfsStream::url('config/test.ini'));
         $this->assertInstanceOf('net\\stubbles\\lang\\Properties', $properties);
         $this->assertTrue($properties->hasSection('foo'));
         $this->assertEquals(array('bar' => 'baz'), $properties->getSection('foo'));
