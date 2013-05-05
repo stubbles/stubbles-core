@@ -9,7 +9,6 @@
  */
 namespace net\stubbles\lang\reflect;
 use net\stubbles\lang\exception\IllegalArgumentException;
-use net\stubbles\lang\reflect\annotation\Annotatable;
 use net\stubbles\lang\reflect\annotation\Annotation;
 use net\stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
@@ -49,6 +48,9 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
         if ($class instanceof BaseReflectionClass) {
             $refClass   = $class;
             $className  = $refClass->getName();
+        } else if (is_object($class)) {
+            $refClass  = null;
+            $className = get_class($class);
         } else {
             $refClass   = null;
             $className  = $class;

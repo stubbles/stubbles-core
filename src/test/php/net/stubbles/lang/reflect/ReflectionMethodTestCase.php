@@ -8,6 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect;
+use \net\stubbles\lang;
 /**
  * class to be used for the test
  */
@@ -98,11 +99,12 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->refMethod1 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection', 'methodWithoutParams');
-        $this->refMethod2 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection', 'methodWithParams');
-        $this->refMethod3 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithoutParams');
-        $this->refMethod4 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithParams');
-        $this->refMethod5 = \net\stubbles\lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithParams2');
+        $this->refMethod1 = lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection', 'methodWithoutParams');
+        $this->refMethod2 = lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection', 'methodWithParams');
+        $testMethodCollection2 = new \net\stubbles\lang\reflect\TestMethodCollection2();
+        $this->refMethod3 = lang\reflect($testMethodCollection2, 'methodWithoutParams');
+        $this->refMethod4 = lang\reflect($testMethodCollection2, 'methodWithParams');
+        $this->refMethod5 = lang\reflect($testMethodCollection2, 'methodWithParams2');
     }
 
     /**
@@ -122,7 +124,7 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isEqualToOtherInstanceOfSameMethod()
     {
-        $refMethod = new ReflectionMethod('net\\stubbles\\lang\\reflect\\TestMethodCollection', 'methodWithoutParams');
+        $refMethod = lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection', 'methodWithoutParams');
         $this->assertTrue($this->refMethod1->equals($refMethod));
         $this->assertTrue($refMethod->equals($this->refMethod1));
     }
@@ -167,19 +169,19 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
      */
     public function stringRepresentationContainsInformationAboutReflectedMethod()
     {
-        $this->assertEquals("net\\stubbles\\lang\\reflect\\ReflectionMethod[net\\stubbles\\lang\\reflect\\TestMethodCollection::methodWithoutParams()] {\n}\n",
+        $this->assertEquals("net\stubbles\lang\\reflect\ReflectionMethod[net\stubbles\lang\\reflect\TestMethodCollection::methodWithoutParams()] {\n}\n",
                             (string) $this->refMethod1
         );
-        $this->assertEquals("net\\stubbles\\lang\\reflect\\ReflectionMethod[net\\stubbles\\lang\\reflect\\TestMethodCollection::methodWithParams()] {\n}\n",
+        $this->assertEquals("net\stubbles\lang\\reflect\ReflectionMethod[net\stubbles\lang\\reflect\TestMethodCollection::methodWithParams()] {\n}\n",
                             (string) $this->refMethod2
         );
-        $this->assertEquals("net\\stubbles\\lang\\reflect\\ReflectionMethod[net\\stubbles\\lang\\reflect\\TestMethodCollection2::methodWithoutParams()] {\n}\n",
+        $this->assertEquals("net\stubbles\lang\\reflect\ReflectionMethod[net\stubbles\lang\\reflect\TestMethodCollection2::methodWithoutParams()] {\n}\n",
                             (string) $this->refMethod3
         );
-        $this->assertEquals("net\\stubbles\\lang\\reflect\\ReflectionMethod[net\\stubbles\\lang\\reflect\\TestMethodCollection2::methodWithParams()] {\n}\n",
+        $this->assertEquals("net\stubbles\lang\\reflect\ReflectionMethod[net\stubbles\lang\\reflect\TestMethodCollection2::methodWithParams()] {\n}\n",
                             (string) $this->refMethod4
         );
-        $this->assertEquals("net\\stubbles\\lang\\reflect\\ReflectionMethod[net\\stubbles\\lang\\reflect\\TestMethodCollection2::methodWithParams2()] {\n}\n",
+        $this->assertEquals("net\stubbles\lang\\reflect\ReflectionMethod[net\stubbles\lang\\reflect\TestMethodCollection2::methodWithParams2()] {\n}\n",
                             (string) $this->refMethod5
         );
     }
@@ -190,42 +192,42 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
     public function getDeclaringClassReturnsReflectionClassForDeclaringClass()
     {
         $refClass = $this->refMethod1->getDeclaringClass();
-        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionClass',
+        $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionClass',
                                 $refClass
         );
-        $this->assertEquals('net\\stubbles\\lang\\reflect\\TestMethodCollection',
+        $this->assertEquals('net\stubbles\lang\\reflect\TestMethodCollection',
                             $refClass->getName()
         );
 
         $refClass = $this->refMethod2->getDeclaringClass();
-        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionClass',
+        $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionClass',
                                 $refClass
         );
-        $this->assertEquals('net\\stubbles\\lang\\reflect\\TestMethodCollection',
+        $this->assertEquals('net\stubbles\lang\\reflect\TestMethodCollection',
                             $refClass->getName()
         );
 
         $refClass = $this->refMethod3->getDeclaringClass();
-        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionClass',
+        $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionClass',
                                 $refClass
         );
-        $this->assertEquals('net\\stubbles\\lang\\reflect\\TestMethodCollection',
+        $this->assertEquals('net\stubbles\lang\\reflect\TestMethodCollection',
                             $refClass->getName()
         );
 
         $refClass = $this->refMethod4->getDeclaringClass();
-        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionClass',
+        $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionClass',
                                 $refClass
         );
-        $this->assertEquals('net\\stubbles\\lang\\reflect\\TestMethodCollection',
+        $this->assertEquals('net\stubbles\lang\\reflect\TestMethodCollection',
                             $refClass->getName()
         );
 
         $refClass = $this->refMethod5->getDeclaringClass();
-        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionClass',
+        $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionClass',
                                 $refClass
         );
-        $this->assertEquals('net\\stubbles\\lang\\reflect\\TestMethodCollection2',
+        $this->assertEquals('net\stubbles\lang\\reflect\TestMethodCollection2',
                             $refClass->getName()
         );
     }
@@ -247,7 +249,7 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
         $refParameters = $this->refMethod2->getParameters();
         $this->assertEquals(2, count($refParameters));
         foreach ($refParameters as $refParameter) {
-            $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionParameter',
+            $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionParameter',
                                     $refParameter
             );
         }
@@ -255,7 +257,7 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
         $refParameters = $this->refMethod4->getParameters();
         $this->assertEquals(2, count($refParameters));
         foreach ($refParameters as $refParameter) {
-            $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionParameter',
+            $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionParameter',
                                     $refParameter
             );
         }
@@ -263,7 +265,7 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
         $refParameters = $this->refMethod5->getParameters();
         $this->assertEquals(1, count($refParameters));
         foreach ($refParameters as $refParameter) {
-            $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionParameter',
+            $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionParameter',
                                     $refParameter
             );
         }
@@ -274,7 +276,7 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getReturnTypeReturnsNullIfNoDocblockDefined()
     {
-        $refMethod = new ReflectionMethod('net\\stubbles\\lang\\reflect\\TestMethodCollection2', 'methodWithoutParams');
+        $refMethod = lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithoutParams');
         $this->assertNull($refMethod->getReturnType());
     }
 
@@ -302,10 +304,10 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
     public function getReturnTypeReturnsReflectionClassIfReturnTypeIsObject()
     {
         $refClass = $this->refMethod5->getReturnType();
-        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionClass',
+        $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionClass',
                                 $refClass
         );
-        $this->assertEquals('org\\stubbles\\test\\lang\\reflect\\TestWithMethodsAndProperties',
+        $this->assertEquals('org\stubbles\test\lang\\reflect\TestWithMethodsAndProperties',
                             $refClass->getName()
         );
     }
@@ -315,21 +317,21 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
      */
     public function instantiationWithReflectionClass()
     {
-        $refClass1  = new ReflectionClass('net\\stubbles\\lang\\reflect\\TestMethodCollection');
-        $refClass2  = new ReflectionClass('net\\stubbles\\lang\\reflect\\TestMethodCollection2');
-        $refMethod1 = new ReflectionMethod($refClass1, 'methodWithoutParams');
+        $refClass1  = lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection');
+        $refClass2  = lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2');
+        $refMethod1 = lang\reflect($refClass1, 'methodWithoutParams');
         $this->assertSame($refClass1, $refMethod1->getDeclaringClass());
-        $refMethod2 = new ReflectionMethod($refClass1, 'methodWithParams');
+        $refMethod2 = lang\reflect($refClass1, 'methodWithParams');
         $this->assertSame($refClass1, $refMethod2->getDeclaringClass());
-        $refMethod3 = new ReflectionMethod($refClass2, 'methodWithoutParams');
-        $this->assertEquals('net\\stubbles\\lang\\reflect\\TestMethodCollection',
+        $refMethod3 = lang\reflect($refClass2, 'methodWithoutParams');
+        $this->assertEquals('net\stubbles\lang\\reflect\TestMethodCollection',
                             $refMethod3->getDeclaringClass()->getName()
         );
-        $refMethod4 = new ReflectionMethod($refClass2, 'methodWithParams');
-        $this->assertEquals('net\\stubbles\\lang\\reflect\\TestMethodCollection',
+        $refMethod4 = lang\reflect($refClass2, 'methodWithParams');
+        $this->assertEquals('net\stubbles\lang\\reflect\TestMethodCollection',
                             $refMethod4->getDeclaringClass()->getName()
         );
-        $refMethod5 = new ReflectionMethod($refClass2, 'methodWithParams2');
+        $refMethod5 = lang\reflect($refClass2, 'methodWithParams2');
         $this->assertSame($refClass2, $refMethod5->getDeclaringClass());
     }
 
@@ -346,8 +348,8 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getExtensionReturnsReflectionExtensionIfClassIsPartOfAnExtension()
     {
-        $refClass = new ReflectionMethod('\DateTime', '__construct');
-        $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionExtension',
+        $refClass = lang\reflect('\DateTime', '__construct');
+        $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionExtension',
                                 $refClass->getExtension()
         );
     }
