@@ -54,6 +54,19 @@ namespace net\stubbles\lang {
     }
 
     /**
+     * shortcut for reflect($class, '__construct')
+     *
+     * @param   string|object  $class  class name of or object instance to reflect constructor of
+     * @return  lang\reflect\ReflectionMethod
+     * @since   3.1.0
+     * @api
+     */
+    function reflectConstructor($class)
+    {
+        return reflect($class, '__construct');
+    }
+
+    /**
      * reflects given input and returns an appropriate reflector
      *
      * If no method name is provided it will return an instance of
