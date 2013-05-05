@@ -15,7 +15,10 @@
         "psr-0": {
             "net\\stubbles": "src/main/php",
             "org\\stubbles": "src/main/php"
-        }
+        },
+        "files": ["src/main/php/net/stubbles/lang/functions.php",
+                  "src/main/php/net/stubbles/peer/functions.php"
+                 ]
     },
     "extra": {
         "branch-alias": {

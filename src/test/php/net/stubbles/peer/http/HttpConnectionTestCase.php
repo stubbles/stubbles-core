@@ -222,5 +222,16 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                             $this->memoryOutputStream->getBuffer()
         );
     }
+
+    /**
+     * @since  3.1.0
+     * @test
+     */
+    public function functionShortcut()
+    {
+        $this->assertInstanceOf('net\stubbles\peer\http\HttpConnection',
+                                \net\stubbles\peer\http('http://example.net/')
+        );
+    }
 }
 ?>

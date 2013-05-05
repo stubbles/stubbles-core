@@ -85,7 +85,7 @@ abstract class BaseObject implements Object
      */
     public function __toString()
     {
-        return StringRepresentationBuilder::buildFrom($this);
+        return \net\stubbles\lang\__toString($this);
     }
 }
 ?>

@@ -152,7 +152,7 @@ class TimeZone
      */
     public function __toString()
     {
-        return StringRepresentationBuilder::buildFrom($this, array('timeZone' => $this->timeZone->getName()));
+        return \net\stubbles\lang\__toString($this, array('timeZone' => $this->timeZone->getName()));
     }
 }
 ?>

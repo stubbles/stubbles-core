@@ -483,7 +483,7 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     private function getDateReflectionClass()
     {
-        return new \net\stubbles\lang\reflect\ReflectionClass('net\stubbles\lang\types\Date');
+        return \net\stubbles\lang\reflect('net\stubbles\lang\types\Date');
     }
 
     /**

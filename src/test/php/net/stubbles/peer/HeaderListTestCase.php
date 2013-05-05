@@ -27,7 +27,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->headerList = new HeaderList();
+        $this->headerList = headers();
     }
 
     /**
@@ -45,7 +45,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function containsGivenHeader()
     {
-        $headerList = new HeaderList(array('Binford' => 6100));
+        $headerList = headers(array('Binford' => 6100));
         $this->assertTrue($headerList->containsKey('Binford'));
     }
 
@@ -55,7 +55,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function initialSizeEqualsAmountOfGivenHeaders()
     {
-        $headerList = new HeaderList(array('Binford' => 6100));
+        $headerList = headers(array('Binford' => 6100));
         $this->assertEquals(1, $headerList->size());
     }
 
@@ -65,7 +65,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function returnsValeOfGivenHeader()
     {
-        $headerList = new HeaderList(array('Binford' => 6100));
+        $headerList = headers(array('Binford' => 6100));
         $this->assertEquals('6100',
                             $headerList->get('Binford')
         );
@@ -122,7 +122,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function containsAllHeadersFromParsedString()
     {
-        $this->assertBinford(HeaderList::fromString("Binford: 6100\r\nX-Power: More power!"));
+        $this->assertBinford(parseHeaders("Binford: 6100\r\nX-Power: More power!"));
     }
 
     /**
@@ -131,7 +131,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function doubleOccurenceOfColonSplitsOnFirstColon()
     {
-        $headerList = HeaderList::fromString("Binford: 6100\r\nX-Powered-By: Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710231031)/Tomcat-5.5\r\nContent-Type: text/html\r\n");
+        $headerList = parseHeaders("Binford: 6100\r\nX-Powered-By: Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710231031)/Tomcat-5.5\r\nContent-Type: text/html\r\n");
         $this->assertTrue($headerList->containsKey('Binford'));
         $this->assertEquals('6100', $headerList->get('Binford'));
         $this->assertTrue($headerList->containsKey('X-Powered-By'));
@@ -185,7 +185,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
     public function appendAddsHeadersFromOtherInstance()
     {
         $this->assertBinford($this->headerList->put('Binford', '6000')
-                                              ->append(new HeaderList(array('Binford' => '6100',
+                                              ->append(headers(array('Binford' => '6100',
                                                                             'X-Power' => 'More power!'
                                                                       )
                                                        )

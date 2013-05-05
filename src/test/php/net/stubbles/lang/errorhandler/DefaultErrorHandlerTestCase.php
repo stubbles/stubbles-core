@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\errorhandler;
-use net\stubbles\lang\ObjectParser;
 /**
  * Tests for net\stubbles\lang\errorhandler\DefaultErrorHandler.
  *
@@ -37,14 +36,12 @@ class DefaultErrorHandlerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasAddedAllErrorHandlers()
     {
-        $errorHandlers = ObjectParser::readProperty($this->defaultErrorHandler,
-                                                    'errorHandlers'
-                         );
-        $this->assertInstanceOf('net\\stubbles\\lang\\errorhandler\\IllegalArgumentErrorHandler',
-                                $errorHandlers[0]
+        $properties = \net\stubbles\lang\extractObjectProperties($this->defaultErrorHandler);
+        $this->assertInstanceOf('net\stubbles\lang\errorhandler\IllegalArgumentErrorHandler',
+                                $properties['errorHandlers'][0]
         );
-        $this->assertInstanceOf('net\\stubbles\\lang\\errorhandler\\LogErrorHandler',
-                                $errorHandlers[1]
+        $this->assertInstanceOf('net\stubbles\lang\errorhandler\LogErrorHandler',
+                                $properties['errorHandlers'][1]
         );
     }
 }

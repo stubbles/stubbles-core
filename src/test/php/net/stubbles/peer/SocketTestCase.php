@@ -21,7 +21,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createWithEmptyHostThrowsIllegalArgumentException()
     {
-        new Socket('');
+        createSocket('');
     }
 
     /**
@@ -29,7 +29,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function containsGivenHost()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $this->assertEquals('example.com', $socket->getHost());
     }
 
@@ -38,7 +38,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function portDefaultsTo80()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $this->assertEquals(80, $socket->getPort());
     }
 
@@ -47,7 +47,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasNoPrefixByDefault()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $this->assertNull($socket->getPrefix());
     }
 
@@ -56,7 +56,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function timeoutDefaultsTo5Seconds()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $this->assertEquals(5, $socket->getTimeout());
     }
 
@@ -65,7 +65,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function timeoutCanBeChanged()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $this->assertEquals(60, $socket->setTimeout(60)->getTimeout());
     }
 
@@ -74,7 +74,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isNotConnectedAfterCreation()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $this->assertFalse($socket->isConnected());
     }
 
@@ -83,7 +83,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isAtEndOfSocketAfterCreation()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $this->assertTrue($socket->eof());
     }
 
@@ -92,7 +92,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenPort()
     {
-        $socket = new Socket('example.com', 443, 'ssl://', 30);
+        $socket = createSocket('example.com', 443, 'ssl://', 30);
         $this->assertEquals(443, $socket->getPort());
     }
 
@@ -101,7 +101,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenPrefix()
     {
-        $socket = new Socket('example.com', 443, 'ssl://', 30);
+        $socket = createSocket('example.com', 443, 'ssl://', 30);
         $this->assertEquals('ssl://', $socket->getPrefix());
     }
 
@@ -110,7 +110,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenTimeout()
     {
-        $socket = new Socket('example.com', 443, 'ssl://', 30);
+        $socket = createSocket('example.com', 443, 'ssl://', 30);
         $this->assertEquals(30, $socket->getTimeout());
     }
 
@@ -120,7 +120,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function readOnUnconnectedThrowsIllegalStateException()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $socket->read();
     }
 
@@ -130,7 +130,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function readLineOnUnconnectedThrowsIllegalStateException()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $socket->readLine();
     }
 
@@ -140,7 +140,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function readBinaryOnUnconnectedThrowsIllegalStateException()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $socket->readBinary();
     }
 
@@ -150,7 +150,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function writeOnUnconnectedThrowsIllegalStateException()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
          $socket->write('data');
     }
 
@@ -159,7 +159,7 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
      */
     public function disconnectReturnsInstance()
     {
-        $socket = new Socket('example.com');
+        $socket = createSocket('example.com');
         $this->assertSame($socket, $socket->disconnect());
     }
 

@@ -29,38 +29,38 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->properties = new Properties(array('scalar' => array('stringValue' => 'This is a string',
-                                                                   'intValue1'   => '303',
-                                                                   'intValue2'   => 303,
-                                                                   'floatValue1' => '3.13',
-                                                                   'floatValue2' => 3.13,
-                                                                   'boolValue1'  => '1',
-                                                                   'boolValue2'  => 1,
-                                                                   'boolValue3'  => 'yes',
-                                                                   'boolValue4'  => 'true',                                                                       'boolValue5'  => 'on',
-                                                                   'boolValue6'  => '0',
-                                                                   'boolValue7'  => 0,
-                                                                   'boolValue8'  => 'no',
-                                                                   'boolValue9'  => 'false',
-                                                                   'boolValue10' => 'off',
-                                                                   'boolValue11' => 'other'
-                                                             ),
-                                                 'array'  => array('arrayValue1' => 'foo|bar|baz',
-                                                                   'arrayValue2' => '',
-                                                                   'hashValue1'  => 'foo:bar|baz',
-                                                                   'hashValue2'  => ''
-                                                             ),
-                                                 'range'  => array('rangeValue1' => '1..5',
-                                                                   'rangeValue2' => 'a..e',
-                                                                   'rangeValue3' => '1..',
-                                                                   'rangeValue4' => 'a..',
-                                                                   'rangeValue5' => '..5',
-                                                                   'rangeValue6' => '..e',
-                                                                   'rangeValue7' => '5..1',
-                                                                   'rangeValue8' => 'e..a'
-                                                             ),
-                                                 'empty'  => array()
-                                           )
+        $this->properties = properties(array('scalar' => array('stringValue' => 'This is a string',
+                                                               'intValue1'   => '303',
+                                                               'intValue2'   => 303,
+                                                               'floatValue1' => '3.13',
+                                                               'floatValue2' => 3.13,
+                                                               'boolValue1'  => '1',
+                                                               'boolValue2'  => 1,
+                                                               'boolValue3'  => 'yes',
+                                                               'boolValue4'  => 'true',                                                                       'boolValue5'  => 'on',
+                                                               'boolValue6'  => '0',
+                                                               'boolValue7'  => 0,
+                                                               'boolValue8'  => 'no',
+                                                               'boolValue9'  => 'false',
+                                                               'boolValue10' => 'off',
+                                                               'boolValue11' => 'other'
+                                                         ),
+                                             'array'  => array('arrayValue1' => 'foo|bar|baz',
+                                                               'arrayValue2' => '',
+                                                               'hashValue1'  => 'foo:bar|baz',
+                                                               'hashValue2'  => ''
+                                                         ),
+                                             'range'  => array('rangeValue1' => '1..5',
+                                                               'rangeValue2' => 'a..e',
+                                                               'rangeValue3' => '1..',
+                                                               'rangeValue4' => 'a..',
+                                                               'rangeValue5' => '..5',
+                                                               'rangeValue6' => '..e',
+                                                               'rangeValue7' => '5..1',
+                                                               'rangeValue8' => 'e..a'
+                                                         ),
+                                             'empty'  => array()
+                                       )
                             );
     }
 
@@ -1116,7 +1116,7 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function fromNonExistantFileThrowsFileNotFoundException()
     {
-        Properties::fromFile(__DIR__ . '/doesNotExist.ini');
+        readPropertyFile(__DIR__ . '/doesNotExist.ini');
     }
 
     /**
@@ -1129,7 +1129,7 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('invalid.ini')
                  ->at($root)
                  ->withContent("[invalid{");
-         Properties::fromFile(vfsStream::url('config/invalid.ini'));
+        readPropertyFile(vfsStream::url('config/invalid.ini'));
     }
 
     /**
@@ -1141,7 +1141,7 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('test.ini')
                  ->at($root)
                  ->withContent("[foo]\nbar=baz");
-        $properties = Properties::fromFile(vfsStream::url('config/test.ini'));
+        $properties = readPropertyFile(vfsStream::url('config/test.ini'));
         $this->assertInstanceOf('net\\stubbles\\lang\\Properties', $properties);
         $this->assertTrue($properties->hasSection('foo'));
         $this->assertEquals(array('bar' => 'baz'), $properties->getSection('foo'));
@@ -1155,7 +1155,7 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function invalidIniStringThrowsException()
     {
-        Properties::fromString("[invalid{");
+        parseProperties("[invalid{");
     }
 
     /**
@@ -1165,7 +1165,7 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function validIniStringReturnsInstance()
     {
-        $properties = Properties::fromString("[foo]\nbar=baz");
+        $properties = parseProperties("[foo]\nbar=baz");
         $this->assertInstanceOf('net\\stubbles\\lang\\Properties', $properties);
         $this->assertTrue($properties->hasSection('foo'));
         $this->assertEquals(array('bar' => 'baz'), $properties->getSection('foo'));
@@ -1177,8 +1177,8 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function mergeMergesTwoPropertiesInstancesAndReturnsNewInstance()
     {
-        $properties1 = new Properties(array('foo' => array('bar' => 'baz')));
-        $properties2 = new Properties(array('bar' => array('bar' => 'baz')));
+        $properties1 = properties(array('foo' => array('bar' => 'baz')));
+        $properties2 = properties(array('bar' => array('bar' => 'baz')));
         $resultProperties = $properties1->merge($properties2);
         $this->assertNotSame($resultProperties, $properties1);
         $this->assertNotSame($resultProperties, $properties2);
@@ -1190,8 +1190,8 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function mergeMergesProperties()
     {
-        $properties1 = new Properties(array('foo' => array('bar' => 'baz')));
-        $properties2 = new Properties(array('bar' => array('bar' => 'baz')));
+        $properties1 = properties(array('foo' => array('bar' => 'baz')));
+        $properties2 = properties(array('bar' => array('bar' => 'baz')));
         $resultProperties = $properties1->merge($properties2);
         $this->assertTrue($resultProperties->hasSection('foo'));
         $this->assertEquals(array('bar' => 'baz'), $resultProperties->getSection('foo'));
@@ -1205,11 +1205,11 @@ class PropertiesTestCase extends \PHPUnit_Framework_TestCase
      */
     public function mergeOverwritesSectionsOfMergingInstanceWithThoseFromMergedInstance()
     {
-        $properties1 = new Properties(array('foo' => array('bar' => 'baz'),
-                                            'bar' => array('baz' => 'foo')
+        $properties1 = properties(array('foo' => array('bar' => 'baz'),
+                                        'bar' => array('baz' => 'foo')
                                       )
                        );
-        $properties2 = new Properties(array('bar' => array('bar' => 'baz')));
+        $properties2 = properties(array('bar' => array('bar' => 'baz')));
         $resultProperties = $properties1->merge($properties2);
         $this->assertTrue($resultProperties->hasSection('foo'));
         $this->assertEquals(array('bar' => 'baz'), $resultProperties->getSection('foo'));

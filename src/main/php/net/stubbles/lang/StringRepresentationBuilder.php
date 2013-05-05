@@ -11,7 +11,7 @@ namespace net\stubbles\lang;
 /**
  * Class to build a string representation from an object.
  *
- * @api
+ * @deprecated  since 3.1.0, will be removed with 4.0.0
  */
 class StringRepresentationBuilder
 {
@@ -37,78 +37,11 @@ class StringRepresentationBuilder
      * @param   mixed   $data        data to convert to a string
      * @param   array   $properties  the properties, if not set they will be retrieved
      * @return  string
+     * @deprecated  since 3.1.0, will be removed with 4.0.0, use \net\stubbles\lang\__toString() instead
      */
     public static function buildFrom($data, array $properties = null)
     {
-        if (!is_object($data)) {
-            return "{\n    (" . self::determineType($data) . '): '. self::convertToStringRepresentation($data) . "}\n";
-        }
-
-        if (null === $properties) {
-            $properties = ObjectParser::extractProperties($data);
-        }
-
-        $string = get_class($data) . " {\n";
-        foreach ($properties as $name => $value) {
-            $string .= '    ' . $name . '(' . self::determineType($value) . '): ';
-            if (is_resource($value)) {
-                $string .= "resource\n";
-            } elseif (is_array($value)) {
-                $string .= '[..](' .count($value). ")\n";
-            } else {
-                $string .= self::convertToStringRepresentation($value);
-            }
-        }
-
-        $string .= "}\n";
-        return $string;
-    }
-
-    /**
-     * determines the correct type of a value
-     *
-     * @param   mixed   &$value
-     * @return  string
-     */
-    private static function determineType(&$value)
-    {
-        if (is_object($value)) {
-            return get_class($value);
-        }
-
-        if (is_resource($value)) {
-            return 'resource[' . get_resource_type($value) . ']';
-        }
-
-        return gettype($value);
-    }
-
-    /**
-     * converts given value to string
-     *
-     * @param   mixed  $value
-     * @return  string
-     */
-    private static function convertToStringRepresentation($value)
-    {
-        $string      = '';
-        $lines       = explode("\n", (string) $value);
-        $lineCounter = 0;
-        foreach ($lines as $line) {
-            if (empty($line)) {
-                continue;
-            }
-
-            if (0 != $lineCounter) {
-                $string .= '    ' . $line . "\n";
-            } else {
-                $string .= $line . "\n";
-            }
-
-            $lineCounter++;
-        }
-
-        return $string;
+        return \net\stubbles\lang\__toString($data, $properties);
     }
 }
 ?>

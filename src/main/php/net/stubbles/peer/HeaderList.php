@@ -276,7 +276,7 @@ class HeaderList implements \IteratorAggregate
      */
     public function __toString()
     {
-        return \net\stubbles\lang\StringRepresentationBuilder::buildFrom($this);
+        return \net\stubbles\lang\__toString($this);
     }
 }
 ?>
