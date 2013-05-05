@@ -4,7 +4,7 @@
 ### BC breaks
 
   * Since 3.0.0 internal encoding of UTF-8 was only enforced within Apps. This has changed again and is not enforced by Stubbles Core any more. If you want to enforce it you need to call `net\stubbles\lang\enforceInternalEncoding()` explicitly.
-  * Due to removal of the default annotation cache and the `net\stubbles\cache` with 3.0.0 the `net\stubbles\ioc\module\PropertiesBindingModule` doesn't bind the `net.stubbles.cache.path` any more by default. In case you still require this path you need to explicitly enable it via  `net\stubbles\ioc\module\PropertiesBindingModule::addPathType('cache')`
+  * Due to removal of the default annotation cache and the `net\stubbles\cache` with 3.0.0 the `net\stubbles\ioc\module\PropertiesBindingModule` doesn't bind the `net.stubbles.cache.path` any more by default. In case you still require this path you need to explicitly enable it via  `net\stubbles\ioc\module\PropertiesBindingModule::addPathType('cache')`, see https://github.com/stubbles/stubbles-core/wiki/Apps-properties#pathes-as-properties
 
 ### Other changes
 
