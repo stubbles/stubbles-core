@@ -87,6 +87,33 @@ class ReflectionPrimitive extends Enum implements ReflectionType
     }
 
     /**
+     * checks whether given type name is known
+     *
+     * @since   3.1.1
+     * @api
+     * @param   string  $name
+     * @return  bool
+     */
+    public static function isKnown($name)
+    {
+        if (substr(strtolower($name), 0, 5) === 'array') {
+            return true;
+        }
+
+        return in_array($name,
+                        array('string',
+                              'int',
+                              'integer',
+                              'float',
+                              'double',
+                              'bool',
+                              'boolean'
+                        )
+
+        );
+    }
+
+    /**
      * returns the enum instance of given class identified by its name
      *
      * @api
@@ -95,7 +122,7 @@ class ReflectionPrimitive extends Enum implements ReflectionType
      */
     public static function forName($name)
     {
-        if (substr(strtolower($name), 0, 5) == 'array') {
+        if (substr(strtolower($name), 0, 5) === 'array') {
             return parent::forName('ARRAY');
         }
 
