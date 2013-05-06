@@ -176,7 +176,12 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
         }
 
         $returnParts = explode(' ', trim(str_replace('@return', '', $returnPart)));
-        return \net\stubbles\lang\typeFor(trim($returnParts[0]));
+        $returnType  = trim($returnParts[0]);
+        if ('void' === strtolower($returnType)) {
+            return null;
+        }
+
+        return \net\stubbles\lang\typeFor($returnType);
     }
 
     /**

@@ -33,6 +33,13 @@ function testWithOutDocBlock()
     // intentionally empty
 }
 /**
+ * @return  void
+ */
+function testWithReturnTypeVoid()
+{
+    // intentionally empty
+}
+/**
  * returns a class
  *
  * @return  org\stubbles\test\lang\reflect\TestWithMethodsAndProperties
@@ -183,6 +190,15 @@ class ReflectionFunctionTestCase extends \PHPUnit_Framework_TestCase
     public function getReturnTypeReturnsNullIfNoReturnTypePresentInDocblock()
     {
         $this->assertNull($this->refFunction2->getReturnType());
+    }
+
+    /**
+     * @test
+     */
+    public function getReturnTypeReturnsNullIfReturnTypeIsVoid()
+    {
+        $refFunction = new ReflectionFunction('net\\stubbles\\lang\\reflect\\testWithReturnTypeVoid');
+        $this->assertNull($refFunction->getReturnType());
     }
 
     /**
