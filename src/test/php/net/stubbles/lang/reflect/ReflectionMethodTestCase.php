@@ -54,6 +54,14 @@ class TestMethodCollection2 extends TestMethodCollection
     {
         // intentionally empty
     }
+
+    /**
+     * @return  void
+     */
+    public function methodWithReturnTypeVoid()
+    {
+        // intentionally empty
+    }
 }
 /**
  * Test for net\stubbles\lang\reflect\ReflectionMethod.
@@ -277,6 +285,15 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
     public function getReturnTypeReturnsNullIfNoDocblockDefined()
     {
         $refMethod = lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithoutParams');
+        $this->assertNull($refMethod->getReturnType());
+    }
+
+    /**
+     * @test
+     */
+    public function getReturnTypeReturnsNullIfReturnTypeIsVoid()
+    {
+        $refMethod = lang\reflect('net\stubbles\lang\\reflect\TestMethodCollection2', 'methodWithReturnTypeVoid');
         $this->assertNull($refMethod->getReturnType());
     }
 

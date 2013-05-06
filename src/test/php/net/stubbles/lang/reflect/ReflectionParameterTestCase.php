@@ -18,6 +18,17 @@ function test_function($param)
 {
     // nothing to do
 }
+function noDocComment($param)
+{
+    // nothing to do
+}
+/**
+ * missing param information
+ */
+function misleadingDocComment($param)
+{
+    // nothing to do
+}
 /**
  * a class for tests
  */
@@ -27,9 +38,10 @@ class ParamTestHelper
      * a method
      *
      * @param  mixed  $param
+     * @param  int    $secondParam
      * @ParamAnno{param}
      */
-    function paramTest($param)
+    function paramTest($param, $secondParam)
     {
         // nothing to do
     }
@@ -57,6 +69,16 @@ class ParamTestHelper2 extends ParamTestHelper
      * @ParamAnno{param}
      */
     function paramTest3(self $param2)
+    {
+        // nothing to do
+    }
+
+    /**
+     * one more method
+     *
+     * @param  array  $param2
+     */
+    function paramTest4(array $param2)
     {
         // nothing to do
     }
@@ -319,6 +341,7 @@ class ReflectionParameterTestCase extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->refParamMethod1->getClass());
         $this->assertNull($this->refParamMethod2->getClass());
     }
+
     /**
      * @test
      */
@@ -330,6 +353,83 @@ class ReflectionParameterTestCase extends \PHPUnit_Framework_TestCase
         $refClass = $this->refParamMethod4->getClass();
         $this->assertInstanceOf('net\\stubbles\\lang\\reflect\\ReflectionClass', $refClass);
         $this->assertEquals('net\\stubbles\\lang\\reflect\\ParamTestHelper2', $refClass->getName());
+    }
+
+    /**
+     * @since  3.1.1
+     * @test
+     * @expectedException  \ReflectionException
+     */
+    public function getTypeThrowsExceptionWhenNoTypeHintAndDocCommentPresent()
+    {
+        $refParam = new ReflectionParameter('noDocComment', 'param');
+        $refParam->getType();
+    }
+
+    /**
+     * @since  3.1.1
+     * @test
+     * @expectedException  \ReflectionException
+     */
+    public function getTypeThrowsExceptionWhenDocCommentDoesNotContainParamInfo()
+    {
+        $refParam = new ReflectionParameter('misleadingDocComment', 'param');
+        $refParam->getType();
+    }
+
+    /**
+     * @since  3.1.1
+     * @test
+     */
+    public function getTypeReturnsTypeFromClassTypeHint()
+    {
+        $refClass = $this->refParamMethod3->getType();
+        $this->assertInstanceOf('net\stubbles\lang\\reflect\ReflectionClass', $refClass);
+        $this->assertEquals('net\stubbles\lang\\reflect\ParamTestHelper',
+                            $refClass->getName()
+        );
+    }
+
+    /**
+     * @since  3.1.1
+     * @test
+     */
+    public function getTypeReturnsTypeFromArrayTypeHint()
+    {
+        $refParam = new ReflectionParameter(array('net\stubbles\lang\\reflect\ParamTestHelper2',
+                                                  'paramTest4'
+                                            ),
+                                            'param2'
+                    );
+        $this->assertSame(ReflectionPrimitive::$ARRAY, $refParam->getType());
+    }
+
+    /**
+     * @since  3.1.1
+     * @test
+     */
+    public function getTypeReturnsTypeFromDocCommentForPrimitives()
+    {
+        $refParam = new ReflectionParameter(array('net\stubbles\lang\\reflect\ParamTestHelper',
+                                                  'paramTest'
+                                            ),
+                                            'secondParam'
+                    );
+        $this->assertSame(ReflectionPrimitive::$INT, $refParam->getType());
+    }
+
+    /**
+     * @since  3.1.1
+     * @test
+     */
+    public function getTypeReturnsTypeFromDocCommentForMixed()
+    {
+        $refParam = new ReflectionParameter(array('net\stubbles\lang\\reflect\ParamTestHelper',
+                                                  'paramTest'
+                                            ),
+                                            'param'
+                    );
+        $this->assertSame(MixedType::$MIXED, $refParam->getType());
     }
 }
 ?>

@@ -183,5 +183,61 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
 
         return new ReflectionClass($refClass->getName());
     }
+
+    /**
+     * returns parameter type information
+     *
+     * @return  ReflectionType
+     * @throws  \ReflectionException
+     */
+    public function getType()
+    {
+        $refClass = $this->getClass();
+        if (null !== $refClass) {
+            return $refClass;
+        }
+
+        if ($this->isArray()) {
+            return ReflectionPrimitive::$ARRAY;
+        }
+
+        $paramType = $this->parseParamType();
+        if (null === $paramType) {
+            throw new \ReflectionException('Can\'t parse type from doc comment for ' . $this->getDeclaringFunction()->getName() . ' param ' . $this->getName());
+        }
+
+        return \net\stubbles\lang\typeFor($paramType);
+    }
+
+    /**
+     * parses param type from doc comment
+     *
+     * @return  string
+     */
+    private function parseParamType()
+    {
+        $docComment = $this->getDeclaringFunction()->getDocComment();
+        if (null == $docComment) {
+            return null;
+        }
+
+        $pos = 0;
+        foreach (explode("\n", $docComment) as $line) {
+            $paramPart = strstr($line, '@param');
+            if (false === $paramPart) {
+                continue;
+            }
+
+            if ($this->getPosition() !== $pos) {
+                $pos++;
+                continue;
+            }
+
+            $paramParts = explode(' ', trim(str_replace('@param', '', $paramPart)));
+            return trim($paramParts[0]);
+        }
+
+        return null;
+    }
 }
 ?>

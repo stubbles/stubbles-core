@@ -1,3 +1,13 @@
+3.1.1 (2013-??-??)
+------------------
+
+   * added `net\stubbles\lang\reflect\ReflectionParameter::getType()`
+   * added `net\stubbles\lang\typeFor()`
+   * added `net\stubbles\lang\reflect\MixedType`
+   * added `net\stubbles\lang\reflect\ReflectionPrimitive::isKnown()`
+   * added support for `void`, `mixed` and `object` in `net\stubbles\lang\reflect\ReflectionMethod` and `net\stubbles\lang\reflect\ReflectionFunction`
+
+
 3.1.0 (2013-05-05)
 ------------------
 

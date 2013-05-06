@@ -9,9 +9,11 @@
  */
 namespace net\stubbles\lang {
     use \net\stubbles\lang\Properties;
+    use \net\stubbles\lang\reflect\MixedType;
     use \net\stubbles\lang\reflect\ReflectionClass;
     use \net\stubbles\lang\reflect\ReflectionMethod;
     use \net\stubbles\lang\reflect\ReflectionObject;
+    use \net\stubbles\lang\reflect\ReflectionPrimitive;
     use \net\stubbles\lang\reflect\annotation\AnnotationCache;
 
     /**
@@ -93,6 +95,24 @@ namespace net\stubbles\lang {
         }
 
         return ReflectionObject::fromInstance($class);
+    }
+
+    /**
+     * returns a type instance for given type name
+     *
+     * @param   string  $typeName
+     * @return  \net\stubbles\lang\reflect\ReflectionType
+     * @since   3.1.1
+     */
+    function typeFor($typeName)
+    {
+        if (ReflectionPrimitive::isKnown($typeName)) {
+            return ReflectionPrimitive::forName($typeName);
+        } elseif (MixedType::isKnown($typeName)) {
+            return MixedType::forName($typeName);
+        }
+
+        return new ReflectionClass($typeName);
     }
 
     /**
