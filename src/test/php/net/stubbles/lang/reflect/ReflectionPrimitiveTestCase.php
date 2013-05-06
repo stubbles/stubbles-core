@@ -452,5 +452,39 @@ class ReflectionPrimitiveTestCase extends \PHPUnit_Framework_TestCase
     {
         ReflectionPrimitive::forName('\stdClass');
     }
+
+    /**
+     * @return  array
+     */
+    public static function getTypes()
+    {
+        return array(array('string', true),
+                     array('int', true),
+                     array('integer', true),
+                     array('float', true),
+                     array('double', true),
+                     array('bool', true),
+                     array('boolean', true),
+                     array('array', true),
+                     array('mixed', false),
+                     array('object', false),
+                     array('void', false),
+                     array('\stdClass', false),
+        );
+    }
+
+    /**
+     * @since  3.1.1
+     * @param  string  $type
+     * @param  bool    $expected
+     * @dataProvider  getTypes
+     * @test
+     */
+    public function isKnownDeliversCorrectResult($type, $expected)
+    {
+        $this->assertEquals($expected,
+                            ReflectionPrimitive::isKnown($type)
+        );
+    }
 }
 ?>

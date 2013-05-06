@@ -8,6 +8,9 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang;
+use net\stubbles\lang\reflect\MixedType;
+use net\stubbles\lang\reflect\ReflectionType;
+use net\stubbles\lang\reflect\ReflectionPrimitive;
 use net\stubbles\lang\reflect\annotation\Annotation;
 use net\stubbles\lang\reflect\annotation\AnnotationCache;
 use org\bovigo\vfs\vfsStream;
@@ -20,6 +23,52 @@ use org\bovigo\vfs\vfsStream;
  */
 class FunctionsTestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * return list of type definitions to test
+     *
+     * @return  array
+     */
+    public static function getTypeDefinitions()
+    {
+        return array(array('string', ReflectionPrimitive::$STRING),
+                     array('int', ReflectionPrimitive::$INT),
+                     array('integer', ReflectionPrimitive::$INTEGER),
+                     array('float', ReflectionPrimitive::$FLOAT),
+                     array('double', ReflectionPrimitive::$DOUBLE),
+                     array('bool', ReflectionPrimitive::$BOOL),
+                     array('boolean', ReflectionPrimitive::$BOOLEAN),
+                     array('array', ReflectionPrimitive::$ARRAY),
+                     array('mixed', MixedType::$MIXED),
+                     array('object', MixedType::$OBJECT)
+        );
+    }
+
+    /**
+     * @since  3.1.1
+     * @param  string          $typeName
+     * @param  ReflectionType  $expected
+     * @dataProvider  getTypeDefinitions
+     * @test
+     */
+    public function typeForDeliversCorrectReflectionTypeForNonClasses($typeName, ReflectionType $expected)
+    {
+        $this->assertSame($expected, typeFor($typeName));
+    }
+
+    /**
+     * @since  3.1.1
+     * @test
+     */
+    public function typeForDeliversCorrectReflectionClass()
+    {
+        $className = get_class($this);
+        $refClass  = typeFor($className);
+        $this->assertInstanceOf('net\stubbles\lang\reflect\ReflectionClass',
+                                $refClass
+        );
+        $this->assertEquals($className, $refClass->getName());
+    }
+
     /**
      * @since  3.0.0
      * @group  issue_58

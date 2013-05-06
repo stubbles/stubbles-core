@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect;
-use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\reflect\annotation\Annotation;
 use net\stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
@@ -119,8 +118,9 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
      *
      * If the return type is a class the return value is an instance of
      * net\stubbles\lang\reflect\ReflectionClass (if the class is unknown a
-     * net\stubbles\ClassNotFoundException will be thrown), if it is a scalar type the
-     * return value is an instance of stubReflectionPrimitive, and if the
+     * net\stubbles\ClassNotFoundException will be thrown), if it is a scalar
+     * type the return value is an instance of ReflectionPrimitive, for mixed
+     * and object the return value is an instance of MixedType, and if the
      * method does not have a return value this method returns null.
      * Please be aware that this is guessing from the doc block with which the
      * function is documented. If the doc block is missing or incorrect the
@@ -138,13 +138,11 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
 
         $returnParts = explode(' ', trim(str_replace('@return', '', $returnPart)));
         $returnType  = trim($returnParts[0]);
-        try {
-            $reflectionType = ReflectionPrimitive::forName($returnType);
-        } catch (IllegalArgumentException $iae) {
-            $reflectionType = new ReflectionClass($returnType);
+        if ('void' === strtolower($returnType)) {
+            return null;
         }
 
-        return $reflectionType;
+        return \net\stubbles\lang\typeFor($returnType);
     }
 
     /**
