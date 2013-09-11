@@ -1,4 +1,4 @@
-3.1.1 (2013-??-??)
+3.1.1 (2013-09-11)
 ------------------
 
    * added `net\stubbles\lang\reflect\ReflectionParameter::getType()`
@@ -6,6 +6,7 @@
    * added `net\stubbles\lang\reflect\MixedType`
    * added `net\stubbles\lang\reflect\ReflectionPrimitive::isKnown()`
    * added support for `void`, `mixed` and `object` in `net\stubbles\lang\reflect\ReflectionMethod` and `net\stubbles\lang\reflect\ReflectionFunction`
+   * fixed error when composer vendor pathes where arrays, not just a string
 
 
 3.1.0 (2013-05-05)
