@@ -79,7 +79,17 @@ class ResourceLoader
      */
     private function getVendorPathes()
     {
-        return require self::getRootPath() . '/vendor/composer/autoload_namespaces.php';
+        $vendorPathes    = array();
+        $namespacePathes = require self::getRootPath() . '/vendor/composer/autoload_namespaces.php';
+        foreach ($namespacePathes as $pathes) {
+            if (is_array($pathes)) {
+                $vendorPathes = array_merge($vendorPathes, $pathes);
+            } else {
+                $vendorPathes[] = $pathes;
+            }
+        }
+
+        return $vendorPathes;
     }
 
     /**
