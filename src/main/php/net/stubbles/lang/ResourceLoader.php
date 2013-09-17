@@ -30,6 +30,24 @@ class ResourceLoader
     private static $sourcePathes;
 
     /**
+     * returns resource uri from local project
+     *
+     * The method will always return a uri, even if the resource does not exist.
+     *
+     * @param   string  $resourceName
+     * @return  string
+     * @since   3.1.2
+     */
+    public function getProjectResourceUri($resourceName)
+    {
+        return self::getRootPath()
+                . DIRECTORY_SEPARATOR . 'src'
+                . DIRECTORY_SEPARATOR . 'main'
+                . DIRECTORY_SEPARATOR . 'resources'
+                . DIRECTORY_SEPARATOR . $resourceName;
+    }
+
+    /**
      * return all uris for a resource
      *
      * @param   string  $resourceName  the resource to retrieve the uris for
