@@ -1,3 +1,9 @@
+3.1.2 (2013-09-17)
+------------------
+
+   * added `net\stubbles\lang\ResourceLoader::getProjectResourceUri()`
+
+
 3.1.1 (2013-09-11)
 ------------------
 
