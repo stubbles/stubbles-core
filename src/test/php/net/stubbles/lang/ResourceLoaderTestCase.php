@@ -42,6 +42,36 @@ class ResourceLoaderTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  3.1.2
+     */
+    public function returnsProjectResourceUriForExistingFile()
+    {
+        $this->assertEquals(ResourceLoader::getRootPath() . DIRECTORY_SEPARATOR
+                                    . 'src' . DIRECTORY_SEPARATOR
+                                    . 'main' . DIRECTORY_SEPARATOR
+                                    . 'resources' . DIRECTORY_SEPARATOR
+                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini',
+                            $this->resourceLoader->getProjectResourceUri('lang/stubbles.ini')
+        );
+    }
+
+    /**
+     * @test
+     * @since  3.1.2
+     */
+    public function returnsProjectResourceUriForNonExistingFile()
+    {
+        $this->assertEquals(ResourceLoader::getRootPath() . DIRECTORY_SEPARATOR
+                                    . 'src' . DIRECTORY_SEPARATOR
+                                    . 'main' . DIRECTORY_SEPARATOR
+                                    . 'resources' . DIRECTORY_SEPARATOR
+                                    . 'lang' . DIRECTORY_SEPARATOR . 'doesNotExist.ini',
+                            $this->resourceLoader->getProjectResourceUri('lang/doesNotExist.ini')
+        );
+    }
+
+    /**
+     * @test
      */
     public function returnsListOfAllResourceUrisForExistingFile()
     {
