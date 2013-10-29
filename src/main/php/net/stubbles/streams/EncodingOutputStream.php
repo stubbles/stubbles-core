@@ -56,6 +56,24 @@ class EncodingOutputStream extends AbstractDecoratedOutputStream
     }
 
     /**
+     * writes given bytes and appends a line break after each one
+     *
+     * @param   string[]  $bytes
+     * @return  int       amount of written bytes
+     * @since   3.2.0
+     */
+    public function writeLines(array $bytes)
+    {
+        $bytesWritten = 0;
+        foreach ($bytes as $line) {
+            $bytesWritten += $this->writeLine($line);
+        }
+
+        return $bytesWritten;
+
+    }
+
+    /**
      * writes given bytes and appends a line break
      *
      * @param   string  $bytes
@@ -66,4 +84,3 @@ class EncodingOutputStream extends AbstractDecoratedOutputStream
         return $this->outputStream->writeLine(iconv('UTF-8', $this->charset, $bytes));
     }
 }
-?>

@@ -100,8 +100,6 @@ class ResourceOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * try to write to an already closed stream
-     *
      * @test
      * @expectedException  net\stubbles\lang\exception\IOException
      */
@@ -112,11 +110,9 @@ class ResourceOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * write some stuff into stream
-     *
      * @test
      */
-    public function write()
+    public function writePassesBytesIntoStream()
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
@@ -125,16 +121,25 @@ class ResourceOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * write some stuff into stream
-     *
      * @test
      */
-    public function writeLine()
+    public function writeLinePassesBytesWithLinebreakIntoStream()
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
         $this->assertEquals(11, $resourceOutputStream->writeLine('foobarbaz'));
         $this->assertEquals("foobarbaz\r\n", $file->getContent());
     }
+
+    /**
+     * @test
+     * @since  3.2.0
+     */
+    public function writeLinesPassesBytesWithLinebreakIntoStream()
+    {
+        $file = vfsStream::newFile('test.txt')->at($this->root);
+        $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
+        $this->assertEquals(15, $resourceOutputStream->writeLines(array('foo', 'bar', 'baz')));
+        $this->assertEquals("foo\r\nbar\r\nbaz\r\n", $file->getContent());
+    }
 }
-?>

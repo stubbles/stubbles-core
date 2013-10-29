@@ -46,11 +46,9 @@ class EncodingOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data send write() should be encoded to charset
-     *
      * @test
      */
-    public function write()
+    public function writeEncodesBytesBeforePassedToDecoratedStream()
     {
         $this->mockOutputStream->expects($this->once())
                                ->method('write')
@@ -60,11 +58,9 @@ class EncodingOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data send writeLine() should be encoded to charset
-     *
      * @test
      */
-    public function writeLine()
+    public function writeLineEncodesBytesBeforePassedToDecoratedStream()
     {
         $this->mockOutputStream->expects($this->once())
                                ->method('writeLine')
@@ -74,15 +70,29 @@ class EncodingOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * close() should close the inner output stream
-     *
+     * @test
+     * @since  3.2.0
+     */
+    public function writeLinesEncodesBytesBeforePassedToDecoratedStream()
+    {
+        $this->mockOutputStream->expects($this->at(0))
+                               ->method('writeLine')
+                               ->with($this->equalTo(utf8_decode('hällö')))
+                               ->will($this->returnValue(6));
+        $this->mockOutputStream->expects($this->at(1))
+                               ->method('writeLine')
+                               ->with($this->equalTo(utf8_decode('wörld')))
+                               ->will($this->returnValue(6));
+        $this->assertEquals(12, $this->encodingOutputStream->writeLines(array('hällö', 'wörld')));
+    }
+
+    /**
      * @test
      */
-    public function close()
+    public function closeClosesDecoratedOutputStream()
     {
         $this->mockOutputStream->expects($this->once())
                                ->method('close');
         $this->encodingOutputStream->close();
     }
 }
-?>

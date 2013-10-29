@@ -32,11 +32,9 @@ class MemoryOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * write() puts data into buffer
-     *
      * @test
      */
-    public function write()
+    public function writeWritesBytesIntoBuffer()
     {
         $this->assertEquals('', $this->memoryOutputStream->getBuffer());
         $this->assertEquals(5, $this->memoryOutputStream->write('hello'));
@@ -44,11 +42,9 @@ class MemoryOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * writeLine() puts data into buffer
-     *
      * @test
      */
-    public function writeLine()
+    public function writeLineWritesBytesIntoBuffer()
     {
         $this->assertEquals('', $this->memoryOutputStream->getBuffer());
         $this->assertEquals(6, $this->memoryOutputStream->writeLine('hello'));
@@ -56,13 +52,21 @@ class MemoryOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * close() does nothing
-     *
+     * @test
+     * @since  3.2.0
+     */
+    public function writeLinesWritesBytesIntoBuffer()
+    {
+        $this->assertEquals('', $this->memoryOutputStream->getBuffer());
+        $this->assertEquals(12, $this->memoryOutputStream->writeLines(array('hello', 'world')));
+        $this->assertEquals("hello\nworld\n", $this->memoryOutputStream->getBuffer());
+    }
+
+    /**
      * @test
      */
-    public function close()
+    public function closeDoesNothing()
     {
         $this->assertNull($this->memoryOutputStream->close());
     }
 }
-?>

@@ -55,7 +55,7 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
      * writes given bytes and appends a line break
      *
      * @param   string  $bytes
-     * @return  int     amount of written bytes excluding line break
+     * @return  int     amount of written bytes
      */
     public function writeLine($bytes)
     {
@@ -65,5 +65,22 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
 
         return 0;
     }
+
+    /**
+     * writes given bytes and appends a line break after each one
+     *
+     * @param   string[]  $bytes
+     * @return  int       amount of written bytes
+     * @since   3.2.0
+     */
+    public function writeLines(array $bytes)
+    {
+        $bytesWritten = 0;
+        foreach ($bytes as $line) {
+            $bytesWritten += $this->writeLine($line);
+        }
+
+        return $bytesWritten;
+
+    }
 }
-?>

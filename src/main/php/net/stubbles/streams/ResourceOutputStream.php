@@ -66,11 +66,29 @@ abstract class ResourceOutputStream implements OutputStream
      * writes given bytes and appends a line break
      *
      * @param   string  $bytes
-     * @return  int     amount of written
+     * @return  int     amount of written bytes
      */
     public function writeLine($bytes)
     {
         return $this->write($bytes . "\r\n");
+    }
+
+    /**
+     * writes given bytes and appends a line break after each one
+     *
+     * @param   string[]  $bytes
+     * @return  int       amount of written bytes
+     * @since   3.2.0
+     */
+    public function writeLines(array $bytes)
+    {
+        $bytesWritten = 0;
+        foreach ($bytes as $line) {
+            $bytesWritten += $this->writeLine($line);
+        }
+
+        return $bytesWritten;
+
     }
 
     /**
@@ -84,4 +102,3 @@ abstract class ResourceOutputStream implements OutputStream
         }
     }
 }
-?>
