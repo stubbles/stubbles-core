@@ -42,7 +42,7 @@ class SocketOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function readFromSocketWithDefaultLength()
+    public function writePassesBytesToSocket()
     {
         $this->mockSocket->expects($this->once())
                          ->method('write')
@@ -54,13 +54,29 @@ class SocketOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function readLineFromSocketWithDefaultLength()
+    public function writeLinePassesBytesToSocketWithLinebreak()
     {
         $this->mockSocket->expects($this->once())
                          ->method('write')
                          ->with($this->equalTo("foo\r\n"))
                          ->will($this->returnValue(5));
         $this->assertEquals(5, $this->socketOutputStream->writeLine('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function writeLinesPassesBytesToSocketWithLinebreak()
+    {
+        $this->mockSocket->expects($this->at(0))
+                         ->method('write')
+                         ->with($this->equalTo("foo\r\n"))
+                         ->will($this->returnValue(5));
+        $this->mockSocket->expects($this->at(1))
+                         ->method('write')
+                         ->with($this->equalTo("bar\r\n"))
+                         ->will($this->returnValue(5));
+        $this->assertEquals(10, $this->socketOutputStream->writeLines(array('foo', 'bar')));
     }
 
     /**
@@ -73,4 +89,3 @@ class SocketOutputStreamTestCase extends \PHPUnit_Framework_TestCase
         $this->socketOutputStream->close();
     }
 }
-?>

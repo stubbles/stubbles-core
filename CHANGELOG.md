@@ -1,3 +1,9 @@
+3.2.0 (2013-10-29)
+------------------
+
+   * added `net\stubbles\streams\OutputStream::writeLines()` and to all provided implementations
+
+
 3.1.2 (2013-09-17)
 ------------------
 

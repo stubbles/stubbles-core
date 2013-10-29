@@ -55,6 +55,18 @@ abstract class AbstractDecoratedOutputStream implements OutputStream
     }
 
     /**
+     * writes given bytes and appends a line break after each one
+     *
+     * @param   string[]  $bytes
+     * @return  int       amount of written bytes
+     * @since   3.2.0
+     */
+    public function writeLines(array $bytes)
+    {
+        return $this->outputStream->writeLines($bytes);
+    }
+
+    /**
      * closes the stream
      */
     public function close()

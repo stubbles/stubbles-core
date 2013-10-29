@@ -46,8 +46,6 @@ class FilteredOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data passing the filter should be written
-     *
      * @test
      */
     public function dataPassingTheFilterShouldBeWritten()
@@ -63,8 +61,6 @@ class FilteredOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data passing the filter should be written
-     *
      * @test
      */
     public function dataNotPassingTheFilterShouldNotBeWritten()
@@ -78,8 +74,6 @@ class FilteredOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data passing the filter should be written
-     *
      * @test
      */
     public function dataPassingTheFilterShouldBeWrittenAsLine()
@@ -95,8 +89,6 @@ class FilteredOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data passing the filter should be written
-     *
      * @test
      */
     public function dataNotPassingTheFilterShouldNotBeWrittenAsLine()
@@ -108,5 +100,20 @@ class FilteredOutputStreamTestCase extends \PHPUnit_Framework_TestCase
                                ->will($this->returnValue(true));
         $this->assertEquals(0, $this->filteredOutputStream->writeLine('foo'));
     }
+
+    /**
+     * @test
+     * @since  3.2.0
+     */
+    public function writeLinesProcessesOnlyLinesSatisfyingFilter()
+    {
+        $this->mockOutputStream->expects($this->once())
+                               ->method('writeLine')
+                               ->with($this->equalTo('foo'))
+                               ->will($this->returnValue(3));
+        $this->mockStreamFilter->expects($this->exactly(2))
+                               ->method('shouldFilter')
+                               ->will($this->onConsecutiveCalls(false, true));
+        $this->assertEquals(3, $this->filteredOutputStream->writeLines(array('foo', 'bar')));
+    }
 }
-?>
