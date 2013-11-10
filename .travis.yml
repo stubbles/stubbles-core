@@ -7,6 +7,12 @@ php:
 before_script:
   - "mkdir -p ~/.composer"
   - cp .travis.composer.config.json ~/.composer/config.json
-  - composer install --dev
+  - composer self-update
+  - composer install
+  - composer require satooshi/php-coveralls:dev-master
 
-script: vendor/bin/phpunit --coverage-text
+script:
+  - vendor/bin/phpunit --coverage-text
+
+after_script:
+  - vendor/bin/coveralls
