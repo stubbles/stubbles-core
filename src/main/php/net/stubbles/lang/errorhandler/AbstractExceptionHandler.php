@@ -38,13 +38,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
      *
      * @type  string
      */
-    private $logDir;
-    /**
-     * mode for new directories
-     *
-     * @type  int
-     */
-    private $filemode       = 0700;
+    private $exceptionLogger;
 
     /**
      * constructor
@@ -54,9 +48,9 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
      */
     public function __construct($projectPath, $sapi = PHP_SAPI)
     {
-        $this->projectPath = $projectPath;
-        $this->sapi        = $sapi;
-        $this->logDir      = $projectPath . DIRECTORY_SEPARATOR . 'log' . DIRECTORY_SEPARATOR . 'errors' . DIRECTORY_SEPARATOR . '{Y}' . DIRECTORY_SEPARATOR . '{M}';
+        $this->projectPath     = $projectPath;
+        $this->sapi            = $sapi;
+        $this->exceptionLogger = new ExceptionLogger($projectPath);
     }
 
     /**
@@ -78,7 +72,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
      */
     public function setFilemode($filemode)
     {
-        $this->filemode = $filemode;
+        $this->exceptionLogger->setFilemode($filemode);
         return $this;
     }
 
@@ -89,8 +83,8 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
      */
     public function handleException(\Exception $exception)
     {
-        if (true === $this->loggingEnabled) {
-            $this->log($exception);
+        if ($this->loggingEnabled) {
+            $this->exceptionLogger->log($exception);
         }
 
         if ('cgi' === $this->sapi) {
@@ -100,36 +94,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
         }
 
         $this->writeBody($this->createResponseBody($exception));
-    }
-
-    /**
-     * logs the exception into a logfile
-     *
-     * @param  \Exception  $exception  the uncatched exception
-     */
-    protected function log(\Exception $exception)
-    {
-        $logData  = date('Y-m-d H:i:s');
-        $logData .= '|' . get_class($exception);
-        $logData .= '|' . $exception->getMessage();
-        $logData .= '|' . $exception->getFile();
-        $logData .= '|' . $exception->getLine();
-        if (null !== $exception->getPrevious()) {
-            $cause    = $exception->getPrevious();
-            $logData .= '|' . get_class($cause);
-            $logData .= '|' . $cause->getMessage();
-            $logData .= '|' . $cause->getFile();
-            $logData .= '|' . $cause->getLine();
-        } else {
-            $logData .= '||||';
-        }
-
-        $logDir = str_replace('{Y}', date('Y'), str_replace('{M}', date('m'), $this->logDir));
-        if (!file_exists($logDir)) {
-            mkdir($logDir, $this->filemode, true);
-        }
-
-        error_log($logData . "\n", 3, $logDir . DIRECTORY_SEPARATOR . 'exceptions-' . date('Y-m-d') . '.log');
     }
 
     /**

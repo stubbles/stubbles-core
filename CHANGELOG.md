@@ -1,3 +1,9 @@
+3.3.0 (2014-01-12)
+------------------
+
+   * added `net\stubbles\lang\errorhandler\ExceptionLogger`
+
+
 3.2.0 (2013-10-29)
 ------------------
 
