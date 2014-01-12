@@ -96,25 +96,6 @@ class AbstractExceptionHandlerTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * assure that the exception is logged
-     *
-     * @test
-     */
-    public function handleChainedExceptionWithoutChainedException()
-    {
-        $exception = new \net\stubbles\lang\exception\Exception('chained exception');
-        $line      = __LINE__ - 1;
-
-        $this->abstractExceptionHandler->handleException($exception);
-        $this->assertEquals('|net\\stubbles\\lang\\exception\\Exception|chained exception|' . __FILE__ . '|' . $line . "||||\n",
-                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log')
-                                              ->getContent(),
-                                   19
-                            )
-        );
-    }
-
-    /**
      * @test
      */
     public function handleShouldCreateLogDirectoryWithDefaultModeIfNotExists()
@@ -140,4 +121,3 @@ class AbstractExceptionHandlerTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0777, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
     }
 }
-?>
