@@ -9,6 +9,7 @@
  */
 namespace net\stubbles\lang\errorhandler;
 use org\bovigo\vfs\vfsStream;
+use net\stubbles\lang;
 /**
  * Tests for net\stubbles\lang\errorhandler\ExceptionLogger.
  *
@@ -39,6 +40,20 @@ class ExceptionLoggerTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->root            = vfsStream::setup();
         $this->exceptionLogger = new ExceptionLogger(vfsStream::url('root'));
+    }
+
+    /**
+     * @test
+     * @since  3.3.1
+     */
+    public function annotationsPresentOnConstructor()
+    {
+        $constructor = lang\reflectConstructor($this->exceptionLogger);
+        $this->assertTrue($constructor->hasAnnotation('Inject'));
+        $this->assertTrue($constructor->hasAnnotation('Named'));
+        $this->assertEquals('net.stubbles.project.path',
+                            $constructor->getAnnotation('Named')->getName()
+        );
     }
 
     /**
