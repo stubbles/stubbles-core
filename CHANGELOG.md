@@ -1,3 +1,9 @@
+3.3.1 (2014-01-13)
+------------------
+
+   * added '@Inject' to `net\stubbles\lang\errorhandler\ExceptionLogger`
+
+
 3.3.0 (2014-01-12)
 ------------------
 
