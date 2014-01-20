@@ -61,6 +61,21 @@ class RuntimeModePropertiesProviderTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * created runtime mode with given name
+     *
+     * @param   string  $name
+     * @return  \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function createMockMode($name)
+    {
+        $mockMode = $this->getMock('net\stubbles\lang\Mode');
+        $mockMode->expects($this->any())
+                 ->method('name')
+                 ->will($this->returnValue($name));
+        return $mockMode;
+    }
+
+    /**
      * @test
      */
     public function returnsCommonValueWhenNoRuntimeModeSet()
@@ -73,12 +88,8 @@ class RuntimeModePropertiesProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function returnsCorrectValueWhenRuntimeModeSet()
     {
-        $mockMode = $this->getMock('net\stubbles\lang\Mode');
-        $mockMode->expects($this->once())
-                 ->method('name')
-                 ->will($this->returnValue('PROD'));
         $this->assertEquals('baz',
-                            $this->runtimeModePropertiesProvider->setMode($mockMode)
+                            $this->runtimeModePropertiesProvider->setMode($this->createMockMode('PROD'))
                                                                 ->get('foo.bar')
         );
     }
@@ -88,12 +99,8 @@ class RuntimeModePropertiesProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function returnsCommonValueWhenOtherRuntimeModeSet()
     {
-        $mockMode = $this->getMock('net\stubbles\lang\Mode');
-        $mockMode->expects($this->once())
-                 ->method('name')
-                 ->will($this->returnValue('DEV'));
         $this->assertEquals('dummy',
-                            $this->runtimeModePropertiesProvider->setMode($mockMode)
+                            $this->runtimeModePropertiesProvider->setMode($this->createMockMode('DEV'))
                                                                 ->get('foo.bar')
         );
     }
@@ -103,21 +110,30 @@ class RuntimeModePropertiesProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function returnsCommonValueWhenRuntimeModeSetButNoSpecificValue()
     {
-        $mockMode = $this->getMock('net\stubbles\lang\Mode');
-        $mockMode->expects($this->once())
-                 ->method('name')
-                 ->will($this->returnValue('PROD'));
         $this->assertEquals('someValue',
-                            $this->runtimeModePropertiesProvider->setMode($mockMode)
+                            $this->runtimeModePropertiesProvider->setMode($this->createMockMode('PROD'))
                                                                 ->get('other')
         );
     }
 
     /**
      * @test
+     * @expectedException  net\stubbles\ioc\binding\BindingException
+     * @expectedExceptionMessage  Missing property doesNotExist
      */
-    public function returnsNullForNonExistingValue()
+    public function throwsBindingExceptionWhenPropertyNotSet()
     {
-        $this->assertNull($this->runtimeModePropertiesProvider->get('doesNotExist'));
+        $this->runtimeModePropertiesProvider->get('doesNotExist');
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\ioc\binding\BindingException
+     * @expectedExceptionMessage  Missing property doesNotExist in runtime mode PROD
+     */
+    public function throwsBindingExceptionWhenPropertyNotSetWithRuntimeModeSet()
+    {
+        $this->runtimeModePropertiesProvider->setMode($this->createMockMode('PROD'))
+                                            ->get('doesNotExist');
     }
 }

@@ -8,6 +8,7 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc;
+use net\stubbles\ioc\binding\BindingException;
 use net\stubbles\lang\Mode;
 use net\stubbles\lang\Properties;
 /**
@@ -60,6 +61,7 @@ class RuntimeModePropertiesProvider implements InjectionProvider
      *
      * @param   string  $name
      * @return  mixed
+     * @throws  BindingException
      */
     public function get($name = null)
     {
@@ -68,7 +70,11 @@ class RuntimeModePropertiesProvider implements InjectionProvider
             return $this->properties->getValue($runtimeModeName, $name);
         }
 
-        return $this->properties->getValue('common', $name);
+        if ($this->properties->hasValue('common', $name)) {
+            return $this->properties->getValue('common', $name);
+        }
+
+        throw new BindingException('Missing property ' . $name . (null !== $this->mode ? ' in runtime mode ' . $this->mode->name() : ''));
     }
 
     /**
