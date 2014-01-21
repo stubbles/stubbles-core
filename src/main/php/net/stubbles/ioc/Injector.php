@@ -251,6 +251,10 @@ class Injector
             return $method->getAnnotation('Named')->getName();
         }
 
+        if ($method->hasAnnotation('Property')) {
+            return $method->getAnnotation('Property')->getValue();
+        }
+
         return null;
     }
 
@@ -276,6 +280,10 @@ class Injector
             return BindingIndex::getMapType();
         }
 
+        if ($method->hasAnnotation('Property') || $param->hasAnnotation('Property')) {
+            return BindingIndex::getPropertyType();
+        }
+
         return BindingIndex::getConstantType();
     }
 
@@ -298,6 +306,10 @@ class Injector
 
         if ($param->hasAnnotation('Named')) {
             return $param->getAnnotation('Named')->getName();
+        }
+
+        if ($param->hasAnnotation('Property')) {
+            return $param->getAnnotation('Property')->getValue();
         }
 
         return $default;
