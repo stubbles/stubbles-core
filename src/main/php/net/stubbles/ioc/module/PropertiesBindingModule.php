@@ -12,6 +12,8 @@ use net\stubbles\ioc\Binder;
 use net\stubbles\lang\Properties;
 /**
  * Module to read properties from a file and bind them.
+ *
+ * @deprecated  since 3.4.0, properties are now bound via ModeBindingModule, pathes can be bound via app
  */
 class PropertiesBindingModule implements BindingModule
 {

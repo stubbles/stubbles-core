@@ -66,8 +66,29 @@ class AppUsingBindingModule extends App
     }
 
     /**
+     * returns binding module for current working directory
+     *
+     * @return  \Closure
+     * @since   3.4.0
+     */
+    public static function getBindCurrentWorkingDirectoryModule()
+    {
+        return self::bindCurrentWorkingDirectory();
+    }
+
+    /**
+     * returns binding module for current hostname
+     *
+     * @return  \Closure
+     * @since   3.4.0
+     */
+    public static function getBindHostnameModule()
+    {
+        return self::bindHostname();
+    }
+
+    /**
      * runs the command
      */
     public function run() { }
 }
-?>

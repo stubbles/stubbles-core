@@ -150,5 +150,29 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
     {
         AnnotationCache::stop();
     }
+
+    /**
+     * @test
+     * @since  3.4.0
+     */
+    public function bindCurrentWorkingDirectory()
+    {
+        $binder = new Binder();
+        $module = AppUsingBindingModule::getBindCurrentWorkingDirectoryModule();
+        $module($binder);
+        $this->assertTrue($binder->hasConstant('net.stubbles.cwd'));
+    }
+
+    /**
+     * @test
+     * @since  3.4.0
+     */
+    public function bindHostname()
+    {
+        $binder = new Binder();
+        $module = AppUsingBindingModule::getBindHostnameModule();
+        $module($binder);
+        $this->assertTrue($binder->hasConstant('net.stubbles.hostname.nq'));
+        $this->assertTrue($binder->hasConstant('net.stubbles.hostname.fq'));
+    }
 }
-?>

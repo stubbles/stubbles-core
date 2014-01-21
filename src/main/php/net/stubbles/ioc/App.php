@@ -146,10 +146,51 @@ abstract class App
      * @param   string  $projectPath
      * @return  PropertiesBindingModule
      * @since   2.0.0
+     * @deprecated  since 3.4.0, properties are now bound via createModeBindingModule()
      */
     protected static function createPropertiesBindingModule($projectPath)
     {
         return new PropertiesBindingModule($projectPath);
     }
+
+    /**
+     * create a binding module which binds current working directory
+     *
+     * @api
+     * @return  \Closure
+     */
+    protected static function bindCurrentWorkingDirectory()
+    {
+        return function(Binder $binder)
+        {
+            $binder->bindConstant('net.stubbles.cwd')
+                   ->to(getcwd());
+        };
+    }
+
+    /**
+     * create a binding module which binds current hostnames
+     *
+     * @api
+     * @return  \Closure
+     */
+    protected static function bindHostname()
+    {
+        return function(Binder $binder)
+        {
+            if (DIRECTORY_SEPARATOR === '\\') {
+                $fq = php_uname('n');
+                if (isset($_SERVER['USERDNSDOMAIN'])) {
+                    $fq .= '.' . $_SERVER['USERDNSDOMAIN'];
+                }
+            } else {
+                $fq = exec('hostname -f');
+            }
+
+            $binder->bindConstant('net.stubbles.hostname.nq')
+                   ->to(php_uname('n'));
+            $binder->bindConstant('net.stubbles.hostname.fq')
+                   ->to($fq);
+        };
+    }
 }
-?>
