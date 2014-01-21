@@ -60,6 +60,10 @@ class FileStreamFactoryTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('net.stubbles.filemode',
                             $constructor->getAnnotation('Named')->getName()
         );
+        $this->assertTrue($constructor->hasAnnotation('Property'));
+        $this->assertEquals('net.stubbles.filemode',
+                            $constructor->getAnnotation('Property')->getName()
+        );
     }
 
     /**
