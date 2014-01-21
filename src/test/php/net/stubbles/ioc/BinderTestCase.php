@@ -199,5 +199,34 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
         $injector = $binder->getInjector();
         $this->assertSame($injector, $injector->getInstance('net\stubbles\ioc\Injector'));
     }
+
+    /**
+     * @since  3.4.0
+     * @test
+     */
+    public function bindPropertiesCreatesBinding()
+    {
+        $mockMode   = $this->getMock('net\stubbles\lang\Mode');
+        $properties = new \net\stubbles\lang\Properties(array());
+        $this->mockIndex->expects($this->once())
+                        ->method('bindProperties')
+                        ->with($this->equalTo($properties), $this->equalTo($mockMode))
+                        ->will($this->returnArgument(0));
+        $this->assertSame($properties,
+                          $this->binder->bindProperties($properties, $mockMode)
+        );
+    }
+
+    /**
+     * @since  3.4.0
+     * @test
+     */
+    public function hasPropertyChecksIndex()
+    {
+        $this->mockIndex->expects($this->once())
+                        ->method('hasProperty')
+                        ->with($this->equalTo('foo'))
+                        ->will($this->returnValue(true));
+        $this->assertTrue($this->binder->hasProperty('foo'));
+    }
 }
-?>

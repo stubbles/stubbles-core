@@ -15,6 +15,7 @@ use org\bovigo\vfs\vfsStream;
  *
  * @group  ioc
  * @group  ioc_module
+ * @deprecated
  */
 class PropertiesBindingModuleTestCase extends \PHPUnit_Framework_TestCase
 {

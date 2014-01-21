@@ -8,6 +8,8 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\ioc\binding;
+use net\stubbles\lang\Mode;
+use net\stubbles\lang\Properties;
 use net\stubbles\lang\reflect\ReflectionClass;
 /**
  * Stores list of all available bindings.
@@ -38,6 +40,12 @@ class BindingIndex
      * @type  Binding[]
      */
     private $index    = array();
+    /**
+     * special binding for properties
+     *
+     * @type  PropertyBinding
+     */
+    private $propertyBinding;
 
     /**
      * constructor
@@ -47,6 +55,16 @@ class BindingIndex
     public function __construct(BindingScopes $scopes = null)
     {
         $this->scopes = ((null === $scopes) ? (new BindingScopes()) : ($scopes));
+    }
+
+    /**
+     * returns key for property bindings
+     *
+     * @return  string
+     */
+    public static function getPropertyType()
+    {
+        return PropertyBinding::TYPE;
     }
 
     /**
@@ -115,6 +133,36 @@ class BindingIndex
                                                   $this->scopes
                                  )
                );
+    }
+
+    /**
+     * checks whether property with given name is available
+     *
+     * @param   string  $name
+     * @return  bool
+     * @since   3.4.0
+     */
+    public function hasProperty($name)
+    {
+        if (null === $this->propertyBinding) {
+            return false;
+        }
+
+        return $this->propertyBinding->hasProperty($name);
+    }
+
+    /**
+     * binds properties
+     *
+     * @param   Properties  $properties
+     * @param   Mode        $mode
+     * @return  Properties
+     * @since   3.4.0
+     */
+    public function bindProperties(Properties $properties, Mode $mode)
+    {
+        $this->propertyBinding = $this->addBinding(new PropertyBinding($properties, $mode));
+        return $properties;
     }
 
     /**
@@ -188,6 +236,10 @@ class BindingIndex
      */
     public function hasBinding($type, $name = null)
     {
+        if (PropertyBinding::TYPE === $type) {
+            return $this->hasProperty($name);
+        }
+
         return ($this->findBinding($type, $name) != null);
     }
 
@@ -203,6 +255,10 @@ class BindingIndex
      */
     public function hasExplicitBinding($type, $name = null)
     {
+        if (PropertyBinding::TYPE === $type) {
+            return $this->hasProperty($name);
+        }
+
         $bindingIndex = $this->getIndex();
         if (null !== $name && isset($bindingIndex[$type . '#' . $name])) {
             return true;
@@ -321,7 +377,7 @@ class BindingIndex
      */
     public function isObjectBinding($type)
     {
-        if (in_array($type, array(ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE))) {
+        if (in_array($type, array(PropertyBinding::TYPE, ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE))) {
             return false;
         }
 

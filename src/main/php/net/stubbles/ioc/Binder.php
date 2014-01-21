@@ -11,6 +11,8 @@ namespace net\stubbles\ioc;
 use net\stubbles\ioc\binding\Binding;
 use net\stubbles\ioc\binding\BindingIndex;
 use net\stubbles\ioc\binding\BindingScope;
+use net\stubbles\lang\Mode;
+use net\stubbles\lang\Properties;
 /**
  * Binder for the IoC functionality.
  *
@@ -67,6 +69,19 @@ class Binder
     public function bind($interface)
     {
         return $this->bindingIndex->bind($interface);
+    }
+
+    /**
+     * binds properties
+     *
+     * @param   Properties  $properties
+     * @param   Mode        $mode
+     * @return  Properties
+     * @since   3.4.0
+     */
+    public function bindProperties(Properties $properties, Mode $mode)
+    {
+        return $this->bindingIndex->bindProperties($properties, $mode);
     }
 
     /**
@@ -156,6 +171,18 @@ class Binder
     }
 
     /**
+     * checks whether property with given name is available
+     *
+     * @param   string  $name
+     * @return  bool
+     * @since   3.4.0
+     */
+    public function hasProperty($name)
+    {
+        return $this->bindingIndex->hasProperty($name);
+    }
+
+    /**
      * Get an injector for this binder
      *
      * @return  Injector
@@ -168,4 +195,3 @@ class Binder
         return $injector;
     }
 }
-?>
