@@ -1,3 +1,18 @@
+3.4.0 (2014-01-??)
+------------------
+
+### BC breaks
+
+   * Deprecated `net\stubbles\ioc\App::createPropertiesBindingModule()`
+   * Properties are now bound via `net\stubbles\ioc\App::createModeBindingModule()`
+   * Current working directory can now be bound via `net\stubbles\ioc\App::bindCurrentWorkingDirectory()`
+   * Current hostnames can now be bound via `net\stubbles\ioc\App::bindHostname()`
+
+### Other changes
+
+   * implemented issue #77: properties with values depending on runtime mode
+
+
 3.3.1 (2014-01-13)
 ------------------
 
