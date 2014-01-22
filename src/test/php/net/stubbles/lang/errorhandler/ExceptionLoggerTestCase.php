@@ -54,10 +54,6 @@ class ExceptionLoggerTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('net.stubbles.project.path',
                             $constructor->getAnnotation('Named')->getName()
         );
-        $this->assertTrue($constructor->hasAnnotation('Property'));
-        $this->assertEquals('net.stubbles.project.path',
-                            $constructor->getAnnotation('Property')->getName()
-        );
     }
 
     /**
