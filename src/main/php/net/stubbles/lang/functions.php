@@ -316,4 +316,20 @@ namespace net\stubbles\lang {
         return $string;
     }
 }
-?>
+namespace net\stubbles\lang\exception {
+    /**
+     * returns error message from last error that occurred
+     *
+     * @return  string
+     * @since   3.4.2
+     */
+    function lastErrorMessage()
+    {
+        $error = error_get_last();
+        if (null === $error) {
+            return null;
+        }
+
+        return $error['message'];
+    }
+}

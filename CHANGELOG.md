@@ -1,3 +1,9 @@
+3.4.2 (2014-03-25)
+------------------
+
+   * added `net\stubbles\lang\exception\lastErrorMessage()`
+
+
 3.4.1 (2014-01-22)
 ------------------
 
