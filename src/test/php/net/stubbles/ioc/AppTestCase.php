@@ -66,7 +66,7 @@ class AppTestCase extends \PHPUnit_Framework_TestCase
     public function canCreateModeBindingModule()
     {
         $this->assertInstanceOf('net\stubbles\ioc\module\ModeBindingModule',
-                                AppUsingBindingModule::getModeBindingModule()
+                                AppUsingBindingModule::getModeBindingModule(__DIR__)
         );
     }
 
