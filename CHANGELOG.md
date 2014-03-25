@@ -1,3 +1,9 @@
+3.4.3 (2014-03-25)
+------------------
+
+   * fixed `net\stubbles\ioc\App::createModeBindingModule()` not accepting `$projectPath`
+
+
 3.4.2 (2014-03-25)
 ------------------
 

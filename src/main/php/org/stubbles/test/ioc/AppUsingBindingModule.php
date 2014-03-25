@@ -21,12 +21,13 @@ class AppUsingBindingModule extends App
     /**
      * creates mode binding module
      *
-     * @param   Mode  $mode  runtime mode
+     * @param   string  $projectPath  path to project
+     * @param   Mode    $mode         runtime mode
      * @return  ModeBindingModule
      */
-    public static function getModeBindingModule(Mode $mode = null)
+    public static function getModeBindingModule($projectPath, Mode $mode = null)
     {
-        return self::createModeBindingModule($mode);
+        return self::createModeBindingModule($projectPath, $mode);
     }
 
     /**
