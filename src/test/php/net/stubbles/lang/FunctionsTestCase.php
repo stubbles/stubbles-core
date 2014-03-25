@@ -127,5 +127,26 @@ class FunctionsTestCase extends \PHPUnit_Framework_TestCase
         enforceInternalEncoding();
         $this->assertEquals('UTF-8', iconv_get_encoding('internal_encoding'));
     }
+
+    /**
+     * @test
+     * @since  3.4.2
+     */
+    public function lastErrorMessageShouldBeNullByDefault()
+    {
+        $this->assertNull(exception\lastErrorMessage());
+    }
+
+    /**
+     * @test
+     * @since  3.4.2
+     */
+    public function lastErrorMessageShouldContainLastError()
+    {
+        @file_get_contents(__DIR__ . '/doesNotExist.txt');
+        $this->assertEquals(
+                'file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory',
+                exception\lastErrorMessage()
+        );
+    }
 }
-?>

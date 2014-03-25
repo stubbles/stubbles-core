@@ -1,3 +1,15 @@
+3.4.2 (2014-03-25)
+------------------
+
+   * added `net\stubbles\lang\exception\lastErrorMessage()`
+
+
+3.4.1 (2014-01-22)
+------------------
+
+   * fixed bug: project path for `net\stubbles\lang\errorhandler\ExcepionLogger` erronously marked with `@Property`
+
+
 3.4.0 (2014-01-21)
 ------------------
 
