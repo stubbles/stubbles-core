@@ -89,6 +89,28 @@ class Date
     }
 
     /**
+     * casts given value to an instance of Date
+     *
+     * @param   int|string|\DateTime|Date  $value
+     * @param   string                     $name
+     * @return  Date
+     * @throws  IllegalArgumentException
+     * @since   3.4.4
+     */
+    public static function castFrom($value, $name = 'Argument')
+    {
+        if (is_int($value) || is_string($value) || $value instanceof \DateTime) {
+            return new self($value);
+        }
+
+        if (!($value instanceof Date)) {
+            throw new IllegalArgumentException($name . ' must be a timestamp, a string containing time info or an instance of \DateTime or net\stubbles\lang\types\Date, but was ' . gettype($value));
+        }
+
+        return $value;
+    }
+
+    /**
      * returns internal date/time handle
      *
      * @return  \DateTime
@@ -302,4 +324,3 @@ class Date
         $this->dateTime = clone $this->dateTime;
     }
 }
-?>

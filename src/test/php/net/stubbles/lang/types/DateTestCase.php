@@ -548,5 +548,57 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
                                ->hasAnnotation('XmlAttribute')
         );
     }
+
+    /**
+     * @test
+     * @since  3.4.4
+     */
+    public function castFromIntCreatesDateInstance()
+    {
+        $this->assertEquals(new Date(1187872547), Date::castFrom(1187872547));
+    }
+
+    /**
+     * @test
+     * @since  3.4.4
+     */
+    public function castFromStringCreatesDateInstance()
+    {
+        $this->assertEquals(
+                new Date('2007-11-04 14:32:00+1000'),
+                Date::castFrom('2007-11-04 14:32:00+1000')
+        );
+    }
+
+    /**
+     * @test
+     * @since  3.4.4
+     */
+    public function castFromDateTimeCreatesDateInstance()
+    {
+        $this->assertEquals(
+                new Date('2007-11-04 14:32:00+1000'),
+                Date::castFrom(new \DateTime('2007-11-04 14:32:00+1000'))
+        );
+    }
+
+    /**
+     * @test
+     * @since  3.4.4
+     */
+    public function castFromDateReturnsSameInstance()
+    {
+        $date = new Date('2007-11-04 14:32:00+1000');
+        $this->assertSame($date, Date::castFrom($date));
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @since  3.4.4
+     */
+    public function castFromOtherValueThrowsIllegalArgumentException()
+    {
+        Date::castFrom(new \stdClass());
+    }
 }
-?>
