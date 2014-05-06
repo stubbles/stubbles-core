@@ -1,7 +1,14 @@
-3.4.5 (2014-05-06)
+3.5.0 (2014-05-06)
 ------------------
 
    * `net\stubbles\lang\types\Date::isBefore()` and `net\stubbles\lang\types\Date::isAfter()` now except anything that can be casted via `net\stubbles\lang\types\Date::castFrom()`
+   * added several shortcut methods on `net\stubbles\lang\types\datespan\Datespan`:
+     * `startsBefore($date)`
+     * `startsAfter($date)`
+     * `endsBefore($date)`
+     * `endsAfter($date)`
+     * `formatStart($format, TimeZone $timeZone = null)`
+     * `formatEnd($format, TimeZone $timeZone = null)`
 
 
 3.4.4 (2014-04-11)
