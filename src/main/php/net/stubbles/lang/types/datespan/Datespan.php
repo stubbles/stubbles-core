@@ -24,11 +24,67 @@ interface Datespan
     public function getStart();
 
     /**
+     * checks whether datespan starts before a given date
+     *
+     * @param   int|string|\DateTime|Date  $date
+     * @return  bool
+     * @since   3.5.0
+     */
+    public function startsBefore($date);
+
+    /**
+     * checks whether datespan starts after a given date
+     *
+     * @param   int|string|\DateTime|Date  $date
+     * @return  bool
+     * @since   3.5.0
+     */
+    public function startsAfter($date);
+
+    /**
      * returns the end date
      *
      * @return  Date
      */
     public function getEnd();
+
+    /**
+     * checks whether datespan ends before a given date
+     *
+     * @param   int|string|\DateTime|Date  $date
+     * @return  bool
+     * @since   3.5.0
+     */
+    public function endsBefore($date);
+
+    /**
+     * checks whether datespan ends after a given date
+     *
+     * @param   int|string|\DateTime|Date  $date
+     * @return  bool
+     * @since   3.5.0
+     */
+    public function endsAfter($date);
+
+    /**
+     * returns formatted date/time string for start date
+     *
+     * @param   string    $format    format, see http://php.net/date
+     * @param   TimeZone  $timeZone  target time zone of formatted string
+     * @return  string
+     * @since   3.5.0
+     */
+    public function formatStart($format, TimeZone $timeZone = null);
+
+    /**
+     * returns formatted date/time string for end date
+     *
+     * @param   string    $format    format, see http://php.net/date
+     * @param   TimeZone  $timeZone  target time zone of formatted string
+     * @return  string
+     * @since   3.5.0
+     */
+    public function formatEnd($format, TimeZone $timeZone = null);
 
     /**
      * returns amount of days in this datespan
@@ -54,10 +110,10 @@ interface Datespan
     /**
      * checks whether the span contains the given date
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  bool
      */
-    public function containsDate(Date $date);
+    public function containsDate($date);
 
     /**
      * returns a string representation of the datespan
@@ -66,4 +122,3 @@ interface Datespan
      */
     public function asString();
 }
-?>

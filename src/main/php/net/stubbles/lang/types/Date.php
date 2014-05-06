@@ -97,7 +97,7 @@ class Date
      * @throws  IllegalArgumentException
      * @since   3.4.4
      */
-    public static function castFrom($value, $name = 'Argument')
+    public static function castFrom($value, $name = 'Date')
     {
         if (is_int($value) || is_string($value) || $value instanceof \DateTime) {
             return new self($value);
@@ -234,23 +234,23 @@ class Date
     /**
      * checks whether this date is before a given date
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  bool
      */
-    public function isBefore(Date $date)
+    public function isBefore($date)
     {
-        return $this->getTimestamp() < $date->getTimestamp();
+        return $this->getTimestamp() < self::castFrom($date, 'date')->getTimestamp();
     }
 
     /**
      * checks whether this date is after a given date
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  bool
      */
-    public function isAfter(Date $date)
+    public function isAfter($date)
     {
-        return $this->getTimestamp() > $date->getTimestamp();
+        return $this->getTimestamp() > self::castFrom($date, 'date')->getTimestamp();
     }
 
     /**

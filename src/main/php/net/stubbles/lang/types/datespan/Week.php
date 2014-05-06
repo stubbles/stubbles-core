@@ -19,14 +19,11 @@ class Week extends CustomDatespan
     /**
      * constructor
      *
-     * @param  string|Date  $date  first day of the week
+     * @param  int|string|\DateTime|Date  $date  first day of the week
      */
     public function __construct($date)
     {
-        if (!($date instanceof Date)) {
-            $date = new Date($date);
-        }
-
+        $date = Date::castFrom($date);
         parent::__construct($date, $date->change()->to('+ 6 days'));
     }
 
@@ -50,4 +47,3 @@ class Week extends CustomDatespan
         return $this->getStart()->format('W');
     }
 }
-?>

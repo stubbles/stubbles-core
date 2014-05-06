@@ -174,6 +174,36 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  3.5.0
+     */
+    public function dateComparisonWithoutDateInstances()
+    {
+        $this->assertTrue($this->date->isAfter('yesterday'));
+        $this->assertTrue($this->date->isBefore('tomorrow'));
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @since  3.5.0
+     */
+    public function isBeforeWithInvalidDate()
+    {
+        $this->assertTrue($this->date->isBefore(new \stdClass()));
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @since  3.5.0
+     */
+    public function isAfterWithInvalidDate()
+    {
+        $this->assertTrue($this->date->isAfter(new \stdClass()));
+    }
+
+    /**
      * dates before unix epoch should be handled
      *
      * @test
@@ -371,7 +401,24 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
      */
     public function nowConstructsCurrentDateInUtcTimeZone()
     {
+        if (version_compare(phpversion(), '5.5.9', '>')) {
+            $this->markTestSkipped('Test only works until 5.5.9, see http://evertpot.com/php-5-5-10-timezone-changes/');
+        }
+
         $this->assertEquals('UTC',
+                            Date::now()->getTimeZone()->getName()
+        );
+    }
+
+    /**
+     * @test
+     * @since  3.5.0
+     * @group  bug267
+     * @requires PHP 5.5.10
+     */
+    public function nowConstructsCurrentDateInGmtTimeZone()
+    {
+        $this->assertEquals('GMT',
                             Date::now()->getTimeZone()->getName()
         );
     }

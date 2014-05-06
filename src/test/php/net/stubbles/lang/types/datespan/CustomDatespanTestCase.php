@@ -178,5 +178,64 @@ class CustomDatespanTestCase extends \PHPUnit_Framework_TestCase
         $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
         $this->assertEquals('04.04.2006 - 20.04.2006', (string) $customDatespan);
     }
+
+    /**
+     * @test
+     * @since  3.5.0
+     */
+    public function startsBeforeChecksStartDate()
+    {
+        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
+        $this->assertTrue($customDatespan->startsBefore('2006-04-05'));
+    }
+
+    /**
+     * @test
+     * @since  3.5.0
+     */
+    public function startsAfterChecksStartDate()
+    {
+        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
+        $this->assertTrue($customDatespan->startsAfter('2006-04-03'));
+    }
+
+    /**
+     * @test
+     * @since  3.5.0
+     */
+    public function endsBeforeChecksStartDate()
+    {
+        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
+        $this->assertTrue($customDatespan->endsBefore('2006-04-21'));
+    }
+
+    /**
+     * @test
+     * @since  3.5.0
+     */
+    public function endsAfterChecksStartDate()
+    {
+        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
+        $this->assertTrue($customDatespan->endsAfter('2006-04-19'));
+    }
+
+    /**
+     * @test
+     * @since  3.5.0
+     */
+    public function formatStartReturnsFormattedStartDate()
+    {
+        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
+        $this->assertEquals('2006-04-04', $customDatespan->formatStart('Y-m-d'));
+    }
+
+    /**
+     * @test
+     * @since  3.5.0
+     */
+    public function formatEndReturnsFormattedStartDate()
+    {
+        $customDatespan = new CustomDatespan('2006-04-04', '2006-04-20');
+        $this->assertEquals('2006-04-20', $customDatespan->formatEnd('Y-m-d'));
+    }
 }
-?>

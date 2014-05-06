@@ -32,21 +32,13 @@ abstract class AbstractDatespan implements Datespan
     /**
      * constructor
      *
-     * @param  string|Date  $start  start date of the span
-     * @param  string|Date  $end    end date of the span
+     * @param  int|string|\DateTime|Date  $start  start date of the span
+     * @param  int|string|\DateTime|Date  $end    end date of the span
      */
     public function __construct($start, $end)
     {
-        if (!($start instanceof Date)) {
-            $start = new Date($start);
-        }
-
-        if (!($end instanceof Date)) {
-            $end = new Date($end);
-        }
-
-        $this->start = $start->change()->timeTo('00:00:00');
-        $this->end   = $end->change()->timeTo('23:59:59');
+        $this->start = Date::castFrom($start, 'start')->change()->timeTo('00:00:00');
+        $this->end   = Date::castFrom($end, 'end')->change()->timeTo('23:59:59');
     }
 
     /**
@@ -60,6 +52,30 @@ abstract class AbstractDatespan implements Datespan
     }
 
     /**
+     * checks whether datespan starts before a given date
+     *
+     * @param   int|string|\DateTime|Date  $date
+     * @return  bool
+     * @since   3.5.0
+     */
+    public function startsBefore($date)
+    {
+        return $this->start->isBefore($date);
+    }
+
+    /**
+     * checks whether datespan starts after a given date
+     *
+     * @param   int|string|\DateTime|Date  $date
+     * @return  bool
+     * @since   3.5.0
+     */
+    public function startsAfter($date)
+    {
+        return $this->start->isAfter($date);
+    }
+
+    /**
      * returns the end date
      *
      * @return  Date
@@ -67,6 +83,56 @@ abstract class AbstractDatespan implements Datespan
     public function getEnd()
     {
         return $this->end;
+    }
+
+    /**
+     * checks whether datespan ends before a given date
+     *
+     * @param   int|string|\DateTime|Date  $date
+     * @return  bool
+     * @since   3.5.0
+     */
+    public function endsBefore($date)
+    {
+        return $this->end->isBefore($date);
+    }
+
+    /**
+     * checks whether datespan ends after a given date
+     *
+     * @param   int|string|\DateTime|Date  $date
+     * @return  bool
+     * @since   3.5.0
+     */
+    public function endsAfter($date)
+    {
+        return $this->end->isAfter($date);
+    }
+
+    /**
+     * returns formatted date/time string for start date
+     *
+     * @param   string    $format    format, see http://php.net/date
+     * @param   TimeZone  $timeZone  target time zone of formatted string
+     * @return  string
+     * @since   3.5.0
+     */
+    public function formatStart($format, TimeZone $timeZone = null)
+    {
+        return $this->start->format($format, $timeZone);
+    }
+
+    /**
+     * returns formatted date/time string for end date
+     *
+     * @param   string    $format    format, see http://php.net/date
+     * @param   TimeZone  $timeZone  target time zone of formatted string
+     * @return  string
+     * @since   3.5.0
+     */
+    public function formatEnd($format, TimeZone $timeZone = null)
+    {
+        return $this->end->format($format, $timeZone);
     }
 
     /**
@@ -97,11 +163,12 @@ abstract class AbstractDatespan implements Datespan
     /**
      * checks whether the span contains the given date
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  bool
      */
-    public function containsDate(Date $date)
+    public function containsDate($date)
     {
+        $date = Date::castFrom($date);
         if (!$this->start->isBefore($date) && !$this->start->equals($date)) {
             return false;
         }
@@ -123,4 +190,3 @@ abstract class AbstractDatespan implements Datespan
         return $this->asString();
     }
 }
-?>
