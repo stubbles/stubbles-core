@@ -1,6 +1,7 @@
 3.5.0 (2014-05-06)
 ------------------
 
+   * raised minimum PHP version to 5.4.0
    * the following methods now except anything that can be casted to an instance of `net\stubbles\lang\types\Date` via `net\stubbles\lang\types\Date::castFrom()`
      * `net\stubbles\lang\types\Date::isBefore()`
      * `net\stubbles\lang\types\Date::isAfter()`
