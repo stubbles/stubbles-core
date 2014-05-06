@@ -174,6 +174,36 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  3.4.5
+     */
+    public function dateComparisonWithoutDateInstances()
+    {
+        $this->assertTrue($this->date->isAfter('yesterday'));
+        $this->assertTrue($this->date->isBefore('tomorrow'));
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @since  3.4.5
+     */
+    public function isBeforeWithInvalidDate()
+    {
+        $this->assertTrue($this->date->isBefore(new \stdClass()));
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @since  3.4.5
+     */
+    public function isAfterWithInvalidDate()
+    {
+        $this->assertTrue($this->date->isAfter(new \stdClass()));
+    }
+
+    /**
      * dates before unix epoch should be handled
      *
      * @test

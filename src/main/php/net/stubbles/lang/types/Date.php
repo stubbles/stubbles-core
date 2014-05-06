@@ -234,23 +234,23 @@ class Date
     /**
      * checks whether this date is before a given date
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  bool
      */
-    public function isBefore(Date $date)
+    public function isBefore($date)
     {
-        return $this->getTimestamp() < $date->getTimestamp();
+        return $this->getTimestamp() < self::castFrom($date, 'date')->getTimestamp();
     }
 
     /**
      * checks whether this date is after a given date
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  bool
      */
-    public function isAfter(Date $date)
+    public function isAfter($date)
     {
-        return $this->getTimestamp() > $date->getTimestamp();
+        return $this->getTimestamp() > self::castFrom($date, 'date')->getTimestamp();
     }
 
     /**

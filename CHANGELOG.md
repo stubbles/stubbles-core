@@ -1,3 +1,9 @@
+3.4.5 (2014-05-06)
+------------------
+
+   * `net\stubbles\lang\types\Date::isBefore()` and `net\stubbles\lang\types\Date::isAfter()` now except anything that can be casted via `net\stubbles\lang\types\Date::castFrom()`
+
+
 3.4.4 (2014-04-11)
 ------------------
 
