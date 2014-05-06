@@ -175,7 +175,7 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @since  3.4.5
+     * @since  3.5.0
      */
     public function dateComparisonWithoutDateInstances()
     {
@@ -186,7 +186,7 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     * @since  3.4.5
+     * @since  3.5.0
      */
     public function isBeforeWithInvalidDate()
     {
@@ -196,7 +196,7 @@ class DateTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
-     * @since  3.4.5
+     * @since  3.5.0
      */
     public function isAfterWithInvalidDate()
     {
