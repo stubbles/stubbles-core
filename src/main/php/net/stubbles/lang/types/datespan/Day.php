@@ -22,21 +22,16 @@ class Day extends AbstractDatespan implements Datespan
      * @type  Date
      */
     private $date;
+
     /**
      * constructor
      *
-     * @param  string|Date  $day  day that the span covers
+     * @param  int|string|\DateTime|Date  $day  day that the span covers
      */
     public function __construct($day = null)
     {
-        if (null === $day) {
-            $day = Date::now();
-        } elseif (!($day instanceof Date)) {
-            $day = new Date($day);
-        }
-
-        parent::__construct($day, $day);
-        $this->date = $day;
+        $this->date = ((null === $day) ? (Date::now()) : (Date::castFrom($day, 'day')));
+        parent::__construct($this->date, $this->date);
     }
 
     /**
@@ -105,4 +100,3 @@ class Day extends AbstractDatespan implements Datespan
         return $this->date->format($format);
     }
 }
-?>

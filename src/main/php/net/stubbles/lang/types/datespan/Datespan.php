@@ -110,10 +110,10 @@ interface Datespan
     /**
      * checks whether the span contains the given date
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  bool
      */
-    public function containsDate(Date $date);
+    public function containsDate($date);
 
     /**
      * returns a string representation of the datespan

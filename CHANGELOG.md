@@ -1,7 +1,16 @@
 3.5.0 (2014-05-06)
 ------------------
 
-   * `net\stubbles\lang\types\Date::isBefore()` and `net\stubbles\lang\types\Date::isAfter()` now except anything that can be casted via `net\stubbles\lang\types\Date::castFrom()`
+   * the following methods now except anything that can be casted to an instance of `net\stubbles\lang\types\Date` via `net\stubbles\lang\types\Date::castFrom()`
+     * `net\stubbles\lang\types\Date::isBefore()`
+     * `net\stubbles\lang\types\Date::isAfter()`
+     * `net\stubbles\lang\types\TimeZone::getOffset()`
+     * `net\stubbles\lang\types\TimeZone::getOffsetInSeconds()`
+     * `net\stubbles\lang\types\TimeZone::translate()`
+     * `net\stubbles\lang\types\datespan\CustomDatespan::__construct()`
+     * `net\stubbles\lang\types\datespan\Day::__construct()`
+     * `net\stubbles\lang\types\datespan\Week::__construct()`
+     * `net\stubbles\lang\types\datespan\Datespan::containsDate()`
    * added several shortcut methods on `net\stubbles\lang\types\datespan\Datespan`:
      * `startsBefore($date)`
      * `startsAfter($date)`

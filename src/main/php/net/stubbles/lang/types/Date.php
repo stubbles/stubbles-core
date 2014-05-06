@@ -97,7 +97,7 @@ class Date
      * @throws  IllegalArgumentException
      * @since   3.4.4
      */
-    public static function castFrom($value, $name = 'Argument')
+    public static function castFrom($value, $name = 'Date')
     {
         if (is_int($value) || is_string($value) || $value instanceof \DateTime) {
             return new self($value);

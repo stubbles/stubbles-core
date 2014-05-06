@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\types;
-use net\stubbles\lang\StringRepresentationBuilder;
 use net\stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for time zone handling.
@@ -74,10 +73,10 @@ class TimeZone
     /**
      * returns offset of the time zone
      *
-     * @param   Date  $date  defaults to current date
+     * @param   int|string|\DateTime|Date  $date  defaults to current date
      * @return  string
      */
-    public function getOffset(Date $date = null)
+    public function getOffset($date = null)
     {
         $offset  = $this->getOffsetInSeconds($date);
         $hours   = intval(abs($offset) / 3600);
@@ -92,16 +91,16 @@ class TimeZone
      * mode, a date object must be given which is used to determine whether DST
      * or non-DST offset should be returned.
      *
-     * @param   Date  $date  defaults to current date
+     * @param   int|string|\DateTime|Date  $date  defaults to current date
      * @return  int
      */
-    public function getOffsetInSeconds(Date $date = null)
+    public function getOffsetInSeconds($date = null)
     {
         if (null === $date) {
             return $this->timeZone->getOffset(new \DateTime('now'));
         }
 
-        return $this->timeZone->getOffset($date->getHandle());
+        return $this->timeZone->getOffset(Date::castFrom($date)->getHandle());
     }
 
     /**
@@ -120,12 +119,12 @@ class TimeZone
      *
      * A new date instance will be returned while the given date is not changed.
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  Date
      */
-    public function translate(Date $date)
+    public function translate($date)
     {
-        $handle = $date->getHandle();
+        $handle = Date::castFrom($date)->getHandle();
         $handle->setTimezone($this->timeZone);
         return new Date($handle);
     }
@@ -155,4 +154,3 @@ class TimeZone
         return \net\stubbles\lang\__toString($this, array('timeZone' => $this->timeZone->getName()));
     }
 }
-?>

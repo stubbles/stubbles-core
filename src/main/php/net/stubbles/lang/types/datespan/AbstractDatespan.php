@@ -32,21 +32,13 @@ abstract class AbstractDatespan implements Datespan
     /**
      * constructor
      *
-     * @param  string|Date  $start  start date of the span
-     * @param  string|Date  $end    end date of the span
+     * @param  int|string|\DateTime|Date  $start  start date of the span
+     * @param  int|string|\DateTime|Date  $end    end date of the span
      */
     public function __construct($start, $end)
     {
-        if (!($start instanceof Date)) {
-            $start = new Date($start);
-        }
-
-        if (!($end instanceof Date)) {
-            $end = new Date($end);
-        }
-
-        $this->start = $start->change()->timeTo('00:00:00');
-        $this->end   = $end->change()->timeTo('23:59:59');
+        $this->start = Date::castFrom($start, 'start')->change()->timeTo('00:00:00');
+        $this->end   = Date::castFrom($end, 'end')->change()->timeTo('23:59:59');
     }
 
     /**
@@ -171,11 +163,12 @@ abstract class AbstractDatespan implements Datespan
     /**
      * checks whether the span contains the given date
      *
-     * @param   Date  $date
+     * @param   int|string|\DateTime|Date  $date
      * @return  bool
      */
-    public function containsDate(Date $date)
+    public function containsDate($date)
     {
+        $date = Date::castFrom($date);
         if (!$this->start->isBefore($date) && !$this->start->equals($date)) {
             return false;
         }
