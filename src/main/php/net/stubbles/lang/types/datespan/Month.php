@@ -65,6 +65,19 @@ class Month extends CustomDatespan
     }
 
     /**
+     * create instance from given string, i.e. Month::fromString('2014-05')
+     *
+     * @param   string  $input
+     * @return  Month
+     * @since   3.5.2
+     */
+    public static function fromString($input)
+    {
+        list($year, $month) = explode('-', $input);
+        return new self($year, $month);
+    }
+
+    /**
      * creates instance for last month regardless of today's date
      *
      * @return  Month

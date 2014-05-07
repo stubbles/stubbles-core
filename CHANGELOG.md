@@ -1,3 +1,9 @@
+3.5.2 (2014-05-07)
+------------------
+
+   * added `net\stubbles\lang\types\datespan\Month::fromString()` to create an instance from a string like 2014-05
+
+
 3.5.1 (2014-05-07)
 ------------------
 
