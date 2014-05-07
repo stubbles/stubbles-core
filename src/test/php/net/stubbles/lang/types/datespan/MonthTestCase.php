@@ -241,4 +241,14 @@ class MonthTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('2014-05', Month::fromString('2014-05')->asString());
     }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @since  3.5.3
+     */
+    public function createFromInvalidStringThrowsIllegalArgumentException()
+    {
+         Month::fromString('invalid');
+    }
 }
