@@ -1,3 +1,9 @@
+3.5.3 (2014-05-07)
+------------------
+
+   * fixed PHP error when calling `net\stubbles\lang\types\datespan\Month::fromString()`  with invalid value
+
+
 3.5.2 (2014-05-07)
 ------------------
 
