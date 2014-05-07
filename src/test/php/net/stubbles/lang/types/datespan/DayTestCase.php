@@ -178,5 +178,28 @@ class DayTestCase extends \PHPUnit_Framework_TestCase
         $day = new Day('2007-05-14');
         $this->assertEquals('Monday, 14.05.2007', $day->format('l, d.m.Y'));
     }
+
+    /**
+     * @test
+     * @since  3.5.1
+     */
+    public function tomorrowCreatesInstanceForTomorrow()
+    {
+        $this->assertEquals(
+                date('Y-m-d', strtotime('tomorrow')),
+                Day::tomorrow()->asString()
+        );
+    }
+
+    /**
+     * @test
+     * @since  3.5.1
+     */
+    public function yesterdayCreatesInstanceForYesterday()
+    {
+        $this->assertEquals(
+                date('Y-m-d', strtotime('yesterday')),
+                Day::yesterday()->asString()
+        );
+    }
 }
-?>
