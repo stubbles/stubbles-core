@@ -35,6 +35,28 @@ class Day extends AbstractDatespan implements Datespan
     }
 
     /**
+     * create instance for tomorrow
+     *
+     * @return  Day
+     * @since   3.5.1
+     */
+    public static function tomorrow()
+    {
+        return new self('tomorrow');
+    }
+
+    /**
+     * create instance for yesterday
+     *
+     * @return  Day
+     * @since   3.5.1
+     */
+    public static function yesterday()
+    {
+        return new self('yesterday');
+    }
+
+    /**
      * returns amount of days on this day
      *
      * Well, the amount of days on a day is obviously always one.

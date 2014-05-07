@@ -2,6 +2,7 @@
 ------------------
 
    * added `net\stubbles\lang\types\datespan\Month::last()` to create an instance for the previous month
+   * added `net\stubbles\lang\types\datespan\Day::tomorrow()` and `net\stubbles\lang\types\datespan\Day::yesterday()` to create an instance for tomorrow or yesterday
 
 
 3.5.0 (2014-05-06)
