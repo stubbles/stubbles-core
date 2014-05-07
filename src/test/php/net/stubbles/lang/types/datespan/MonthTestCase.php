@@ -232,4 +232,13 @@ class MonthTestCase extends \PHPUnit_Framework_TestCase
                 Month::last()->asString()
         );
     }
+
+    /**
+     * @test
+     * @since  3.5.2
+     */
+    public function createFromStringParsesStringToCreateInstance()
+    {
+        $this->assertEquals('2014-05', Month::fromString('2014-05')->asString());
+    }
 }
