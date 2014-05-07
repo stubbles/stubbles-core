@@ -42,10 +42,6 @@ class Month extends CustomDatespan
      *
      * If no value for the month is supplied the current month will be used.
      *
-     * If the current day is the first of a month, the datespan will
-     * cover the last month. If today is the first of january, then the
-     * datespan will cover the december of previous year.
-     *
      * @param  int  $year   year of the span
      * @param  int  $month  month of the span
      */
@@ -66,6 +62,18 @@ class Month extends CustomDatespan
         parent::__construct($start,
                             new Date($year . '-' . $month . '-' . $this->amountOfDays . ' 23:59:59')
         );
+    }
+
+    /**
+     * creates instance for last month regardless of today's date
+     *
+     * @return  Month
+     * @since   3.5.1
+     */
+    public static function last()
+    {
+        $timestamp = strtotime('first day of previous month');
+        return new self(date('Y', $timestamp), date('m', $timestamp));
     }
 
     /**
@@ -98,4 +106,3 @@ class Month extends CustomDatespan
         return $this->year . '-' . ((10 > $this->month && strlen($this->month) === 1) ? ('0' . $this->month) : ($this->month));
     }
 }
-?>

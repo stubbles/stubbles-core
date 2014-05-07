@@ -211,5 +211,25 @@ class MonthTestCase extends \PHPUnit_Framework_TestCase
         $month = new Month(2007, 4);
         $this->assertFalse($month->isCurrentMonth());
     }
+
+    /**
+     * @test
+     * @since  3.5.1
+     */
+    public function lastCreatesInstanceWhichIsNotCurrentMonth()
+    {
+        $this->assertFalse(Month::last()->isCurrentMonth());
+    }
+
+    /**
+     * @test
+     * @since  3.5.1
+     */
+    public function lastCreatesInstanceForPreviousMonth()
+    {
+        $this->assertEquals(
+                date('Y') . '-'. date('m', strtotime('first day of previous month')),
+                Month::last()->asString()
+        );
+    }
 }
-?>

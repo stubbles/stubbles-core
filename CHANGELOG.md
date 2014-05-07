@@ -1,3 +1,9 @@
+3.5.1 (2014-05-07)
+------------------
+
+   * added `net\stubbles\lang\types\datespan\Month::last()` to create an instance for the previous month
+
+
 3.5.0 (2014-05-06)
 ------------------
 
