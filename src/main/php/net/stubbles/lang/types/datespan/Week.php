@@ -44,6 +44,6 @@ class Week extends CustomDatespan
      */
     public function asString()
     {
-        return $this->getStart()->format('W');
+        return $this->formatStart('W');
     }
 }

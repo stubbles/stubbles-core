@@ -77,7 +77,7 @@ class Month extends CustomDatespan
     {
         $data = explode('-', $input);
         if (!isset($data[0]) || !isset($data[1])) {
-            throw new IllegalArgumentException('Can not parse month from string "' . $input . '"');
+            throw new IllegalArgumentException('Can not parse month from string "' . $input . '", format should be "YYYY-MM"');
         }
 
         list($year, $month) = $data;
