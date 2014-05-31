@@ -18,7 +18,7 @@
          verbose="true">
   <testsuites>
     <testsuite>
-      <directory suffix="TestCase.php">./src/test/php</directory>
+      <directory>./src/test/php</directory>
     </testsuite>
   </testsuites>
 
