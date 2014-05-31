@@ -8,21 +8,21 @@
         "php": ">=5.4.0"
     },
     "require-dev": {
+        "stubbles/core-dev": "4.0.*@dev",
         "mikey179/vfsStream": "~1.2",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.1"
     },
     "autoload": {
-        "psr-0": {
-            "net\\stubbles": "src/main/php",
-            "org\\stubbles": "src/main/php"
+        "psr-4": {
+            "stubbles\\": "src/main/php"
         },
-        "files": ["src/main/php/net/stubbles/lang/functions.php",
-                  "src/main/php/net/stubbles/peer/functions.php"
+        "files": ["src/main/php/lang/functions.php",
+                  "src/main/php/peer/functions.php"
                  ]
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.5.x-dev"
+            "dev-master": "4.0.x-dev"
         }
     }
 }

@@ -1,3 +1,33 @@
+4.0.0 (2014-06-??)
+------------------
+
+### BC breaks
+
+   * removed namespace prefix `net`, base namespace is now `stubbles` only
+   * removed the following classes, can now be found in separate package stubbles/date:
+     * `net\stubbles\lang\types\Date`
+     * `net\stubbles\lang\types\DateModifier`
+     * `net\stubbles\lang\types\TimeZone`
+     * `net\stubbles\lang\types\datespan\AbstractDatespan`
+     * `net\stubbles\lang\types\datespan\CustomDatespan`
+     * `net\stubbles\lang\types\datespan\Datespan`
+     * `net\stubbles\lang\types\datespan\Day`
+     * `net\stubbles\lang\types\datespan\Month`
+     * `net\stubbles\lang\types\datespan\Week`
+     * `net\stubbles\lang\types\datespan\Year`
+   * removed `net\stubbles\lang\Clonable`
+   * removed `net\stubbles\ioc\App::createPropertiesBindingModule()`, deprecated since 3.4.0
+   * removed `net\stubbles\ioc\module\PropertiesBindingModule`, deprecated since 3.4.0
+   * removed `net\stubbles\ioc\App::persistAnnotations()`, deprecated since 3.1.0
+   * removed `net\stubbles\ioc\App::persistAnnotationsInFile()`, deprecated since 3.1.0
+   * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
+   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
+
+### Other changes
+
+  * `stubbles\lang\ResourceLoader` now supports PSR-4
+
+
 3.5.3 (2014-05-07)
 ------------------
 
