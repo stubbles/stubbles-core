@@ -167,32 +167,6 @@ namespace stubbles\lang {
     }
 
     /**
-     * enforces internal encoding to be UTF-8
-     *
-     * @return  bool  true on success, false otherwise
-     * @since   3.1.0
-     * @api
-     */
-    function enforceInternalEncoding()
-    {
-        $result = iconv_set_encoding('internal_encoding', 'UTF-8');
-        if (($ctype = getenv('LC_CTYPE')) || ($ctype = setlocale(LC_CTYPE, 0))) {
-            $language = $charset = null;
-            sscanf($ctype, '%[^.].%s', $language, $charset);
-            if (is_numeric($charset)) {
-                $charset = 'CP' . $charset;
-            } elseif (null == $charset) {
-                $charset = 'iso-8859-1';
-            }
-
-            iconv_set_encoding('output_encoding', $charset);
-            iconv_set_encoding('input_encoding', $charset);
-        }
-
-        return $result;
-    }
-
-    /**
      * method to extract all properties regardless of their visibility
      *
      * This is a workaround for the problem that as of PHP 5.2.4 get_object_vars()
