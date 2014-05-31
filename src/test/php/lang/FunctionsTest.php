@@ -121,15 +121,6 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     */
-    public function enforceInternalEncodingSetsInternalEncodingToUtf8()
-    {
-        enforceInternalEncoding();
-        $this->assertEquals('UTF-8', iconv_get_encoding('internal_encoding'));
-    }
-
-    /**
-     * @test
      * @since  3.4.2
      */
     public function lastErrorMessageShouldBeNullByDefault()
