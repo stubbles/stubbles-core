@@ -24,7 +24,7 @@ namespace stubbles\lang {
      * @since   3.1.0
      * @api
      */
-    function properties(array $propertyData = array())
+    function properties(array $propertyData = [])
     {
         return new Properties($propertyData);
     }
@@ -206,7 +206,7 @@ namespace stubbles\lang {
     function extractObjectProperties($object)
     {
         $properties      = (array) $object;
-        $fixedProperties = array();
+        $fixedProperties = [];
         foreach ($properties as $propertyName => $propertyValue) {
             if (!strstr($propertyName, "\0")) {
                 $fixedProperties[$propertyName] = $propertyValue;

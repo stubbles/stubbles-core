@@ -29,7 +29,7 @@ class BindingIndex
      *
      * @type  Binding[]
      */
-    private $bindings = array();
+    private $bindings = [];
     /**
      * index for faster access to bindings
      *
@@ -39,7 +39,7 @@ class BindingIndex
      *
      * @type  Binding[]
      */
-    private $index    = array();
+    private $index    = [];
     /**
      * special binding for properties
      *
@@ -377,7 +377,7 @@ class BindingIndex
      */
     public function isObjectBinding($type)
     {
-        if (in_array($type, array(PropertyBinding::TYPE, ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE))) {
+        if (in_array($type, [PropertyBinding::TYPE, ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE])) {
             return false;
         }
 
@@ -399,7 +399,7 @@ class BindingIndex
             $this->index[$binding->getKey()] = $binding;
         }
 
-        $this->bindings = array();
+        $this->bindings = [];
         return $this->index;
     }
 

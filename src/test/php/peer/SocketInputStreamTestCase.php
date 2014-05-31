@@ -33,7 +33,7 @@ class SocketInputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->mockSocket        = $this->getMock('stubbles\peer\Socket', array(), array('example.com'));
+        $this->mockSocket        = $this->getMock('stubbles\peer\Socket', [], ['example.com']);
         $this->mockSocket->expects($this->once())
                          ->method('connect');
         $this->socketInputStream = new SocketInputStream($this->mockSocket);

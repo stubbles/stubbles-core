@@ -160,7 +160,7 @@ class ReflectionObjectTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getMethodsReturnsEmptyListIfClassHasNoMethods()
     {
-        $this->assertEquals(array(), $this->refClass2->getMethods());
+        $this->assertEquals([], $this->refClass2->getMethods());
     }
 
     /**
@@ -235,7 +235,7 @@ class ReflectionObjectTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getPropertiesReturnsEmptyListIfClassHasNoProperties()
     {
-        $this->assertEquals(array(), $this->refClass2->getProperties());
+        $this->assertEquals([], $this->refClass2->getProperties());
     }
 
     /**
@@ -290,7 +290,7 @@ class ReflectionObjectTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getInterfacesReturnsEmptyArrayIfClassDoesNotImplementInterfaces()
     {
-        $this->assertEquals(array(), $this->refClass2->getInterfaces());
+        $this->assertEquals([], $this->refClass2->getInterfaces());
     }
 
     /**
@@ -346,7 +346,7 @@ class ReflectionObjectTestCase extends \PHPUnit_Framework_TestCase
     public function getExtensionReturnsReflectionExtensionIfClassIsPartOfAnExtension()
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\ReflectionExtension',
-                                ReflectionObject::fromInstance(new \ArrayIterator(array()))
+                                ReflectionObject::fromInstance(new \ArrayIterator([]))
                                                 ->getExtension()
         );
     }

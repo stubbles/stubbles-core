@@ -52,12 +52,12 @@ class BsdSocket extends Socket
      *
      * @type  array
      */
-    protected static $types = array(SOCK_STREAM    => 'SOCK_STREAM',
-                                    SOCK_DGRAM     => 'SOCK_DGRAM',
-                                    SOCK_RAW       => 'SOCK_RAW',
-                                    SOCK_SEQPACKET => 'SOCK_SEQPACKET',
-                                    SOCK_RDM       => 'SOCK_RDM'
-                              );
+    protected static $types = [SOCK_STREAM    => 'SOCK_STREAM',
+                               SOCK_DGRAM     => 'SOCK_DGRAM',
+                               SOCK_RAW       => 'SOCK_RAW',
+                               SOCK_SEQPACKET => 'SOCK_SEQPACKET',
+                               SOCK_RDM       => 'SOCK_RDM'
+                              ];
 
     /**
      * constructor

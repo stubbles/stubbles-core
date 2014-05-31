@@ -40,8 +40,8 @@ class stubProdModeExceptionHandlerTestCase extends \PHPUnit_Framework_TestCase
     public function createExceptionHandler($sapi)
     {
         $prodModeExceptionHandler = $this->getMock('stubbles\lang\errorhandler\ProdModeExceptionHandler',
-                                                   array('header', 'writeBody'),
-                                                   array(vfsStream::url('root'), $sapi)
+                                                   ['header', 'writeBody'],
+                                                   [vfsStream::url('root'), $sapi]
                                     );
         return $prodModeExceptionHandler->disableLogging();
     }

@@ -207,7 +207,7 @@ class BinderTestCase extends \PHPUnit_Framework_TestCase
     public function bindPropertiesCreatesBinding()
     {
         $mockMode   = $this->getMock('stubbles\lang\Mode');
-        $properties = new \stubbles\lang\Properties(array());
+        $properties = new \stubbles\lang\Properties([]);
         $this->mockIndex->expects($this->once())
                         ->method('bindProperties')
                         ->with($this->equalTo($properties), $this->equalTo($mockMode))

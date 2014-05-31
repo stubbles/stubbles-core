@@ -31,7 +31,7 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @type  AnnotationState[]
      */
-    private $states             = array();
+    private $states             = [];
     /**
      * the current state
      *
@@ -55,7 +55,7 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @type  array
      */
-    private $annotations        = array();
+    private $annotations        = [];
 
     /**
      * constructor
@@ -124,10 +124,10 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function registerAnnotation($name)
     {
-        $this->annotations[$name] = array('type'     => $name,
-                                          'params'   => array(),
-                                          'argument' => null
-                                    );
+        $this->annotations[$name] = ['type'     => $name,
+                                     'params'   => [],
+                                     'argument' => null
+                                    ];
         $this->currentAnnotation  = $name;
     }
 
@@ -225,15 +225,15 @@ class AnnotationStateParser implements AnnotationParser
             return (double) $value;
         }
 
-        $matches = array();
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $value, $matches) != false) {
-            return new ReflectionClass($matches[1]);
+        $classnameMatches = [];
+        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $value, $classnameMatches) != false) {
+            return new ReflectionClass($classnameMatches[1]);
         }
 
-        $matches = array();
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)::\$([a-zA-Z_]{1}[a-zA-Z0-9_]*)/', $value, $matches) != false) {
-            $enumClassName = $matches[1];
-            $instanceName  = $matches[2];
+        $enumMatches = [];
+        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)::\$([a-zA-Z_]{1}[a-zA-Z0-9_]*)/', $value, $enumMatches) != false) {
+            $enumClassName = $enumMatches[1];
+            $instanceName  = $enumMatches[2];
             return $enumClassName::forName($instanceName);
         }
 

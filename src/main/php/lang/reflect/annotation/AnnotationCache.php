@@ -22,11 +22,11 @@ class AnnotationCache
      *
      * @type  array
      */
-    private static $annotations  = array(Annotation::TARGET_CLASS    => array(),
-                                         Annotation::TARGET_FUNCTION => array(),
-                                         Annotation::TARGET_METHOD   => array(),
-                                         Annotation::TARGET_PROPERTY => array()
-                                   );
+    private static $annotations  = [Annotation::TARGET_CLASS    => [],
+                                    Annotation::TARGET_FUNCTION => [],
+                                    Annotation::TARGET_METHOD   => [],
+                                    Annotation::TARGET_PROPERTY => []
+                                   ];
     /**
      * flag whether cache contents changed
      *
@@ -93,7 +93,7 @@ class AnnotationCache
 
         self::$cacheChanged = false;
         self::$storeCache   = $storeCache;
-        register_shutdown_function(array(__CLASS__, '__shutdown'));
+        register_shutdown_function([__CLASS__, '__shutdown']);
     }
 
     /**
@@ -145,11 +145,11 @@ class AnnotationCache
      */
     public static function flush()
     {
-        self::$annotations  = array(Annotation::TARGET_CLASS    => array(),
-                                    Annotation::TARGET_FUNCTION => array(),
-                                    Annotation::TARGET_METHOD   => array(),
-                                    Annotation::TARGET_PROPERTY => array()
-                              );
+        self::$annotations  = [Annotation::TARGET_CLASS    => [],
+                               Annotation::TARGET_FUNCTION => [],
+                               Annotation::TARGET_METHOD   => [],
+                               Annotation::TARGET_PROPERTY => []
+                              ];
         self::$cacheChanged = true;
     }
 
@@ -164,11 +164,11 @@ class AnnotationCache
     public static function put($target, $targetName, $annotationName, Annotation $annotation = null)
     {
         if (!isset(self::$annotations[$target])) {
-            self::$annotations[$target] = array();
+            self::$annotations[$target] = [];
         }
 
         if (!isset(self::$annotations[$target][$targetName])) {
-            self::$annotations[$target][$targetName] = array();
+            self::$annotations[$target][$targetName] = [];
         }
 
         if (null !== $annotation) {

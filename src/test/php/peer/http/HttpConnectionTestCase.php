@@ -37,7 +37,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->memoryOutputStream = new MemoryOutputStream();
         $this->mockHttpUri        = $this->getMock('stubbles\peer\http\HttpUri');
-        $mockSocket               = $this->getMock('stubbles\peer\Socket', array(), array('example.com'));
+        $mockSocket               = $this->getMock('stubbles\peer\Socket', [], ['example.com']);
         $mockSocket->expects($this->any())
                    ->method('getInputStream')
                    ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
@@ -66,7 +66,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                 $this->httpConnection->timeout(2)
                                                      ->asUserAgent('Stubbles HTTP Client')
                                                      ->referedFrom('http://example.com/')
-                                                     ->withCookie(array('foo' => 'bar baz'))
+                                                     ->withCookie(['foo' => 'bar baz'])
                                                      ->authorizedAs('user', 'pass')
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->get()
@@ -92,7 +92,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                 $this->httpConnection->timeout(2)
                                                      ->asUserAgent('Stubbles HTTP Client')
                                                      ->referedFrom('http://example.com/')
-                                                     ->withCookie(array('foo' => 'bar baz'))
+                                                     ->withCookie(['foo' => 'bar baz'])
                                                      ->authorizedAs('user', 'pass')
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->head()
@@ -119,7 +119,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                 $this->httpConnection->timeout(2)
                                                      ->asUserAgent('Stubbles HTTP Client')
                                                      ->referedFrom('http://example.com/')
-                                                     ->withCookie(array('foo' => 'bar baz'))
+                                                     ->withCookie(['foo' => 'bar baz'])
                                                      ->authorizedAs('user', 'pass')
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->post('foobar')
@@ -147,10 +147,10 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                 $this->httpConnection->timeout(2)
                                                      ->asUserAgent('Stubbles HTTP Client')
                                                      ->referedFrom('http://example.com/')
-                                                     ->withCookie(array('foo' => 'bar baz'))
+                                                     ->withCookie(['foo' => 'bar baz'])
                                                      ->authorizedAs('user', 'pass')
                                                      ->usingHeader('X-Binford', 6100)
-                                                     ->post(array('foo' => 'bar', 'ba z' => 'dum my'))
+                                                     ->post(['foo' => 'bar', 'ba z' => 'dum my'])
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
@@ -177,7 +177,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                 $this->httpConnection->timeout(2)
                                                      ->asUserAgent('Stubbles HTTP Client')
                                                      ->referedFrom('http://example.com/')
-                                                     ->withCookie(array('foo' => 'bar baz'))
+                                                     ->withCookie(['foo' => 'bar baz'])
                                                      ->authorizedAs('user', 'pass')
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->put('foobar')
@@ -206,7 +206,7 @@ class HttpConnectionTestCase extends \PHPUnit_Framework_TestCase
                                 $this->httpConnection->timeout(2)
                                                      ->asUserAgent('Stubbles HTTP Client')
                                                      ->referedFrom('http://example.com/')
-                                                     ->withCookie(array('foo' => 'bar baz'))
+                                                     ->withCookie(['foo' => 'bar baz'])
                                                      ->authorizedAs('user', 'pass')
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->delete()

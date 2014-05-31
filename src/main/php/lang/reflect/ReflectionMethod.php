@@ -143,7 +143,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
     public function getParameters()
     {
         $parameters     = parent::getParameters();
-        $stubParameters = array();
+        $stubParameters = [];
         foreach ($parameters as $parameter) {
             $stubParameters[] = new ReflectionParameter($this, $parameter->getName());
         }

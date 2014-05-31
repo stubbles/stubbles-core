@@ -70,7 +70,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
                     ->method('getHost')
                     ->will($this->returnValue('example.com'));
         return HttpRequest::create($mockHttpUri,
-                                   new HeaderList(array('X-Binford' => 6100))
+                                   new HeaderList(['X-Binford' => 6100])
         );
     }
 
@@ -254,7 +254,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestUsingEmptyPostValues()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post(array())
+                                $this->createHttpRequest()->post([])
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
@@ -272,7 +272,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestUsingPostValues()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post(array('foo' => 'bar', 'ba z' => 'dum my'))
+                                $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'])
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
                           . Http::line('Host: example.com')
@@ -291,7 +291,7 @@ class HttpRequestTestCase extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestUsingPostValuesWithVersion()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post(array('foo' => 'bar', 'ba z' => 'dum my'), 5, Http::VERSION_1_0)
+                                $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'], 5, Http::VERSION_1_0)
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')

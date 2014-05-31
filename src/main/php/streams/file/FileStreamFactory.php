@@ -41,7 +41,7 @@ class FileStreamFactory implements StreamFactory
      * @param   array  $options  list of options for the input stream
      * @return  FileInputStream
      */
-    public function createInputStream($source, array $options = array())
+    public function createInputStream($source, array $options = [])
     {
         if (isset($options['filemode'])) {
             return new FileInputStream($source, $options['filemode']);
@@ -57,7 +57,7 @@ class FileStreamFactory implements StreamFactory
      * @param   array  $options  list of options for the output stream
      * @return  FileOutputStream
      */
-    public function createOutputStream($target, array $options = array())
+    public function createOutputStream($target, array $options = [])
     {
         if (isset($options['createDirIfNotExists']) && true === $options['createDirIfNotExists']) {
             $dir = dirname($target);

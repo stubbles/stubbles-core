@@ -171,8 +171,8 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('stubbles\streams\InputStream',
                                 $this->getMock('stubbles\peer\Socket',
-                                               array('connect'),
-                                               array('localhost')
+                                               ['connect'],
+                                               ['localhost']
                                        )
                                      ->getInputStream()
         );
@@ -186,8 +186,8 @@ class SocketTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('stubbles\streams\OutputStream',
                                 $this->getMock('stubbles\peer\Socket',
-                                               array('connect'),
-                                               array('localhost')
+                                               ['connect'],
+                                               ['localhost']
                                        )
                                      ->getOutputStream()
         );

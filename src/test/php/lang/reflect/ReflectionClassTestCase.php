@@ -125,7 +125,7 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getMethodsReturnsEmptyListIfClassHasNoMethods()
     {
-        $this->assertEquals(array(), $this->refClass2->getMethods());
+        $this->assertEquals([], $this->refClass2->getMethods());
     }
 
     /**
@@ -200,7 +200,7 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getPropertiesReturnsEmptyListIfClassHasNoProperties()
     {
-        $this->assertEquals(array(), $this->refClass2->getProperties());
+        $this->assertEquals([], $this->refClass2->getProperties());
     }
 
     /**
@@ -255,7 +255,7 @@ class ReflectionClassTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getInterfacesReturnsEmptyArrayIfClassDoesNotImplementInterfaces()
     {
-        $this->assertEquals(array(), $this->refClass2->getInterfaces());
+        $this->assertEquals([], $this->refClass2->getInterfaces());
     }
 
     /**

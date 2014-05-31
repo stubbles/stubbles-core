@@ -21,7 +21,7 @@ class MemoryStreamFactory implements StreamFactory
      * @param   array  $options  list of options for the input stream
      * @return  MemoryInputStream
      */
-    public function createInputStream($source, array $options = array())
+    public function createInputStream($source, array $options = [])
     {
         return new MemoryInputStream($source);
     }
@@ -33,7 +33,7 @@ class MemoryStreamFactory implements StreamFactory
      * @param   array  $options  list of options for the output stream
      * @return  MemoryOutputStream
      */
-    public function createOutputStream($target, array $options = array())
+    public function createOutputStream($target, array $options = [])
     {
         return new MemoryOutputStream();
     }

@@ -21,9 +21,9 @@ class ModeBindingModule implements BindingModule
      *
      * @type  string[]
      */
-    private $pathTypes       = array('config',
-                                     'log'
-                               );
+    private $pathTypes       = ['config',
+                                'log'
+                               ];
     /**
      * path to config file
      *
@@ -125,7 +125,7 @@ class ModeBindingModule implements BindingModule
             $path .= DIRECTORY_SEPARATOR;
         }
 
-        $pathes = array();
+        $pathes = [];
         foreach ($this->pathTypes as $pathType) {
             $pathes['stubbles.' . $pathType . '.path'] = $path . $pathType;
         }

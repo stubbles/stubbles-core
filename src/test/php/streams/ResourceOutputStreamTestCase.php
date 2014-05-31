@@ -139,7 +139,7 @@ class ResourceOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
-        $this->assertEquals(15, $resourceOutputStream->writeLines(array('foo', 'bar', 'baz')));
+        $this->assertEquals(15, $resourceOutputStream->writeLines(['foo', 'bar', 'baz']));
         $this->assertEquals("foo\r\nbar\r\nbaz\r\n", $file->getContent());
     }
 }

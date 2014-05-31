@@ -21,7 +21,7 @@ class QueryString
      *
      * @type  array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * constructor
@@ -50,7 +50,7 @@ class QueryString
                 if ($start = strpos($name, '[')) {
                   $base = substr($name, 0, $start);
                   if (!isset($this->parameters[$base])) {
-                      $this->parameters[$base] = array();
+                      $this->parameters[$base] = [];
                   }
 
                   $ptr    = &$this->parameters[$base];

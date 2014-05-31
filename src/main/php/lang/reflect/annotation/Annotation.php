@@ -51,7 +51,7 @@ class Annotation
      *
      * @type  array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * constructor

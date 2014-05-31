@@ -20,7 +20,7 @@ class CompositeStreamFilter implements StreamFilter
      *
      * @type  StreamFilter[]
      */
-    protected $streamFilter = array();
+    protected $streamFilter = [];
 
     /**
      * add a stream filter

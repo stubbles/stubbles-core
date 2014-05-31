@@ -22,19 +22,19 @@ class MixedTypeTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getTypes()
     {
-        return array(array('string', false),
-                     array('int', false),
-                     array('integer', false),
-                     array('float', false),
-                     array('double', false),
-                     array('bool', false),
-                     array('boolean', false),
-                     array('array', false),
-                     array('mixed', true),
-                     array('object', true),
-                     array('void', false),
-                     array('\stdClass', false),
-        );
+        return [['string', false],
+                ['int', false],
+                ['integer', false],
+                ['float', false],
+                ['double', false],
+                ['bool', false],
+                ['boolean', false],
+                ['array', false],
+                ['mixed', true],
+                ['object', true],
+                ['void', false],
+                ['\stdClass', false],
+        ];
     }
 
     /**

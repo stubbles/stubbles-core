@@ -38,8 +38,8 @@ class AbstractExceptionHandlerTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->root                     = vfsStream::setup();
         $this->abstractExceptionHandler = $this->getMock('stubbles\lang\errorhandler\AbstractExceptionHandler',
-                                                         array('header', 'createResponseBody', 'writeBody'),
-                                                         array(vfsStream::url('root'))
+                                                         ['header', 'createResponseBody', 'writeBody'],
+                                                         [vfsStream::url('root')]
                                           );
     }
 
@@ -49,8 +49,8 @@ class AbstractExceptionHandlerTestCase extends \PHPUnit_Framework_TestCase
     public function loggingDisabledFillsResponseOnly()
     {
         $abstractExceptionHandler = $this->getMock('stubbles\lang\errorhandler\AbstractExceptionHandler',
-                                                   array('log', 'header', 'createResponseBody', 'writeBody'),
-                                                   array(vfsStream::url('root'))
+                                                   ['log', 'header', 'createResponseBody', 'writeBody'],
+                                                   [vfsStream::url('root')]
                                           );
         $abstractExceptionHandler->expects($this->never())->method('log');
         $abstractExceptionHandler->expects($this->once())->method('header');

@@ -49,7 +49,7 @@ class MixedType extends Enum implements ReflectionType
      */
     public static function isKnown($name)
     {
-        return in_array($name, array('mixed', 'object'));
+        return in_array($name, ['mixed', 'object']);
     }
 
     /**

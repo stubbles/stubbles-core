@@ -125,7 +125,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
             $methods = parent::getMethods($filter);
         }
 
-        $stubMethods = array();
+        $stubMethods = [];
         foreach ($methods as $method) {
             $stubMethods[] = new ReflectionMethod($this, $method->getName());
         }
@@ -142,7 +142,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
     public function getMethodsByMatcher(MethodMatcher $methodMatcher)
     {
         $methods     = parent::getMethods();
-        $stubMethods = array();
+        $stubMethods = [];
         foreach ($methods as $method) {
             if ($methodMatcher->matchesMethod($method)) {
                 $stubMethod = new ReflectionMethod($this, $method->getName());
@@ -184,7 +184,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
             $properties = parent::getProperties($filter);
         }
 
-        $stubProperties = array();
+        $stubProperties = [];
         foreach ($properties as $property) {
             $stubProperties[] = new ReflectionProperty($this, $property->getName());
         }
@@ -201,7 +201,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
     public function getPropertiesByMatcher(PropertyMatcher $propertyMatcher)
     {
         $properties     = parent::getProperties();
-        $stubProperties = array();
+        $stubProperties = [];
         foreach ($properties as $property) {
             if ($propertyMatcher->matchesProperty($property)) {
                 $stubProperty = new ReflectionProperty($this, $property->getName());
@@ -222,7 +222,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
     public function getInterfaces()
     {
         $interfaces     = parent::getInterfaces();
-        $stubRefClasses = array();
+        $stubRefClasses = [];
         foreach ($interfaces as $interface) {
             $stubRefClasses[] = new self($interface->getName());
         }

@@ -158,7 +158,7 @@ class ReflectionFunctionTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getParametersReturnsEmptyListIfFunctionDoesNotHaveParameters()
     {
-        $this->assertEquals(array(), $this->refFunction2->getParameters());
+        $this->assertEquals([], $this->refFunction2->getParameters());
     }
 
     /**

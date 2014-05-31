@@ -24,7 +24,7 @@ class MapBinding extends MultiBinding
      *
      * @type  array
      */
-    private $bindings = array();
+    private $bindings = [];
 
     /**
      * adds an entry to the list

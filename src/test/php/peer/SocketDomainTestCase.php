@@ -47,10 +47,10 @@ class SocketDomainTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getNames()
     {
-        return array(array('AF_INET'),
-                     array('AF_INET6'),
-                     array('AF_UNIX')
-        );
+        return [['AF_INET'],
+                ['AF_INET6'],
+                ['AF_UNIX']
+        ];
     }
 
     /**
@@ -72,10 +72,10 @@ class SocketDomainTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getValues()
     {
-        return array(array(AF_INET),
-                     array(AF_INET6),
-                     array(AF_UNIX)
-        );
+        return [[AF_INET],
+                [AF_INET6],
+                [AF_UNIX]
+        ];
     }
 
     /**

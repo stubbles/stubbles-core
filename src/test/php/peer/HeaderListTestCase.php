@@ -45,7 +45,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function containsGivenHeader()
     {
-        $headerList = headers(array('Binford' => 6100));
+        $headerList = headers(['Binford' => 6100]);
         $this->assertTrue($headerList->containsKey('Binford'));
     }
 
@@ -55,7 +55,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function initialSizeEqualsAmountOfGivenHeaders()
     {
-        $headerList = headers(array('Binford' => 6100));
+        $headerList = headers(['Binford' => 6100]);
         $this->assertEquals(1, $headerList->size());
     }
 
@@ -65,7 +65,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function returnsValeOfGivenHeader()
     {
-        $headerList = headers(array('Binford' => 6100));
+        $headerList = headers(['Binford' => 6100]);
         $this->assertEquals('6100',
                             $headerList->get('Binford')
         );
@@ -170,9 +170,9 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
     public function appendAddsHeadersFromArray()
     {
         $this->assertBinford($this->headerList->put('Binford', '6000')
-                                              ->append(array('Binford' => '6100',
-                                                             'X-Power' => 'More power!'
-                                                       )
+                                              ->append(['Binford' => '6100',
+                                                        'X-Power' => 'More power!'
+                                                       ]
                                                 )
 
         );
@@ -185,9 +185,9 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
     public function appendAddsHeadersFromOtherInstance()
     {
         $this->assertBinford($this->headerList->put('Binford', '6000')
-                                              ->append(headers(array('Binford' => '6100',
-                                                                            'X-Power' => 'More power!'
-                                                                      )
+                                              ->append(headers(['Binford' => '6100',
+                                                                'X-Power' => 'More power!'
+                                                               ]
                                                        )
                                                 )
 
@@ -200,7 +200,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function putArrayThrowsIllegalArgumentException()
     {
-        $this->headerList->put('Binford', array(6100));
+        $this->headerList->put('Binford', [6100]);
     }
 
     /**
@@ -261,7 +261,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
      */
     public function putCookie()
     {
-        $this->assertTrue($this->headerList->putCookie(array('testcookie1' => 'testvalue1 %&'))
+        $this->assertTrue($this->headerList->putCookie(['testcookie1' => 'testvalue1 %&'])
                                            ->containsKey('Cookie')
         );
         $this->assertEquals('testcookie1=' . urlencode('testvalue1 %&') . ';',
@@ -374,7 +374,7 @@ class HeaderListTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0,
                             $this->headerList->putUserAgent('Binford 6100')
                                              ->putReferer('Home Improvement')
-                                             ->putCookie(array('testcookie1' => 'testvalue1 %&'))
+                                             ->putCookie(['testcookie1' => 'testvalue1 %&'])
                                              ->putAuthorization('user', 'pass')
                                              ->putDate(time())
                                              ->enablePower()

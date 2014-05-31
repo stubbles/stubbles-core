@@ -200,7 +200,7 @@ class HttpResponse
      */
     private function parseStatusLine($statusLine)
     {
-        $matches = array();
+        $matches = [];
         if (preg_match("=^(HTTP/\d+\.\d+) (\d{3}) ([^\r]*)=",
                        $statusLine,
                        $matches) == false) {

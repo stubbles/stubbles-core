@@ -20,7 +20,7 @@ interface StreamFactory
      * @param   array  $options  list of options for the input stream
      * @return  InputStream
      */
-    public function createInputStream($source, array $options = array());
+    public function createInputStream($source, array $options = []);
 
     /**
      * creates an output stream for given target
@@ -29,5 +29,5 @@ interface StreamFactory
      * @param   array  $options  list of options for the output stream
      * @return  OutputStream
      */
-    public function createOutputStream($target, array $options = array());
+    public function createOutputStream($target, array $options = []);
 }

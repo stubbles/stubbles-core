@@ -83,7 +83,7 @@ class EncodingOutputStreamTestCase extends \PHPUnit_Framework_TestCase
                                ->method('writeLine')
                                ->with($this->equalTo(utf8_decode('wörld')))
                                ->will($this->returnValue(6));
-        $this->assertEquals(12, $this->encodingOutputStream->writeLines(array('hällö', 'wörld')));
+        $this->assertEquals(12, $this->encodingOutputStream->writeLines(['hällö', 'wörld']));
     }
 
     /**

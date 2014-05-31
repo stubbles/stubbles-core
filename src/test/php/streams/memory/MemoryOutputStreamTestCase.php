@@ -58,7 +58,7 @@ class MemoryOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     public function writeLinesWritesBytesIntoBuffer()
     {
         $this->assertEquals('', $this->memoryOutputStream->getBuffer());
-        $this->assertEquals(12, $this->memoryOutputStream->writeLines(array('hello', 'world')));
+        $this->assertEquals(12, $this->memoryOutputStream->writeLines(['hello', 'world']));
         $this->assertEquals("hello\nworld\n", $this->memoryOutputStream->getBuffer());
     }
 

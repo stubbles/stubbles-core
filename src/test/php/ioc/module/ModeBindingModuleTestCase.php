@@ -93,7 +93,7 @@ class ModeBindingModuleTestCase extends \PHPUnit_Framework_TestCase
      */
     public function doesNotBindPropertiesWhenConfigFileIsMissing()
     {
-        $mockBinder = $this->getMock('stubbles\ioc\Binder', array('bindProperties'));
+        $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
         $mockBinder->expects($this->never())
                    ->method('bindProperties');
         $modeBindingModule = new ModeBindingModule($this->root->url(), $this->mockMode);
@@ -112,7 +112,7 @@ stubbles.locale=\"de_DE\"
 stubbles.number.decimals=4
 stubbles.webapp.xml.serializeMode=true")
                  ->at($this->root);
-        $mockBinder = $this->getMock('stubbles\ioc\Binder', array('bindProperties'));
+        $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
         $mockBinder->expects($this->once())
                    ->method('bindProperties');
         $modeBindingModule = new ModeBindingModule($this->root->url(), $this->mockMode);
@@ -141,9 +141,9 @@ stubbles.webapp.xml.serializeMode=true")
      */
     public function getConstants()
     {
-        return array('config' => array('config', 'stubbles.config.path'),
-                     'log'    => array('log', 'stubbles.log.path')
-        );
+        return ['config' => ['config', 'stubbles.config.path'],
+                'log'    => ['log', 'stubbles.log.path']
+        ];
     }
 
     /**
@@ -182,7 +182,7 @@ stubbles.webapp.xml.serializeMode=true")
      */
     public function getWithAdditionalConstants()
     {
-        return array_merge($this->getConstants(), array('user' => array('user', 'stubbles.user.path')));
+        return array_merge($this->getConstants(), ['user' => ['user', 'stubbles.user.path']]);
     }
 
     /**

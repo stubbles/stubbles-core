@@ -55,9 +55,9 @@ class BindingFactoryTestCase extends \PHPUnit_Framework_TestCase
      */
     public function bindingModulesAreProcessedIfPassedAsArray()
     {
-        $injector = BindingFactory::createInjector(array(new AppTestBindingModuleOne(),
-                                                         'stubbles\test\ioc\AppTestBindingModuleTwo'
-                                                   )
+        $injector = BindingFactory::createInjector([new AppTestBindingModuleOne(),
+                                                    'stubbles\test\ioc\AppTestBindingModuleTwo'
+                                                   ]
                     );
         $this->assertTrue($injector->hasBinding('foo'));
         $this->assertTrue($injector->hasBinding('bar'));

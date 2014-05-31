@@ -22,7 +22,7 @@ class SingletonBindingScope implements BindingScope
      *
      * @type  object[]
      */
-    protected $instances = array();
+    protected $instances = [];
 
     /**
      * returns the requested instance from the scope

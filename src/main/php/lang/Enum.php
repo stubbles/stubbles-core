@@ -143,7 +143,7 @@ abstract class Enum
     public static function valuesOf()
     {
         $enum   = new \ReflectionClass(get_called_class());
-        $values = array();
+        $values = [];
         foreach ($enum->getStaticProperties() as $name => $instance) {
             $values[$name] = $instance->value;
         }

@@ -63,7 +63,7 @@ class QueryStringTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar',
                             $this->prefilledQueryString->getParam('foo.hm')
         );
-        $this->assertEquals(array('dummy' => 'blubb', 'more'),
+        $this->assertEquals(['dummy' => 'blubb', 'more'],
                             $this->prefilledQueryString->getParam('baz')
         );
         $this->assertEquals('',
@@ -244,7 +244,7 @@ class QueryStringTestCase extends \PHPUnit_Framework_TestCase
     public function addArrayAddsParam()
     {
         $this->assertEquals('some[foo]=bar&some[]=baz',
-                            $this->emptyQueryString->addParam('some', array('foo' => 'bar', 'baz'))
+                            $this->emptyQueryString->addParam('some', ['foo' => 'bar', 'baz'])
                                                    ->build()
         );
     }

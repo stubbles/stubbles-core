@@ -20,7 +20,7 @@ class ParsedUri
      *
      * @type  array
      */
-    private $uri         = array();
+    private $uri         = [];
     /**
      * query string of uri
      *
@@ -223,7 +223,7 @@ class ParsedUri
      */
     public function isLocalHost()
     {
-        return in_array($this->uri['host'], array('localhost', '127.0.0.1', '[::1]'));
+        return in_array($this->uri['host'], ['localhost', '127.0.0.1', '[::1]']);
     }
 
     /**

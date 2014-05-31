@@ -71,7 +71,7 @@ abstract class App
             return $className::__bindings($projectPath);
         }
 
-        return array();
+        return [];
     }
 
     /**

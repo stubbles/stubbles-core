@@ -211,7 +211,7 @@ class Injector
      */
     public function getInjectionValuesForMethod(ReflectionMethod $method, BaseReflectionClass $class)
     {
-        $paramValues = array();
+        $paramValues = [];
         $defaultName = $this->getMethodBindingName($method);
         foreach ($method->getParameters() as $param) {
             $type  = $this->getParamType($method, $param);

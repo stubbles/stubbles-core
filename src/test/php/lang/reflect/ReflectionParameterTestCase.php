@@ -128,24 +128,24 @@ class ReflectionParameterTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->refParamFunction = new ReflectionParameter('stubbles\lang\\reflect\test_function', 'param');
-        $this->refParamMethod1  = new ReflectionParameter(array('stubbles\lang\\reflect\ParamTestHelper',
-                                                                'paramTest'
-                                                          ),
+        $this->refParamMethod1  = new ReflectionParameter(['stubbles\lang\\reflect\ParamTestHelper',
+                                                           'paramTest'
+                                                          ],
                                                           'param'
                                       );
-        $this->refParamMethod2  = new ReflectionParameter(array('stubbles\lang\\reflect\ParamTestHelper2',
-                                                                'paramTest'
-                                                          ),
+        $this->refParamMethod2  = new ReflectionParameter(['stubbles\lang\\reflect\ParamTestHelper2',
+                                                           'paramTest'
+                                                          ],
                                                           'param'
                                       );
-        $this->refParamMethod3  = new ReflectionParameter(array('stubbles\lang\\reflect\ParamTestHelper2',
-                                                                'paramTest2'
-                                                          ),
+        $this->refParamMethod3  = new ReflectionParameter(['stubbles\lang\\reflect\ParamTestHelper2',
+                                                           'paramTest2'
+                                                          ],
                                                           'param2'
                                       );
-        $this->refParamMethod4  = new ReflectionParameter(array('stubbles\lang\\reflect\ParamTestHelper2',
-                                                                'paramTest3'
-                                                          ),
+        $this->refParamMethod4  = new ReflectionParameter(['stubbles\lang\\reflect\ParamTestHelper2',
+                                                           'paramTest3'
+                                                          ],
                                                           'param2'
                                       );
     }
@@ -220,9 +220,9 @@ class ReflectionParameterTestCase extends \PHPUnit_Framework_TestCase
         $refParamFunction = new ReflectionParameter('stubbles\lang\\reflect\\test_function', 'param');
         $this->assertTrue($this->refParamFunction->equals($refParamFunction));
         $this->assertTrue($refParamFunction->equals($this->refParamFunction));
-        $refParamMethod  = new ReflectionParameter(array('stubbles\lang\\reflect\ParamTestHelper',
-                                                         'paramTest'
-                                                   ),
+        $refParamMethod  = new ReflectionParameter(['stubbles\lang\\reflect\ParamTestHelper',
+                                                    'paramTest'
+                                                   ],
                                                    'param'
                            );
         $this->assertTrue($this->refParamMethod1->equals($refParamMethod));
@@ -396,9 +396,9 @@ class ReflectionParameterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getTypeReturnsTypeFromArrayTypeHint()
     {
-        $refParam = new ReflectionParameter(array('stubbles\lang\\reflect\ParamTestHelper2',
-                                                  'paramTest4'
-                                            ),
+        $refParam = new ReflectionParameter(['stubbles\lang\\reflect\ParamTestHelper2',
+                                             'paramTest4'
+                                            ],
                                             'param2'
                     );
         $this->assertSame(ReflectionPrimitive::$ARRAY, $refParam->getType());
@@ -410,9 +410,9 @@ class ReflectionParameterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getTypeReturnsTypeFromDocCommentForPrimitives()
     {
-        $refParam = new ReflectionParameter(array('stubbles\lang\\reflect\ParamTestHelper',
-                                                  'paramTest'
-                                            ),
+        $refParam = new ReflectionParameter(['stubbles\lang\\reflect\ParamTestHelper',
+                                             'paramTest'
+                                            ],
                                             'secondParam'
                     );
         $this->assertSame(ReflectionPrimitive::$INT, $refParam->getType());
@@ -424,9 +424,9 @@ class ReflectionParameterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getTypeReturnsTypeFromDocCommentForMixed()
     {
-        $refParam = new ReflectionParameter(array('stubbles\lang\\reflect\ParamTestHelper',
-                                                  'paramTest'
-                                            ),
+        $refParam = new ReflectionParameter(['stubbles\lang\\reflect\ParamTestHelper',
+                                             'paramTest'
+                                            ],
                                             'param'
                     );
         $this->assertSame(MixedType::$MIXED, $refParam->getType());

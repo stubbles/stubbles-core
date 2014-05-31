@@ -23,8 +23,8 @@ class BsdSocketTestCase extends \PHPUnit_Framework_TestCase
     protected function createBsdSocketMock()
     {
         return $this->getMock('stubbles\peer\BsdSocket',
-                              array('isConnected', 'disconnect', 'doRead'),
-                              array(SocketDomain::$AF_INET, 'example.com', 80)
+                              ['isConnected', 'disconnect', 'doRead'],
+                              [SocketDomain::$AF_INET, 'example.com', 80]
                );
     }
 

@@ -100,15 +100,16 @@ class ReflectionPrimitive extends Enum implements ReflectionType
             return true;
         }
 
-        return in_array($name,
-                        array('string',
-                              'int',
-                              'integer',
-                              'float',
-                              'double',
-                              'bool',
-                              'boolean'
-                        )
+        return in_array(
+                    $name,
+                    ['string',
+                     'int',
+                     'integer',
+                     'float',
+                     'double',
+                     'bool',
+                     'boolean'
+                    ]
 
         );
     }

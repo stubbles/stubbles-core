@@ -88,7 +88,7 @@ class ToStringTestCase extends \PHPUnit_Framework_TestCase
     public function toStringWithArrayProperty()
     {
         $object = new SomeObject1();
-        $object->foo = array('bar' => 'baz');
+        $object->foo = ['bar' => 'baz'];
         $this->assertEquals('stubbles\\test\lang\SomeObject1 {
     bar(integer): 5
     foo(array): [..](1)

@@ -54,10 +54,10 @@ class SocketOptionsTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getUnsetOptionWithDefaultValueReturnsDefaultValue()
     {
-        $this->assertEquals(array('sec' => 2, 'usec' => 0),
+        $this->assertEquals(['sec' => 2, 'usec' => 0],
                             $this->socketOptions->get(SOL_TCP,
                                                       SO_RCVTIMEO,
-                                                      array('sec' => 2, 'usec' => 0)
+                                                      ['sec' => 2, 'usec' => 0]
                             )
         );
     }
@@ -67,14 +67,14 @@ class SocketOptionsTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getSetOptionReturnsValue()
     {
-        $this->assertEquals(array('sec' => 5, 'usec' => 2),
+        $this->assertEquals(['sec' => 5, 'usec' => 2],
                             $this->socketOptions->set(SOL_TCP,
                                                       SO_RCVTIMEO,
-                                                      array('sec' => 5, 'usec' => 2)
+                                                      ['sec' => 5, 'usec' => 2]
                                                   )
                                                 ->get(SOL_TCP,
                                                       SO_RCVTIMEO,
-                                                      array('sec' => 2, 'usec' => 0)
+                                                      ['sec' => 2, 'usec' => 0]
                             )
         );
     }

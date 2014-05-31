@@ -20,29 +20,29 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
      *
      * @type  string[]
      */
-    protected $forbiddenAnnotationNames = array('deprecated',
-                                                'example',
-                                                'ignore',
-                                                'internal',
-                                                'link',
-                                                'method',
-                                                'package',
-                                                'param',
-                                                'property',
-                                                'property-read',
-                                                'property-write',
-                                                'return',
-                                                'see',
-                                                'since',
-                                                'static',
-                                                'subpackage',
-                                                'throws',
-                                                'todo',
-                                                'type',
-                                                'uses',
-                                                'var',
-                                                'version'
-                                          );
+    protected $forbiddenAnnotationNames = ['deprecated',
+                                           'example',
+                                           'ignore',
+                                           'internal',
+                                           'link',
+                                           'method',
+                                           'package',
+                                           'param',
+                                           'property',
+                                           'property-read',
+                                           'property-write',
+                                           'return',
+                                           'see',
+                                           'since',
+                                           'static',
+                                           'subpackage',
+                                           'throws',
+                                           'todo',
+                                           'type',
+                                           'uses',
+                                           'var',
+                                           'version'
+                                          ];
     /**
      * name of the annotation
      *

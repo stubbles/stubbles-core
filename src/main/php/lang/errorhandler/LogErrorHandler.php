@@ -24,21 +24,21 @@ class LogErrorHandler implements ErrorHandler
      *
      * @type  string[]
      */
-    private static $levelStrings  = array(E_ERROR             => 'E_ERROR',
-                                          E_WARNING           => 'E_WARNING',
-                                          E_PARSE             => 'E_PARSE',
-                                          E_NOTICE            => 'E_NOTICE',
-                                          E_CORE_ERROR        => 'E_CORE_ERROR',
-                                          E_CORE_WARNING      => 'E_CORE_WARNING',
-                                          E_COMPILE_ERROR     => 'E_COMPILE_ERROR',
-                                          E_COMPILE_WARNING   => 'E_COMPILE_WARNING',
-                                          E_USER_ERROR        => 'E_USER_ERROR',
-                                          E_USER_WARNING      => 'E_USER_WARNING',
-                                          E_USER_NOTICE       => 'E_USER_NOTICE',
-                                          E_STRICT            => 'E_STRICT',
-                                          E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
-                                          E_ALL               => 'E_ALL'
-                                    );
+    private static $levelStrings  = [E_ERROR             => 'E_ERROR',
+                                     E_WARNING           => 'E_WARNING',
+                                     E_PARSE             => 'E_PARSE',
+                                     E_NOTICE            => 'E_NOTICE',
+                                     E_CORE_ERROR        => 'E_CORE_ERROR',
+                                     E_CORE_WARNING      => 'E_CORE_WARNING',
+                                     E_COMPILE_ERROR     => 'E_COMPILE_ERROR',
+                                     E_COMPILE_WARNING   => 'E_COMPILE_WARNING',
+                                     E_USER_ERROR        => 'E_USER_ERROR',
+                                     E_USER_WARNING      => 'E_USER_WARNING',
+                                     E_USER_NOTICE       => 'E_USER_NOTICE',
+                                     E_STRICT            => 'E_STRICT',
+                                     E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
+                                     E_ALL               => 'E_ALL'
+                                    ];
     /**
      * directory to log errors into
      *
@@ -86,7 +86,7 @@ class LogErrorHandler implements ErrorHandler
      * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true
      */
-    public function isResponsible($level, $message, $file = null, $line = null, array $context = array())
+    public function isResponsible($level, $message, $file = null, $line = null, array $context = [])
     {
         return true;
     }
@@ -104,7 +104,7 @@ class LogErrorHandler implements ErrorHandler
      * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error is supressable, else false
      */
-    public function isSupressable($level, $message, $file = null, $line = null, array $context = array())
+    public function isSupressable($level, $message, $file = null, $line = null, array $context = [])
     {
         return false;
     }
@@ -119,7 +119,7 @@ class LogErrorHandler implements ErrorHandler
      * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error message should populate $php_errormsg, else false
      */
-    public function handle($level, $message, $file = null, $line = null, array $context = array())
+    public function handle($level, $message, $file = null, $line = null, array $context = [])
     {
         $logData  = date('Y-m-d H:i:s') . '|' . $level;
         $logData .= '|' . ((isset(self::$levelStrings[$level])) ? (self::$levelStrings[$level]) : ('unknown'));

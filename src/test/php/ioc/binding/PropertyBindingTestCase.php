@@ -46,11 +46,11 @@ class PropertyBindingTestCase extends \PHPUnit_Framework_TestCase
                                        ->disableOriginalConstructor()
                                        ->getMock();
         $this->mockMode         = $this->getMock('stubbles\lang\Mode');
-        $this->propertyBinding  = new PropertyBinding(new Properties(array('PROD'   => array('foo.bar' => 'baz'),
-                                                                           'config' => array('foo.bar' => 'default',
-                                                                                             'other'   => 'someValue'
-                                                                                       )
-                                                                     )
+        $this->propertyBinding  = new PropertyBinding(new Properties(['PROD'   => ['foo.bar' => 'baz'],
+                                                                      'config' => ['foo.bar' => 'default',
+                                                                                   'other'   => 'someValue'
+                                                                                  ]
+                                                                     ]
                                                       ),
                                                       $this->mockMode
 

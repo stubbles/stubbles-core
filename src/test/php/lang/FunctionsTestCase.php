@@ -30,17 +30,17 @@ class FunctionsTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getTypeDefinitions()
     {
-        return array(array('string', ReflectionPrimitive::$STRING),
-                     array('int', ReflectionPrimitive::$INT),
-                     array('integer', ReflectionPrimitive::$INTEGER),
-                     array('float', ReflectionPrimitive::$FLOAT),
-                     array('double', ReflectionPrimitive::$DOUBLE),
-                     array('bool', ReflectionPrimitive::$BOOL),
-                     array('boolean', ReflectionPrimitive::$BOOLEAN),
-                     array('array', ReflectionPrimitive::$ARRAY),
-                     array('mixed', MixedType::$MIXED),
-                     array('object', MixedType::$OBJECT)
-        );
+        return [['string', ReflectionPrimitive::$STRING],
+                ['int', ReflectionPrimitive::$INT],
+                ['integer', ReflectionPrimitive::$INTEGER],
+                ['float', ReflectionPrimitive::$FLOAT],
+                ['double', ReflectionPrimitive::$DOUBLE],
+                ['bool', ReflectionPrimitive::$BOOL],
+                ['boolean', ReflectionPrimitive::$BOOLEAN],
+                ['array', ReflectionPrimitive::$ARRAY],
+                ['mixed', MixedType::$MIXED],
+                ['object', MixedType::$OBJECT]
+        ];
     }
 
     /**
@@ -108,7 +108,7 @@ class FunctionsTestCase extends \PHPUnit_Framework_TestCase
      */
     private function createdCachedAnnotation()
     {
-        return serialize(array(Annotation::TARGET_CLASS => array('foo' => array('bar' => new Annotation('bar')))));
+        return serialize([Annotation::TARGET_CLASS => ['foo' => ['bar' => new Annotation('bar')]]]);
     }
 
     /**

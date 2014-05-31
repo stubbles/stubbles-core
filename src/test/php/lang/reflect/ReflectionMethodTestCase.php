@@ -245,8 +245,8 @@ class ReflectionMethodTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getParametersReturnsEmptyListIfMethodDoesNotHaveParameters()
     {
-        $this->assertEquals(array(), $this->refMethod1->getParameters());
-        $this->assertEquals(array(), $this->refMethod3->getParameters());
+        $this->assertEquals([], $this->refMethod1->getParameters());
+        $this->assertEquals([], $this->refMethod3->getParameters());
     }
 
     /**

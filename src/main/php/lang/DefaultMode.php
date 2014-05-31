@@ -202,9 +202,9 @@ class DefaultMode implements Mode
             throw new IllegalArgumentException('Given class must be a class name or a class instance.');
         }
 
-        $this->exceptionHandler = array('class'  => $class,
-                                        'method' => $methodName
-                                  );
+        $this->exceptionHandler = ['class'  => $class,
+                                   'method' => $methodName
+                                  ];
         return $this;
     }
 
@@ -248,9 +248,9 @@ class DefaultMode implements Mode
             throw new IllegalArgumentException('Given class must be a class name or a class instance.');
         }
 
-        $this->errorHandler = array('class'  => $class,
-                                    'method' => $methodName
-                              );
+        $this->errorHandler = ['class'  => $class,
+                               'method' => $methodName
+                              ];
         return $this;
     }
 
@@ -300,6 +300,6 @@ class DefaultMode implements Mode
     protected function createCallback($class, $methodName, $projectPath)
     {
         $instance = ((is_string($class)) ? (new $class($projectPath)) : ($class));
-        return array($instance, $methodName);
+        return [$instance, $methodName];
     }
 }

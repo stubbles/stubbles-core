@@ -20,7 +20,7 @@ class CompositeErrorHandler implements ErrorHandler
      *
      * @type  ErrorHandler[]
      */
-    private $errorHandlers = array();
+    private $errorHandlers = [];
 
     /**
      * adds an error handler to the collection
@@ -45,7 +45,7 @@ class CompositeErrorHandler implements ErrorHandler
      * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error handler is responsible, else false
      */
-    public function isResponsible($level, $message, $file = null, $line = null, array $context = array())
+    public function isResponsible($level, $message, $file = null, $line = null, array $context = [])
     {
         foreach ($this->errorHandlers as $errorHandler) {
             if ($errorHandler->isResponsible($level, $message, $file, $line, $context) == true) {
@@ -66,7 +66,7 @@ class CompositeErrorHandler implements ErrorHandler
      * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error is supressable, else false
      */
-    public function isSupressable($level, $message, $file = null, $line = null, array $context = array())
+    public function isSupressable($level, $message, $file = null, $line = null, array $context = [])
     {
         foreach ($this->errorHandlers as $errorHandler) {
             if ($errorHandler->isSupressable($level, $message, $file, $line, $context) == false) {
@@ -87,7 +87,7 @@ class CompositeErrorHandler implements ErrorHandler
      * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error message should populate $php_errormsg, else false
      */
-    public function handle($level, $message, $file = null, $line = null, array $context = array())
+    public function handle($level, $message, $file = null, $line = null, array $context = [])
     {
         $errorReporting = error_reporting();
         foreach ($this->errorHandlers as $errorHandler) {

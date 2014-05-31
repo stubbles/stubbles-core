@@ -76,9 +76,9 @@ class AbstractDecoratedOutputStreamTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->mockOutputStream->expects($this->once())
                                ->method('writeLines')
-                               ->with($this->equalTo(array('foo', 'bar')))
+                               ->with($this->equalTo(['foo', 'bar']))
                                ->will($this->returnValue(8));
-        $this->assertEquals(8, $this->abstractDecoratedOutputStream->writeLines(array('foo', 'bar')));
+        $this->assertEquals(8, $this->abstractDecoratedOutputStream->writeLines(['foo', 'bar']));
     }
 
     /**

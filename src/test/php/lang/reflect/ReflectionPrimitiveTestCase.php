@@ -458,19 +458,19 @@ class ReflectionPrimitiveTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getTypes()
     {
-        return array(array('string', true),
-                     array('int', true),
-                     array('integer', true),
-                     array('float', true),
-                     array('double', true),
-                     array('bool', true),
-                     array('boolean', true),
-                     array('array', true),
-                     array('mixed', false),
-                     array('object', false),
-                     array('void', false),
-                     array('\stdClass', false),
-        );
+        return [['string', true],
+                ['int', true],
+                ['integer', true],
+                ['float', true],
+                ['double', true],
+                ['bool', true],
+                ['boolean', true],
+                ['array', true],
+                ['mixed', false],
+                ['object', false],
+                ['void', false],
+                ['\stdClass', false],
+        ];
     }
 
     /**

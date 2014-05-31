@@ -21,7 +21,7 @@ class SocketOptions
      *
      * @type  array
      */
-    protected $options = array();
+    protected $options = [];
     /**
      * connection where options are bound to
      *
@@ -102,7 +102,7 @@ class SocketOptions
     protected function store($level, $name, $value)
     {
         if (!isset($this->options[$level])) {
-            $this->options[$level] = array();
+            $this->options[$level] = [];
         }
 
         $this->options[$level][$name] = $value;

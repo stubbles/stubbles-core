@@ -37,11 +37,11 @@ class PropertyTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->mockMode = $this->getMock('stubbles\lang\Mode');
         $binder = new Binder();
-        $binder->bindProperties(new Properties(array('PROD'   => array('example.foo' => 'baz'),
-                                                     'config' => array('example.foo' => 'default',
-                                                                       'example.bar' => 'someValue'
-                                                                 )
-                                               )
+        $binder->bindProperties(new Properties(['PROD'   => ['example.foo' => 'baz'],
+                                                'config' => ['example.foo' => 'default',
+                                                             'example.bar' => 'someValue'
+                                                            ]
+                                               ]
                                 ),
                                 $this->mockMode
         );

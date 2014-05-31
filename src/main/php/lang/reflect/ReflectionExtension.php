@@ -74,7 +74,7 @@ class ReflectionExtension extends \ReflectionExtension
     public function getFunctions()
     {
         $functions        = parent::getFunctions();
-        $stubRefFunctions = array();
+        $stubRefFunctions = [];
         foreach ($functions as $function) {
             $stubRefFunctions[] = new ReflectionFunction($function->getName());
         }
@@ -90,7 +90,7 @@ class ReflectionExtension extends \ReflectionExtension
     public function getClasses()
     {
         $classes        = parent::getClasses();
-        $stubRefClasses = array();
+        $stubRefClasses = [];
         foreach ($classes as $class) {
             $stubRefClasses[] = new ReflectionClass($class->getName());
         }

@@ -91,7 +91,7 @@ class ModifiableProperties extends Properties
     public function setValue($section, $name, $value)
     {
         if (!isset($this->propertyData[$section])) {
-            $this->propertyData[$section] = array();
+            $this->propertyData[$section] = [];
         }
 
         $this->propertyData[$section][$name] = (string) $value;
@@ -146,7 +146,7 @@ class ModifiableProperties extends Properties
      */
     public function setHashValue($section, $name, array $hash)
     {
-        $values = array();
+        $values = [];
         foreach($hash as $key => $val) {
             $values[] = $key . ':' . $val;
         }

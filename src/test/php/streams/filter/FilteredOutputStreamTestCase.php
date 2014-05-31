@@ -114,6 +114,6 @@ class FilteredOutputStreamTestCase extends \PHPUnit_Framework_TestCase
         $this->mockStreamFilter->expects($this->exactly(2))
                                ->method('shouldFilter')
                                ->will($this->onConsecutiveCalls(false, true));
-        $this->assertEquals(3, $this->filteredOutputStream->writeLines(array('foo', 'bar')));
+        $this->assertEquals(3, $this->filteredOutputStream->writeLines(['foo', 'bar']));
     }
 }

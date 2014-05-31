@@ -111,7 +111,7 @@ abstract class MultiBinding implements Binding
      */
     private function resolve(Injector $injector, $type)
     {
-        $resolved = array();
+        $resolved = [];
         foreach ($this->getBindings() as $key => $bindingValue) {
             $value = $bindingValue($injector, $this->name, $key);
             if ($this->isTypeMismatch($type, $value)) {

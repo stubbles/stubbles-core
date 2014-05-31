@@ -28,7 +28,7 @@ class AnnotationFactory
      *
      * @type  array
      */
-    private static $annotations = array();
+    private static $annotations = [];
 
     /**
      * Creates an annotation from the given docblock comment.

@@ -33,7 +33,7 @@ class SocketOutputStreamTestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->mockSocket        = $this->getMock('stubbles\peer\Socket', array(), array('example.com'));
+        $this->mockSocket        = $this->getMock('stubbles\peer\Socket', [], ['example.com']);
         $this->mockSocket->expects($this->once())
                          ->method('connect');
         $this->socketOutputStream = new SocketOutputStream($this->mockSocket);
@@ -76,7 +76,7 @@ class SocketOutputStreamTestCase extends \PHPUnit_Framework_TestCase
                          ->method('write')
                          ->with($this->equalTo("bar\r\n"))
                          ->will($this->returnValue(5));
-        $this->assertEquals(10, $this->socketOutputStream->writeLines(array('foo', 'bar')));
+        $this->assertEquals(10, $this->socketOutputStream->writeLines(['foo', 'bar']));
     }
 
     /**

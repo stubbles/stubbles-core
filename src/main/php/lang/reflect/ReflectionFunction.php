@@ -105,7 +105,7 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
     public function getParameters()
     {
         $parameters     = parent::getParameters();
-        $stubParameters = array();
+        $stubParameters = [];
         foreach ($parameters as $parameter) {
             $stubParameters[] = new ReflectionParameter($this, $parameter->getName());
         }

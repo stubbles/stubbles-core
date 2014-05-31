@@ -21,7 +21,7 @@ class AcceptHeader implements \Countable
      *
      * @type  array
      */
-    protected $acceptables = array();
+    protected $acceptables = [];
 
     /**
      * method to create an instance from a string header value
@@ -213,7 +213,7 @@ class AcceptHeader implements \Countable
      */
     public function asString()
     {
-        $parts = array();
+        $parts = [];
         foreach ($this->acceptables as $acceptable => $priority) {
             if (1.0 === $priority) {
                 $parts[] = $acceptable;

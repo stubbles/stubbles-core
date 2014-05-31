@@ -36,7 +36,7 @@ class Properties implements \Iterator
      * @api
      * @param  array  $propertyData  the property data
      */
-    public function __construct(array $propertyData = array())
+    public function __construct(array $propertyData = [])
     {
         $this->propertyData = $propertyData;
     }
@@ -131,7 +131,7 @@ class Properties implements \Iterator
      * @param   array   $default  value to return if section does not exist
      * @return  scalar[]
      */
-    public function getSection($section, array $default = array())
+    public function getSection($section, array $default = [])
     {
         if (isset($this->propertyData[$section])) {
             return $this->propertyData[$section];
@@ -148,7 +148,7 @@ class Properties implements \Iterator
      * @param   string[]  $default  value to return if section does not exist
      * @return  string[]
      */
-    public function getSectionKeys($section, array $default = array())
+    public function getSectionKeys($section, array $default = [])
     {
         if (isset($this->propertyData[$section])) {
             return array_keys($this->propertyData[$section]);
@@ -277,7 +277,7 @@ class Properties implements \Iterator
      * <code>
      * key = "foo|bar|baz"
      * </code>
-     * The resulting array would be array('foo', 'bar', 'baz')
+     * The resulting array would be ['foo', 'bar', 'baz']
      *
      * @api
      * @param   string  $section  name of the section
@@ -292,7 +292,7 @@ class Properties implements \Iterator
         }
 
         if (empty($this->propertyData[$section][$key])) {
-            return array();
+            return [];
         }
 
         return explode('|', $this->propertyData[$section][$key]);
@@ -310,7 +310,7 @@ class Properties implements \Iterator
      * <code>
      * key = "foo:bar|baz"
      * </code>
-     * The resulting hash would be array('foo' => 'bar', 'baz')
+     * The resulting hash would be ['foo' => 'bar', 'baz']
      *
      * @api
      * @param   string  $section  name of the section
@@ -325,10 +325,10 @@ class Properties implements \Iterator
         }
 
         if (empty($this->propertyData[$section][$key])) {
-            return array();
+            return [];
         }
 
-        $hash = array();
+        $hash = [];
         foreach (explode('|', $this->propertyData[$section][$key]) as $keyValue) {
             if (strstr($keyValue, ':') !== false) {
                 list($key, $value) = explode(':', $keyValue, 2);
@@ -348,7 +348,7 @@ class Properties implements \Iterator
      * <code>
      * key = 1..5
      * </code>
-     * This will return an array: array(1, 2, 3, 4, 5)
+     * This will return an array: [1, 2, 3, 4, 5]
      * Works also with letters and reverse order:
      * <code>
      * letters = a..e
@@ -362,19 +362,19 @@ class Properties implements \Iterator
      * @param   array   $default  range to return if section or key does not exist
      * @return  array
      */
-    public function parseRange($section, $key, array $default = array())
+    public function parseRange($section, $key, array $default = [])
     {
         if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
             return $default;
         }
 
         if (!strstr($this->propertyData[$section][$key], '..')) {
-            return array();
+            return [];
         }
 
         list($min, $max) = explode('..', $this->propertyData[$section][$key]);
         if (null == $min || null == $max) {
-            return array();
+            return [];
         }
 
         return range($min, $max);

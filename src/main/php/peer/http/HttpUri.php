@@ -36,7 +36,7 @@ abstract class HttpUri extends Uri
         $uri = new ConstructedHttpUri(new ParsedUri($uriString));
         if ($uri->isValid()) {
             if ($uri->parsedUri->getPath() == null) {
-                $uri->parsedUri = $uri->parsedUri->transpose(array("path" => "/"));
+                $uri->parsedUri = $uri->parsedUri->transpose(['path' => '/']);
             }
 
             return $uri;
@@ -138,7 +138,7 @@ abstract class HttpUri extends Uri
             return $this;
         }
 
-        return new ConstructedHttpUri($this->parsedUri->transpose(array('scheme' => Http::SCHEME)));
+        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME]));
     }
 
     /**
@@ -153,7 +153,7 @@ abstract class HttpUri extends Uri
             return $this;
         }
 
-        return new ConstructedHttpUri($this->parsedUri->transpose(array('scheme' => Http::SCHEME_SSL)));
+        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME_SSL]));
     }
 
     /**

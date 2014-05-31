@@ -21,7 +21,7 @@ class HeaderList implements \IteratorAggregate
      *
      * @type  array
      */
-    private $headers = array();
+    private $headers = [];
 
     /**
      * constructor
@@ -29,7 +29,7 @@ class HeaderList implements \IteratorAggregate
      * @param  array  $headers
      * @since  2.0.0
      */
-    public function __construct(array $headers = array())
+    public function __construct(array $headers = [])
     {
         $this->headers = $headers;
     }
@@ -53,8 +53,8 @@ class HeaderList implements \IteratorAggregate
      */
     private static function parse($headers)
     {
-        $header  = array();
-        $matches = array();
+        $header  = [];
+        $matches = [];
         preg_match_all('=^(.[^: ]+): ([^\r\n]*)=m', $headers, $matches, PREG_SET_ORDER);
         foreach ($matches as $line) {
             $header[$line[1]] = $line[2];
@@ -217,7 +217,7 @@ class HeaderList implements \IteratorAggregate
      */
     public function clear()
     {
-        $this->headers = array();
+        $this->headers = [];
         return $this;
     }
 

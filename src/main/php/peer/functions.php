@@ -34,7 +34,7 @@ namespace stubbles\peer {
      * @since   3.1.0
      * @api
      */
-    function headers(array $headers = array())
+    function headers(array $headers = [])
     {
         return new HeaderList($headers);
     }

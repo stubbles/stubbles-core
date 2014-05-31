@@ -20,7 +20,7 @@ class AnnotationParamsState extends AnnotationAbstractState implements Annotatio
      *
      * @type  string[]
      */
-    protected $doNothingTokens = array(',', ' ', "\r", "\n", "\t", '*');
+    protected $doNothingTokens = [',', ' ', "\r", "\n", "\t", '*'];
 
     /**
      * processes a token
@@ -34,7 +34,7 @@ class AnnotationParamsState extends AnnotationAbstractState implements Annotatio
             return;
         }
 
-        if (in_array($token, $this->doNothingTokens) == true) {
+        if (in_array($token, $this->doNothingTokens)) {
             return;
         }
 
