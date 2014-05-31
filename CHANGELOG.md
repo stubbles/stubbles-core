@@ -23,6 +23,10 @@
    * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
    * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
 
+### Other changes
+
+  * `stubbles\lang\ResourceLoader` now supports PSR-4
+
 
 3.5.3 (2014-05-07)
 ------------------
