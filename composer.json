@@ -9,7 +9,7 @@
     },
     "require-dev": {
         "mikey179/vfsStream": "~1.2",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.1"
     },
     "autoload": {
         "psr-0": {
@@ -22,7 +22,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.5.x-dev"
+            "dev-master": "4.0.x-dev"
         }
     }
 }
