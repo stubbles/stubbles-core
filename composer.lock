@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "3d28a7036e635aabbcfc1c25cb92de77",
+    "hash": "6c1f544865954ddcf05af9172e0b4ddc",
     "packages": [],
     "packages-dev": [
         {
@@ -683,6 +683,42 @@
             "time": "2014-03-07 15:35:33"
         },
         {
+            "name": "stubbles/core-dev",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stubbles/stubbles-core-dev.git",
+                "reference": "785a9b39f2d2efbf29d207eafa4825f4429c8d29"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stubbles/stubbles-core-dev/zipball/785a9b39f2d2efbf29d207eafa4825f4429c8d29",
+                "reference": "785a9b39f2d2efbf29d207eafa4825f4429c8d29",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "stubbles\\test\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Development stuff for Stubbles Core.",
+            "homepage": "http://stubbles.net/",
+            "time": "2014-05-31 17:19:21"
+        },
+        {
             "name": "symfony/yaml",
             "version": "v2.4.5",
             "target-dir": "Symfony/Component/Yaml",
@@ -734,7 +770,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "stubbles/core-dev": 20
+    },
     "platform": {
         "php": ">=5.4.0"
     },
