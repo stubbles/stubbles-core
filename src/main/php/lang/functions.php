@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  nstubbles
+ * @package  stubbles
  */
 namespace stubbles\lang {
     use \stubbles\lang\Properties;
@@ -78,8 +78,8 @@ namespace stubbles\lang {
      * stubbles\lang\reflect\ReflectionMethod which allows reflection on the
      * specific method.
      *
-     * @param   string|object  $class   class name of or object instance to reflect
-     * @param   string         $method  specific method to reflect
+     * @param   string|object  $class       class name of or object instance to reflect
+     * @param   string         $methodName  optional  specific method to reflect
      * @return  lang\reflect\BaseReflectionClass|ReflectionMethod
      * @since   3.1.0
      * @api
