@@ -55,7 +55,7 @@ class ResourceLoader
      */
     public function getResourceUris($resourceName)
     {
-        $uris = array();
+        $uris = [];
         foreach ($this->getSourcePathes() as $resourcePath) {
             if (file_exists($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName)) {
                 $uris[] = realpath($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName);
@@ -73,7 +73,7 @@ class ResourceLoader
     private function getSourcePathes()
     {
         if (null === self::$sourcePathes) {
-            $pathes = array();
+            $pathes = [];
             foreach ($this->getVendorPathes() as $path) {
                 if (substr($path, -13) === '/src/main/php') {
                     $path = str_replace('/src/main/php', '/src/main', $path);
@@ -97,9 +97,8 @@ class ResourceLoader
      */
     private function getVendorPathes()
     {
-        $vendorPathes    = array();
-        $namespacePathes = require self::getRootPath() . '/vendor/composer/autoload_namespaces.php';
-        foreach ($namespacePathes as $pathes) {
+        $vendorPathes = [];
+        foreach (array_merge($this->loadPsr0Pathes(), $this->loadPsr4Pathes()) as $pathes) {
             if (is_array($pathes)) {
                 $vendorPathes = array_merge($vendorPathes, $pathes);
             } else {
@@ -108,6 +107,34 @@ class ResourceLoader
         }
 
         return $vendorPathes;
+    }
+
+    /**
+     * loads list of pathes defined via PSR-0
+     *
+     * @return  string[]
+     */
+    private function loadPsr0Pathes()
+    {
+        if (file_exists(self::getRootPath() . '/vendor/composer/autoload_namespaces.php')) {
+            return require self::getRootPath() . '/vendor/composer/autoload_namespaces.php';
+        }
+
+        return [];
+    }
+
+    /**
+     * loads list of pathes defined via PSR-4
+     *
+     * @return  string[]
+     */
+    private function loadPsr4Pathes()
+    {
+        if (file_exists(self::getRootPath() . '/vendor/composer/autoload_psr4.php')) {
+            return require self::getRootPath() . '/vendor/composer/autoload_psr4.php';
+        }
+
+        return [];
     }
 
     /**
@@ -120,7 +147,7 @@ class ResourceLoader
         if (null === self::$rootPath) {
             if (\Phar::running() !== '') {
                 self::$rootPath = dirname(\Phar::running(false));
-            } elseif (file_exists(__DIR__ . '/../../../../../../composer/autoload_namespaces.php')) {
+            } elseif (file_exists(__DIR__ . '/../../../../../../composer/autoload_namespaces.php') || file_exists(__DIR__ . '/../../../../../../composer/autoload_psr4.php')) {
                 self::$rootPath = realpath(__DIR__ . '/../../../../../../../');
             } else {
                 self::$rootPath = realpath(__DIR__ . '/../../../../');
