@@ -1,3 +1,16 @@
+4.0.0 (2014-06-??)
+------------------
+
+### BC breaks
+
+   * removed `net\stubbles\ioc\App::createPropertiesBindingModule()`, deprecated since 3.4.0
+   * removed `net\stubbles\ioc\module\PropertiesBindingModule`, deprecated since 3.4.0
+   * removed `net\stubbles\ioc\App::persistAnnotations()`, deprecated since 3.1.0
+   * removed `net\stubbles\ioc\App::persistAnnotationsInFile()`, deprecated since 3.1.0
+   * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
+   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
+
+
 3.5.3 (2014-05-07)
 ------------------
 

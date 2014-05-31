@@ -8,12 +8,11 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\errorhandler\ExceptionHandler;
 /**
  * Mock class to be used as exception handler.
  */
-class ModeExceptionHandler extends BaseObject implements ExceptionHandler
+class ModeExceptionHandler implements ExceptionHandler
 {
     /**
      * path to project

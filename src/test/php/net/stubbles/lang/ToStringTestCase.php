@@ -110,32 +110,4 @@ class ToStringTestCase extends \PHPUnit_Framework_TestCase
                             __toString(5)
         );
     }
-
-    /**
-     * @deprecated  since 3.1.0, will be removed with 4.0.0
-     * @test
-     */
-    public function stringRepresentationWithNoPropertiesWithStringRepresentationBuilder()
-    {
-        $this->assertEquals('org\stubbles\\test\lang\SomeObject4 {
 }
-',
-                            StringRepresentationBuilder::buildFrom(new SomeObject4())
-        );
-    }
-
-    /**
-     * @deprecated  since 3.1.0, will be removed with 4.0.0
-     * @test
-     */
-    public function toStringWithSimpleDataTypeWithStringRepresentationBuilder()
-    {
-        $this->assertEquals('{
-    (integer): 5
-}
-',
-                            StringRepresentationBuilder::buildFrom(5)
-        );
-    }
-}
-?>

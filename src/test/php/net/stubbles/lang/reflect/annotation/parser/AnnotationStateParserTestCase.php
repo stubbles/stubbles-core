@@ -8,7 +8,6 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\lang\reflect\annotation\parser;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\Enum;
 /**
  * This is a test class that has many annotations.
@@ -47,7 +46,7 @@ class MyTestClass extends Enum
     }
 }
 MyTestClass::__static();
-class MyTestClass2 extends BaseObject
+class MyTestClass2
 {
     /**
      * a method with an annotation for its parameter
@@ -65,7 +64,7 @@ class MyTestClass2 extends BaseObject
 /**
  * Test class for bug 202.
  */
-class Bug202Class extends BaseObject
+class Bug202Class
 {
     /**
      * a method with an annotation for its parameter
