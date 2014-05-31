@@ -8,14 +8,13 @@
  * @package  net\stubbles
  */
 namespace net\stubbles\peer;
-use net\stubbles\lang\Clonable;
 /**
  * Class for operations on bsd-style sockets.
  *
  * @since     2.0.0
  * @internal
  */
-class SocketOptions implements Clonable
+class SocketOptions
 {
     /**
      * list of options for the socket
@@ -173,4 +172,3 @@ class SocketOptions implements Clonable
                     ->get($level, $name, $default);
     }
 }
-?>

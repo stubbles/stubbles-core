@@ -8,14 +8,12 @@
  * @package  net\stubbles
  */
 namespace org\stubbles\test\lang;
-use net\stubbles\lang\Clonable;
 /**
  * Helper class for the test.
  *
  * @since  3.1.0
  */
-class SomeObject4 implements Clonable
+class SomeObject4
 {
     // intentionally empty
 }
-?>
