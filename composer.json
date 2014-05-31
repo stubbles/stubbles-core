@@ -13,11 +13,11 @@
         "phpunit/phpunit": "~4.1"
     },
     "autoload": {
-        "psr-0": {
-            "net\\stubbles": "src/main/php"
+        "psr-4": {
+            "stubbles\\": "src/main/php"
         },
-        "files": ["src/main/php/net/stubbles/lang/functions.php",
-                  "src/main/php/net/stubbles/peer/functions.php"
+        "files": ["src/main/php/lang/functions.php",
+                  "src/main/php/peer/functions.php"
                  ]
     },
     "extra": {

@@ -3,6 +3,7 @@
 
 ### BC breaks
 
+   * removed namespace prefix `net`, base namespace is now `stubbles` only
    * removed the following classes, can now be found in separate package stubbles/date:
      * `net\stubbles\lang\types\Date`
      * `net\stubbles\lang\types\DateModifier`
