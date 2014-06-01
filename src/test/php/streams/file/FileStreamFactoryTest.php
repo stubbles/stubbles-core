@@ -57,11 +57,11 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($constructor->hasAnnotation('Inject'));
         $this->assertTrue($constructor->getAnnotation('Inject')->isOptional());
         $this->assertTrue($constructor->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.filemode',
+        $this->assertEquals('stubbles.filemode',
                             $constructor->getAnnotation('Named')->getName()
         );
         $this->assertTrue($constructor->hasAnnotation('Property'));
-        $this->assertEquals('net.stubbles.filemode',
+        $this->assertEquals('stubbles.filemode',
                             $constructor->getAnnotation('Property')->getName()
         );
     }

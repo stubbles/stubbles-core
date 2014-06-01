@@ -69,7 +69,7 @@ class ModeBindingModule implements BindingModule
      * adds a path type to be bound
      *
      * The path type will lead to a path available via injection. The constant
-     * name of this path will be <i>net.stubbles.$pathtype.path</i> and it's
+     * name of this path will be <i>stubbles.$pathtype.path</i> and it's
      * value will be $projectPath/$pathtype.
      *
      * @api
