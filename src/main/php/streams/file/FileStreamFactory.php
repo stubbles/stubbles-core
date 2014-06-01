@@ -26,8 +26,8 @@ class FileStreamFactory implements StreamFactory
      *
      * @param  int  $fileMode  default file mode if directory for output stream should be created
      * @Inject(optional=true)
-     * @Named('net.stubbles.filemode')
-     * @Property('net.stubbles.filemode')
+     * @Named('stubbles.filemode')
+     * @Property('stubbles.filemode')
      */
     public function __construct($fileMode = 0700)
     {
