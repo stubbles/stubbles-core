@@ -8,9 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\exception\FileNotFoundException;
-use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\IOException;
 /**
  * Properties instance which allows modification of properties.
  *
@@ -127,5 +124,15 @@ class ModifiableProperties extends Properties
     public function setRangeValue($section, $name, array $range)
     {
         return $this->setValue($section, $name, array_shift($range) . '..' . array_pop($range));
+    }
+
+    /**
+     * returns unmodifiable version of properties
+     *
+     * @return  \stubbles\lang\Properties
+     */
+    public function unmodifiable()
+    {
+        return new Properties($this->propertyData);
     }
 }

@@ -269,4 +269,16 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
                 $this->modifiableProperties->merge(new Properties([]))
         );
     }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function unmodifiableTurnsModifiableIntoNonModifiableProperties()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\Properties',
+                $this->modifiableProperties->unmodifiable()
+        );
+    }
 }
