@@ -61,15 +61,15 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->prefilledQueryString->hasParams());
         $this->assertEquals('bar',
-                            $this->prefilledQueryString->getParam('foo.hm')
+                            $this->prefilledQueryString->param('foo.hm')
         );
         $this->assertEquals(['dummy' => 'blubb', 'more'],
-                            $this->prefilledQueryString->getParam('baz')
+                            $this->prefilledQueryString->param('baz')
         );
         $this->assertEquals('',
-                            $this->prefilledQueryString->getParam('empty')
+                            $this->prefilledQueryString->param('empty')
         );
-        $this->assertNull($this->prefilledQueryString->getParam('set'));
+        $this->assertNull($this->prefilledQueryString->param('set'));
     }
 
     /**
@@ -129,7 +129,7 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function getNonExistingParamReturnsNullByDefault()
     {
-        $this->assertNull($this->emptyQueryString->getParam('doesNotExist'));
+        $this->assertNull($this->emptyQueryString->param('doesNotExist'));
     }
 
     /**
@@ -138,7 +138,7 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
     public function getNonExistingParamReturnsDefaultValue()
     {
         $this->assertEquals('example',
-                            $this->emptyQueryString->getParam('doesNotExist', 'example')
+                            $this->emptyQueryString->param('doesNotExist', 'example')
         );
     }
 
@@ -148,7 +148,7 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
     public function getExistingParamReturnsValue()
     {
         $this->assertEquals('bar',
-                            $this->prefilledQueryString->getParam('foo.hm')
+                            $this->prefilledQueryString->param('foo.hm')
         );
     }
 

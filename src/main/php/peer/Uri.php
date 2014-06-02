@@ -297,7 +297,7 @@ abstract class Uri
      */
     public function getParam($name, $defaultValue = null)
     {
-        return $this->parsedUri->queryString()->getParam($name, $defaultValue);
+        return $this->parsedUri->queryString()->param($name, $defaultValue);
     }
 
     /**
