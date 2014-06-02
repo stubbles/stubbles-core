@@ -23,7 +23,7 @@
   * removed `net\stubbles\ioc\App::persistAnnotationsInFile()`, deprecated since 3.1.0
   * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
-  * major API rework to
+  * major API rework
     * deprecated `stubbles\peer\http\AcceptHeader::getList()`, will be removed with 5.0.0
     * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead, will be removed with 5.0.0
     * deprecated `stubbles\peer\Uri::getUser()`, use `stubbles\peer\Uri::user()` instead, will be removed with 5.0.0
