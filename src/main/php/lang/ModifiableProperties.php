@@ -130,6 +130,7 @@ class ModifiableProperties extends Properties
      * returns unmodifiable version of properties
      *
      * @return  \stubbles\lang\Properties
+     * @since   4.0.0
      */
     public function unmodifiable()
     {
