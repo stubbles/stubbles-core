@@ -59,19 +59,19 @@ abstract class Uri
         }
 
         if ($this->parsedUri->hasUser()) {
-            if (preg_match('~([@:/])~', $this->parsedUri->getUser()) != 0) {
+            if (preg_match('~([@:/])~', $this->parsedUri->user()) != 0) {
                 return false;
             }
 
-            if (preg_match('~([@:/])~', $this->parsedUri->getPassword()) != 0) {
+            if (preg_match('~([@:/])~', $this->parsedUri->password()) != 0) {
                 return false;
             }
         }
 
         if ($this->parsedUri->hasHost()
-          && preg_match('!^([a-zA-Z0-9\.-]+|\[[^\]]+\])(:([0-9]+))?$!', $this->parsedUri->getHost()) != 0) {
+          && preg_match('!^([a-zA-Z0-9\.-]+|\[[^\]]+\])(:([0-9]+))?$!', $this->parsedUri->host()) != 0) {
             return true;
-        } elseif (!$this->parsedUri->hasHost() || strlen($this->parsedUri->getHost()) === 0) {
+        } elseif (!$this->parsedUri->hasHost() || strlen($this->parsedUri->host()) === 0) {
             return true;
         }
 
@@ -90,8 +90,8 @@ abstract class Uri
         }
 
         if ($this->parsedUri->isLocalHost()
-          || checkdnsrr($this->parsedUri->getHost(), 'ANY')
-          || checkdnsrr($this->parsedUri->getHost(), 'MX')) {
+          || checkdnsrr($this->parsedUri->host(), 'ANY')
+          || checkdnsrr($this->parsedUri->host(), 'MX')) {
             return true;
         }
 
@@ -151,7 +151,7 @@ abstract class Uri
      */
     public function getScheme()
     {
-        return $this->parsedUri->getScheme();
+        return $this->parsedUri->scheme();
     }
 
     /**
@@ -162,7 +162,7 @@ abstract class Uri
      */
     public function getUser($defaultUser = null)
     {
-        return $this->parsedUri->getUser($defaultUser);
+        return $this->parsedUri->user($defaultUser);
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class Uri
         }
 
         if ($this->parsedUri->hasPassword()) {
-            return $this->parsedUri->getPassword();
+            return $this->parsedUri->password();
         }
 
         return $defaultPassword;
@@ -191,7 +191,7 @@ abstract class Uri
      */
     public function getHost()
     {
-        return $this->parsedUri->getHost();
+        return $this->parsedUri->host();
     }
 
     /**
@@ -213,7 +213,7 @@ abstract class Uri
     public function getPort($defaultPort = null)
     {
         if ($this->parsedUri->hasPort()) {
-            return $this->parsedUri->getPort();
+            return $this->parsedUri->port();
         }
 
         return $defaultPort;
@@ -226,7 +226,7 @@ abstract class Uri
      */
     public function getPath()
     {
-        return $this->parsedUri->getPath();
+        return $this->parsedUri->path();
     }
 
     /**
@@ -307,6 +307,6 @@ abstract class Uri
      */
     public function getFragment()
     {
-        return $this->parsedUri->getFragment();
+        return $this->parsedUri->fragment();
     }
 }

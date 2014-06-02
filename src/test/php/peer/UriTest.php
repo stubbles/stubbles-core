@@ -871,7 +871,70 @@ class UriTest extends \PHPUnit_Framework_TestCase
     public function parsedUriReturnsNullIfNoSchemeInUri()
     {
         $parsedUri = new ParsedUri('://example.org/?wsdl#top');
-        $this->assertNull($parsedUri->getScheme());
+        $this->assertNull($parsedUri->scheme());
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function emptySchemeEqualsNull()
+    {
+        $parsedUri = new ParsedUri('://example.org/?wsdl#top');
+        $this->assertTrue($parsedUri->schemeEquals(null));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function emptySchemeDoesNotEqualEmptyString()
+    {
+        $parsedUri = new ParsedUri('://example.org/?wsdl#top');
+        $this->assertFalse($parsedUri->schemeEquals(''));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function schemeEqualsOnlyOriginalScheme()
+    {
+        $parsedUri = new ParsedUri('foo://example.org/?wsdl#top');
+        $this->assertFalse($parsedUri->schemeEquals('bar'));
+        $this->assertTrue($parsedUri->schemeEquals('foo'));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function emptyPortEqualsNull()
+    {
+        $parsedUri = new ParsedUri('foo://example.org/?wsdl#top');
+        $this->assertTrue($parsedUri->portEquals(null));
+        $this->assertFalse($parsedUri->portEquals(''));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function emptyPortDoesNotEqualEmptyString()
+    {
+        $parsedUri = new ParsedUri('foo://example.org/?wsdl#top');
+        $this->assertFalse($parsedUri->portEquals(''));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function portEqualsOnlyOriginalPort()
+    {
+        $parsedUri = new ParsedUri('foo://example.org:77/?wsdl#top');
+        $this->assertTrue($parsedUri->portEquals(77));
+        $this->assertFalse($parsedUri->portEquals(80));
     }
 
     /**
