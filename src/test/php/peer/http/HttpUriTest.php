@@ -22,8 +22,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function canCreateInstanceForSchemeHttp()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpUri',
-                                HttpUri::fromString('http://example.net/')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpUri',
+                HttpUri::fromString('http://example.net/')
         );
     }
 
@@ -33,8 +34,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function canCreateInstanceForSchemeHttps()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpUri',
-                                HttpUri::fromString('https://example.net/')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpUri',
+                HttpUri::fromString('https://example.net/')
         );
     }
 
@@ -80,9 +82,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function automaticallyAppensSlashAsPathIfNoPathSet()
     {
-        $this->assertEquals('/',
-                            HttpUri::fromString('http://example.net')
-                                   ->getPath()
+        $this->assertEquals(
+                '/',
+                HttpUri::fromString('http://example.net')->path()
         );
     }
 
@@ -92,8 +94,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfNoPortGivenInSchemeHttp()
     {
-        $this->assertTrue(HttpUri::fromString('http://example.net/')
-                                 ->hasDefaultPort()
+        $this->assertTrue(
+                HttpUri::fromString('http://example.net/')->hasDefaultPort()
         );
     }
 
@@ -103,8 +105,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfDefaultPortGivenInSchemeHttp()
     {
-        $this->assertTrue(HttpUri::fromString('http://example.net:80/')
-                                 ->hasDefaultPort()
+        $this->assertTrue(
+                HttpUri::fromString('http://example.net:80/')->hasDefaultPort()
         );
     }
 
@@ -114,8 +116,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveDefaultPortIfOtherPortGivenInSchemeHttp()
     {
-        $this->assertFalse(HttpUri::fromString('http://example.net:8080/')
-                                  ->hasDefaultPort()
+        $this->assertFalse(
+                HttpUri::fromString('http://example.net:8080/')->hasDefaultPort()
         );
     }
 
@@ -125,8 +127,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfNoPortGivenInSchemeHttps()
     {
-        $this->assertTrue(HttpUri::fromString('https://example.net/')
-                                 ->hasDefaultPort()
+        $this->assertTrue(
+                HttpUri::fromString('https://example.net/')->hasDefaultPort()
         );
     }
 
@@ -136,8 +138,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfDefaultPortGivenInSchemeHttps()
     {
-        $this->assertTrue(HttpUri::fromString('https://example.net:443/')
-                                 ->hasDefaultPort()
+        $this->assertTrue(
+                HttpUri::fromString('https://example.net:443/')->hasDefaultPort()
         );
     }
 
@@ -147,8 +149,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveDefaultPortIfOtherPortGivenInSchemeHttps()
     {
-        $this->assertFalse(HttpUri::fromString('https://example.net:8080/')
-                                  ->hasDefaultPort()
+        $this->assertFalse(
+                HttpUri::fromString('https://example.net:8080/')->hasDefaultPort()
         );
     }
 
@@ -158,9 +160,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function getPortReturnsGivenPort()
     {
-        $this->assertEquals(8080,
-                            HttpUri::fromString('http://example.net:8080/')
-                                   ->getPort()
+        $this->assertEquals(
+                8080,
+                HttpUri::fromString('http://example.net:8080/')->port()
         );
     }
 
@@ -170,9 +172,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function getPortReturns80IfSchemeIsHttp()
     {
-        $this->assertEquals(80,
-                            HttpUri::fromString('http://example.net/')
-                                   ->getPort()
+        $this->assertEquals(
+                80,
+                HttpUri::fromString('http://example.net/')->port()
         );
     }
 
@@ -182,9 +184,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function getPortReturns443IfSchemeIsHttp()
     {
-        $this->assertEquals(443,
-                            HttpUri::fromString('https://example.net/')
-                                   ->getPort()
+        $this->assertEquals(
+                443,
+                HttpUri::fromString('https://example.net/')->port()
         );
     }
 
@@ -194,8 +196,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isHttpIfSchemeIsHttp()
     {
-        $this->assertTrue(HttpUri::fromString('http://example.net/')
-                                 ->isHttp()
+        $this->assertTrue(
+                HttpUri::fromString('http://example.net/')->isHttp()
         );
     }
 
@@ -205,8 +207,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotHttpIfSchemeIsHttps()
     {
-        $this->assertFalse(HttpUri::fromString('https://example.net/')
-                                  ->isHttp()
+        $this->assertFalse(
+                HttpUri::fromString('https://example.net/')->isHttp()
         );
     }
 
@@ -216,8 +218,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isHttpsIfSchemeIsHttps()
     {
-        $this->assertTrue(HttpUri::fromString('https://example.net/')
-                                 ->isHttps()
+        $this->assertTrue(
+                HttpUri::fromString('https://example.net/')->isHttps()
         );
     }
 
@@ -227,8 +229,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotHttpsIfSchemeIsHttp()
     {
-        $this->assertFalse(HttpUri::fromString('http://example.net/')
-                                  ->isHttps()
+        $this->assertFalse(
+                HttpUri::fromString('http://example.net/')->isHttps()
         );
     }
 
@@ -258,10 +260,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function transposingToHttpsLeavesEverythingExceptScheme()
     {
-        $this->assertEquals('https://example.net:8080/foo.php?bar=baz#top',
-                            HttpUri::fromString('http://example.net:8080/foo.php?bar=baz#top')
-                                   ->toHttps()
-                                   ->asString()
+        $this->assertEquals(
+                'https://example.net:8080/foo.php?bar=baz#top',
+                HttpUri::fromString('http://example.net:8080/foo.php?bar=baz#top')
+                       ->toHttps()
+                       ->asString()
         );
     }
 
@@ -291,10 +294,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function transposingToHttpLeavesEverythingExceptScheme()
     {
-        $this->assertEquals('http://example.net:8080/foo.php?bar=baz#top',
-                            HttpUri::fromString('https://example.net:8080/foo.php?bar=baz#top')
-                                   ->toHttp()
-                                   ->asString()
+        $this->assertEquals(
+                'http://example.net:8080/foo.php?bar=baz#top',
+                HttpUri::fromString('https://example.net:8080/foo.php?bar=baz#top')
+                       ->toHttp()
+                       ->asString()
         );
     }
 
@@ -303,9 +307,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function connectCreatesHttpConnection()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpConnection',
-                                HttpUri::fromString('http://example.net/')
-                                       ->connect()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpConnection',
+                HttpUri::fromString('http://example.net/')->connect()
         );
     }
 
@@ -315,9 +319,10 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function openSocketForHttpDoesNotYieldSocketWithPrefix()
     {
-        $this->assertNull(HttpUri::fromString('http://example.net/')
-                                 ->openSocket()
-                                 ->getPrefix()
+        $this->assertNull(
+                HttpUri::fromString('http://example.net/')
+                       ->openSocket()
+                       ->getPrefix()
         );
     }
 
@@ -327,10 +332,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function openSocketForHttpsDoesYieldSocketWithPrefix()
     {
-        $this->assertEquals('ssl://',
-                            HttpUri::fromString('https://example.net/')
-                                   ->openSocket()
-                                   ->getPrefix()
+        $this->assertEquals(
+                'ssl://',
+                HttpUri::fromString('https://example.net/')
+                       ->openSocket()
+                       ->getPrefix()
         );
     }
 
@@ -340,10 +346,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function openSocketUsesDefaultTimeout()
     {
-        $this->assertEquals(5,
-                            HttpUri::fromString('http://example.net/')
-                                   ->openSocket()
-                                   ->getTimeout()
+        $this->assertEquals(
+                5,
+               HttpUri::fromString('http://example.net/')
+                      ->openSocket()
+                      ->getTimeout()
         );
     }
 
@@ -353,10 +360,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function openSocketUsesGivenTimeout()
     {
-        $this->assertEquals(2,
-                            HttpUri::fromString('http://example.net/')
-                                   ->openSocket(2)
-                                   ->getTimeout()
+        $this->assertEquals(
+                2,
+                HttpUri::fromString('http://example.net/')
+                       ->openSocket(2)
+                       ->getTimeout()
         );
     }
 }

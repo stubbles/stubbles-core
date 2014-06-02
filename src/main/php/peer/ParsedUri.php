@@ -108,13 +108,13 @@ class ParsedUri
             }
 
             $uri .= $user;
-            if ($this->hasHost()) {
+            if ($this->hasHostname()) {
                 $uri .= '@';
             }
         }
 
-        if ($this->hasHost()) {
-            $uri .= $this->host();
+        if ($this->hasHostname()) {
+            $uri .= $this->hostname();
             $port = $portCreator($this);
             if (strlen($port) > 0) {
                 $uri .= ':' . $port;
@@ -223,7 +223,7 @@ class ParsedUri
      *
      * @return  bool
      */
-    public function hasHost()
+    public function hasHostname()
     {
         return isset($this->uri['host']);
     }
@@ -243,7 +243,7 @@ class ParsedUri
      *
      * @return  string
      */
-    public function host()
+    public function hostname()
     {
         if (isset($this->uri['host'])) {
             return $this->uri['host'];

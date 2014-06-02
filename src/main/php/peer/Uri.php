@@ -68,10 +68,10 @@ abstract class Uri
             }
         }
 
-        if ($this->parsedUri->hasHost()
-          && preg_match('!^([a-zA-Z0-9\.-]+|\[[^\]]+\])(:([0-9]+))?$!', $this->parsedUri->host()) != 0) {
+        if ($this->parsedUri->hasHostname()
+          && preg_match('!^([a-zA-Z0-9\.-]+|\[[^\]]+\])(:([0-9]+))?$!', $this->parsedUri->hostname()) != 0) {
             return true;
-        } elseif (!$this->parsedUri->hasHost() || strlen($this->parsedUri->host()) === 0) {
+        } elseif (!$this->parsedUri->hasHostname() || strlen($this->parsedUri->hostname()) === 0) {
             return true;
         }
 
@@ -85,13 +85,13 @@ abstract class Uri
      */
     public function hasDnsRecord()
     {
-        if (!$this->parsedUri->hasHost()) {
+        if (!$this->parsedUri->hasHostname()) {
             return false;
         }
 
         if ($this->parsedUri->isLocalHost()
-          || checkdnsrr($this->parsedUri->host(), 'ANY')
-          || checkdnsrr($this->parsedUri->host(), 'MX')) {
+          || checkdnsrr($this->parsedUri->hostname(), 'ANY')
+          || checkdnsrr($this->parsedUri->hostname(), 'MX')) {
             return true;
         }
 
@@ -149,9 +149,20 @@ abstract class Uri
      *
      * @return  string
      */
-    public function getScheme()
+    public function scheme()
     {
         return $this->parsedUri->scheme();
+    }
+
+    /**
+     * returns the scheme of the uri
+     *
+     * @return  string
+     * @deprecated  since 4.0.0, use scheme() instead, will be removed with 5.0.0
+     */
+    public function getScheme()
+    {
+        return $this->scheme();
     }
 
     /**
@@ -160,9 +171,21 @@ abstract class Uri
      * @param   string  $defaultUser  user to return if no user is set
      * @return  string
      */
-    public function getUser($defaultUser = null)
+    public function user($defaultUser = null)
     {
         return $this->parsedUri->user($defaultUser);
+    }
+
+    /**
+     * returns the user
+     *
+     * @param   string  $defaultUser  user to return if no user is set
+     * @return  string
+     * @deprecated  since 4.0.0, use user() instead, will be removed with 5.0.0
+     */
+    public function getUser($defaultUser = null)
+    {
+        return $this->user($defaultUser);
     }
 
     /**
@@ -171,7 +194,7 @@ abstract class Uri
      * @param   string  $defaultPassword  password to return if no password is set
      * @return  string
      */
-    public function getPassword($defaultPassword = null)
+    public function password($defaultPassword = null)
     {
         if (!$this->parsedUri->hasUser()) {
             return null;
@@ -185,13 +208,36 @@ abstract class Uri
     }
 
     /**
+     * returns the password
+     *
+     * @param   string  $defaultPassword  password to return if no password is set
+     * @return  string
+     * @deprecated  since 4.0.0, use password() instead, will be removed with 5.0.0
+     */
+    public function getPassword($defaultPassword = null)
+    {
+        return $this->password($defaultPassword);
+    }
+
+    /**
      * returns hostname of the uri
      *
      * @return  string
      */
+    public function hostname()
+    {
+        return $this->parsedUri->hostname();
+    }
+
+    /**
+     * returns hostname of the uri
+     *
+     * @return  string
+     * @deprecated  since 4.0.0, use hostname() instead, will be removed with 5.0.0
+     */
     public function getHost()
     {
-        return $this->parsedUri->host();
+        return $this->hostname();
     }
 
     /**
@@ -210,7 +256,7 @@ abstract class Uri
      * @param   int  $defaultPort  port to be used if no port is defined
      * @return  int
      */
-    public function getPort($defaultPort = null)
+    public function port($defaultPort = null)
     {
         if ($this->parsedUri->hasPort()) {
             return $this->parsedUri->port();
@@ -220,13 +266,36 @@ abstract class Uri
     }
 
     /**
+     * returns port of the uri
+     *
+     * @param   int  $defaultPort  port to be used if no port is defined
+     * @return  int
+     * @deprecated  since 4.0.0, use port() instead, will be removed with 5.0.0
+     */
+    public function getPort($defaultPort = null)
+    {
+        return $this->port($defaultPort);
+    }
+
+    /**
      * returns path of the uri
      *
      * @return  string
      */
-    public function getPath()
+    public function path()
     {
         return $this->parsedUri->path();
+    }
+
+    /**
+     * returns path of the uri
+     *
+     * @return  string
+     * @deprecated  since 4.0.0, use path() instead, will be removed with 5.0.0
+     */
+    public function getPath()
+    {
+        return $this->path();
     }
 
     /**
@@ -245,9 +314,21 @@ abstract class Uri
      * @return  string
      * @since   2.1.2
      */
-    public function getQueryString()
+    public function queryString()
     {
         return $this->parsedUri->queryString()->build();
+    }
+
+    /**
+     * returns query string
+     *
+     * @return  string
+     * @since   2.1.2
+     * @deprecated  since 4.0.0, use queryString() instead, will be removed with 5.0.0
+     */
+    public function getQueryString()
+    {
+        return $this->queryString();
     }
 
     /**
@@ -295,9 +376,22 @@ abstract class Uri
      * @param   mixed   $defaultValue  default value to return if param is not set
      * @return  mixed
      */
-    public function getParam($name, $defaultValue = null)
+    public function param($name, $defaultValue = null)
     {
         return $this->parsedUri->queryString()->param($name, $defaultValue);
+    }
+
+    /**
+     * returns the value of a param
+     *
+     * @param   string  $name          name of the param
+     * @param   mixed   $defaultValue  default value to return if param is not set
+     * @return  mixed
+     * @deprecated  since 4.0.0, use param() instead, will be removed with 5.0.0
+     */
+    public function getParam($name, $defaultValue = null)
+    {
+        return $this->param($name, $defaultValue);
     }
 
     /**
@@ -305,8 +399,19 @@ abstract class Uri
      *
      * @return  string
      */
-    public function getFragment()
+    public function fragment()
     {
         return $this->parsedUri->fragment();
+    }
+
+    /**
+     * returns fragment of the uri
+     *
+     * @return  string
+     * @deprecated  since 4.0.0, use fragment() instead, will be removed with 5.0.0
+     */
+    public function getFragment()
+    {
+        return $this->fragment();
     }
 }
