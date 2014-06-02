@@ -23,6 +23,28 @@
   * removed `net\stubbles\ioc\App::persistAnnotationsInFile()`, deprecated since 3.1.0
   * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
+  * major API rework to
+    * deprecated `stubbles\peer\http\AcceptHeader::getList()`, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getUser()`, use `stubbles\peer\Uri::user()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getPassword()`, use `stubbles\peer\Uri::password()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getHost()`, use `stubbles\peer\Uri::hostname()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getPort()`, use `stubbles\peer\Uri::port()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getPath()`, use `stubbles\peer\Uri::path()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getQueryString()`, use `stubbles\peer\Uri::queryString()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getParam()`, use `stubbles\peer\Uri::param()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getFragment()`, use `stubbles\peer\Uri::fragment()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\Http::getStatusClass()`, use `stubbles\peer\http\Http::statusClassFor()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\Http::getStatusCodes()`, use `stubbles\peer\http\Http::statusCodes()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\Http::getReasonPhrase()`, use `stubbles\peer\http\Http::reasonPhraseFor()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusLine()`, use `stubbles\peer\http\HttpResponse::statusLine()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getHttpVersion()`, use `stubbles\peer\http\HttpResponse::httpVersion()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusCode()`, use `stubbles\peer\http\HttpResponse::statusCode()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusCodeClass()`, use `stubbles\peer\http\HttpResponse::statusCodeClass()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getReasonPhrase()`, use `stubbles\peer\http\HttpResponse::reasonPhrase()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getHeader()`, use `stubbles\peer\http\HttpResponse::headers()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getBody()`, use `stubbles\peer\http\HttpResponse::body()` instead, will be removed with 5.0.0
+
 
 ### Other changes
 
