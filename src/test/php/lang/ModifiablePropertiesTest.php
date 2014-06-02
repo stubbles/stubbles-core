@@ -229,7 +229,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
                  ->at($root)
                  ->withContent("[foo]\nbar=baz");
         $properties = ModifiableProperties::fromFile(vfsStream::url('config/test.ini'));
-        $this->assertInstanceOf('stubbles\lang\Properties', $properties);
+        $this->assertInstanceOf('stubbles\lang\ModifiableProperties', $properties);
         $this->assertTrue($properties->hasSection('foo'));
         $this->assertEquals(['bar' => 'baz'], $properties->getSection('foo'));
     }
@@ -253,8 +253,20 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     public function validIniStringReturnsInstance()
     {
         $properties = ModifiableProperties::fromString("[foo]\nbar=baz");
-        $this->assertInstanceOf('stubbles\lang\Properties', $properties);
+        $this->assertInstanceOf('stubbles\lang\ModifiableProperties', $properties);
         $this->assertTrue($properties->hasSection('foo'));
         $this->assertEquals(['bar' => 'baz'], $properties->getSection('foo'));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function mergeReturnsModifiableProperties()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\ModifiableProperties',
+                $this->modifiableProperties->merge(new Properties([]))
+        );
     }
 }

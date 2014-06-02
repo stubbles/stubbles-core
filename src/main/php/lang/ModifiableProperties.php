@@ -19,48 +19,6 @@ use stubbles\lang\exception\IOException;
 class ModifiableProperties extends Properties
 {
     /**
-     * construct class from string
-     *
-     * @api
-     * @param   string  $propertyString
-     * @return  ModifiableProperties
-     * @throws  IllegalArgumentException
-     * @since   2.0.0
-     */
-    public static function fromString($propertyString)
-    {
-        $propertyData = @parse_ini_string($propertyString, true);
-        if (false === $propertyData) {
-            throw new IllegalArgumentException('Property string contains errors and can not be parsed.');
-        }
-
-        return new self($propertyData);
-    }
-
-    /**
-     * construct class from a file
-     *
-     * @api
-     * @param   string  $propertiesFile  full path to file containing properties
-     * @return  ModifiableProperties
-     * @throws  FileNotFoundException  if file can not be found or is not readable
-     * @throws  IOException            if file contains errors and can not be parsed
-     */
-    public static function fromFile($propertiesFile)
-    {
-        if (!file_exists($propertiesFile) || !is_readable($propertiesFile)) {
-            throw new FileNotFoundException($propertiesFile);
-        }
-
-        $propertyData = @parse_ini_file($propertiesFile, true);
-        if (false === $propertyData) {
-            throw new IOException('Property file at ' . $propertiesFile . ' contains errors and can not be parsed.');
-        }
-
-        return new self($propertyData);
-    }
-
-    /**
      * sets a section
      *
      * If a section with this name already exists it will be replaced.

@@ -57,7 +57,7 @@ class Properties implements \Iterator
             throw new IllegalArgumentException('Property string contains errors and can not be parsed.');
         }
 
-        return new self($propertyData);
+        return new static($propertyData);
     }
 
     /**
@@ -80,7 +80,7 @@ class Properties implements \Iterator
             throw new IOException('Property file at ' . $propertiesFile . ' contains errors and can not be parsed.');
         }
 
-        return new self($propertyData);
+        return new static($propertyData);
     }
 
     /**
@@ -97,7 +97,7 @@ class Properties implements \Iterator
      */
     public function merge(Properties $otherProperties)
     {
-        return new self(array_merge($this->propertyData, $otherProperties->propertyData));
+        return new static(array_merge($this->propertyData, $otherProperties->propertyData));
     }
 
     /**
