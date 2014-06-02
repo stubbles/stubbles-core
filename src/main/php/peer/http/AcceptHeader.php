@@ -85,6 +85,7 @@ class AcceptHeader implements \Countable
      * returns current list of acceptables
      *
      * @return  array
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function getList()
     {
@@ -98,19 +99,19 @@ class AcceptHeader implements \Countable
      * case no acceptables were added before every requested acceptable has a
      * priority of 1.0.
      *
-     * @param   string  $acceptable
+     * @param   string  $mimeType
      * @return  float
      */
-    public function priorityFor($acceptable)
+    public function priorityFor($mimeType)
     {
-        if (!isset($this->acceptables[$acceptable])) {
+        if (!isset($this->acceptables[$mimeType])) {
             if ($this->count() === 0) {
                 return 1.0;
             } elseif (isset($this->acceptables['*/*'])) {
                 return $this->acceptables['*/*'];
             }
 
-            list($maintype, $subtype) = explode('/', $acceptable);
+            list($maintype, $subtype) = explode('/', $mimeType);
             if (isset($this->acceptables[$maintype . '/*'])) {
                 return $this->acceptables[$maintype . '/*'];
             }
@@ -118,29 +119,29 @@ class AcceptHeader implements \Countable
             return 0;
         }
 
-        return $this->acceptables[$acceptable];
+        return $this->acceptables[$mimeType];
     }
 
     /**
      * find match with highest priority
      *
-     * Checks given list of acceptables if they are in the list, and returns the
+     * Checks given list of mime types if they are in the list, and returns the
      * one with the greatest priority. If return value is null none of the given
-     * acceptables matches any in the list.
+     * mime types matches any in the list.
      *
-     * @param   string[]  $acceptables
+     * @param   string[]  $mimeTypes
      * @return  string
      */
-    public function findMatchWithGreatestPriority(array $acceptables)
+    public function findMatchWithGreatestPriority(array $mimeTypes)
     {
         $sharedAcceptables = array_intersect_key($this->acceptables,
-                                                 array_flip($this->getSharedAcceptables($acceptables))
+                                                 array_flip($this->getSharedAcceptables($mimeTypes))
         );
         if (count($sharedAcceptables) > 0) {
             return $this->findAcceptableWithGreatestPriorityFromList($sharedAcceptables);
         }
 
-        foreach ($acceptables as $acceptable) {
+        foreach ($mimeTypes as $acceptable) {
             list($maintype, $subtype) = explode('/', $acceptable);
             if (isset($this->acceptables[$maintype . '/*'])) {
                 return $acceptable;
@@ -148,7 +149,7 @@ class AcceptHeader implements \Countable
         }
 
         if (isset($this->acceptables['*/*'])) {
-            return array_shift($acceptables);
+            return array_shift($mimeTypes);
         }
 
         return null;

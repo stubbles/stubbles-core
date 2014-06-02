@@ -97,12 +97,11 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
     public function parseYieldsCorrectValues($parseValue, $expectedList, $expectedString)
     {
         $acceptHeader = AcceptHeader::parse($parseValue);
-        $this->assertEquals($expectedList,
-                            $acceptHeader->getList()
-        );
-        $this->assertEquals(count($expectedList),
-                            $acceptHeader->count()
-        );
+        foreach ($expectedList as $mimeType => $priority) {
+            $this->assertTrue($acceptHeader->hasSharedAcceptables([$mimeType]));
+            $this->assertEquals($priority, $acceptHeader->priorityFor($mimeType));
+        }
+
         $this->assertEquals($expectedString,
                             $acceptHeader->asString()
         );
