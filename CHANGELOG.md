@@ -24,6 +24,10 @@
   * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
   * major API rework
+    * deprecated `stubbles\lang\Properties::getSections()`, iterate over instance instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::getSection()`, use `stubbles\lang\Properties::section()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::getSectionKeys()`, use `stubbles\lang\Properties::keysForSection()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::getValue()`, use `stubbles\lang\Properties::value()` instead, will be removed with 5.0.0
     * deprecated `stubbles\peer\http\AcceptHeader::getList()`, will be removed with 5.0.0
     * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead, will be removed with 5.0.0
     * deprecated `stubbles\peer\Uri::getUser()`, use `stubbles\peer\Uri::user()` instead, will be removed with 5.0.0
