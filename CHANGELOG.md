@@ -25,8 +25,10 @@
   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
   * major API rework
     * deprecated `stubbles\lang\Properties::getSections()`, iterate over instance instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::hasSection()`, use `stubbles\lang\Properties::containSection()` instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\Properties::getSection()`, use `stubbles\lang\Properties::section()` instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\Properties::getSectionKeys()`, use `stubbles\lang\Properties::keysForSection()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::hasValue()`, use `stubbles\lang\Properties::containValue()` instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\Properties::getValue()`, use `stubbles\lang\Properties::value()` instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\ResourceLoader::getProjectResourceUri()´, use `stubbles\lang\ResourceLoader::open()` or `stubbles\lang\ResourceLoader::load()` instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\ResourceLoader::getResourceUris()´, use `stubbles\lang\ResourceLoader::listResourceUris()` instead, will be removed with 5.0.0

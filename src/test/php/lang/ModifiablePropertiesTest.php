@@ -52,7 +52,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     public function setNonExistingSectionAddsSection()
     {
         $this->assertTrue($this->modifiableProperties->setSection('doesNotExist', ['foo' => 'bar'])
-                                                     ->hasSection('doesNotExist')
+                                                     ->containSection('doesNotExist')
         );
         $this->assertEquals(['foo' => 'bar'],
                             $this->modifiableProperties->section('doesNotExist')
@@ -76,7 +76,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     public function setNonExistingValueForNonExistingSectionAddsSectionAndValue()
     {
         $this->assertTrue($this->modifiableProperties->setValue('doesNotExist', 'foo', 'bar')
-                                                     ->hasSection('doesNotExist')
+                                                     ->containSection('doesNotExist')
         );
         $this->assertEquals(['foo' => 'bar'],
                             $this->modifiableProperties->section('doesNotExist')
@@ -230,7 +230,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
                  ->withContent("[foo]\nbar=baz");
         $properties = ModifiableProperties::fromFile(vfsStream::url('config/test.ini'));
         $this->assertInstanceOf('stubbles\lang\ModifiableProperties', $properties);
-        $this->assertTrue($properties->hasSection('foo'));
+        $this->assertTrue($properties->containSection('foo'));
         $this->assertEquals(['bar' => 'baz'], $properties->section('foo'));
     }
 
@@ -254,7 +254,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     {
         $properties = ModifiableProperties::fromString("[foo]\nbar=baz");
         $this->assertInstanceOf('stubbles\lang\ModifiableProperties', $properties);
-        $this->assertTrue($properties->hasSection('foo'));
+        $this->assertTrue($properties->containSection('foo'));
         $this->assertEquals(['bar' => 'baz'], $properties->section('foo'));
     }
 

@@ -118,6 +118,20 @@ class Properties implements \Iterator
      * @api
      * @param   string  $section  name of the section
      * @return  bool
+     * @since   4.0.0
+     */
+    public function containSection($section)
+    {
+        return isset($this->propertyData[$section]);
+    }
+
+    /**
+     * checks if a certain section exists
+     *
+     * @api
+     * @param   string  $section  name of the section
+     * @return  bool
+     * @deprecated  since 4.0.0, use containSection() instead, will be removed with 5.0.0
      */
     public function hasSection($section)
     {
@@ -199,14 +213,29 @@ class Properties implements \Iterator
      * @param   string  $section  name of the section
      * @param   string  $key      name of the key
      * @return  bool
+     * @since   4.0.0
      */
-    public function hasValue($section, $key)
+    public function containValue($section, $key)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * checks if a certain section contains a certain key
+     *
+     * @api
+     * @param   string  $section  name of the section
+     * @param   string  $key      name of the key
+     * @return  bool
+     * @deprecated  since 4.0.0, use containValue() instead, will be removed with 5.0.0
+     */
+    public function hasValue($section, $key)
+    {
+        return $this->containValue($section, $key);
     }
 
     /**
