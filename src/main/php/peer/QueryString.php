@@ -189,7 +189,7 @@ class QueryString
      * @param   mixed   $defaultValue  default value to return if param is not set
      * @return  mixed
      */
-    public function getParam($name, $defaultValue = null)
+    public function param($name, $defaultValue = null)
     {
         if (array_key_exists($name, $this->parameters)) {
             return $this->parameters[$name];

@@ -43,8 +43,8 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                                          . Http::line('bar')
                                          . Http::line(dechex(0))
                         );
-        $this->assertEquals('foobar', $httpResponse->getBody());
-        $headerList   = $httpResponse->getHeader();
+        $this->assertEquals('foobar', $httpResponse->body());
+        $headerList   = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals(6, $headerList->get('Content-Length'));
@@ -61,10 +61,10 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                                          . Http::emptyLine()
                                          . 'foobar'
                         );
-        $headerList   = $httpResponse->getHeader();
+        $headerList   = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
-        $this->assertEquals('foobar', $httpResponse->getBody());
+        $this->assertEquals('foobar', $httpResponse->body());
     }
 
     /**
@@ -78,11 +78,11 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                                          . Http::emptyLine()
                                          . 'foobar'
                         );
-        $headerList   = $httpResponse->getHeader();
+        $headerList   = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals(6, $headerList->get('Content-Length'));
-        $this->assertEquals('foobar', $httpResponse->getBody());
+        $this->assertEquals('foobar', $httpResponse->body());
     }
 
     /**
@@ -96,8 +96,8 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                                          . Http::emptyLine()
                                          . 'foobar'
                         );
-        $this->assertEquals('foobar', $httpResponse->getBody());
-        $this->assertEquals('foobar', $httpResponse->getBody());
+        $this->assertEquals('foobar', $httpResponse->body());
+        $this->assertEquals('foobar', $httpResponse->body());
     }
 
     /**
@@ -114,15 +114,15 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                                          . Http::emptyLine()
                                          . 'foobar'
                         );
-        $headerList   = $httpResponse->getHeader();
+        $headerList   = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
-        $this->assertEquals('HTTP/1.0 200 OK', $httpResponse->getStatusLine());
-        $this->assertEquals(Http::VERSION_1_0, $httpResponse->getHttpVersion());
-        $this->assertEquals(200, $httpResponse->getStatusCode());
-        $this->assertEquals('OK', $httpResponse->getReasonPhrase());
-        $this->assertEquals(Http::STATUS_CLASS_SUCCESS, $httpResponse->getStatusCodeClass());
-        $this->assertEquals('foobar', $httpResponse->getBody());
+        $this->assertEquals('HTTP/1.0 200 OK', $httpResponse->statusLine());
+        $this->assertEquals(Http::VERSION_1_0, $httpResponse->httpVersion());
+        $this->assertEquals(200, $httpResponse->statusCode());
+        $this->assertEquals('OK', $httpResponse->reasonPhrase());
+        $this->assertEquals(Http::STATUS_CLASS_SUCCESS, $httpResponse->statusCodeClass());
+        $this->assertEquals('foobar', $httpResponse->body());
     }
 
     /**
@@ -139,14 +139,14 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                                          . Http::emptyLine()
                                          . 'foobar'
                         );
-        $headerList   = $httpResponse->getHeader();
+        $headerList   = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
-        $this->assertEquals('HTTP/1.1 404 Not Found', $httpResponse->getStatusLine());
-        $this->assertEquals(Http::VERSION_1_1, $httpResponse->getHttpVersion());
-        $this->assertEquals(404, $httpResponse->getStatusCode());
-        $this->assertEquals('Not Found', $httpResponse->getReasonPhrase());
-        $this->assertEquals(Http::STATUS_CLASS_ERROR_CLIENT, $httpResponse->getStatusCodeClass());
+        $this->assertEquals('HTTP/1.1 404 Not Found', $httpResponse->statusLine());
+        $this->assertEquals(Http::VERSION_1_1, $httpResponse->httpVersion());
+        $this->assertEquals(404, $httpResponse->statusCode());
+        $this->assertEquals('Not Found', $httpResponse->reasonPhrase());
+        $this->assertEquals(Http::STATUS_CLASS_ERROR_CLIENT, $httpResponse->statusCodeClass());
     }
 
     /**
@@ -158,10 +158,10 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                                          . Http::line('Host: ' . __METHOD__)
                                          . Http::emptyLine()
                         );
-        $this->assertNull($httpResponse->getStatusLine());
-        $this->assertNull($httpResponse->getHttpVersion());
-        $this->assertNull($httpResponse->getStatusCode());
-        $this->assertNull($httpResponse->getReasonPhrase());
-        $this->assertNull($httpResponse->getStatusCodeClass());
+        $this->assertNull($httpResponse->statusLine());
+        $this->assertNull($httpResponse->httpVersion());
+        $this->assertNull($httpResponse->statusCode());
+        $this->assertNull($httpResponse->reasonPhrase());
+        $this->assertNull($httpResponse->statusCodeClass());
     }
 }

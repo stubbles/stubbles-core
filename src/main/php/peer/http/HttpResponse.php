@@ -86,11 +86,36 @@ class HttpResponse
      *
      * @api
      * @return  string
+     * @since   4.0.0
+     */
+    public function statusLine()
+    {
+        return $this->readHeader()->statusLine;
+    }
+
+    /**
+     * returns status line of response
+     *
+     * @api
+     * @return  string
      * @since   2.0.0
+     * @deprecated since 4.0.0, use statusLine() instead, will be removed with 5.0.0
      */
     public function getStatusLine()
     {
-        return $this->readHeader()->statusLine;
+        return $this->statusLine();
+    }
+
+    /**
+     * returns http version of response
+     *
+     * @api
+     * @return  string
+     * @since   4.0.0
+     */
+    public function httpVersion()
+    {
+        return $this->readHeader()->version;
     }
 
     /**
@@ -99,10 +124,23 @@ class HttpResponse
      * @api
      * @return  string
      * @since   2.0.0
+     * @deprecated since 4.0.0, use httpVersion() instead, will be removed with 5.0.0
      */
     public function getHttpVersion()
     {
-        return $this->readHeader()->version;
+        return $this->httpVersion();
+    }
+
+    /**
+     * returns status code of response
+     *
+     * @api
+     * @return  int
+     * @since   4.0.0
+     */
+    public function statusCode()
+    {
+        return $this->readHeader()->statusCode;
     }
 
     /**
@@ -111,10 +149,28 @@ class HttpResponse
      * @api
      * @return  int
      * @since   2.0.0
+     * @deprecated since 4.0.0, use statusCode() instead, will be removed with 5.0.0
      */
     public function getStatusCode()
     {
-        return $this->readHeader()->statusCode;
+        return $this->statusCode();
+    }
+
+    /**
+     * return status code class of response
+     *
+     * @api
+     * @return  string
+     * @since   4.0.0
+     */
+    public function statusCodeClass()
+    {
+        $this->readHeader();
+        if (empty($this->statusCode)) {
+            return null;
+        }
+
+        return Http::statusClassFor($this->statusCode);
     }
 
     /**
@@ -123,15 +179,23 @@ class HttpResponse
      * @api
      * @return  string
      * @since   2.0.0
+     * @deprecated since 4.0.0, use statusCodeClass() instead, will be removed with 5.0.0
      */
     public function getStatusCodeClass()
     {
-        $this->readHeader();
-        if (empty($this->statusCode)) {
-            return null;
-        }
+        return $this->statusCodeClass();
+    }
 
-        return Http::getStatusClass($this->statusCode);
+    /**
+     * returns reason phrase of response
+     *
+     * @api
+     * @return  string
+     * @since   5.0.0
+     */
+    public function reasonPhrase()
+    {
+        return $this->readHeader()->reasonPhrase;
     }
 
     /**
@@ -140,10 +204,11 @@ class HttpResponse
      * @api
      * @return  string
      * @since   2.0.0
+     * @deprecated since 4.0.0, use reasonPhrase() instead, will be removed with 5.0.0
      */
     public function getReasonPhrase()
     {
-        return $this->readHeader()->reasonPhrase;
+        return $this->reasonPhrase();
     }
 
     /**
@@ -152,9 +217,21 @@ class HttpResponse
      * @api
      * @return  HeaderList
      */
-    public function getHeader()
+    public function headers()
     {
         return $this->readHeader()->headers;
+    }
+
+    /**
+     * returns list of headers from response
+     *
+     * @api
+     * @return  HeaderList
+     * @deprecated since 4.0.0, use headers() instead, will be removed with 5.0.0
+     */
+    public function getHeader()
+    {
+        return $this->headers();
     }
 
     /**
@@ -163,9 +240,21 @@ class HttpResponse
      * @api
      * @return  string
      */
-    public function getBody()
+    public function body()
     {
         return $this->readHeader()->readBody()->body;
+    }
+
+    /**
+     * returns body of response
+     *
+     * @api
+     * @return  string
+     * @deprecated since 4.0.0, use body() instead, will be removed with 5.0.0
+     */
+    public function getBody()
+    {
+        return $this->body();
     }
 
     /**

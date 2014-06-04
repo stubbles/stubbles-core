@@ -187,8 +187,9 @@ class Http
      * @api
      * @param   int  $statusCode
      * @return  string
+     * @since   4.0.0
      */
-    public static function getStatusClass($statusCode)
+    public static function statusClassFor($statusCode)
     {
         $class = substr($statusCode, 0, 1);
         if (isset(self::$statusClass[$class])) {
@@ -199,14 +200,47 @@ class Http
     }
 
     /**
+     * returns status class for given status code
+     *
+     * Returns null if given status code is empty.
+     *
+     * @api
+     * @param   int  $statusCode
+     * @return  string
+     * @deprecated  since 4.0.0, use statusClassFor() instead, will be removed with 5.0.0
+     */
+    public static function getStatusClass($statusCode)
+    {
+        $class = substr($statusCode, 0, 1);
+        if (isset(self::$statusClass[$class])) {
+            return self::$statusClass[$class];
+        }
+
+        return self::statusClassFor($statusCode);
+    }
+
+    /**
      * returns list of known status codes
      *
      * @api
      * @return  array
+     * @since   4.0.0
+     */
+    public static function statusCodes()
+    {
+        return self::$reasonPhrases;
+    }
+
+    /**
+     * returns list of known status codes
+     *
+     * @api
+     * @return  array
+     * @deprecated  since 4.0.0, use statusCodes() instead, will be removed with 5.0.0
      */
     public static function getStatusCodes()
     {
-        return self::$reasonPhrases;
+        return self::statusCodes();
     }
 
     /**
@@ -216,6 +250,25 @@ class Http
      * @param   int  $statusCode
      * @return  string
      * @throws  IllegalArgumentException
+     * @since   4.0.0
+     */
+    public static function reasonPhraseFor($statusCode)
+    {
+        if (isset(self::$reasonPhrases[$statusCode])) {
+            return self::$reasonPhrases[$statusCode];
+        }
+
+        throw new IllegalArgumentException('Invalid or unknown HTTP status code ' . $statusCode);
+    }
+
+    /**
+     * returns reason phrase for given status code
+     *
+     * @api
+     * @param   int  $statusCode
+     * @return  string
+     * @throws  IllegalArgumentException
+     * @deprecated  since 4.0.0, use reasonPhraseFor() instead, will be removed with 5.0.0
      */
     public static function getReasonPhrase($statusCode)
     {

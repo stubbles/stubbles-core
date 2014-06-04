@@ -113,7 +113,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
     public function detectCorrectStatusClass($statusCode, $statusClass)
     {
         $this->assertEquals($statusClass,
-                            Http::getStatusClass($statusCode)
+                            Http::statusClassFor($statusCode)
         );
     }
 
@@ -122,7 +122,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfStatusCodes()
     {
-        $this->assertNotCount(0, Http::getStatusCodes());
+        $this->assertNotCount(0, Http::statusCodes());
     }
 
     /**
@@ -131,7 +131,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
     public function getStatusCodeReasonPhraseTuples()
     {
         $tuples = [];
-        foreach (Http::getStatusCodes() as $statusCode => $reasonPhrase) {
+        foreach (Http::statusCodes() as $statusCode => $reasonPhrase) {
             $tuples[] = [$statusCode, $reasonPhrase];
         }
 
@@ -147,7 +147,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
     public function returnsCorrectReasonPhrase($statusCode, $reasonPhrase)
     {
         $this->assertEquals($reasonPhrase,
-                            Http::getReasonPhrase($statusCode)
+                            Http::reasonPhraseFor($statusCode)
         );
     }
 
@@ -157,7 +157,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function getReasonPhraseForUnknownStatusCodeThrowsIllegalArgumentException()
     {
-        Http::getReasonPhrase(1);
+        Http::reasonPhraseFor(1);
     }
 
     /**

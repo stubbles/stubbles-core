@@ -22,7 +22,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      *
      * @type  ResourceLoader
      */
-    protected $resourceLoader;
+    private $resourceLoader;
 
     /**
      * set up test environment
@@ -43,6 +43,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @since  3.1.2
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function returnsProjectResourceUriForExistingFile()
     {
@@ -58,6 +59,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @since  3.1.2
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function returnsProjectResourceUriForNonExistingFile()
     {
@@ -72,6 +74,117 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @since  4.0.0
+     */
+    public function openNonExistingResourceThrowsFileNotFoundException()
+    {
+        $this->resourceLoader->open('lang/doesNotExist.ini');
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @since  4.0.0
+     */
+    public function loadNonExistingResourceThrowsFileNotFoundException()
+    {
+        $this->resourceLoader->load('lang/doesNotExist.ini');
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function openLocalResourceReturnsInputStream()
+    {
+        $this->assertInstanceOf(
+                'stubbles\streams\InputStream',
+                $this->resourceLoader->open('lang/stubbles.ini')
+        );
+
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function loadLocalResourceReturnsContent()
+    {
+        $this->assertEquals(
+                "[foo]\nbar=\"baz\"\n",
+                $this->resourceLoader->load('lang/stubbles.ini')
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function openResourceWithCompletePathInRootReturnsInputStream()
+    {
+        $this->assertInstanceOf(
+                'stubbles\streams\InputStream',
+                $this->resourceLoader->open(__FILE__)
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function loadResourceWithCompletePathInRootReturnsContent()
+    {
+        $this->assertContains(
+                'loadResourceWithCompletePathInRootReturnsContent()',
+                $this->resourceLoader->load(__FILE__)
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @since  4.0.0
+     */
+    public function openResourceWithCompletePathOutsideRootThrowsFileNotFoundException()
+    {
+        $this->resourceLoader->open(tempnam(sys_get_temp_dir(), 'test.txt'));
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @since  4.0.0
+     */
+    public function loadResourceWithCompletePathOutsideRootThrowsFileNotFoundExceptionException()
+    {
+        $this->resourceLoader->load(tempnam(sys_get_temp_dir(), 'test.txt'));
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @since  4.0.0
+     */
+    public function openResourceWithCompleteRealpathOutsideRootThrowsIllegalArgumentException()
+    {
+        $resourceLoader = new ResourceLoader(__DIR__ . '/exception');
+        $resourceLoader->open(__DIR__ . '/exception/../ResourceLoaderTest.php');
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @since  4.0.0
+     */
+    public function loadResourceWithCompleteRealpathOutsideRootThrowsIllegalArgumentException()
+    {
+        $resourceLoader = new ResourceLoader(__DIR__ . '/exception');
+        $resourceLoader->load(__DIR__ . '/exception/../ResourceLoaderTest.php');
+    }
+
+    /**
+     * @test
      */
     public function returnsListOfAllResourceUrisForExistingFile()
     {
@@ -81,7 +194,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
                                     . 'resources' . DIRECTORY_SEPARATOR
                                     . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini'
                             ],
-                            $this->resourceLoader->getResourceUris('lang/stubbles.ini')
+                            $this->resourceLoader->listResourceUris('lang/stubbles.ini')
         );
     }
 
@@ -91,12 +204,13 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     public function returnsEmptyListOfAllResourceUrisForNonExistingFile()
     {
         $this->assertEquals([],
-                            $this->resourceLoader->getResourceUris('doesnot.exist')
+                            $this->resourceLoader->listResourceUris('doesnot.exist')
         );
     }
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function returnsRootPathBothStaticAndNonStatic()
     {

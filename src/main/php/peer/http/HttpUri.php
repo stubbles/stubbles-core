@@ -35,7 +35,7 @@ abstract class HttpUri extends Uri
 
         $uri = new ConstructedHttpUri(new ParsedUri($uriString));
         if ($uri->isValid()) {
-            if ($uri->parsedUri->getPath() == null) {
+            if (!$uri->parsedUri->hasPath()) {
                 $uri->parsedUri = $uri->parsedUri->transpose(['path' => '/']);
             }
 
@@ -57,7 +57,7 @@ abstract class HttpUri extends Uri
         }
 
 
-        if ($this->parsedUri->getScheme() !== Http::SCHEME && $this->parsedUri->getScheme() !== Http::SCHEME_SSL) {
+        if (!$this->parsedUri->schemeEquals(Http::SCHEME) && !$this->parsedUri->schemeEquals(Http::SCHEME_SSL)) {
             return false;
         }
 
@@ -77,11 +77,11 @@ abstract class HttpUri extends Uri
             return true;
         }
 
-        if ($this->isHttp() && $this->parsedUri->getPort() === Http::PORT) {
+        if ($this->isHttp() && $this->parsedUri->portEquals(Http::PORT)) {
             return true;
         }
 
-        if ($this->isHttps() && $this->parsedUri->getPort() === Http::PORT_SSL) {
+        if ($this->isHttps() && $this->parsedUri->portEquals(Http::PORT_SSL)) {
             return true;
         }
 
@@ -94,14 +94,26 @@ abstract class HttpUri extends Uri
      * @param   int  $defaultPort  parameter is ignored for http uris
      * @return  int
      */
-    public function getPort($defaultPort = null)
+    public function port($defaultPort = null)
     {
 
         if ($this->isHttp()) {
-            return parent::getPort(Http::PORT);
+            return parent::port(Http::PORT);
         }
 
-        return parent::getPort(Http::PORT_SSL);
+        return parent::port(Http::PORT_SSL);
+    }
+
+    /**
+     * returns port of the uri
+     *
+     * @param   int  $defaultPort  parameter is ignored for http uris
+     * @return  int
+     * @deprecated  since 4.0.0, use port() instead, will be removed with 5.0.0
+     */
+    public function getPort($defaultPort = null)
+    {
+        return $this->port($defaultPort);
     }
 
     /**
@@ -112,7 +124,7 @@ abstract class HttpUri extends Uri
      */
     public function isHttp()
     {
-        return $this->parsedUri->getScheme() === Http::SCHEME;
+        return $this->parsedUri->schemeEquals(Http::SCHEME);
     }
 
     /**
@@ -123,7 +135,7 @@ abstract class HttpUri extends Uri
      */
     public function isHttps()
     {
-        return $this->parsedUri->getScheme() === Http::SCHEME_SSL;
+        return $this->parsedUri->schemeEquals(Http::SCHEME_SSL);
     }
 
     /**

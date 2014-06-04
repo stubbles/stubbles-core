@@ -57,7 +57,7 @@ class Properties implements \Iterator
             throw new IllegalArgumentException('Property string contains errors and can not be parsed.');
         }
 
-        return new self($propertyData);
+        return new static($propertyData);
     }
 
     /**
@@ -80,7 +80,7 @@ class Properties implements \Iterator
             throw new IOException('Property file at ' . $propertiesFile . ' contains errors and can not be parsed.');
         }
 
-        return new self($propertyData);
+        return new static($propertyData);
     }
 
     /**
@@ -97,7 +97,7 @@ class Properties implements \Iterator
      */
     public function merge(Properties $otherProperties)
     {
-        return new self(array_merge($this->propertyData, $otherProperties->propertyData));
+        return new static(array_merge($this->propertyData, $otherProperties->propertyData));
     }
 
     /**
@@ -105,6 +105,7 @@ class Properties implements \Iterator
      *
      * @api
      * @return  string[]
+     * @deprecated  since 4.0.0, iterate over instance instead, will be removed with 5.0.0
      */
     public function getSections()
     {
@@ -130,6 +131,25 @@ class Properties implements \Iterator
      * @param   string  $section  name of the section
      * @param   array   $default  value to return if section does not exist
      * @return  scalar[]
+     * @since   4.0.0
+     */
+    public function section($section, array $default = [])
+    {
+        if (isset($this->propertyData[$section])) {
+            return $this->propertyData[$section];
+        }
+
+        return $default;
+    }
+
+    /**
+     * returns a whole section if it exists or the default if the section does not exist
+     *
+     * @api
+     * @param   string  $section  name of the section
+     * @param   array   $default  value to return if section does not exist
+     * @return  scalar[]
+     * @deprecated  since 4.0.0, use section() instead, will be removed with 5.0.0
      */
     public function getSection($section, array $default = [])
     {
@@ -147,14 +167,29 @@ class Properties implements \Iterator
      * @param   string    $section  name of the section
      * @param   string[]  $default  value to return if section does not exist
      * @return  string[]
+     * @since   4.0.0
      */
-    public function getSectionKeys($section, array $default = [])
+    public function keysForSection($section, array $default = [])
     {
         if (isset($this->propertyData[$section])) {
             return array_keys($this->propertyData[$section]);
         }
 
         return $default;
+    }
+
+    /**
+     * returns a list of all keys of a specific section
+     *
+     * @api
+     * @param   string    $section  name of the section
+     * @param   string[]  $default  value to return if section does not exist
+     * @return  string[]
+     * @deprecated  since 4.0.0, use keysForSection() instead, will be removed with 5.0.0
+     */
+    public function getSectionKeys($section, array $default = [])
+    {
+        return $this->keysForSection($section, $default);
     }
 
     /**
@@ -182,6 +217,26 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   mixed   $default  value to return if section or key does not exist
      * @return  scalar
+     * @since   4.0.0
+     */
+    public function value($section, $key, $default = null)
+    {
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
+            return $this->propertyData[$section][$key];
+        }
+
+        return $default;
+    }
+
+    /**
+     * returns a value from a section or a default value if the section or key does not exist
+     *
+     * @api
+     * @param   string  $section  name of the section
+     * @param   string  $key      name of the key
+     * @param   mixed   $default  value to return if section or key does not exist
+     * @return  scalar
+     * @deprecated  since 4.0.0, use value() instead, will be removed with 5.0.0
      */
     public function getValue($section, $key, $default = null)
     {

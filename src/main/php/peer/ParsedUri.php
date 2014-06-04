@@ -79,7 +79,7 @@ class ParsedUri
      */
     public function asString()
     {
-        return $this->createString(function(ParsedUri $uri) { return $uri->getPort();});
+        return $this->createString(function(ParsedUri $uri) { return $uri->port();});
     }
 
     /**
@@ -100,34 +100,34 @@ class ParsedUri
      */
     protected function createString(\Closure $portCreator)
     {
-        $uri = $this->getScheme() . '://';
+        $uri = $this->scheme() . '://';
         if ($this->hasUser()) {
-            $user = $this->getUser();
+            $user = $this->user();
             if ($this->hasPassword()) {
-                $user .= ':' . $this->getPassword();
+                $user .= ':' . $this->password();
             }
 
             $uri .= $user;
-            if ($this->hasHost()) {
+            if ($this->hasHostname()) {
                 $uri .= '@';
             }
         }
 
-        if ($this->hasHost()) {
-            $uri .= $this->getHost();
+        if ($this->hasHostname()) {
+            $uri .= $this->hostname();
             $port = $portCreator($this);
             if (strlen($port) > 0) {
                 $uri .= ':' . $port;
             }
         }
 
-        $uri .= $this->getPath();
+        $uri .= $this->path();
         if ($this->queryString->hasParams()) {
             $uri .= '?' . $this->queryString->build();
         }
 
         if ($this->hasFragment()) {
-            $uri .= '#' . $this->getFragment();
+            $uri .= '#' . $this->fragment();
         }
 
         return $uri;
@@ -144,11 +144,23 @@ class ParsedUri
     }
 
     /**
+     * checks if uri scheme equals given scheme
+     *
+     * @param   string  $scheme
+     * @return  bool
+     * @since   4.0.0
+     */
+    public function schemeEquals($scheme)
+    {
+        return $scheme === $this->scheme();
+    }
+
+    /**
      * returns the scheme of the uri
      *
      * @return  string
      */
-    public function getScheme()
+    public function scheme()
     {
         if (isset($this->uri['scheme'])) {
             return $this->uri['scheme'];
@@ -173,7 +185,7 @@ class ParsedUri
      * @param   string  $defaultUser  user to return if no user is set
      * @return  string
      */
-    public function getUser($defaultUser = null)
+    public function user($defaultUser = null)
     {
         if (isset($this->uri['user'])) {
             return $this->uri['user'];
@@ -197,7 +209,7 @@ class ParsedUri
      *
      * @return  string
      */
-    public function getPassword()
+    public function password()
     {
         if (isset($this->uri['pass'])) {
             return $this->uri['pass'];
@@ -211,7 +223,7 @@ class ParsedUri
      *
      * @return  bool
      */
-    public function hasHost()
+    public function hasHostname()
     {
         return isset($this->uri['host']);
     }
@@ -231,7 +243,7 @@ class ParsedUri
      *
      * @return  string
      */
-    public function getHost()
+    public function hostname()
     {
         if (isset($this->uri['host'])) {
             return $this->uri['host'];
@@ -251,11 +263,23 @@ class ParsedUri
     }
 
     /**
+     * checks if given port equals the uri's port
+     *
+     * @param   int  $port
+     * @return  bool
+     * @since   4.0.0
+     */
+    public function portEquals($port)
+    {
+        return $port === $this->port();
+    }
+
+    /**
      * returns port of the uri
      *
      * @return  string
      */
-    public function getPort()
+    public function port()
     {
         if (isset($this->uri['port'])) {
             return (int) $this->uri['port'];
@@ -265,11 +289,22 @@ class ParsedUri
     }
 
     /**
+     * checks if path is set
+     *
+     * @return  bool
+     * @since   4.0.0
+     */
+    public function hasPath()
+    {
+        return isset($this->uri['path']);
+    }
+
+    /**
      * returns path of the uri
      *
      * @return  string
      */
-    public function getPath()
+    public function path()
     {
         if (isset($this->uri['path'])) {
             return $this->uri['path'];
@@ -303,7 +338,7 @@ class ParsedUri
      *
      * @return  string
      */
-    public function getFragment()
+    public function fragment()
     {
         if (isset($this->uri['fragment'])) {
             return $this->uri['fragment'];

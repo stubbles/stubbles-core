@@ -3,30 +3,62 @@
 
 ### BC breaks
 
-   * removed namespace prefix `net`, base namespace is now `stubbles` only
-   * removed the following classes, can now be found in separate package stubbles/date:
-     * `net\stubbles\lang\types\Date`
-     * `net\stubbles\lang\types\DateModifier`
-     * `net\stubbles\lang\types\TimeZone`
-     * `net\stubbles\lang\types\datespan\AbstractDatespan`
-     * `net\stubbles\lang\types\datespan\CustomDatespan`
-     * `net\stubbles\lang\types\datespan\Datespan`
-     * `net\stubbles\lang\types\datespan\Day`
-     * `net\stubbles\lang\types\datespan\Month`
-     * `net\stubbles\lang\types\datespan\Week`
-     * `net\stubbles\lang\types\datespan\Year`
-   * removed `net\stubbles\lang\Clonable`
-   * removed `net\stubbles\lang\enforceInternalEncoding()`
-   * removed `net\stubbles\ioc\App::createPropertiesBindingModule()`, deprecated since 3.4.0
-   * removed `net\stubbles\ioc\module\PropertiesBindingModule`, deprecated since 3.4.0
-   * removed `net\stubbles\ioc\App::persistAnnotations()`, deprecated since 3.1.0
-   * removed `net\stubbles\ioc\App::persistAnnotationsInFile()`, deprecated since 3.1.0
-   * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
-   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
+  * removed namespace prefix `net`, base namespace is now `stubbles` only
+  * removed the following classes, can now be found in separate package stubbles/date:
+    * `net\stubbles\lang\types\Date`
+    * `net\stubbles\lang\types\DateModifier`
+    * `net\stubbles\lang\types\TimeZone`
+    * `net\stubbles\lang\types\datespan\AbstractDatespan`
+    * `net\stubbles\lang\types\datespan\CustomDatespan`
+    * `net\stubbles\lang\types\datespan\Datespan`
+    * `net\stubbles\lang\types\datespan\Day`
+    * `net\stubbles\lang\types\datespan\Month`
+    * `net\stubbles\lang\types\datespan\Week`
+    * `net\stubbles\lang\types\datespan\Year`
+  * removed `net\stubbles\lang\Clonable`
+  * removed `net\stubbles\lang\enforceInternalEncoding()`, not supported since PHP 5.6 any more
+  * removed `net\stubbles\ioc\App::createPropertiesBindingModule()`, deprecated since 3.4.0
+  * removed `net\stubbles\ioc\module\PropertiesBindingModule`, deprecated since 3.4.0
+  * removed `net\stubbles\ioc\App::persistAnnotations()`, deprecated since 3.1.0
+  * removed `net\stubbles\ioc\App::persistAnnotationsInFile()`, deprecated since 3.1.0
+  * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
+  * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
+  * major API rework
+    * deprecated `stubbles\lang\Properties::getSections()`, iterate over instance instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::getSection()`, use `stubbles\lang\Properties::section()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::getSectionKeys()`, use `stubbles\lang\Properties::keysForSection()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::getValue()`, use `stubbles\lang\Properties::value()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\ResourceLoader::getProjectResourceUri()´, use `stubbles\lang\ResourceLoader::open()` or `stubbles\lang\ResourceLoader::load()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\ResourceLoader::getResourceUris()´, use `stubbles\lang\ResourceLoader::listResourceUris()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\ResourceLoader::getRootPath()´ and `stubbles\lang\ResourceLoader::getRoot()´, use `stubbles\lang\Rootpath` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\AcceptHeader::getList()`, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getUser()`, use `stubbles\peer\Uri::user()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getPassword()`, use `stubbles\peer\Uri::password()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getHost()`, use `stubbles\peer\Uri::hostname()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getPort()`, use `stubbles\peer\Uri::port()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getPath()`, use `stubbles\peer\Uri::path()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getQueryString()`, use `stubbles\peer\Uri::queryString()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getParam()`, use `stubbles\peer\Uri::param()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\Uri::getFragment()`, use `stubbles\peer\Uri::fragment()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\Http::getStatusClass()`, use `stubbles\peer\http\Http::statusClassFor()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\Http::getStatusCodes()`, use `stubbles\peer\http\Http::statusCodes()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\Http::getReasonPhrase()`, use `stubbles\peer\http\Http::reasonPhraseFor()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusLine()`, use `stubbles\peer\http\HttpResponse::statusLine()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getHttpVersion()`, use `stubbles\peer\http\HttpResponse::httpVersion()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusCode()`, use `stubbles\peer\http\HttpResponse::statusCode()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusCodeClass()`, use `stubbles\peer\http\HttpResponse::statusCodeClass()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getReasonPhrase()`, use `stubbles\peer\http\HttpResponse::reasonPhrase()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getHeader()`, use `stubbles\peer\http\HttpResponse::headers()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\peer\http\HttpResponse::getBody()`, use `stubbles\peer\http\HttpResponse::body()` instead, will be removed with 5.0.0
+
 
 ### Other changes
 
   * `stubbles\lang\ResourceLoader` now supports PSR-4
+  * fixed bug: `stubbles\lang\ModifiableProperties::merge()` now returns `stubbles\lang\ModifiableProperties::merge()` instead of `stubbles\lang\Properties::merge()` only
+  * added `stubbles\lang\ModifiableProperties::unmodifiable()`
+  * added `stubbles\lang\Rootpath`
 
 
 3.5.3 (2014-05-07)
