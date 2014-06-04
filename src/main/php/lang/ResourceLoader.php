@@ -8,6 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use stubbles\lang\exception\FileNotFoundException;
+use stubbles\lang\exception\IllegalArgumentException;
+use stubbles\streams\file\FileInputStream;
 /**
  * Class to load resources from arbitrary locations.
  *
@@ -19,15 +22,21 @@ class ResourceLoader
     /**
      * root path of application
      *
-     * @type  string
+     * @type  Rootpath
      */
-    private static $rootPath;
+    private $rootpath;
+
     /**
-     * list of source pathes
+     * constructor
      *
-     * @type  string[]
+     * If no root path is given it tries to detect it automatically.
+     *
+     * @param  string|Rootpath  $rootpath  optional
      */
-    private static $sourcePathes;
+    public function __construct($rootpath = null)
+    {
+        $this->rootpath = Rootpath::castFrom($rootpath);
+    }
 
     /**
      * returns resource uri from local project
@@ -37,10 +46,11 @@ class ResourceLoader
      * @param   string  $resourceName
      * @return  string
      * @since   3.1.2
+     * @deprecated  since 4.0.0, use either open() or load(), will be removed with 5.0.0
      */
     public function getProjectResourceUri($resourceName)
     {
-        return self::getRootPath()
+        return $this->rootpath
                 . DIRECTORY_SEPARATOR . 'src'
                 . DIRECTORY_SEPARATOR . 'main'
                 . DIRECTORY_SEPARATOR . 'resources'
@@ -48,122 +58,147 @@ class ResourceLoader
     }
 
     /**
+     * opens an input stream to read resource contents
+     *
+     * Resource can either be a complete path to a resource or a local path. In
+     * case it is a local path it is searched within the root path.
+     * It is not possible to open resources outside of the root path by
+     * providing a complete path, a complete path must always lead to a resource
+     * located within the root path.
+     *
+     * @param   string  $resource
+     * @return  \stubbles\streams\InputStream
+     * @since   4.0.0
+     */
+    public function open($resource)
+    {
+        return new FileInputStream($this->checkedPathFor($resource));
+    }
+
+    /**
+     * loads resource contents
+     *
+     * Resource can either be a complete path to a resource or a local path. In
+     * case it is a local path it is searched within the root path.
+     * It is not possible to load resources outside of the root path by
+     * providing a complete path, a complete path must always lead to a resource
+     * located within the root path.
+     *
+     * @param   string  $resource
+     * @return  string
+     * @since   4.0.0
+     */
+    public function load($resource)
+    {
+        return file_get_contents($this->checkedPathFor($resource));
+    }
+
+    /**
+     * completes path for given resource
+     *
+     * In case the complete path is outside of the root path an
+     * IllegalArgumentException is thrown.
+     *
+     * @param   string  $resource
+     * @return  string
+     * @throws  FileNotFoundException
+     * @throws  IllegalArgumentException
+     */
+    private function checkedPathFor($resource)
+    {
+        $completePath = $this->completePath($resource);
+        if (!file_exists($completePath)) {
+            throw new FileNotFoundException($completePath);
+        }
+
+        if (!$this->rootpath->contains($completePath)) {
+            throw new IllegalArgumentException('Given resource "' . $resource . '" located at "' . $completePath . '" is not inside root path ' . $this->rootpath);
+        }
+
+        return $completePath;
+    }
+
+    /**
+     * returns complete path for given resource
+     *
+     * @param   string  $resource
+     * @return  string
+     */
+    private function completePath($resource)
+    {
+        if (substr($resource, 0, strlen($this->rootpath)) == $this->rootpath) {
+            return $resource;
+        }
+
+        return $this->rootpath
+                . DIRECTORY_SEPARATOR . 'src'
+                . DIRECTORY_SEPARATOR . 'main'
+                . DIRECTORY_SEPARATOR . 'resources'
+                . DIRECTORY_SEPARATOR . $resource;
+    }
+
+    /**
+     * returns a list of all available uris for a resource
+     *
+     * @param   string  $resourceName  the resource to retrieve the uris for
+     * @return  string[]
+     * @since   4.0.0
+     */
+    public function listResourceUris($resourceName)
+    {
+        return array_values(
+                array_filter(
+                        array_map(
+                              function($sourcePath) use($resourceName)
+                              {
+                                  return str_replace('/src/main/php', '/src/main/resources', $sourcePath) . DIRECTORY_SEPARATOR . $resourceName;
+                              },
+                              $this->rootpath->sourcePathes()
+                        ),
+                        function($resourcePath)
+                        {
+                            return file_exists($resourcePath);
+                        }
+                )
+        );
+    }
+
+    /**
      * return all uris for a resource
      *
      * @param   string  $resourceName  the resource to retrieve the uris for
      * @return  string[]
+     * @deprecated  since 4.0.0, use listResourceUris() instead, will be removed with 5.0.0
      */
     public function getResourceUris($resourceName)
     {
-        $uris = [];
-        foreach ($this->getSourcePathes() as $resourcePath) {
-            if (file_exists($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName)) {
-                $uris[] = realpath($resourcePath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . $resourceName);
-            }
-        }
-
-        return $uris;
-    }
-
-    /**
-     * returns list of source pathes
-     *
-     * @return  string[]
-     */
-    private function getSourcePathes()
-    {
-        if (null === self::$sourcePathes) {
-            $pathes = [];
-            foreach ($this->getVendorPathes() as $path) {
-                if (substr($path, -13) === '/src/main/php') {
-                    $path = str_replace('/src/main/php', '/src/main', $path);
-                }
-
-                if (!isset($pathes[$path])) {
-                    $pathes[$path] = $path;
-                }
-            }
-
-            self::$sourcePathes = array_values($pathes);
-        }
-
-        return self::$sourcePathes;
-    }
-
-    /**
-     * return list of vendor pathes
-     *
-     * @return  string[]
-     */
-    private function getVendorPathes()
-    {
-        $vendorPathes = [];
-        foreach (array_merge($this->loadPsr0Pathes(), $this->loadPsr4Pathes()) as $pathes) {
-            if (is_array($pathes)) {
-                $vendorPathes = array_merge($vendorPathes, $pathes);
-            } else {
-                $vendorPathes[] = $pathes;
-            }
-        }
-
-        return $vendorPathes;
-    }
-
-    /**
-     * loads list of pathes defined via PSR-0
-     *
-     * @return  string[]
-     */
-    private function loadPsr0Pathes()
-    {
-        if (file_exists(self::getRootPath() . '/vendor/composer/autoload_namespaces.php')) {
-            return require self::getRootPath() . '/vendor/composer/autoload_namespaces.php';
-        }
-
-        return [];
-    }
-
-    /**
-     * loads list of pathes defined via PSR-4
-     *
-     * @return  string[]
-     */
-    private function loadPsr4Pathes()
-    {
-        if (file_exists(self::getRootPath() . '/vendor/composer/autoload_psr4.php')) {
-            return require self::getRootPath() . '/vendor/composer/autoload_psr4.php';
-        }
-
-        return [];
+        return $this->listResourceUris($resourceName);
     }
 
     /**
      * returns root path
      *
      * @return  string
+     * @deprecated  since 4.0.0, use stubbles\lang\Rootpath instead, will be removed with 5.0.0
      */
     public static function getRootPath()
     {
-        if (null === self::$rootPath) {
-            if (\Phar::running() !== '') {
-                self::$rootPath = dirname(\Phar::running(false));
-            } elseif (file_exists(__DIR__ . '/../../../../../../composer/autoload_namespaces.php') || file_exists(__DIR__ . '/../../../../../../composer/autoload_psr4.php')) {
-                self::$rootPath = realpath(__DIR__ . '/../../../../../../../');
-            } else {
-                self::$rootPath = realpath(__DIR__ . '/../../../../');
-            }
+        static $rootpath = null;
+        if (null === $rootpath) {
+            $rootpath = new Rootpath();
         }
 
-        return self::$rootPath;
+        return (string) $rootpath;
     }
 
     /**
      * returns root path for non-static mockable calls
      *
      * @return  string
+     * @deprecated  since 4.0.0, use stubbles\lang\Rootpath instead, will be removed with 5.0.0
      */
     public function getRoot()
     {
-        return self::getRootPath();
+        return (string) $this->rootpath;
     }
 }
