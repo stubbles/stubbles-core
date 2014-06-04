@@ -31,7 +31,7 @@
     * deprecated `stubbles\lang\Properties::hasValue()`, use `stubbles\lang\Properties::containValue()` instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\Properties::getValue()`, use `stubbles\lang\Properties::value()` instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\ResourceLoader::getProjectResourceUri()´, use `stubbles\lang\ResourceLoader::open()` or `stubbles\lang\ResourceLoader::load()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\ResourceLoader::getResourceUris()´, use `stubbles\lang\ResourceLoader::listResourceUris()` instead, will be removed with 5.0.0
+    * deprecated `stubbles\lang\ResourceLoader::getResourceUris()´, use `stubbles\lang\ResourceLoader::availableResourceUris()` instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\ResourceLoader::getRootPath()´ and `stubbles\lang\ResourceLoader::getRoot()´, use `stubbles\lang\Rootpath` instead, will be removed with 5.0.0
     * deprecated `stubbles\peer\http\AcceptHeader::getList()`, will be removed with 5.0.0
     * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead, will be removed with 5.0.0

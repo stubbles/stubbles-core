@@ -194,7 +194,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
                                     . 'resources' . DIRECTORY_SEPARATOR
                                     . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini'
                             ],
-                            $this->resourceLoader->listResourceUris('lang/stubbles.ini')
+                            $this->resourceLoader->availableResourceUris('lang/stubbles.ini')
         );
     }
 
@@ -204,7 +204,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     public function returnsEmptyListOfAllResourceUrisForNonExistingFile()
     {
         $this->assertEquals([],
-                            $this->resourceLoader->listResourceUris('doesnot.exist')
+                            $this->resourceLoader->availableResourceUris('doesnot.exist')
         );
     }
 

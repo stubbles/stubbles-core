@@ -144,7 +144,7 @@ class ResourceLoader
      * @return  string[]
      * @since   4.0.0
      */
-    public function listResourceUris($resourceName)
+    public function availableResourceUris($resourceName)
     {
         return array_values(
                 array_filter(
@@ -172,7 +172,7 @@ class ResourceLoader
      */
     public function getResourceUris($resourceName)
     {
-        return $this->listResourceUris($resourceName);
+        return $this->availableResourceUris($resourceName);
     }
 
     /**
