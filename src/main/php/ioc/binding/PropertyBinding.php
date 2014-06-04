@@ -55,11 +55,11 @@ class PropertyBinding implements Binding
      */
     public function hasProperty($name)
     {
-        if ($this->properties->hasValue($this->mode->name(), $name)) {
+        if ($this->properties->containValue($this->mode->name(), $name)) {
             return true;
         }
 
-        return $this->properties->hasValue('config', $name);
+        return $this->properties->containValue('config', $name);
     }
 
     /**
@@ -72,12 +72,12 @@ class PropertyBinding implements Binding
      */
     public function getInstance(Injector $injector, $name)
     {
-        if ($this->properties->hasValue($this->mode->name(), $name)) {
-            return $this->properties->getValue($this->mode->name(), $name);
+        if ($this->properties->containValue($this->mode->name(), $name)) {
+            return $this->properties->value($this->mode->name(), $name);
         }
 
-        if ($this->properties->hasValue('config', $name)) {
-            return $this->properties->getValue('config', $name);
+        if ($this->properties->containValue('config', $name)) {
+            return $this->properties->value('config', $name);
         }
 
         throw new BindingException('Missing property ' . $name . ' in runtime mode ' . $this->mode->name());
