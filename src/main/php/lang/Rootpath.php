@@ -42,7 +42,25 @@ class Rootpath
             throw new IllegalArgumentException('Given rootpath "' . $rootpath . '" does not exist');
         }
 
-        $this->rootpath = (null === $rootpath) ? ($this->detectRootPath()) : (realpath($rootpath));
+        $this->rootpath = (null === $rootpath) ? ($this->detectRootPath()) : ($this->realpath($rootpath));
+    }
+
+    /**
+     * creates realpath from given path
+     *
+     * The native function is not directly used as it doesn't work with
+     * vfsStream URIs and would prevent mocking the root path in tests.
+     *
+     * @param   string  $path
+     * @return  string
+     */
+    private function realpath($path)
+    {
+        if (substr($path, 0, 6) === 'vfs://') {
+            return $path;
+        }
+
+        return realpath($path);
     }
 
     /**

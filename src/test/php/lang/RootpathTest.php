@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use org\bovigo\vfs\vfsStream;
 /**
  * Tests for stubbles\lang\Rootpath.
  *
@@ -56,6 +57,18 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
                 dirname(__DIR__),
                 (string) new Rootpath(__DIR__ . '/..')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function constructWithVfsStreamUriDoesNotApplyRealpath()
+    {
+        $root = vfsStream::setup()->url();
+        $this->assertEquals(
+                $root,
+                (string) new Rootpath($root)
         );
     }
 
