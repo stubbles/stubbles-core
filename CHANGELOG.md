@@ -16,6 +16,7 @@
     * `net\stubbles\lang\types\datespan\Week`
     * `net\stubbles\lang\types\datespan\Year`
   * removed `net\stubbles\lang\Clonable`
+  * removed `net\stubbles\lang\types\LocalizedString`
   * removed `net\stubbles\lang\enforceInternalEncoding()`, not supported since PHP 5.6 any more
   * removed `net\stubbles\ioc\App::createPropertiesBindingModule()`, deprecated since 3.4.0
   * removed `net\stubbles\ioc\module\PropertiesBindingModule`, deprecated since 3.4.0
