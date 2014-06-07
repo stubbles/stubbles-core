@@ -24,6 +24,7 @@
   * removed `net\stubbles\ioc\App::persistAnnotationsInFile()`, deprecated since 3.1.0
   * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
+  * all properties in `stubbles\lang\Properties` with key `password` are automatically stored as `stubbles\lang\SecureString`
   * major API rework
     * deprecated `stubbles\lang\Properties::getSections()`, iterate over instance instead, will be removed with 5.0.0
     * deprecated `stubbles\lang\Properties::hasSection()`, use `stubbles\lang\Properties::containSection()` instead, will be removed with 5.0.0
@@ -63,7 +64,6 @@
   * added `stubbles\lang\ModifiableProperties::unmodifiable()`
   * added `stubbles\lang\Rootpath`
   * added `stubbles\lang\SecureString`
-    * all properties in `stubbles\lang\Properties` with key `password` are automatically stored as `stubbles\lang\SecureString`
 
 
 3.5.3 (2014-05-07)
