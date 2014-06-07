@@ -24,6 +24,32 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     */
+    public function forNullReturnsNullOnUnveil()
+    {
+        $this->assertNull(SecureString::forNull()->unveil());
+    }
+
+    /**
+     * @test
+     */
+    public function canContainNull()
+    {
+        $this->assertTrue(SecureString::forNull()->isContained());
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedExceptionMessage  Given string was null, if you explicitly want to create a SecureString with value null use SecureString::forNull()
+     */
+    public function createWithNullThrowsIllegalArgumentException()
+    {
+        SecureString::create(null);
+    }
+
+    /**
+     * @test
      * @expectedException  stubbles\lang\exception\IllegalAccessException
      */
     public function notSerializable()
