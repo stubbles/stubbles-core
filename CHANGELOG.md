@@ -62,6 +62,8 @@
   * fixed bug: `stubbles\lang\ModifiableProperties::merge()` now returns `stubbles\lang\ModifiableProperties::merge()` instead of `stubbles\lang\Properties::merge()` only
   * added `stubbles\lang\ModifiableProperties::unmodifiable()`
   * added `stubbles\lang\Rootpath`
+  * added `stubbles\lang\SecureString`
+    * all properties in `stubbles\lang\Properties` with key `password` are automatically stored as `stubbles\lang\SecureString`
 
 
 3.5.3 (2014-05-07)

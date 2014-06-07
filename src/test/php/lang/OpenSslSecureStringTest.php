@@ -22,6 +22,7 @@ require_once __DIR__ . '/SecureStringTest.php';
  * @since  4.0.0
  * @group  lang
  * @group  lang_core
+ * @group  secure_string
  * @requires extension  openssl
  */
 class OpenSslSecureStringTest extends SecureStringTest
