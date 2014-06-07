@@ -200,6 +200,10 @@ final class SecureString
             return $string;
         }
 
+        if (null === $string) {
+            throw new IllegalArgumentException('Given string was null, if you explicitly want to create a SecureString with value null use SecureString::forNull()');
+        }
+
         $self = new self();
         try {
             $encrypt = self::$encrypt;
@@ -214,6 +218,18 @@ final class SecureString
 
         $string = str_repeat('*', strlen($string));
         $string = null;
+        return $self;
+    }
+
+    /**
+     * explicitly create an instance where the actual string is null
+     *
+     * @return  SecureString
+     */
+    public static function forNull()
+    {
+        $self = new self();
+        self::$store[$self->id] = true;
         return $self;
     }
 
@@ -248,6 +264,10 @@ final class SecureString
     {
         if (!$this->isContained()) {
            throw new IllegalStateException('An error occurred during string encryption.');
+        }
+
+        if (true === self::$store[$this->id]) {
+            return null;
         }
 
         $decrypt = self::$decrypt;
