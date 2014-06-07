@@ -191,11 +191,15 @@ final class SecureString
      * Please note the given characters are passed as reference and will be
      * blanked out after creation of the instance.
      *
-     * @param   string  $string  characters to secure
+     * @param   string|SecureString  $string  characters to secure
      * @return  SecureString
      */
     public static function create($string)
     {
+        if ($string instanceof self) {
+            return $string;
+        }
+
         $self = new self();
         try {
             $encrypt = self::$encrypt;

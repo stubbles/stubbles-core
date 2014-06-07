@@ -115,6 +115,18 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function createFromSecureStringReturnsInstance()
+    {
+        $secureString = SecureString::create('payload');
+        $this->assertSame(
+                $secureString,
+                SecureString::create($secureString)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function creationNeverThrowsException()
     {
         SecureString::switchBacking('__none');
