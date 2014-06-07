@@ -41,9 +41,25 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function forNullIdentifiesAsNull()
+    {
+        $this->assertTrue(SecureString::forNull()->isNull());
+    }
+
+    /**
+     * @test
+     */
     public function lengthOfNullStringIsZero()
     {
         $this->assertEquals(0, SecureString::forNull()->length());
+    }
+
+    /**
+     * @test
+     */
+    public function substringNullStringIsNullString()
+    {
+        $this->assertTrue(SecureString::forNull()->substring(2, 33)->isNull());
     }
 
     /**
@@ -152,6 +168,34 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
                 7,
                 SecureString::create('payload')->length()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function nonNullSecureStringDoesNotIdentifyAsNull()
+    {
+        $this->assertFalse(SecureString::create('payload')->isNull());
+    }
+
+    /**
+     * @test
+     */
+    public function substringWithValidStartReturnsNewInstance()
+    {
+        $this->assertEquals(
+                'lo',
+                SecureString::create('payload')->substring(3, 2)->unveil()
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     */
+    public function substringWithStartOutOfRangeThrowsIllegalArgumentException()
+    {
+        SecureString::create('payload')->substring(50);
     }
 
     /**

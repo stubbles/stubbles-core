@@ -250,6 +250,16 @@ final class SecureString
     }
 
     /**
+     * checks whether actual value is null
+     *
+     * @return  bool
+     */
+    public function isNull()
+    {
+        return true === self::$store[$this->id];
+    }
+
+    /**
      * checks if instance contains a string, i.e. encryption did not fail
      *
      * @return  bool
@@ -274,7 +284,7 @@ final class SecureString
            throw new IllegalStateException('An error occurred during string encryption.');
         }
 
-        if (true === self::$store[$this->id]) {
+        if ($this->isNull()) {
             return null;
         }
 
@@ -282,6 +292,34 @@ final class SecureString
         return $decrypt(self::$store[$this->id]);
     }
 
+    /**
+     * returns a substring of the secured string as a new secured string instance
+     *
+     * @param   int  $start
+     * @param   int  $length  optional
+     * @return  SecureString
+     * @throws  IllegalArgumentException
+     * @link    http://php.net/manual/en/function.substr.php
+     */
+    public function substring($start, $length = null)
+    {
+        if ($this->isNull()) {
+            return $this;
+        }
+
+        $substring = substr($this->unveil(), $start, $length);
+        if (false === $substring) {
+            throw new IllegalArgumentException('Given start offset is out of range');
+        }
+
+        return self::create($substring);
+    }
+
+    /**
+     * returns length of string
+     *
+     * @return  int
+     */
     public function length()
     {
         return $this->length;
