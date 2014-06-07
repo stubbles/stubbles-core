@@ -39,13 +39,22 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
-     * @expectedExceptionMessage  Given string was null, if you explicitly want to create a SecureString with value null use SecureString::forNull()
+     * @return  array
      */
-    public function createWithNullThrowsIllegalArgumentException()
+    public function emptyValues()
     {
-        SecureString::create(null);
+        return [[null], ['']];
+    }
+
+    /**
+     * @test
+     * @dataProvider  emptyValues
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedExceptionMessage  Given string was null or empty, if you explicitly want to create a SecureString with value null use SecureString::forNull()
+     */
+    public function createWithEmptyValueThrowsIllegalArgumentException($value)
+    {
+        SecureString::create($value);
     }
 
     /**

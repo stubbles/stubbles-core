@@ -200,8 +200,8 @@ final class SecureString
             return $string;
         }
 
-        if (null === $string) {
-            throw new IllegalArgumentException('Given string was null, if you explicitly want to create a SecureString with value null use SecureString::forNull()');
+        if (empty($string)) {
+            throw new IllegalArgumentException('Given string was null or empty, if you explicitly want to create a SecureString with value null use SecureString::forNull()');
         }
 
         $self = new self();
