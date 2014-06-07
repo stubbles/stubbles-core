@@ -76,6 +76,12 @@ final class SecureString
      * @type  string
      */
     private $id;
+    /**
+     * length of secured string
+     *
+     * @type  int
+     */
+    private $length;
 
     /**
      * static initializer
@@ -200,14 +206,15 @@ final class SecureString
             return $string;
         }
 
-        if (null === $string) {
-            throw new IllegalArgumentException('Given string was null, if you explicitly want to create a SecureString with value null use SecureString::forNull()');
+        if (empty($string)) {
+            throw new IllegalArgumentException('Given string was null or empty, if you explicitly want to create a SecureString with value null use SecureString::forNull()');
         }
 
         $self = new self();
         try {
             $encrypt = self::$encrypt;
             self::$store[$self->id] = $encrypt($string);
+            $self->length           = iconv_strlen($string);
         } catch (\Exception $e) {
             $e = null;
             // This intentionally catches *ALL* exceptions, in order not to fail
@@ -230,6 +237,7 @@ final class SecureString
     {
         $self = new self();
         self::$store[$self->id] = true;
+        $self->length = 0;
         return $self;
     }
 
@@ -272,6 +280,11 @@ final class SecureString
 
         $decrypt = self::$decrypt;
         return $decrypt(self::$store[$this->id]);
+    }
+
+    public function length()
+    {
+        return $this->length;
     }
 
     /**
