@@ -1218,4 +1218,17 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($resultProperties->containSection('bar'));
         $this->assertEquals(['bar' => 'baz'], $resultProperties->section('bar'));
     }
+
+    /**
+     * @test
+     * @group  secure_string
+     * @since  4.0.0
+     */
+    public function propertiesWithKeyPasswordBecomeInstancesOfSecureString()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\SecureString',
+                properties(['foo' => ['password' => 'baz']])->value('foo', 'password')
+        );
+    }
 }
