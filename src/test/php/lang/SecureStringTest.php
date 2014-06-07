@@ -39,6 +39,14 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function lengthOfNullStringIsZero()
+    {
+        $this->assertEquals(0, SecureString::forNull()->length());
+    }
+
+    /**
      * @return  array
      */
     public function emptyValues()
@@ -132,6 +140,17 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
                 'payload',
                 SecureString::create('payload')->unveil()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function lengthReturnsStringLengthOfOriginalData()
+    {
+        $this->assertEquals(
+                7,
+                SecureString::create('payload')->length()
         );
     }
 
