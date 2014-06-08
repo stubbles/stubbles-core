@@ -50,7 +50,7 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      */
     public function addingAnnotationWritesCacheFile()
     {
-        $annotation = new Annotation('annotationName');
+        $annotation = new Annotation('annotationName', 'foo');
         AnnotationCache::put(Annotation::TARGET_CLASS, 'foo', 'annotationName', $annotation);
         AnnotationCache::__shutdown();
         $this->assertTrue(file_exists(vfsStream::url('root/annotations.cache')));
@@ -68,7 +68,7 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      */
     public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown()
     {
-        $annotation = new Annotation('annotationName');
+        $annotation = new Annotation('annotationName', 'foo');
         AnnotationCache::put(Annotation::TARGET_CLASS, 'foo', 'annotationName', $annotation);
         AnnotationCache::stop();
         AnnotationCache::__shutdown();

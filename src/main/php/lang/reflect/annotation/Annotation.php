@@ -52,15 +52,23 @@ class Annotation
      * @type  array
      */
     protected $properties = [];
+    /**
+     * name of annotation target
+     *
+     * @type  string
+     */
+    private $targetName;
 
     /**
      * constructor
      *
      * @param  string  $name
+     * @param  string  $targetName
      */
-    public function __construct($name)
+    public function __construct($name, $targetName)
     {
-        $this->name = $name;
+        $this->name       = $name;
+        $this->targetName = $targetName;
     }
 
     /**
@@ -72,6 +80,18 @@ class Annotation
     public function getAnnotationName()
     {
         return $this->name;
+    }
+
+    /**
+     * returns name of target where annotation is for, i.e. the class, method, function, property or parameter
+     *
+     * @api
+     * @return  string
+     * @since   4.0.0
+     */
+    public function targetName()
+    {
+        return $this->targetName;
     }
 
     /**

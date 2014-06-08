@@ -108,7 +108,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     private function createdCachedAnnotation()
     {
-        return serialize([Annotation::TARGET_CLASS => ['foo' => ['bar' => new Annotation('bar')]]]);
+        return serialize([Annotation::TARGET_CLASS => ['foo' => ['bar' => new Annotation('bar', 'someFunction()')]]]);
     }
 
     /**

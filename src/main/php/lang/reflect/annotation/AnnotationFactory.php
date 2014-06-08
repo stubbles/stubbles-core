@@ -65,7 +65,7 @@ class AnnotationFactory
             throw new \ReflectionException('Can not find annotation ' . $annotationName);
         }
 
-        $annotation = new Annotation(self::$annotations[$hash][$annotationName]['type']);
+        $annotation = new Annotation(self::$annotations[$hash][$annotationName]['type'], $targetName);
         foreach (self::$annotations[$hash][$annotationName]['params'] as $name => $value) {
             if ('__value' !== $name) {
                 $annotation->$name = $value;
