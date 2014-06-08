@@ -64,6 +64,7 @@
   * added `stubbles\lang\ModifiableProperties::unmodifiable()`
   * added `stubbles\lang\Rootpath`
   * added `stubbles\lang\SecureString`
+  * added `stubbles\lang\reflect\annotation\Annotation::targetName()` which returns the name of the class, method, function, property or parameter of where the annotation comes from
 
 
 3.5.3 (2014-05-07)

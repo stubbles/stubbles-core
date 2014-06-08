@@ -31,7 +31,19 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->annotation = new Annotation('annotationName');
+        $this->annotation = new Annotation('annotationName', 'someFunction()');
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function returnsGivenTargetName()
+    {
+        $this->assertEquals(
+                'someFunction()',
+                $this->annotation->targetName()
+        );
     }
 
     /**
