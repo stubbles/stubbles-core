@@ -53,6 +53,12 @@ class Http
      */
     const DELETE                    = 'DELETE';
     /**
+     * request method type: OPTIONS
+     *
+     * @since  4.0.0
+     */
+    const OPTIONS                   = 'OPTIONS';
+    /**
      * HTTP version: 1.0
      */
     const VERSION_1_0               = 'HTTP/1.0';

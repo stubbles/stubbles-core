@@ -68,6 +68,7 @@
   * added `stubbles\lang\reflect\annotation\Annotation::targetName()` which returns the name of the class, method, function, property or parameter of where the annotation comes from
   * added `stubbles\peer\http\Http::RFC_2616` and `stubbles\peer\http\Http::RFC_7230`
   * added `stubbles\peer\http\Http::isValidRfc()`
+  * added `stubbles\peer\http\Http::OPTIONS`
 
 
 3.5.3 (2014-05-07)
