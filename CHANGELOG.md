@@ -55,6 +55,7 @@
     * deprecated `stubbles\peer\http\HttpResponse::getReasonPhrase()`, use `stubbles\peer\http\HttpResponse::reasonPhrase()` instead, will be removed with 5.0.0
     * deprecated `stubbles\peer\http\HttpResponse::getHeader()`, use `stubbles\peer\http\HttpResponse::headers()` instead, will be removed with 5.0.0
     * deprecated `stubbles\peer\http\HttpResponse::getBody()`, use `stubbles\peer\http\HttpResponse::body()` instead, will be removed with 5.0.0
+  * `stubbles\peer\http\HttpUri::fromString()` no longer accepts uris with userinfo by default in compliance with RFC 7230, to retain the old behaviour pass `stubbles\peer\http\Http::RFC_2616` as second parameter
 
 
 ### Other changes
@@ -65,6 +66,8 @@
   * added `stubbles\lang\Rootpath`
   * added `stubbles\lang\SecureString`
   * added `stubbles\lang\reflect\annotation\Annotation::targetName()` which returns the name of the class, method, function, property or parameter of where the annotation comes from
+  * added `stubbles\peer\http\Http::RFC_2616` and `stubbles\peer\http\Http::RFC_7230`
+  * added `stubbles\peer\http\Http::isValidRfc()`
 
 
 3.5.3 (2014-05-07)

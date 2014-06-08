@@ -91,6 +91,21 @@ class Http
      */
     const STATUS_CLASS_UNKNOWN      = 'Unknown';
     /**
+     * reference to RFC 2616 which defined HTTP/1.1 first
+     *
+     * @link   http://tools.ietf.org/html/rfc2616
+     * @since  4.0.0
+     */
+    const RFC_2616                  = 'RFC 2616';
+    /**
+     * reference to RFC 7230, a revised version of HTTP/1.1
+     *
+     * @ink    http://tools.ietf.org/html/rfc7230
+     * @since  4.0.0
+     */
+    const RFC_7230                  = 'RFC 7230';
+
+    /**
      * map of status code classes
      *
      * @type type
@@ -298,5 +313,16 @@ class Http
     public static function emptyLine()
     {
         return self::END_OF_LINE;
+    }
+
+    /**
+     * checks if given RFC is a valid and known RFC
+     *
+     * @param   string  $rfc
+     * @return  bool
+     */
+    public static function isValidRfc($rfc)
+    {
+        return in_array($rfc, [self::RFC_2616, self::RFC_7230]);
     }
 }

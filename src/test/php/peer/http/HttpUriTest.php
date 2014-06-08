@@ -367,4 +367,47 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
                        ->getTimeout()
         );
     }
+
+    /**
+     * @since  4.0.0
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     */
+    public function createInstanceWithInvalidRfcThrowsIllegalArgumentException()
+    {
+        HttpUri::fromString('http://example.net/', 'RFC 08/15');
+    }
+
+    /**
+     * @since  4.0.0
+     * @test
+     * @expectedException  stubbles\peer\MalformedUriException
+     */
+    public function createInstanceWithUserInfoThrowsMalformedUriExceptionForDefaultRfc()
+    {
+        HttpUri::fromString('http://user:password@example.net/');
+    }
+
+    /**
+     * @since  4.0.0
+     * @test
+     * @expectedException  stubbles\peer\MalformedUriException
+     */
+    public function createInstanceWithUserInfoThrowsMalformedUriExceptionForRfc7230()
+    {
+        HttpUri::fromString('http://user:password@example.net/', Http::RFC_7230);
+    }
+
+    /**
+     * @since  4.0.0
+     * @test
+     */
+    public function createInstanceWithUserInfoThrowsNoMalformedUriExceptionForRfc2616()
+    {
+        $uri = 'http://user:password@example.net/';
+        $this->assertEquals(
+                $uri,
+                HttpUri::fromString($uri, Http::RFC_2616)->asString()
+        );
+    }
 }
