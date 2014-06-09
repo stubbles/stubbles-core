@@ -147,31 +147,6 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider  emptyVersions
-     */
-    public function castFromEmptyWithDefaultReturnsDefault($empty)
-    {
-        $this->assertEquals(
-                new HttpVersion(1, 1),
-                HttpVersion::castFrom($empty, 'HTTP/1.1')
-        );
-    }
-
-    /**
-     * @test
-     * @dataProvider  emptyVersions
-     */
-    public function castFromEmptyWithDefaultInstanceReturnsDefaultInstance($empty)
-    {
-        $httpVersion = new HttpVersion(1, 1);
-        $this->assertSame(
-                $httpVersion,
-                HttpVersion::castFrom($empty, $httpVersion)
-        );
-    }
-
-    /**
-     * @test
      */
     public function castFromInstanceReturnsInstance()
     {
@@ -182,31 +157,11 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function castFromInstanceWithReturnsInstance()
-    {
-        $httpVersion = new HttpVersion(1, 1);
-        $this->assertSame($httpVersion, HttpVersion::castFrom($httpVersion, new HttpVersion(1, 0)));
-    }
-
-    /**
-     * @test
-     */
     public function castFromStringReturnsInstance()
     {
         $this->assertEquals(
                 new HttpVersion(1, 1),
                 HttpVersion::castFrom('HTTP/1.1')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function castFromStringWithReturnsInstance()
-    {
-        $this->assertEquals(
-                new HttpVersion(1, 1),
-                HttpVersion::castFrom('HTTP/1.1', new HttpVersion(1, 0))
         );
     }
 

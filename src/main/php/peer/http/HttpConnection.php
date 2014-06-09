@@ -132,7 +132,7 @@ class HttpConnection
      * @param   string  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function get($version = null)
+    public function get($version = HttpVersion::HTTP_1_1)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->get($this->timeout, $version);
@@ -145,7 +145,7 @@ class HttpConnection
      * @param   string  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function head($version = null)
+    public function head($version = HttpVersion::HTTP_1_1)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->head($this->timeout, $version);
@@ -159,7 +159,7 @@ class HttpConnection
      * @param   string        $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function post($body, $version = null)
+    public function post($body, $version = HttpVersion::HTTP_1_1)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->post($body, $this->timeout, $version);
@@ -174,7 +174,7 @@ class HttpConnection
      * @return  HttpResponse
      * @since   2.0.0
      */
-    public function put($body, $version = null)
+    public function put($body, $version = HttpVersion::HTTP_1_1)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->put($body, $this->timeout, $version);
@@ -188,7 +188,7 @@ class HttpConnection
      * @return  HttpResponse
      * @since   2.0.0
      */
-    public function delete($version = null)
+    public function delete($version = HttpVersion::HTTP_1_1)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->delete($this->timeout, $version);
