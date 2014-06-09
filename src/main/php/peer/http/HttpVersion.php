@@ -83,6 +83,10 @@ class HttpVersion
             throw new IllegalArgumentException('Given ' . $type . ' version "' . $number . '" is not an integer');
         }
 
+        if (0 > $result) {
+            throw new IllegalArgumentException(ucfirst($type) . ' version can not be negative');
+        }
+
         return $result;
     }
 

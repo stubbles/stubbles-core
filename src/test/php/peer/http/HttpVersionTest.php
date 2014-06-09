@@ -84,6 +84,46 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedExceptionMessage  Major version can not be negative
+     */
+    public function constructWithNegativeMajorVersionThrowsIllegalArgumentException()
+    {
+        new HttpVersion(-2, 1);
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedExceptionMessage  Major version can not be negative
+     */
+    public function parseFromStringWithNegativeMajorNumberThrowsIllegalArgumentExceptionWhenParsingFails()
+    {
+        HttpVersion::fromString('HTTP/-2.1');
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedExceptionMessage  Minor version can not be negative
+     */
+    public function constructWithNegativeMinorVersionThrowsIllegalArgumentException()
+    {
+        new HttpVersion(1, -2);
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedExceptionMessage  Minor version can not be negative
+     */
+    public function parseFromStringWithNegativeMinorNumberThrowsIllegalArgumentExceptionWhenParsingFails()
+    {
+        HttpVersion::fromString('HTTP/2.-1');
+    }
+
+    /**
+     * @test
      */
     public function castToStringReturnsCorrectVersionString()
     {
