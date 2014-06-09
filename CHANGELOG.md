@@ -25,36 +25,39 @@
   * removed `net\stubbles\lang\StringRepresentationBuilder`, deprecated since 3.1.0
   * removed `net\stubbles\lang\Object` and `net\stubbles\lang\BaseObject`, deprecated since 3.0.0
   * all properties in `stubbles\lang\Properties` with key `password` are automatically stored as `stubbles\lang\SecureString`
-  * major API rework
-    * deprecated `stubbles\lang\Properties::getSections()`, iterate over instance instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\Properties::hasSection()`, use `stubbles\lang\Properties::containSection()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\Properties::getSection()`, use `stubbles\lang\Properties::section()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\Properties::getSectionKeys()`, use `stubbles\lang\Properties::keysForSection()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\Properties::hasValue()`, use `stubbles\lang\Properties::containValue()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\Properties::getValue()`, use `stubbles\lang\Properties::value()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\ResourceLoader::getProjectResourceUri()´, use `stubbles\lang\ResourceLoader::open()` or `stubbles\lang\ResourceLoader::load()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\ResourceLoader::getResourceUris()´, use `stubbles\lang\ResourceLoader::availableResourceUris()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\lang\ResourceLoader::getRootPath()´ and `stubbles\lang\ResourceLoader::getRoot()´, use `stubbles\lang\Rootpath` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\AcceptHeader::getList()`, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getUser()`, use `stubbles\peer\Uri::user()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getPassword()`, use `stubbles\peer\Uri::password()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getHost()`, use `stubbles\peer\Uri::hostname()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getPort()`, use `stubbles\peer\Uri::port()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getPath()`, use `stubbles\peer\Uri::path()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getQueryString()`, use `stubbles\peer\Uri::queryString()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getParam()`, use `stubbles\peer\Uri::param()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\Uri::getFragment()`, use `stubbles\peer\Uri::fragment()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\Http::getStatusClass()`, use `stubbles\peer\http\Http::statusClassFor()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\Http::getStatusCodes()`, use `stubbles\peer\http\Http::statusCodes()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\Http::getReasonPhrase()`, use `stubbles\peer\http\Http::reasonPhraseFor()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\HttpResponse::getStatusLine()`, use `stubbles\peer\http\HttpResponse::statusLine()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\HttpResponse::getHttpVersion()`, use `stubbles\peer\http\HttpResponse::httpVersion()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\HttpResponse::getStatusCode()`, use `stubbles\peer\http\HttpResponse::statusCode()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\HttpResponse::getStatusCodeClass()`, use `stubbles\peer\http\HttpResponse::statusCodeClass()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\HttpResponse::getReasonPhrase()`, use `stubbles\peer\http\HttpResponse::reasonPhrase()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\HttpResponse::getHeader()`, use `stubbles\peer\http\HttpResponse::headers()` instead, will be removed with 5.0.0
-    * deprecated `stubbles\peer\http\HttpResponse::getBody()`, use `stubbles\peer\http\HttpResponse::body()` instead, will be removed with 5.0.0
+  * major API rework: replaced some constructs with better ones, all deprecated will be removed with 5.0.0
+    * deprecated `stubbles\lang\Properties::getSections()`, iterate over instance instead
+    * deprecated `stubbles\lang\Properties::hasSection()`, use `stubbles\lang\Properties::containSection()` instead
+    * deprecated `stubbles\lang\Properties::getSection()`, use `stubbles\lang\Properties::section()` instead
+    * deprecated `stubbles\lang\Properties::getSectionKeys()`, use `stubbles\lang\Properties::keysForSection()` instead
+    * deprecated `stubbles\lang\Properties::hasValue()`, use `stubbles\lang\Properties::containValue()` instead
+    * deprecated `stubbles\lang\Properties::getValue()`, use `stubbles\lang\Properties::value()` instead
+    * deprecated `stubbles\lang\ResourceLoader::getProjectResourceUri()´, use `stubbles\lang\ResourceLoader::open()` or `stubbles\lang\ResourceLoader::load()` instead
+    * deprecated `stubbles\lang\ResourceLoader::getResourceUris()´, use `stubbles\lang\ResourceLoader::availableResourceUris()` instead
+    * deprecated `stubbles\lang\ResourceLoader::getRootPath()´ and `stubbles\lang\ResourceLoader::getRoot()´, use `stubbles\lang\Rootpath` instead
+    * deprecated `stubbles\peer\http\AcceptHeader::getList()`
+    * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead
+    * deprecated `stubbles\peer\Uri::getUser()`, use `stubbles\peer\Uri::user()` instead
+    * deprecated `stubbles\peer\Uri::getPassword()`, use `stubbles\peer\Uri::password()` instead
+    * deprecated `stubbles\peer\Uri::getHost()`, use `stubbles\peer\Uri::hostname()` instead
+    * deprecated `stubbles\peer\Uri::getPort()`, use `stubbles\peer\Uri::port()` instead
+    * deprecated `stubbles\peer\Uri::getPath()`, use `stubbles\peer\Uri::path()` instead
+    * deprecated `stubbles\peer\Uri::getQueryString()`, use `stubbles\peer\Uri::queryString()` instead
+    * deprecated `stubbles\peer\Uri::getParam()`, use `stubbles\peer\Uri::param()` instead
+    * deprecated `stubbles\peer\Uri::getFragment()`, use `stubbles\peer\Uri::fragment()` instead
+    * deprecated `stubbles\peer\http\Http::getStatusClass()`, use `stubbles\peer\http\Http::statusClassFor()` instead
+    * deprecated `stubbles\peer\http\Http::getStatusCodes()`, use `stubbles\peer\http\Http::statusCodes()` instead
+    * deprecated `stubbles\peer\http\Http::getReasonPhrase()`, use `stubbles\peer\http\Http::reasonPhraseFor()` instead
+    * deprecated `stubbles\peer\http\Http::VERSION_1_0`, use `stubbles\peer\http\HttpVersion` instead
+    * deprecated `stubbles\peer\http\Http::VERSION_1_1`, use `stubbles\peer\http\HttpVersion` instead
+    * deprecated `stubbles\peer\http\Http::isVersionValid()`, use `stubbles\peer\http\HttpVersion` instead
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusLine()`, use `stubbles\peer\http\HttpResponse::statusLine()` instead
+    * deprecated `stubbles\peer\http\HttpResponse::getHttpVersion()`, use `stubbles\peer\http\HttpResponse::httpVersion()` instead
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusCode()`, use `stubbles\peer\http\HttpResponse::statusCode()` instead
+    * deprecated `stubbles\peer\http\HttpResponse::getStatusCodeClass()`, use `stubbles\peer\http\HttpResponse::statusCodeClass()` instead
+    * deprecated `stubbles\peer\http\HttpResponse::getReasonPhrase()`, use `stubbles\peer\http\HttpResponse::reasonPhrase()` instead
+    * deprecated `stubbles\peer\http\HttpResponse::getHeader()`, use `stubbles\peer\http\HttpResponse::headers()` instead
+    * deprecated `stubbles\peer\http\HttpResponse::getBody()`, use `stubbles\peer\http\HttpResponse::body()` instead
   * `stubbles\peer\http\HttpUri::fromString()` no longer accepts uris with userinfo by default in compliance with RFC 7230, to retain the old behaviour pass `stubbles\peer\http\Http::RFC_2616` as second parameter
 
 
@@ -69,6 +72,7 @@
   * added `stubbles\peer\http\Http::RFC_2616` and `stubbles\peer\http\Http::RFC_7230`
   * added `stubbles\peer\http\Http::isValidRfc()`
   * added `stubbles\peer\http\Http::OPTIONS`
+  * added `stubbles\peer\http\HttpVersion`
 
 
 3.5.3 (2014-05-07)

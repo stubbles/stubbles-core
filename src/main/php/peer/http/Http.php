@@ -60,10 +60,14 @@ class Http
     const OPTIONS                   = 'OPTIONS';
     /**
      * HTTP version: 1.0
+     *
+     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion instead, will be removed with 5.0.0
      */
     const VERSION_1_0               = 'HTTP/1.0';
     /**
      * HTTP version: 1.1
+     *
+     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion instead, will be removed with 5.0.0
      */
     const VERSION_1_1               = 'HTTP/1.1';
 
@@ -190,6 +194,7 @@ class Http
      * @api
      * @param   string  $version
      * @return  bool
+     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion instead, will be removed with 5.0.0
      */
     public static function isVersionValid($version)
     {
