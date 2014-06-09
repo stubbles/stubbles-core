@@ -58,6 +58,7 @@ class HttpVersion
      * @param   string|HttpVersion  $httpVersion  value to cast from
      * @param   string|HttpVersion  $default      optional  default to use when $httpVersion is empty
      * @return  HttpVersion
+     * @throws  IllegalArgumentException  in case neither $httpVersion nor $default represent a valid HTTP version
      */
     public static function castFrom($httpVersion, $default = null)
     {
