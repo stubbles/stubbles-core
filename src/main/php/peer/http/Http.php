@@ -61,13 +61,13 @@ class Http
     /**
      * HTTP version: 1.0
      *
-     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion instead, will be removed with 5.0.0
+     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion::HTTP_1_0 instead, will be removed with 5.0.0
      */
     const VERSION_1_0               = 'HTTP/1.0';
     /**
      * HTTP version: 1.1
      *
-     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion instead, will be removed with 5.0.0
+     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion::HTTP_1_1 instead, will be removed with 5.0.0
      */
     const VERSION_1_1               = 'HTTP/1.1';
 

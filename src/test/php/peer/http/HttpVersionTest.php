@@ -134,7 +134,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-     /**
+    /**
      * @test
      * @expectedException  stubbles\lang\exception\IllegalArgumentException
      * @expectedExceptionMessage  Given HTTP version is empty
@@ -145,7 +145,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
         HttpVersion::castFrom($empty);
     }
 
-     /**
+    /**
      * @test
      * @dataProvider  emptyVersions
      */
@@ -157,7 +157,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-     /**
+    /**
      * @test
      * @dataProvider  emptyVersions
      */
@@ -208,5 +208,46 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
                 new HttpVersion(1, 1),
                 HttpVersion::castFrom('HTTP/1.1', new HttpVersion(1, 0))
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider  emptyVersions
+     */
+    public function doesNotEqualEmptyVersion($empty)
+    {
+        $this->assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals($empty));
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotEqualInvalidVersion()
+    {
+        $this->assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals('HTTP/404'));
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotEqualWhenMajorVersionDiffers()
+    {
+        $this->assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals('HTTP/2.0'));
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotEqualWhenMinorVersionDiffers()
+    {
+        $this->assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_0));
+    }
+
+    /**
+     * @test
+     */
+    public function isEqualWhenMajorAndMinorVersionEqual()
+    {
+        $this->assertTrue(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_1));
     }
 }

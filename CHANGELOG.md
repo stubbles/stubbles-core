@@ -48,8 +48,8 @@
     * deprecated `stubbles\peer\http\Http::getStatusClass()`, use `stubbles\peer\http\Http::statusClassFor()` instead
     * deprecated `stubbles\peer\http\Http::getStatusCodes()`, use `stubbles\peer\http\Http::statusCodes()` instead
     * deprecated `stubbles\peer\http\Http::getReasonPhrase()`, use `stubbles\peer\http\Http::reasonPhraseFor()` instead
-    * deprecated `stubbles\peer\http\Http::VERSION_1_0`, use `stubbles\peer\http\HttpVersion` instead
-    * deprecated `stubbles\peer\http\Http::VERSION_1_1`, use `stubbles\peer\http\HttpVersion` instead
+    * deprecated `stubbles\peer\http\Http::VERSION_1_0`, use `stubbles\peer\http\HttpVersion::HTTP_1_0` instead
+    * deprecated `stubbles\peer\http\Http::VERSION_1_1`, use `stubbles\peer\http\HttpVersion::HTTP_1_1` instead
     * deprecated `stubbles\peer\http\Http::isVersionValid()`, use `stubbles\peer\http\HttpVersion` instead
     * deprecated `stubbles\peer\http\HttpResponse::getStatusLine()`, use `stubbles\peer\http\HttpResponse::statusLine()` instead
     * deprecated `stubbles\peer\http\HttpResponse::getHttpVersion()`, use `stubbles\peer\http\HttpResponse::httpVersion()` instead

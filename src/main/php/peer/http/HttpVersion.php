@@ -18,6 +18,14 @@ use stubbles\lang\exception\IllegalArgumentException;
 class HttpVersion
 {
     /**
+     * HTTP version: HTTP/1.0
+     */
+    const HTTP_1_0               = 'HTTP/1.0';
+    /**
+     * HTTP version: HTTP/1.1
+     */
+    const HTTP_1_1               = 'HTTP/1.1';
+    /**
      * major http version
      *
      * @type  int
@@ -133,6 +141,27 @@ class HttpVersion
     public function minor()
     {
         return $this->minor;
+    }
+
+    /**
+     * checks if given http version is equal to this http version
+     *
+     * @param   string|HttpVersion  $httpVersion
+     * @return  bool
+     */
+    public function equals($httpVersion)
+    {
+        if (empty($httpVersion)) {
+            return false;
+        }
+
+        try {
+            $other = self::castFrom($httpVersion);
+        } catch (IllegalArgumentException $iae) {
+            return false;
+        }
+
+        return $this->major() === $other->major() && $this->minor() === $other->minor();
     }
 
     /**
