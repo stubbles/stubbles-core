@@ -53,6 +53,30 @@ class HttpVersion
     }
 
     /**
+     * tries to case given $httpVersion value to an instance of HttpVersion
+     *
+     * @param   string|HttpVersion  $httpVersion  value to cast from
+     * @param   string|HttpVersion  $default      optional  default to use when $httpVersion is empty
+     * @return  HttpVersion
+     */
+    public static function castFrom($httpVersion, $default = null)
+    {
+        if (empty($httpVersion)) {
+            if (null !== $default) {
+                return self::castFrom($default);
+            }
+
+            throw new IllegalArgumentException('Given HTTP version is empty');
+        }
+
+        if ($httpVersion instanceof self) {
+            return $httpVersion;
+        }
+
+        return self::fromString($httpVersion);
+    }
+
+    /**
      * constructor
      *
      * In case the given major or minor version can not be casted to a valid
