@@ -59,11 +59,11 @@ class HttpRequest
     /**
      * initializes a get request
      *
-     * @param   int     $timeout  connection timeout
-     * @param   string  $version  http version
+     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function get($timeout = 30, $version = Http::VERSION_1_1)
+    public function get($timeout = 30, $version = null)
     {
         $socket = $this->httpUri->openSocket($timeout);
         $this->processHeader($socket->getOutputStream(), Http::GET, $version);
@@ -73,11 +73,11 @@ class HttpRequest
     /**
      * initializes a head request
      *
-     * @param   int     $timeout  connection timeout
-     * @param   string  $version  http version
+     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function head($timeout = 30, $version = Http::VERSION_1_1)
+    public function head($timeout = 30, $version = null)
     {
         $socket = $this->httpUri->openSocket($timeout);
         $this->headers->put('Connection', 'close');
@@ -93,12 +93,12 @@ class HttpRequest
      * latter is the case an post form submit content type will be added to the
      * request.
      *
-     * @param   string|array  $body     post request body
-     * @param   int           $timeout  connection timeout
-     * @param   string        $version  http version
+     * @param   string|array        $body     post request body
+     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function post($body, $timeout = 30, $version = Http::VERSION_1_1)
+    public function post($body, $timeout = 30, $version = null)
     {
         if (is_array($body)) {
             $body = $this->transformPostValues($body);
@@ -116,13 +116,13 @@ class HttpRequest
     /**
      * initializes a put request
      *
-     * @param   string   $body     post request body
-     * @param   int      $timeout  connection timeout
-     * @param   string   $version  http version
+     * @param   string              $body     post request body
+     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      * @since   2.0.0
      */
-    public function put($body, $timeout = 30, $version = Http::VERSION_1_1)
+    public function put($body, $timeout = 30, $version = null)
     {
         $this->headers->put('Content-Length', strlen($body));
         $socket = $this->httpUri->openSocket($timeout);
@@ -135,12 +135,12 @@ class HttpRequest
     /**
      * initializes a put request
      *
-     * @param   int      $timeout  connection timeout
-     * @param   string   $version  http version
+     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      * @since   2.0.0
      */
-    public function delete($timeout = 30, $version = Http::VERSION_1_1)
+    public function delete($timeout = 30, $version = null)
     {
         $socket = $this->httpUri->openSocket($timeout);
         $this->processHeader($socket->getOutputStream(), Http::DELETE, $version);
@@ -166,15 +166,16 @@ class HttpRequest
     /**
      * helper method to send the headers
      *
-     * @param   OutputStream  $out      output stream to write request to
-     * @param   string        $method   http method
-     * @param   string        $version  http version
+     * @param   OutputStream        $out      output stream to write request to
+     * @param   string              $method   http method
+     * @param   string|HttpVersion  $version  http version
      * @throws  IllegalArgumentException
      */
     private function processHeader(OutputStream $out, $method, $version)
     {
-        if (!Http::isVersionValid($version)) {
-            throw new IllegalArgumentException("Invalid HTTP version " . $version . ', please use either ' . Http::VERSION_1_0 . ' or ' . Http::VERSION_1_1);
+        $version = HttpVersion::castFrom($version, HttpVersion::HTTP_1_1);
+        if (!$version->equals(HttpVersion::HTTP_1_0) && !$version->equals(HttpVersion::HTTP_1_1)) {
+            throw new IllegalArgumentException("Invalid HTTP version " . $version . ', please use either ' . HttpVersion::HTTP_1_0 . ' or ' . HttpVersion::HTTP_1_1);
         }
 
         $path = $this->httpUri->getPath();

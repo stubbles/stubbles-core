@@ -118,7 +118,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals('HTTP/1.0 200 OK', $httpResponse->statusLine());
-        $this->assertEquals(Http::VERSION_1_0, $httpResponse->httpVersion());
+        $this->assertEquals(new HttpVersion(1, 0), $httpResponse->httpVersion());
         $this->assertEquals(200, $httpResponse->statusCode());
         $this->assertEquals('OK', $httpResponse->reasonPhrase());
         $this->assertEquals(Http::STATUS_CLASS_SUCCESS, $httpResponse->statusCodeClass());
@@ -143,7 +143,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals('HTTP/1.1 404 Not Found', $httpResponse->statusLine());
-        $this->assertEquals(Http::VERSION_1_1, $httpResponse->httpVersion());
+        $this->assertEquals(new HttpVersion(1, 1), $httpResponse->httpVersion());
         $this->assertEquals(404, $httpResponse->statusCode());
         $this->assertEquals('Not Found', $httpResponse->reasonPhrase());
         $this->assertEquals(Http::STATUS_CLASS_ERROR_CLIENT, $httpResponse->statusCodeClass());
@@ -155,6 +155,23 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
     public function illegalStatusLineLeadsToEmptyResponse()
     {
         $httpResponse = $this->getResponse(Http::line('Illegal Response')
+                                         . Http::line('Host: ' . __METHOD__)
+                                         . Http::emptyLine()
+                        );
+        $this->assertNull($httpResponse->statusLine());
+        $this->assertNull($httpResponse->httpVersion());
+        $this->assertNull($httpResponse->statusCode());
+        $this->assertNull($httpResponse->reasonPhrase());
+        $this->assertNull($httpResponse->statusCodeClass());
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function statusLineWithInvalidHttpVersionLeadsToEmptyResponse()
+    {
+        $httpResponse = $this->getResponse(Http::line('HTTP/400 102 Processing')
                                          . Http::line('Host: ' . __METHOD__)
                                          . Http::emptyLine()
                         );
