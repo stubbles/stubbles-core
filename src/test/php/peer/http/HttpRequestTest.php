@@ -113,7 +113,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function getWritesCorrectRequestWithVersion()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->get(5, Http::VERSION_1_0)
+                                $this->createHttpRequest()->get(5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(Http::line('GET /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -173,7 +173,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function headWritesCorrectRequestWithVersion()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->head(5, Http::VERSION_1_0)
+                                $this->createHttpRequest()->head(5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(Http::line('HEAD /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -236,7 +236,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestWithVersion()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post('foobar', 5, Http::VERSION_1_0)
+                                $this->createHttpRequest()->post('foobar', 5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -291,7 +291,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestUsingPostValuesWithVersion()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'], 5, Http::VERSION_1_0)
+                                $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'], 5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(Http::line('POST /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -358,7 +358,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function putWritesCorrectRequestWithVersion()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->put('foobar', 5, Http::VERSION_1_0)
+                                $this->createHttpRequest()->put('foobar', 5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')
@@ -421,7 +421,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function deleteWritesCorrectRequestWithVersion()
     {
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->delete(5, Http::VERSION_1_0)
+                                $this->createHttpRequest()->delete(5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.0')
                           . Http::line('Host: example.com')

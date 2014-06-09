@@ -30,7 +30,7 @@ class HttpResponse
     /**
      * http version of response
      *
-     * @type  string
+     * @type  HttpVersion
      */
     protected $version      = null;
     /**
@@ -110,7 +110,7 @@ class HttpResponse
      * returns http version of response
      *
      * @api
-     * @return  string
+     * @return  HttpVersion
      * @since   4.0.0
      */
     public function httpVersion()
@@ -122,7 +122,7 @@ class HttpResponse
      * returns http version of response
      *
      * @api
-     * @return  string
+     * @return  HttpVersion
      * @since   2.0.0
      * @deprecated since 4.0.0, use httpVersion() instead, will be removed with 5.0.0
      */
@@ -297,7 +297,7 @@ class HttpResponse
         }
 
         $this->statusLine   = $matches[0];
-        $this->version      = $matches[1];
+        $this->version      = HttpVersion::fromString($matches[1]);
         $this->statusCode   = (int) $matches[2];
         $this->reasonPhrase = $matches[3];
     }

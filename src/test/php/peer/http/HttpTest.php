@@ -19,6 +19,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function httpVersion1_0IsValid()
     {
@@ -27,6 +28,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function httpVersion1_1IsValid()
     {
@@ -35,6 +37,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function otherHttpVersionsAreNotValid()
     {

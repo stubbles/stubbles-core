@@ -53,11 +53,21 @@ class Http
      */
     const DELETE                    = 'DELETE';
     /**
+     * request method type: OPTIONS
+     *
+     * @since  4.0.0
+     */
+    const OPTIONS                   = 'OPTIONS';
+    /**
      * HTTP version: 1.0
+     *
+     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion::HTTP_1_0 instead, will be removed with 5.0.0
      */
     const VERSION_1_0               = 'HTTP/1.0';
     /**
      * HTTP version: 1.1
+     *
+     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion::HTTP_1_1 instead, will be removed with 5.0.0
      */
     const VERSION_1_1               = 'HTTP/1.1';
 
@@ -90,6 +100,21 @@ class Http
      * response status class: unknown status code
      */
     const STATUS_CLASS_UNKNOWN      = 'Unknown';
+    /**
+     * reference to RFC 2616 which defined HTTP/1.1 first
+     *
+     * @link   http://tools.ietf.org/html/rfc2616
+     * @since  4.0.0
+     */
+    const RFC_2616                  = 'RFC 2616';
+    /**
+     * reference to RFC 7230, a revised version of HTTP/1.1
+     *
+     * @ink    http://tools.ietf.org/html/rfc7230
+     * @since  4.0.0
+     */
+    const RFC_7230                  = 'RFC 7230';
+
     /**
      * map of status code classes
      *
@@ -169,6 +194,7 @@ class Http
      * @api
      * @param   string  $version
      * @return  bool
+     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion instead, will be removed with 5.0.0
      */
     public static function isVersionValid($version)
     {
@@ -298,5 +324,16 @@ class Http
     public static function emptyLine()
     {
         return self::END_OF_LINE;
+    }
+
+    /**
+     * checks if given RFC is a valid and known RFC
+     *
+     * @param   string  $rfc
+     * @return  bool
+     */
+    public static function isValidRfc($rfc)
+    {
+        return in_array($rfc, [self::RFC_2616, self::RFC_7230]);
     }
 }

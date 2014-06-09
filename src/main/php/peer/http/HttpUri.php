@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\peer\HeaderList;
 use stubbles\peer\MalformedUriException;
 use stubbles\peer\ParsedUri;
@@ -24,17 +25,23 @@ abstract class HttpUri extends Uri
      * parses an uri out of a string
      *
      * @param   string  $uriString  string to create instance from
+     * @param   string  $rfc        optional  RFC to base validation on, defaults to Http::RFC_7230
      * @return  HttpUri
+     * @throws  IllegalArgumentException  when passed RFC is unknown
      * @throws  MalformedUriException
      */
-    public static function fromString($uriString)
+    public static function fromString($uriString, $rfc = Http::RFC_7230)
     {
+        if (!Http::isValidRfc($rfc)) {
+            throw new IllegalArgumentException('Unknown RFC ' . $rfc . ', please use one of ' . Http::RFC_2616 . ' or ' . Http::RFC_7230);
+        }
+
         if (strlen($uriString) === 0) {
             return null;
         }
 
         $uri = new ConstructedHttpUri(new ParsedUri($uriString));
-        if ($uri->isValid()) {
+        if ($uri->isValidForRfc($rfc)) {
             if (!$uri->parsedUri->hasPath()) {
                 $uri->parsedUri = $uri->parsedUri->transpose(['path' => '/']);
             }
@@ -43,6 +50,22 @@ abstract class HttpUri extends Uri
         }
 
         throw new MalformedUriException('The URI ' . $uriString . ' is not a valid HTTP URI');
+    }
+
+    /**
+     * checks if uri is valid according to given rfc
+     *
+     * @param   string  $rfc
+     * @return  bool
+     * @throws  MalformedUriException
+     */
+    private function isValidForRfc($rfc)
+    {
+        if ($this->parsedUri->hasUser() && Http::RFC_7230 === $rfc) {
+            throw new MalformedUriException('The URI ' . $this->parsedUri->asString() . ' is not a valid HTTP URI according to ' . Http::RFC_7230 . ': contains userinfo, but this is disallowed');
+        }
+
+        return $this->isValid();
     }
 
     /**
@@ -55,7 +78,6 @@ abstract class HttpUri extends Uri
         if (!parent::isValid()) {
             return false;
         }
-
 
         if (!$this->parsedUri->schemeEquals(Http::SCHEME) && !$this->parsedUri->schemeEquals(Http::SCHEME_SSL)) {
             return false;

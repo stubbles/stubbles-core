@@ -129,10 +129,10 @@ class HttpConnection
      * returns response object for given URI after GET request
      *
      * @api
-     * @param   string  $version  HTTP version
+     * @param   string  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function get($version = Http::VERSION_1_1)
+    public function get($version = null)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->get($this->timeout, $version);
@@ -142,10 +142,10 @@ class HttpConnection
      * returns response object for given URI after HEAD request
      *
      * @api
-     * @param   string  $version  HTTP version
+     * @param   string  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function head($version = Http::VERSION_1_1)
+    public function head($version = null)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->head($this->timeout, $version);
@@ -156,10 +156,10 @@ class HttpConnection
      *
      * @api
      * @param   string|array  $body
-     * @param   string        $version  HTTP version
+     * @param   string        $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      */
-    public function post($body, $version = Http::VERSION_1_1)
+    public function post($body, $version = null)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->post($body, $this->timeout, $version);
@@ -170,11 +170,11 @@ class HttpConnection
      *
      * @api
      * @param   string  $body
-     * @param   string  $version  HTTP version
+     * @param   string  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      * @since   2.0.0
      */
-    public function put($body, $version = Http::VERSION_1_1)
+    public function put($body, $version = null)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->put($body, $this->timeout, $version);
@@ -184,11 +184,11 @@ class HttpConnection
      * returns response object for given URI after DELETE request
      *
      * @api
-     * @param   string  $version  HTTP version
+     * @param   string  $version  optional  http version, defaults to HTTP/1.1
      * @return  HttpResponse
      * @since   2.0.0
      */
-    public function delete($version = Http::VERSION_1_1)
+    public function delete($version = null)
     {
         return HttpRequest::create($this->httpUri, $this->headers)
                           ->delete($this->timeout, $version);
