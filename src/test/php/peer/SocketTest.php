@@ -177,8 +177,18 @@ class SocketTest extends \PHPUnit_Framework_TestCase
                                                ['connect'],
                                                ['localhost']
                                        )
-                                     ->getInputStream()
+                                     ->in()
         );
+    }
+
+    /**
+     * @since  4.0.0
+     * @test
+     */
+    public function alwaysReturnsSameInputStream()
+    {
+        $socket = $this->getMock('stubbles\peer\Socket', ['connect'], ['localhost']);
+        $this->assertSame($socket->in(), $socket->in());
     }
 
     /**
@@ -192,7 +202,17 @@ class SocketTest extends \PHPUnit_Framework_TestCase
                                                ['connect'],
                                                ['localhost']
                                        )
-                                     ->getOutputStream()
+                                     ->out()
         );
+    }
+
+    /**
+     * @since  4.0.0
+     * @test
+     */
+    public function alwaysReturnsSameOutputStream()
+    {
+        $socket = $this->getMock('stubbles\peer\Socket', ['connect'], ['localhost']);
+        $this->assertSame($socket->out(), $socket->out());
     }
 }

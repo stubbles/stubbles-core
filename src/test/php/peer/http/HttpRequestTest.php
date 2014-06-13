@@ -46,10 +46,10 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                                          ->disableOriginalConstructor()
                                          ->getMock();
         $mockSocket->expects($this->any())
-                   ->method('getInputStream')
+                   ->method('in')
                    ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
         $mockSocket->expects(($this->any()))
-                   ->method('getOutputStream')
+                   ->method('out')
                    ->will($this->returnValue($this->memoryOutputStream));
         $mockHttpUri->expects($this->any())
                     ->method('openSocket')

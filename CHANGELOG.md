@@ -40,6 +40,8 @@
     * deprecated `stubbles\peer\BsdSocket::getOption()`, use `stubbles\peer\BsdSocket::option()` instead
     * deprecated `stubbles\peer\Socket::getTimeout()`, use `stubbles\peer\Socket::timeout()` instead
     * deprecated `stubbles\peer\Socket::getPrefix()`, use `stubbles\peer\Socket::usesSsl()` instead
+    * deprecated `stubbles\peer\Socket::getInputStream()`, use `stubbles\peer\Socket::in()` instead
+    * deprecated `stubbles\peer\Socket::getOutputStream()`, use `stubbles\peer\Socket::out()` instead
     * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead
     * deprecated `stubbles\peer\Uri::getUser()`, use `stubbles\peer\Uri::user()` instead
     * deprecated `stubbles\peer\Uri::getPassword()`, use `stubbles\peer\Uri::password()` instead
@@ -65,6 +67,7 @@
   * deprecated `stubbles\peer\BsdSocket::getDomain()`, will be removed with 5.0.0
   * deprecated `stubbles\peer\Socket::getHost()`, will be removed with 5.0.0
   * deprecated `stubbles\peer\Socket::getPort()`, will be removed with 5.0.0
+  * `stubbles\peer\Socket::getInputStream()` and `stubbles\peer\Socket::getOutputStream()` will now always return the same instance
   * `stubbles\peer\http\HttpUri::fromString()` no longer accepts uris with userinfo by default in compliance with RFC 7230, to retain the old behaviour pass `stubbles\peer\http\Http::RFC_2616` as second parameter
 
 
