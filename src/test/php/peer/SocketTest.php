@@ -26,6 +26,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function containsGivenHost()
     {
@@ -35,6 +36,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function portDefaultsTo80()
     {
@@ -45,10 +47,10 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function hasNoPrefixByDefault()
+    public function isNotSecureByDefault()
     {
         $socket = createSocket('example.com');
-        $this->assertNull($socket->getPrefix());
+        $this->assertFalse($socket->usesSsl());
     }
 
     /**
@@ -57,7 +59,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     public function timeoutDefaultsTo5Seconds()
     {
         $socket = createSocket('example.com');
-        $this->assertEquals(5, $socket->getTimeout());
+        $this->assertEquals(5, $socket->timeout());
     }
 
     /**
@@ -66,7 +68,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     public function timeoutCanBeChanged()
     {
         $socket = createSocket('example.com');
-        $this->assertEquals(60, $socket->setTimeout(60)->getTimeout());
+        $this->assertEquals(60, $socket->setTimeout(60)->timeout());
     }
 
     /**
@@ -89,6 +91,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function hasGivenPort()
     {
@@ -99,10 +102,10 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function hasGivenPrefix()
+    public function isSecureWhenPrefixForSslGiven()
     {
         $socket = createSocket('example.com', 443, 'ssl://', 30);
-        $this->assertEquals('ssl://', $socket->getPrefix());
+        $this->assertTrue($socket->usesSsl());
     }
 
     /**
@@ -111,7 +114,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     public function hasGivenTimeout()
     {
         $socket = createSocket('example.com', 443, 'ssl://', 30);
-        $this->assertEquals(30, $socket->getTimeout());
+        $this->assertEquals(30, $socket->timeout());
     }
 
     /**

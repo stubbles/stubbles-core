@@ -39,6 +39,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function hasGivenHost()
     {
@@ -58,6 +59,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function hasGivenPort()
     {
@@ -67,6 +69,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function portIsNullIfNotRequired()
     {
@@ -77,19 +80,20 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function neverHasPrefix()
+    public function doesNotUseSecureConnection()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertNull($socket->getPrefix());
+        $this->assertFalse($socket->usesSsl());
     }
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function timeoutDefaultsTo5Seconds()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(5, $socket->getTimeout());
+        $this->assertEquals(5, $socket->timeout());
     }
 
     /**
@@ -98,7 +102,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function timeoutCanBeChanged()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(60, $socket->setTimeout(60)->getTimeout());
+        $this->assertEquals(60, $socket->setTimeout(60)->timeout());
     }
 
     /**

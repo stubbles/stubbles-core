@@ -103,6 +103,16 @@ class Socket
     }
 
     /**
+     * checks if we already have a connection
+     *
+     * @return  bool
+     */
+    public function isConnected()
+    {
+        return is_resource($this->fp);
+    }
+
+    /**
      * closes a connection
      *
      * @return  Socket
@@ -131,6 +141,27 @@ class Socket
         }
 
         return $this;
+    }
+
+    /**
+     * returns timeout for connections
+     *
+     * @return  int
+     */
+    public function timeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * get timeout for connections
+     *
+     * @return  int
+     * @deprecated  since 4.0.0, use timeout() instead, will be removed with 5.0.0
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
     }
 
     /**
@@ -220,6 +251,7 @@ class Socket
      * get host of current connection
      *
      * @return  string
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function getHost()
     {
@@ -230,6 +262,7 @@ class Socket
      * get port of current connection
      *
      * @return  int
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function getPort()
     {
@@ -237,33 +270,25 @@ class Socket
     }
 
     /**
+     * checks if socket uses a secure connection
+     *
+     * @return  bool
+     * @since   4.0.0
+     */
+    public function usesSsl()
+    {
+        return 'ssl://' === $this->prefix;
+    }
+
+    /**
      * returns prefix for host, e.g. ssl://
      *
      * @return  string
+     * @deprecated  since 4.0.0, use usesSsl() instead, will be removed with 5.0.0
      */
     public function getPrefix()
     {
         return $this->prefix;
-    }
-
-    /**
-     * get timeout for connections
-     *
-     * @return  int
-     */
-    public function getTimeout()
-    {
-        return $this->timeout;
-    }
-
-    /**
-     * checks if we already have a connection
-     *
-     * @return  bool
-     */
-    public function isConnected()
-    {
-        return is_resource($this->fp);
     }
 
     /**
