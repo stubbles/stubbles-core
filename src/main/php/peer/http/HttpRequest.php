@@ -66,8 +66,8 @@ class HttpRequest
     public function get($timeout = 30, $version = HttpVersion::HTTP_1_1)
     {
         $socket = $this->httpUri->openSocket($timeout);
-        $this->processHeader($socket->getOutputStream(), Http::GET, $version);
-        return HttpResponse::create($socket->getInputStream());
+        $this->processHeader($socket->out(), Http::GET, $version);
+        return HttpResponse::create($socket->in());
     }
 
     /**
@@ -81,8 +81,8 @@ class HttpRequest
     {
         $socket = $this->httpUri->openSocket($timeout);
         $this->headers->put('Connection', 'close');
-        $this->processHeader($socket->getOutputStream(), Http::HEAD, $version);
-        return HttpResponse::create($socket->getInputStream());
+        $this->processHeader($socket->out(), Http::HEAD, $version);
+        return HttpResponse::create($socket->in());
     }
 
     /**
@@ -107,10 +107,10 @@ class HttpRequest
 
         $this->headers->put('Content-Length', strlen($body));
         $socket = $this->httpUri->openSocket($timeout);
-        $out    = $socket->getOutputStream();
+        $out    = $socket->out();
         $this->processHeader($out, Http::POST, $version);
         $out->write($body);
-        return HttpResponse::create($socket->getInputStream());
+        return HttpResponse::create($socket->in());
     }
 
     /**
@@ -126,10 +126,10 @@ class HttpRequest
     {
         $this->headers->put('Content-Length', strlen($body));
         $socket = $this->httpUri->openSocket($timeout);
-        $out    = $socket->getOutputStream();
+        $out    = $socket->out();
         $this->processHeader($out, Http::PUT, $version);
         $out->write($body);
-        return HttpResponse::create($socket->getInputStream());
+        return HttpResponse::create($socket->in());
     }
 
     /**
@@ -143,8 +143,8 @@ class HttpRequest
     public function delete($timeout = 30, $version = HttpVersion::HTTP_1_1)
     {
         $socket = $this->httpUri->openSocket($timeout);
-        $this->processHeader($socket->getOutputStream(), Http::DELETE, $version);
-        return HttpResponse::create($socket->getInputStream());
+        $this->processHeader($socket->out(), Http::DELETE, $version);
+        return HttpResponse::create($socket->in());
     }
 
     /**
@@ -178,13 +178,13 @@ class HttpRequest
             throw new IllegalArgumentException("Invalid HTTP version " . $version . ', please use either ' . HttpVersion::HTTP_1_0 . ' or ' . HttpVersion::HTTP_1_1);
         }
 
-        $path = $this->httpUri->getPath();
+        $path = $this->httpUri->path();
         if ($this->httpUri->hasQueryString() && $this->methodAllowsQueryString($method)) {
-            $path .= '?' . $this->httpUri->getQueryString();
+            $path .= '?' . $this->httpUri->queryString();
         }
 
         $out->write(Http::line($method . ' ' . $path . ' ' . $version));
-        $out->write(Http::line('Host: ' . $this->httpUri->getHost()));
+        $out->write(Http::line('Host: ' . $this->httpUri->hostname()));
         foreach ($this->headers as $key => $value) {
             $out->write(Http::line($key . ': ' . $value));
         }

@@ -85,6 +85,7 @@ class BsdSocket extends Socket
      * returns the domain
      *
      * @return  SocketDomain
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function getDomain()
     {
@@ -117,6 +118,17 @@ class BsdSocket extends Socket
      * returns the socket type
      *
      * @return  int
+     */
+    public function type()
+    {
+        return $this->type;
+    }
+
+    /**
+     * returns the socket type
+     *
+     * @return  int
+     * @deprecated  since 4.0.0, use type() instead, will be removed with 5.0.0
      */
     public function getType()
     {
@@ -196,6 +208,20 @@ class BsdSocket extends Socket
      * @param   int    $name     option name
      * @param   mixed  $default  value to return if option not set
      * @return  mixed
+     */
+    public function option($level, $name, $default)
+    {
+        return $this->options->get($level, $name, $default);
+    }
+
+    /**
+     * returns an option
+     *
+     * @param   int    $level    protocol level of option
+     * @param   int    $name     option name
+     * @param   mixed  $default  value to return if option not set
+     * @return  mixed
+     * @deprecated  since 4.0.0, use option() instead, will be removed with 5.0.0
      */
     public function getOption($level, $name, $default)
     {

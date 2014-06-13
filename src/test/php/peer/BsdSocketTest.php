@@ -30,6 +30,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function hasGivenDomain()
     {
@@ -39,6 +40,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function hasGivenHost()
     {
@@ -58,6 +60,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function hasGivenPort()
     {
@@ -67,6 +70,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function portIsNullIfNotRequired()
     {
@@ -77,19 +81,20 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function neverHasPrefix()
+    public function doesNotUseSecureConnection()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertNull($socket->getPrefix());
+        $this->assertFalse($socket->usesSsl());
     }
 
     /**
      * @test
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function timeoutDefaultsTo5Seconds()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(5, $socket->getTimeout());
+        $this->assertEquals(5, $socket->timeout());
     }
 
     /**
@@ -98,7 +103,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function timeoutCanBeChanged()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(60, $socket->setTimeout(60)->getTimeout());
+        $this->assertEquals(60, $socket->setTimeout(60)->timeout());
     }
 
     /**
@@ -125,7 +130,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeDefaultsToSOCK_STREAM()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_STREAM, $socket->getType());
+        $this->assertEquals(SOCK_STREAM, $socket->type());
     }
 
     /**
@@ -134,13 +139,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeCanBeSetToSOCK_DGRAM()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_DGRAM, $socket->setType(SOCK_DGRAM)->getType());
-        $this->assertSame($socket, $socket->setType(SOCK_RAW));
-        $this->assertEquals(SOCK_RAW, $socket->getType());
-        $this->assertSame($socket, $socket->setType(SOCK_SEQPACKET));
-        $this->assertEquals(SOCK_SEQPACKET, $socket->getType());
-        $this->assertSame($socket, $socket->setType(SOCK_RDM));
-        $this->assertEquals(SOCK_RDM, $socket->getType());
+        $this->assertEquals(SOCK_DGRAM, $socket->setType(SOCK_DGRAM)->type());
     }
 
     /**
@@ -149,7 +148,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeCanBeSetToSOCK_RAW()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_RAW, $socket->setType(SOCK_RAW)->getType());
+        $this->assertEquals(SOCK_RAW, $socket->setType(SOCK_RAW)->type());
     }
 
     /**
@@ -158,7 +157,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeCanBeSetToSOCK_SEQPACKET()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_SEQPACKET, $socket->setType(SOCK_SEQPACKET)->getType());
+        $this->assertEquals(SOCK_SEQPACKET, $socket->setType(SOCK_SEQPACKET)->type());
     }
 
     /**
@@ -167,7 +166,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeCanBeSetToSOCK_RDM()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_RDM, $socket->setType(SOCK_RDM)->getType());
+        $this->assertEquals(SOCK_RDM, $socket->setType(SOCK_RDM)->type());
     }
 
     /**
@@ -254,7 +253,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals('default',
-                            $socket->getOption('bar', 'baz', 'default')
+                            $socket->option('bar', 'baz', 'default')
         );
     }
 
@@ -266,7 +265,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertEquals('foo',
                             $socket->setOption('bar', 'baz', 'foo')
-                                   ->getOption('bar', 'baz', 'default')
+                                   ->option('bar', 'baz', 'default')
         );
     }
 

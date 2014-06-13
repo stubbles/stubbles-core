@@ -39,20 +39,20 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
         $this->mockHttpUri        = $this->getMock('stubbles\peer\http\HttpUri');
         $mockSocket               = $this->getMock('stubbles\peer\Socket', [], ['example.com']);
         $mockSocket->expects($this->any())
-                   ->method('getInputStream')
+                   ->method('in')
                    ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
         $mockSocket->expects(($this->any()))
-                   ->method('getOutputStream')
+                   ->method('out')
                    ->will($this->returnValue($this->memoryOutputStream));
         $this->mockHttpUri->expects($this->any())
                           ->method('openSocket')
                           ->with($this->equalTo(2))
                           ->will($this->returnValue($mockSocket));
         $this->mockHttpUri->expects($this->any())
-                          ->method('getPath')
+                          ->method('path')
                           ->will($this->returnValue('/foo/resource'));
         $this->mockHttpUri->expects($this->any())
-                          ->method('getHost')
+                          ->method('hostname')
                           ->will($this->returnValue('example.com'));
         $this->httpConnection = new HttpConnection($this->mockHttpUri);
     }

@@ -317,12 +317,12 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      * @since  2.0.0
      * @test
      */
-    public function openSocketForHttpDoesNotYieldSocketWithPrefix()
+    public function openSocketForHttpDoesNotYieldSocketWithSecureConnection()
     {
-        $this->assertNull(
+        $this->assertFalse(
                 HttpUri::fromString('http://example.net/')
                        ->openSocket()
-                       ->getPrefix()
+                       ->usesSsl()
         );
     }
 
@@ -330,13 +330,12 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      * @since  2.0.0
      * @test
      */
-    public function openSocketForHttpsDoesYieldSocketWithPrefix()
+    public function openSocketForHttpsDoesYieldSocketWithSecureConnection()
     {
-        $this->assertEquals(
-                'ssl://',
+        $this->assertTrue(
                 HttpUri::fromString('https://example.net/')
                        ->openSocket()
-                       ->getPrefix()
+                       ->usesSsl()
         );
     }
 
@@ -347,10 +346,10 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function openSocketUsesDefaultTimeout()
     {
         $this->assertEquals(
-                5,
+               5,
                HttpUri::fromString('http://example.net/')
                       ->openSocket()
-                      ->getTimeout()
+                      ->timeout()
         );
     }
 
@@ -364,7 +363,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
                 2,
                 HttpUri::fromString('http://example.net/')
                        ->openSocket(2)
-                       ->getTimeout()
+                       ->timeout()
         );
     }
 

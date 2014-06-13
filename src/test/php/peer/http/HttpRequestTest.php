@@ -46,28 +46,28 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                                          ->disableOriginalConstructor()
                                          ->getMock();
         $mockSocket->expects($this->any())
-                   ->method('getInputStream')
+                   ->method('in')
                    ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
         $mockSocket->expects(($this->any()))
-                   ->method('getOutputStream')
+                   ->method('out')
                    ->will($this->returnValue($this->memoryOutputStream));
         $mockHttpUri->expects($this->any())
                     ->method('openSocket')
                     ->will($this->returnValue($mockSocket));
         $mockHttpUri->expects($this->any())
-                    ->method('getPath')
+                    ->method('path')
                     ->will($this->returnValue('/foo/resource'));
         if (null !== $queryString) {
             $mockHttpUri->expects($this->any())
                     ->method('hasQueryString')
                     ->will($this->returnValue(true));
             $mockHttpUri->expects($this->any())
-                    ->method('getQueryString')
+                    ->method('queryString')
                     ->will($this->returnValue($queryString));
         }
 
         $mockHttpUri->expects($this->any())
-                    ->method('getHost')
+                    ->method('hostname')
                     ->will($this->returnValue('example.com'));
         return HttpRequest::create($mockHttpUri,
                                    new HeaderList(['X-Binford' => 6100])

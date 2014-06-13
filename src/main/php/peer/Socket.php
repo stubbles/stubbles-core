@@ -47,6 +47,19 @@ class Socket
      * @type  resource
      */
     protected $fp;
+    /**
+     * input stream to read data from socket with
+     *
+     * @type  \stubbles\streams\InputStream
+     */
+    private $inputStream;
+    /**
+     * output stream to read data from socket with
+     *
+     * @type  \stubbles\streams\OutputStream
+     */
+    private $outputStream;
+
 
     /**
      * constructor
@@ -103,6 +116,16 @@ class Socket
     }
 
     /**
+     * checks if we already have a connection
+     *
+     * @return  bool
+     */
+    public function isConnected()
+    {
+        return is_resource($this->fp);
+    }
+
+    /**
      * closes a connection
      *
      * @return  Socket
@@ -131,6 +154,27 @@ class Socket
         }
 
         return $this;
+    }
+
+    /**
+     * returns timeout for connections
+     *
+     * @return  int
+     */
+    public function timeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * get timeout for connections
+     *
+     * @return  int
+     * @deprecated  since 4.0.0, use timeout() instead, will be removed with 5.0.0
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
     }
 
     /**
@@ -220,6 +264,7 @@ class Socket
      * get host of current connection
      *
      * @return  string
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function getHost()
     {
@@ -230,6 +275,7 @@ class Socket
      * get port of current connection
      *
      * @return  int
+     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function getPort()
     {
@@ -237,33 +283,25 @@ class Socket
     }
 
     /**
+     * checks if socket uses a secure connection
+     *
+     * @return  bool
+     * @since   4.0.0
+     */
+    public function usesSsl()
+    {
+        return 'ssl://' === $this->prefix;
+    }
+
+    /**
      * returns prefix for host, e.g. ssl://
      *
      * @return  string
+     * @deprecated  since 4.0.0, use usesSsl() instead, will be removed with 5.0.0
      */
     public function getPrefix()
     {
         return $this->prefix;
-    }
-
-    /**
-     * get timeout for connections
-     *
-     * @return  int
-     */
-    public function getTimeout()
-    {
-        return $this->timeout;
-    }
-
-    /**
-     * checks if we already have a connection
-     *
-     * @return  bool
-     */
-    public function isConnected()
-    {
-        return is_resource($this->fp);
     }
 
     /**
@@ -283,22 +321,54 @@ class Socket
     /**
      * returns input stream to read from socket
      *
-     * @return InputStream
-     * @since  2.0.0
+     * @return  \stubbles\streams\InputStream
+     * @since   2.0.0
+     */
+    public function in()
+    {
+        if (null === $this->inputStream) {
+            $this->inputStream = new SocketInputStream($this);
+        }
+
+        return $this->inputStream;
+    }
+
+    /**
+     * returns input stream to read from socket
+     *
+     * @return  \stubbles\streams\InputStream
+     * @since   2.0.0
+     * @deprecated  since 4.0.0, use in() instead, will be removed with 5.0.0
      */
     public function getInputStream()
     {
-        return new SocketInputStream($this);
+        return $this->in();
     }
 
     /**
      * returns output stream to write to socket
      *
-     * @return OutputStream
-     * @since  2.0.0
+     * @return  \stubbles\streams\OutputStream
+     * @since   2.0.0
+     */
+    public function out()
+    {
+        if (null === $this->outputStream) {
+            $this->outputStream = new SocketOutputStream($this);
+        }
+
+        return $this->outputStream;
+    }
+
+    /**
+     * returns output stream to write to socket
+     *
+     * @return  \stubbles\streams\OutputStream
+     * @since   2.0.0
+     * @deprecated  since 4.0.0, use out() instead, will be removed with 5.0.0
      */
     public function getOutputStream()
     {
-        return new SocketOutputStream($this);
+        return $this->out();
     }
 }

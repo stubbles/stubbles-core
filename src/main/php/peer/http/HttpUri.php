@@ -218,8 +218,8 @@ abstract class HttpUri extends Uri
      */
     public function openSocket($timeout = 5)
     {
-        return new Socket($this->getHost(),
-                          $this->getPort(),
+        return new Socket($this->hostname(),
+                          $this->port(),
                           (($this->isHttps()) ? ('ssl://') : (null)),
                           $timeout
         );
