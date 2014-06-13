@@ -47,6 +47,19 @@ class Socket
      * @type  resource
      */
     protected $fp;
+    /**
+     * input stream to read data from socket with
+     *
+     * @type  \stubbles\streams\InputStream
+     */
+    private $inputStream;
+    /**
+     * output stream to read data from socket with
+     *
+     * @type  \stubbles\streams\OutputStream
+     */
+    private $outputStream;
+
 
     /**
      * constructor
@@ -305,13 +318,11 @@ class Socket
         return true;
     }
 
-    private $inputStream;
-
     /**
      * returns input stream to read from socket
      *
-     * @return InputStream
-     * @since  2.0.0
+     * @return  \stubbles\streams\InputStream
+     * @since   2.0.0
      */
     public function in()
     {
@@ -325,8 +336,8 @@ class Socket
     /**
      * returns input stream to read from socket
      *
-     * @return InputStream
-     * @since  2.0.0
+     * @return  \stubbles\streams\InputStream
+     * @since   2.0.0
      * @deprecated  since 4.0.0, use in() instead, will be removed with 5.0.0
      */
     public function getInputStream()
@@ -334,28 +345,26 @@ class Socket
         return $this->in();
     }
 
-    private $out;
-
     /**
      * returns output stream to write to socket
      *
-     * @return OutputStream
-     * @since  2.0.0
+     * @return  \stubbles\streams\OutputStream
+     * @since   2.0.0
      */
     public function out()
     {
-        if (null === $this->out) {
-            $this->out = new SocketOutputStream($this);
+        if (null === $this->outputStream) {
+            $this->outputStream = new SocketOutputStream($this);
         }
 
-        return $this->out;
+        return $this->outputStream;
     }
 
     /**
      * returns output stream to write to socket
      *
-     * @return OutputStream
-     * @since  2.0.0
+     * @return  \stubbles\streams\OutputStream
+     * @since   2.0.0
      * @deprecated  since 4.0.0, use out() instead, will be removed with 5.0.0
      */
     public function getOutputStream()
