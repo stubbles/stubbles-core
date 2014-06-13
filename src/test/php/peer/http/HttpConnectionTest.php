@@ -49,10 +49,10 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                           ->with($this->equalTo(2))
                           ->will($this->returnValue($mockSocket));
         $this->mockHttpUri->expects($this->any())
-                          ->method('getPath')
+                          ->method('path')
                           ->will($this->returnValue('/foo/resource'));
         $this->mockHttpUri->expects($this->any())
-                          ->method('getHost')
+                          ->method('hostname')
                           ->will($this->returnValue('example.com'));
         $this->httpConnection = new HttpConnection($this->mockHttpUri);
     }

@@ -55,19 +55,19 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                     ->method('openSocket')
                     ->will($this->returnValue($mockSocket));
         $mockHttpUri->expects($this->any())
-                    ->method('getPath')
+                    ->method('path')
                     ->will($this->returnValue('/foo/resource'));
         if (null !== $queryString) {
             $mockHttpUri->expects($this->any())
                     ->method('hasQueryString')
                     ->will($this->returnValue(true));
             $mockHttpUri->expects($this->any())
-                    ->method('getQueryString')
+                    ->method('queryString')
                     ->will($this->returnValue($queryString));
         }
 
         $mockHttpUri->expects($this->any())
-                    ->method('getHost')
+                    ->method('hostname')
                     ->will($this->returnValue('example.com'));
         return HttpRequest::create($mockHttpUri,
                                    new HeaderList(['X-Binford' => 6100])

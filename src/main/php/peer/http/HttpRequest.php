@@ -178,13 +178,13 @@ class HttpRequest
             throw new IllegalArgumentException("Invalid HTTP version " . $version . ', please use either ' . HttpVersion::HTTP_1_0 . ' or ' . HttpVersion::HTTP_1_1);
         }
 
-        $path = $this->httpUri->getPath();
+        $path = $this->httpUri->path();
         if ($this->httpUri->hasQueryString() && $this->methodAllowsQueryString($method)) {
-            $path .= '?' . $this->httpUri->getQueryString();
+            $path .= '?' . $this->httpUri->queryString();
         }
 
         $out->write(Http::line($method . ' ' . $path . ' ' . $version));
-        $out->write(Http::line('Host: ' . $this->httpUri->getHost()));
+        $out->write(Http::line('Host: ' . $this->httpUri->hostname()));
         foreach ($this->headers as $key => $value) {
             $out->write(Http::line($key . ': ' . $value));
         }
