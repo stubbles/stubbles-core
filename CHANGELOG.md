@@ -36,6 +36,8 @@
     * deprecated `stubbles\lang\ResourceLoader::getResourceUris()´, use `stubbles\lang\ResourceLoader::availableResourceUris()` instead
     * deprecated `stubbles\lang\ResourceLoader::getRootPath()´ and `stubbles\lang\ResourceLoader::getRoot()´, use `stubbles\lang\Rootpath` instead
     * deprecated `stubbles\peer\http\AcceptHeader::getList()`
+    * deprecated `stubbles\peer\BsdSocket::getType()`, use `stubbles\peer\BsdSocket::type()` instead
+    * deprecated `stubbles\peer\BsdSocket::getOption()`, use `stubbles\peer\BsdSocket::option()` instead
     * deprecated `stubbles\peer\Socket::getTimeout()`, use `stubbles\peer\Socket::timeout()` instead
     * deprecated `stubbles\peer\Socket::getPrefix()`, use `stubbles\peer\Socket::usesSsl()` instead
     * deprecated `stubbles\peer\Uri::getScheme()`, use `stubbles\peer\Uri::scheme()` instead
@@ -60,6 +62,7 @@
     * deprecated `stubbles\peer\http\HttpResponse::getReasonPhrase()`, use `stubbles\peer\http\HttpResponse::reasonPhrase()` instead
     * deprecated `stubbles\peer\http\HttpResponse::getHeader()`, use `stubbles\peer\http\HttpResponse::headers()` instead
     * deprecated `stubbles\peer\http\HttpResponse::getBody()`, use `stubbles\peer\http\HttpResponse::body()` instead
+  * deprecated `stubbles\peer\BsdSocket::getDomain()`, will be removed with 5.0.0
   * deprecated `stubbles\peer\Socket::getHost()`, will be removed with 5.0.0
   * deprecated `stubbles\peer\Socket::getPort()`, will be removed with 5.0.0
   * `stubbles\peer\http\HttpUri::fromString()` no longer accepts uris with userinfo by default in compliance with RFC 7230, to retain the old behaviour pass `stubbles\peer\http\Http::RFC_2616` as second parameter
