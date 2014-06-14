@@ -409,4 +409,35 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
                 HttpUri::fromString($uri, Http::RFC_2616)->asString()
         );
     }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function castFromInstanceReturnsInstance()
+    {
+        $uri = HttpUri::fromString('http://example.net/');
+        $this->assertSame($uri, HttpUri::castFrom($uri));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function castFromStringeReturnsInstance()
+    {
+        $uri = HttpUri::fromString('http://example.net/');
+        $this->assertEquals($uri, HttpUri::castFrom('http://example.net/'));
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedExceptionMessage  Uri must be a string containing a HTTP URI or an instance of stubbles\peer\http\HttpUri, but was stdClass
+     * @since  4.0.0
+     */
+    public function castFromOtherThrowsIllegalArgumentException()
+    {
+        HttpUri::castFrom(new \stdClass());
+    }
 }

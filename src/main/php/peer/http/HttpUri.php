@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+use stubbles\lang;
 use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\peer\HeaderList;
 use stubbles\peer\MalformedUriException;
@@ -50,6 +51,28 @@ abstract class HttpUri extends Uri
         }
 
         throw new MalformedUriException('The URI ' . $uriString . ' is not a valid HTTP URI');
+    }
+
+    /**
+     * casts given value to an instance of HttpUri
+     *
+     * @param   string|HttpUri  $value  value to cast to HttpUri
+     * @param   string          $name   optional  name of parameter to cast from
+     * @return  HttpUri
+     * @throws  IllegalArgumentException
+     * @since   4.0.0
+     */
+    public static function castFrom($value, $name = 'Uri')
+    {
+        if ($value instanceof self) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            return self::fromString($value);
+        }
+
+        throw new IllegalArgumentException($name . ' must be a string containing a HTTP URI or an instance of ' . get_class() . ', but was ' . lang\getType($value));
     }
 
     /**
