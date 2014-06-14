@@ -83,6 +83,7 @@
   * added `stubbles\peer\http\Http::isValidRfc()`
   * added `stubbles\peer\http\Http::OPTIONS`
   * added `stubbles\peer\http\HttpVersion`
+  * added `stubbles\peer\http\HttpUri::castFrom()`
 
 
 3.5.3 (2014-05-07)
