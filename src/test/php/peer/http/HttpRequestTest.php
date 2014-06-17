@@ -86,7 +86,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Host: example.com')
                           . Http::line('X-Binford: 6100')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -103,7 +103,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Host: example.com')
                           . Http::line('X-Binford: 6100')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -119,7 +119,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Host: example.com')
                           . Http::line('X-Binford: 6100')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -145,7 +145,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('X-Binford: 6100')
                           . Http::line('Connection: close')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -163,7 +163,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('X-Binford: 6100')
                           . Http::line('Connection: close')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -180,7 +180,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('X-Binford: 6100')
                           . Http::line('Connection: close')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -207,7 +207,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 6')
                           . Http::emptyLine()
                           . 'foobar',
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -226,7 +226,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 6')
                           . Http::emptyLine()
                           . 'foobar',
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -244,7 +244,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 6')
                           . Http::emptyLine()
                           . 'foobar',
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -262,7 +262,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Type: application/x-www-form-urlencoded')
                           . Http::line('Content-Length: 0')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -281,7 +281,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 20')
                           . Http::emptyLine()
                           . 'foo=bar&ba+z=dum+my&',
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -300,7 +300,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 20')
                           . Http::emptyLine()
                           . 'foo=bar&ba+z=dum+my&',
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -328,7 +328,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 6')
                           . Http::emptyLine()
                           . 'foobar',
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -347,7 +347,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 6')
                           . Http::emptyLine()
                           . 'foobar',
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -366,7 +366,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Content-Length: 6')
                           . Http::emptyLine()
                           . 'foobar',
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -393,7 +393,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Host: example.com')
                           . Http::line('X-Binford: 6100')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -410,7 +410,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Host: example.com')
                           . Http::line('X-Binford: 6100')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
@@ -427,7 +427,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                           . Http::line('Host: example.com')
                           . Http::line('X-Binford: 6100')
                           . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+                            $this->memoryOutputStream
         );
     }
 
