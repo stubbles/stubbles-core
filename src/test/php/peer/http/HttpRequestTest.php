@@ -82,11 +82,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->get()
         );
-        $this->assertEquals(Http::line('GET /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['GET /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         '',
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -99,11 +103,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest('foo=bar&baz=1')->get()
         );
-        $this->assertEquals(Http::line('GET /foo/resource?foo=bar&baz=1 HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['GET /foo/resource?foo=bar&baz=1 HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -115,11 +123,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->get(5, HttpVersion::HTTP_1_0)
         );
-        $this->assertEquals(Http::line('GET /foo/resource HTTP/1.0')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['GET /foo/resource HTTP/1.0',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -140,12 +152,16 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->head()
         );
-        $this->assertEquals(Http::line('HEAD /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Connection: close')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['HEAD /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Connection: close',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -158,12 +174,16 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest('foo=bar&baz=1')->head()
         );
-        $this->assertEquals(Http::line('HEAD /foo/resource?foo=bar&baz=1 HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Connection: close')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['HEAD /foo/resource?foo=bar&baz=1 HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Connection: close',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -175,12 +195,16 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->head(5, HttpVersion::HTTP_1_0)
         );
-        $this->assertEquals(Http::line('HEAD /foo/resource HTTP/1.0')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Connection: close')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['HEAD /foo/resource HTTP/1.0',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Connection: close',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -201,13 +225,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->post('foobar')
         );
-        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Length: 6')
-                          . Http::emptyLine()
-                          . 'foobar',
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['POST /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Length: 6',
+                         '',
+                         'foobar',
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -220,13 +248,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest('foo=bar&baz=1')->post('foobar')
         );
-        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Length: 6')
-                          . Http::emptyLine()
-                          . 'foobar',
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['POST /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -238,13 +270,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->post('foobar', 5, HttpVersion::HTTP_1_0)
         );
-        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.0')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Length: 6')
-                          . Http::emptyLine()
-                          . 'foobar',
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['POST /foo/resource HTTP/1.0',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -256,13 +292,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->post([])
         );
-        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Type: application/x-www-form-urlencoded')
-                          . Http::line('Content-Length: 0')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['POST /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Type: application/x-www-form-urlencoded',
+                         'Content-Length: 0',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -274,14 +314,18 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'])
         );
-        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Type: application/x-www-form-urlencoded')
-                          . Http::line('Content-Length: 20')
-                          . Http::emptyLine()
-                          . 'foo=bar&ba+z=dum+my&',
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['POST /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Type: application/x-www-form-urlencoded',
+                         'Content-Length: 20',
+                         '',
+                         'foo=bar&ba+z=dum+my&'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -293,14 +337,18 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'], 5, HttpVersion::HTTP_1_0)
         );
-        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.0')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Type: application/x-www-form-urlencoded')
-                          . Http::line('Content-Length: 20')
-                          . Http::emptyLine()
-                          . 'foo=bar&ba+z=dum+my&',
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['POST /foo/resource HTTP/1.0',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Type: application/x-www-form-urlencoded',
+                         'Content-Length: 20',
+                         '',
+                         'foo=bar&ba+z=dum+my&'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -322,13 +370,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->put('foobar')
         );
-        $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Length: 6')
-                          . Http::emptyLine()
-                          . 'foobar',
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['PUT /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -341,13 +393,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest('foo=bar&baz=1')->put('foobar')
         );
-        $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Length: 6')
-                          . Http::emptyLine()
-                          . 'foobar',
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['PUT /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -360,13 +416,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->put('foobar', 5, HttpVersion::HTTP_1_0)
         );
-        $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.0')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Length: 6')
-                          . Http::emptyLine()
-                          . 'foobar',
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['PUT /foo/resource HTTP/1.0',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -389,11 +449,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->delete()
         );
-        $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['DELETE /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         '',
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -406,11 +470,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest('foo=bar&baz=1')->delete()
         );
-        $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['DELETE /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -423,11 +491,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
                                 $this->createHttpRequest()->delete(5, HttpVersion::HTTP_1_0)
         );
-        $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.0')
-                          . Http::line('Host: example.com')
-                          . Http::line('X-Binford: 6100')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream
+        $this->assertEquals(
+                Http::lines(
+                        ['DELETE /foo/resource HTTP/1.0',
+                         'Host: example.com',
+                         'X-Binford: 6100',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 

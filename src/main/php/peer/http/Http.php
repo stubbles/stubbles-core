@@ -317,6 +317,40 @@ class Http
     }
 
     /**
+     * creates valid http lines from given input lines
+     *
+     * If the array contains an empty line all lines after this empty line are
+     * considered to belong to the body and will be returned as they are.
+     *
+     * @param   string[]  $lines
+     * @return  string
+     * @since   4.0.0
+     */
+    public static function lines(array $lines)
+    {
+        $head = true;
+        return join(
+                '',
+                array_map(
+                        function($line) use (&$head)
+                        {
+                            if (empty($line)) {
+                                $head = false;
+                                return self::emptyLine();
+                            }
+
+                            if ($head) {
+                                return self::line($line);
+                            }
+
+                            return $line;
+                        },
+                        $lines
+                )
+        );
+    }
+
+    /**
      * creates empty http line
      *
      * @return  string
