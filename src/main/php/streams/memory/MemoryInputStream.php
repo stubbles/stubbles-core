@@ -23,13 +23,13 @@ class MemoryInputStream implements InputStream, Seekable
      *
      * @type  string
      */
-    protected $buffer   = '';
+    private $buffer   = '';
     /**
      * current position in buffer
      *
      * @type  int
      */
-    protected $position = 0;
+    private $position = 0;
 
     /**
      * constructor

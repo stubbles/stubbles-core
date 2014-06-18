@@ -21,7 +21,7 @@ class MemoryOutputStream implements OutputStream
      *
      * @type  string
      */
-    protected $buffer = '';
+    private $buffer = '';
 
     /**
      * writes given bytes
@@ -77,7 +77,29 @@ class MemoryOutputStream implements OutputStream
      *
      * @return  string
      */
+    public function buffer()
+    {
+        return $this->buffer;
+    }
+
+    /**
+     * returns written contents
+     *
+     * @return  string
+     * @deprecated  since 4.0.0, use buffer() instead, will be removed with 5.0.0
+     */
     public function getBuffer()
+    {
+        return $this->buffer();
+    }
+
+    /**
+     * returns written contents
+     *
+     * @return  string
+     * @since   4.0.0
+     */
+    public function __toString()
     {
         return $this->buffer;
     }

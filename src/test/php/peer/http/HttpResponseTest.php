@@ -23,7 +23,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      * @param   string  $response  content of response
      * @return  HttpResponse
      */
-    protected function getResponse($response)
+    private function createResponse($response)
     {
         return HttpResponse::create(new MemoryInputStream($response));
     }
@@ -33,18 +33,22 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function chunkedResponseCanBeRead()
     {
-        $httpResponse = $this->getResponse(Http::line('HTTP/1.1 200 OK')
-                                         . Http::line('Host: ' . __METHOD__)
-                                         . Http::line('Transfer-Encoding: chunked')
-                                         . Http::emptyLine()
-                                         . Http::line(dechex(3) . ' ext')
-                                         . Http::line('foo')
-                                         . Http::line(dechex(3))
-                                         . Http::line('bar')
-                                         . Http::line(dechex(0))
-                        );
+        $httpResponse = $this->createResponse(
+                Http::lines(
+                        ['HTTP/1.1 200 OK',
+                         'Host: ' . __METHOD__,
+                         'Transfer-Encoding: chunked',
+                         '',
+                         dechex(3) . " ext\r\n",
+                         "foo\r\n",
+                         dechex(3) . "\r\n",
+                         "bar\r\n",
+                         dechex(0) . "\r\n"
+                        ]
+                )
+        );
         $this->assertEquals('foobar', $httpResponse->body());
-        $headerList   = $httpResponse->headers();
+        $headerList = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals(6, $headerList->get('Content-Length'));
@@ -56,12 +60,16 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function nonChunkedResponseWithoutContentLengthHeaderCanBeRead()
     {
-        $httpResponse = $this->getResponse(Http::line('HTTP/1.1 200 OK')
-                                         . Http::line('Host: ' . __METHOD__)
-                                         . Http::emptyLine()
-                                         . 'foobar'
-                        );
-        $headerList   = $httpResponse->headers();
+        $httpResponse = $this->createResponse(
+                Http::lines(
+                        ['HTTP/1.1 200 OK',
+                         'Host: ' . __METHOD__,
+                         '',
+                         'foobar'
+                        ]
+                )
+        );
+        $headerList = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals('foobar', $httpResponse->body());
@@ -72,13 +80,17 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function nonChunkedResponseWithContentLengthHeaderCanBeRead()
     {
-        $httpResponse = $this->getResponse(Http::line('HTTP/1.1 200 OK')
-                                         . Http::line('Host: ' . __METHOD__)
-                                         . Http::line('Content-Length: 6')
-                                         . Http::emptyLine()
-                                         . 'foobar'
-                        );
-        $headerList   = $httpResponse->headers();
+        $httpResponse = $this->createResponse(
+                Http::lines(
+                        ['HTTP/1.1 200 OK',
+                         'Host: ' . __METHOD__,
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                )
+        );
+        $headerList = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals(6, $headerList->get('Content-Length'));
@@ -90,11 +102,15 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function canReadResponseTwice()
     {
-        $httpResponse = $this->getResponse(Http::line('HTTP/1.1 200 OK')
-                                         . Http::line('Host: ' . __METHOD__)
-                                         . Http::line('Content-Length: 6')
-                                         . Http::emptyLine()
-                                         . 'foobar'
+        $httpResponse = $this->createResponse(
+                Http::lines(
+                        ['HTTP/1.1 200 OK',
+                         'Host: ' . __METHOD__,
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                )
                         );
         $this->assertEquals('foobar', $httpResponse->body());
         $this->assertEquals('foobar', $httpResponse->body());
@@ -105,16 +121,17 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function continuesOnStatusCode100()
     {
-        $httpResponse = $this->getResponse(Http::line('HTTP/1.0 100 Continue')
-                                         . Http::line('Host: ' . __METHOD__)
-                                         . Http::emptyLine()
-                                         . Http::line('HTTP/1.0 100 Continue')
-                                         . Http::emptyLine()
-                                         . Http::line('HTTP/1.0 200 OK')
-                                         . Http::emptyLine()
-                                         . 'foobar'
-                        );
-        $headerList   = $httpResponse->headers();
+        $httpResponse = $this->createResponse(
+                Http::line('HTTP/1.0 100 Continue')
+                . Http::line('Host: ' . __METHOD__)
+                . Http::emptyLine()
+                . Http::line('HTTP/1.0 100 Continue')
+                . Http::emptyLine()
+                . Http::line('HTTP/1.0 200 OK')
+                . Http::emptyLine()
+                . 'foobar'
+        );
+        $headerList = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals('HTTP/1.0 200 OK', $httpResponse->statusLine());
@@ -130,16 +147,17 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function continuesOnStatusCode102()
     {
-        $httpResponse = $this->getResponse(Http::line('HTTP/1.0 102 Processing')
-                                         . Http::line('Host: ' . __METHOD__)
-                                         . Http::emptyLine()
-                                         . Http::line('HTTP/1.0 102 Processing')
-                                         . Http::emptyLine()
-                                         . Http::line('HTTP/1.1 404 Not Found')
-                                         . Http::emptyLine()
-                                         . 'foobar'
-                        );
-        $headerList   = $httpResponse->headers();
+        $httpResponse = $this->createResponse(
+                Http::line('HTTP/1.0 102 Processing')
+                . Http::line('Host: ' . __METHOD__)
+                . Http::emptyLine()
+                . Http::line('HTTP/1.0 102 Processing')
+                . Http::emptyLine()
+                . Http::line('HTTP/1.1 404 Not Found')
+                . Http::emptyLine()
+                . 'foobar'
+        );
+        $headerList = $httpResponse->headers();
         $this->assertInstanceOf('stubbles\peer\HeaderList', $headerList);
         $this->assertEquals(__METHOD__, $headerList->get('Host'));
         $this->assertEquals('HTTP/1.1 404 Not Found', $httpResponse->statusLine());
@@ -154,10 +172,14 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function illegalStatusLineLeadsToEmptyResponse()
     {
-        $httpResponse = $this->getResponse(Http::line('Illegal Response')
-                                         . Http::line('Host: ' . __METHOD__)
-                                         . Http::emptyLine()
-                        );
+        $httpResponse = $this->createResponse(
+                Http::lines(
+                        ['Illegal Response',
+                         'Host: ' . __METHOD__,
+                         ''
+                        ]
+                )
+        );
         $this->assertNull($httpResponse->statusLine());
         $this->assertNull($httpResponse->httpVersion());
         $this->assertNull($httpResponse->statusCode());
@@ -171,10 +193,14 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function statusLineWithInvalidHttpVersionLeadsToEmptyResponse()
     {
-        $httpResponse = $this->getResponse(Http::line('HTTP/400 102 Processing')
-                                         . Http::line('Host: ' . __METHOD__)
-                                         . Http::emptyLine()
-                        );
+        $httpResponse = $this->createResponse(
+                Http::lines(
+                        ['HTTP/400 102 Processing',
+                         'Host: ' . __METHOD__,
+                         ''
+                        ]
+                )
+        );
         $this->assertNull($httpResponse->statusLine());
         $this->assertNull($httpResponse->httpVersion());
         $this->assertNull($httpResponse->statusCode());

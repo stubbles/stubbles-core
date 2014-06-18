@@ -71,15 +71,19 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->get()
         );
-        $this->assertEquals(Http::line('GET /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('User-Agent: Stubbles HTTP Client')
-                          . Http::line('Referer: http://example.com/')
-                          . Http::line('Cookie: foo=bar+baz;')
-                          . Http::line('Authorization: BASIC ' . base64_encode('user:pass'))
-                          . Http::line('X-Binford: 6100')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+        $this->assertEquals(
+                Http::lines(
+                        ['GET /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'User-Agent: Stubbles HTTP Client',
+                         'Referer: http://example.com/',
+                         'Cookie: foo=bar+baz;',
+                         'Authorization: BASIC ' . base64_encode('user:pass'),
+                         'X-Binford: 6100',
+                         ''
+                        ]
+                ),
+                            $this->memoryOutputStream
         );
     }
 
@@ -97,16 +101,20 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->head()
         );
-        $this->assertEquals(Http::line('HEAD /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('User-Agent: Stubbles HTTP Client')
-                          . Http::line('Referer: http://example.com/')
-                          . Http::line('Cookie: foo=bar+baz;')
-                          . Http::line('Authorization: BASIC ' . base64_encode('user:pass'))
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Connection: close')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+        $this->assertEquals(
+                Http::lines(
+                        ['HEAD /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'User-Agent: Stubbles HTTP Client',
+                         'Referer: http://example.com/',
+                         'Cookie: foo=bar+baz;',
+                         'Authorization: BASIC ' . base64_encode('user:pass'),
+                         'X-Binford: 6100',
+                         'Connection: close',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -124,17 +132,21 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->post('foobar')
         );
-        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('User-Agent: Stubbles HTTP Client')
-                          . Http::line('Referer: http://example.com/')
-                          . Http::line('Cookie: foo=bar+baz;')
-                          . Http::line('Authorization: BASIC ' . base64_encode('user:pass'))
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Length: 6')
-                          . Http::emptyLine()
-                          . 'foobar',
-                            $this->memoryOutputStream->getBuffer()
+        $this->assertEquals(
+                Http::lines(
+                        ['POST /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'User-Agent: Stubbles HTTP Client',
+                         'Referer: http://example.com/',
+                         'Cookie: foo=bar+baz;',
+                         'Authorization: BASIC ' . base64_encode('user:pass'),
+                         'X-Binford: 6100',
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -152,18 +164,22 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->post(['foo' => 'bar', 'ba z' => 'dum my'])
         );
-        $this->assertEquals(Http::line('POST /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('User-Agent: Stubbles HTTP Client')
-                          . Http::line('Referer: http://example.com/')
-                          . Http::line('Cookie: foo=bar+baz;')
-                          . Http::line('Authorization: BASIC ' . base64_encode('user:pass'))
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Type: application/x-www-form-urlencoded')
-                          . Http::line('Content-Length: 20')
-                          . Http::emptyLine()
-                          . 'foo=bar&ba+z=dum+my&',
-                            $this->memoryOutputStream->getBuffer()
+        $this->assertEquals(
+                Http::lines(
+                        ['POST /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'User-Agent: Stubbles HTTP Client',
+                         'Referer: http://example.com/',
+                         'Cookie: foo=bar+baz;',
+                         'Authorization: BASIC ' . base64_encode('user:pass'),
+                         'X-Binford: 6100',
+                         'Content-Type: application/x-www-form-urlencoded',
+                         'Content-Length: 20',
+                         '',
+                         'foo=bar&ba+z=dum+my&'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -182,17 +198,21 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->put('foobar')
         );
-        $this->assertEquals(Http::line('PUT /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('User-Agent: Stubbles HTTP Client')
-                          . Http::line('Referer: http://example.com/')
-                          . Http::line('Cookie: foo=bar+baz;')
-                          . Http::line('Authorization: BASIC ' . base64_encode('user:pass'))
-                          . Http::line('X-Binford: 6100')
-                          . Http::line('Content-Length: 6')
-                          . Http::emptyLine()
-                          . 'foobar',
-                            $this->memoryOutputStream->getBuffer()
+        $this->assertEquals(
+                Http::lines(
+                        ['PUT /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'User-Agent: Stubbles HTTP Client',
+                         'Referer: http://example.com/',
+                         'Cookie: foo=bar+baz;',
+                         'Authorization: BASIC ' . base64_encode('user:pass'),
+                         'X-Binford: 6100',
+                         'Content-Length: 6',
+                         '',
+                         'foobar'
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 
@@ -211,15 +231,19 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                                                      ->usingHeader('X-Binford', 6100)
                                                      ->delete()
         );
-        $this->assertEquals(Http::line('DELETE /foo/resource HTTP/1.1')
-                          . Http::line('Host: example.com')
-                          . Http::line('User-Agent: Stubbles HTTP Client')
-                          . Http::line('Referer: http://example.com/')
-                          . Http::line('Cookie: foo=bar+baz;')
-                          . Http::line('Authorization: BASIC ' . base64_encode('user:pass'))
-                          . Http::line('X-Binford: 6100')
-                          . Http::emptyLine(),
-                            $this->memoryOutputStream->getBuffer()
+        $this->assertEquals(
+                Http::lines(
+                        ['DELETE /foo/resource HTTP/1.1',
+                         'Host: example.com',
+                         'User-Agent: Stubbles HTTP Client',
+                         'Referer: http://example.com/',
+                         'Cookie: foo=bar+baz;',
+                         'Authorization: BASIC ' . base64_encode('user:pass'),
+                         'X-Binford: 6100',
+                         ''
+                        ]
+                ),
+                (string) $this->memoryOutputStream
         );
     }
 

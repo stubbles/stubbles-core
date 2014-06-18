@@ -64,6 +64,7 @@
     * deprecated `stubbles\peer\http\HttpResponse::getReasonPhrase()`, use `stubbles\peer\http\HttpResponse::reasonPhrase()` instead
     * deprecated `stubbles\peer\http\HttpResponse::getHeader()`, use `stubbles\peer\http\HttpResponse::headers()` instead
     * deprecated `stubbles\peer\http\HttpResponse::getBody()`, use `stubbles\peer\http\HttpResponse::body()` instead
+    * deprecated `stubbles\peer\streams\memory\MemoryOutputStream::getBuffer()`, use `stubbles\peer\streams\memory\MemoryOutputStream::buffer()` instead
   * deprecated `stubbles\peer\BsdSocket::getDomain()`, will be removed with 5.0.0
   * deprecated `stubbles\peer\Socket::getHost()`, will be removed with 5.0.0
   * deprecated `stubbles\peer\Socket::getPort()`, will be removed with 5.0.0
@@ -81,9 +82,11 @@
   * added `stubbles\lang\reflect\annotation\Annotation::targetName()` which returns the name of the class, method, function, property or parameter of where the annotation comes from
   * added `stubbles\peer\http\Http::RFC_2616` and `stubbles\peer\http\Http::RFC_7230`
   * added `stubbles\peer\http\Http::isValidRfc()`
+  * added `stubbles\peer\http\Http::lines()`
   * added `stubbles\peer\http\Http::OPTIONS`
   * added `stubbles\peer\http\HttpVersion`
   * added `stubbles\peer\http\HttpUri::castFrom()`
+  * allowed conversion of `stubbles\peer\streams\memory\MemoryOutputStream` to a string, will contain buffer content
 
 
 3.5.3 (2014-05-07)

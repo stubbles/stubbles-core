@@ -34,11 +34,37 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function bufferIsInitiallyEmpty()
+    {
+        $this->assertEquals('', $this->memoryOutputStream->buffer());
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function conversionToStringOnEmptyBufferReturnsEmptyString()
+    {
+        $this->assertEquals('', (string) $this->memoryOutputStream);
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function conversionToStringOnWrittenBufferReturnsBufferContents()
+    {
+        $this->memoryOutputStream->write('hello');
+        $this->assertEquals('hello', (string) $this->memoryOutputStream);
+    }
+
+    /**
+     * @test
+     */
     public function writeWritesBytesIntoBuffer()
     {
-        $this->assertEquals('', $this->memoryOutputStream->getBuffer());
         $this->assertEquals(5, $this->memoryOutputStream->write('hello'));
-        $this->assertEquals('hello', $this->memoryOutputStream->getBuffer());
+        $this->assertEquals('hello', $this->memoryOutputStream->buffer());
     }
 
     /**
@@ -46,9 +72,8 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineWritesBytesIntoBuffer()
     {
-        $this->assertEquals('', $this->memoryOutputStream->getBuffer());
         $this->assertEquals(6, $this->memoryOutputStream->writeLine('hello'));
-        $this->assertEquals("hello\n", $this->memoryOutputStream->getBuffer());
+        $this->assertEquals("hello\n", $this->memoryOutputStream->buffer());
     }
 
     /**
@@ -57,9 +82,8 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesWritesBytesIntoBuffer()
     {
-        $this->assertEquals('', $this->memoryOutputStream->getBuffer());
         $this->assertEquals(12, $this->memoryOutputStream->writeLines(['hello', 'world']));
-        $this->assertEquals("hello\nworld\n", $this->memoryOutputStream->getBuffer());
+        $this->assertEquals("hello\nworld\n", $this->memoryOutputStream->buffer());
     }
 
     /**

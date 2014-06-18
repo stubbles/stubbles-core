@@ -164,7 +164,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *@test
+     * @test
      */
     public function addsLineEnding()
     {
@@ -174,12 +174,37 @@ class HttpTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *@test
+     * @test
      */
     public function emptyLineReturnsLineEndingOnly()
     {
         $this->assertEquals(Http::END_OF_LINE,
                             Http::emptyLine()
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function linesConvertsAllLines()
+    {
+        $this->assertEquals(
+                Http::line('HEAD /foo/resource HTTP/1.1')
+                . Http::line('Host: example.com')
+                . Http::line('Connection: close')
+                . Http::emptyLine()
+                . 'bodyline1'
+                . 'bodyline2',
+                Http::lines(
+                        [
+                            'HEAD /foo/resource HTTP/1.1',
+                            'Host: example.com',
+                            'Connection: close',
+                            '',
+                            'bodyline1',
+                            'bodyline2'
+                        ])
         );
     }
 }
