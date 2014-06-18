@@ -334,7 +334,7 @@ class Http
                 array_map(
                         function($line) use (&$head)
                         {
-                            if (empty($line)) {
+                            if (empty($line) && $head) {
                                 $head = false;
                                 return self::emptyLine();
                             }
