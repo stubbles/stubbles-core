@@ -32,6 +32,15 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  4.0.0
+     */
+    public function emptyAcceptHeaderReturnsInstanceWithoutAcceptables()
+    {
+        $this->assertEquals(0, count(emptyAcceptHeader()));
+    }
+
+    /**
      * data provider
      *
      * @return  array

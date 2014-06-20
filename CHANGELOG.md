@@ -87,6 +87,7 @@
   * added `stubbles\peer\http\HttpVersion`
   * added `stubbles\peer\http\HttpUri::castFrom()`
   * allowed conversion of `stubbles\peer\streams\memory\MemoryOutputStream` to a string, will contain buffer content
+  * added `stubbles\peer\http\emptyAcceptHeader()`
 
 
 3.5.3 (2014-05-07)

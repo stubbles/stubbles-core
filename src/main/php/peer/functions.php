@@ -86,3 +86,21 @@ namespace stubbles\peer {
         return new \stubbles\peer\BsdSocket($domain, $host, $port);
     }
 }
+/**
+ * Functions in namespace stubbles\peer\http.
+ */
+namespace stubbles\peer\http {
+    use stubbles\peer\http\AcceptHeader;
+
+    /**
+     * returns an empty accept header representation
+     *
+     * @return  \stubbles\peer\http\AcceptHeader
+     * @since   4.0.0
+     * @api
+     */
+    function emptyAcceptHeader()
+    {
+        return new AcceptHeader();
+    }
+}
