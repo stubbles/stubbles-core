@@ -21,19 +21,19 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      *
      * @type  FilteredOutputStream
      */
-    protected $filteredOutputStream;
+    private $filteredOutputStream;
     /**
      * mocked input stream
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockOutputStream;
+    private $mockOutputStream;
     /**
      * mocked stream filter
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockStreamFilter;
+    private $mockStreamFilter;
 
     /**
      * set up test environment
@@ -115,5 +115,33 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
                                ->method('shouldFilter')
                                ->will($this->onConsecutiveCalls(false, true));
         $this->assertEquals(3, $this->filteredOutputStream->writeLines(['foo', 'bar']));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function canCreateInstanceWithCallableAsStreamFilter()
+    {
+        $callable = function($data)
+                    {
+                        return 'foo' !== $data;
+                    };
+        $this->mockOutputStream->expects($this->once())
+                               ->method('writeLine')
+                               ->with($this->equalTo('foo'))
+                               ->will($this->returnValue(3));
+        $this->filteredOutputStream = new FilteredOutputStream($this->mockOutputStream, $callable);
+        $this->assertEquals(3, $this->filteredOutputStream->writeLines(['foo', 'bar']));
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @since  4.0.0
+     */
+    public function createInstanceWithNoStreamFilterAndNoCallableThrowsIllegalArgumentException()
+    {
+        new FilteredOutputStream($this->mockOutputStream, new \stdClass());
     }
 }
