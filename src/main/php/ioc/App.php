@@ -78,12 +78,12 @@ abstract class App
      * creates mode binding module
      *
      * @api
-     * @param   string  $projectPath  path to project
-     * @param   Mode    $mode         runtime mode
+     * @param   string         $projectPath  path to project files
+     * @param   Mode|callable  $mode         optional  runtime mode
      * @return  ModeBindingModule
      * @since   2.0.0
      */
-    protected static function createModeBindingModule($projectPath, Mode $mode = null)
+    protected static function createModeBindingModule($projectPath, $mode = null)
     {
         return new ModeBindingModule($projectPath, $mode);
     }

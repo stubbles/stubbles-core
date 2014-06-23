@@ -10,7 +10,7 @@
 namespace stubbles\ioc\module;
 use stubbles\ioc\Binder;
 use stubbles\lang\Mode;
-use stubbles\lang\Properties;
+use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Binding module to configure the binder with a runtime mode.
  */
@@ -21,9 +21,7 @@ class ModeBindingModule implements BindingModule
      *
      * @type  string[]
      */
-    private $pathTypes       = ['config',
-                                'log'
-                               ];
+    private $pathTypes       = ['config', 'log'];
     /**
      * path to config file
      *
@@ -40,19 +38,27 @@ class ModeBindingModule implements BindingModule
     /**
      * constructor
      *
-     * @param  string  $projectPath
-     * @param  Mode    $mode
+     * @param   string         $projectPath  path to project files
+     * @param   Mode|callable  $mode         optional  runtime mode
+     * @throws  IllegalArgumentException
      */
-    public function __construct($projectPath, Mode $mode = null)
+    public function __construct($projectPath, $mode = null)
     {
         $this->projectPath = $projectPath;
-        if (null === $mode) {
-            $mode = $this->getFallbackMode();
+        if (null !== $mode) {
+            if (is_callable($mode)) {
+                $this->mode = $mode();
+            } elseif ($mode instanceof Mode) {
+                $this->mode = $mode;
+            } else {
+                throw new IllegalArgumentException('Invalid mode, must either be an instance of stubbles\lang\Mode or a callable returning such an instance');
+            }
+        } else {
+            $this->mode = $this->getFallbackMode();
         }
 
-        $mode->registerErrorHandler($projectPath);
-        $mode->registerExceptionHandler($projectPath);
-        $this->mode = $mode;
+        $this->mode->registerErrorHandler($projectPath);
+        $this->mode->registerExceptionHandler($projectPath);
     }
 
     /**
@@ -74,7 +80,7 @@ class ModeBindingModule implements BindingModule
      *
      * @api
      * @param   string  $pathType
-     * @return  PropertiesBindingModule
+     * @return  ModeBindingModule
      */
     public function addPathType($pathType)
     {
@@ -91,8 +97,8 @@ class ModeBindingModule implements BindingModule
     {
         $binder->bind('stubbles\lang\Mode')
                ->toInstance($this->mode);
-        if (file_exists($this->getConfigFilePath())) {
-            $binder->bindProperties(Properties::fromFile($this->getConfigFilePath()), $this->mode);
+        if (file_exists($this->propertiesFile())) {
+            $binder->bindPropertiesFromFile($this->propertiesFile(), $this->mode);
         }
 
         $binder->bindConstant('stubbles.project.path')
@@ -108,7 +114,7 @@ class ModeBindingModule implements BindingModule
      *
      * @return  string
      */
-    private function getConfigFilePath()
+    private function propertiesFile()
     {
         return $this->projectPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.ini';
     }
