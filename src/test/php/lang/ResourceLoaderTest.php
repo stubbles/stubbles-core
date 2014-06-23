@@ -109,11 +109,34 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      * @test
      * @since  4.0.0
      */
-    public function loadLocalResourceReturnsContent()
+    public function loadLocalResourceWithoutLoaderReturnsContent()
     {
         $this->assertEquals(
                 "[foo]\nbar=\"baz\"\n",
                 $this->resourceLoader->load('lang/stubbles.ini')
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function loadLocalResourceWithLoaderReturnsLoaderResult()
+    {
+        $this->assertEquals(
+                'foo',
+                $this->resourceLoader->load(
+                        'lang/stubbles.ini',
+                        function($resource)
+                        {
+                            $rootpath = new Rootpath();
+                            $this->assertEquals(
+                                    $resource,
+                                    $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini')
+                            );
+                            return 'foo';
+                        }
+                )
         );
     }
 
@@ -133,11 +156,34 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      * @test
      * @since  4.0.0
      */
-    public function loadResourceWithCompletePathInRootReturnsContent()
+    public function loadResourceWithCompletePathInRootWithoutLoaderReturnsContent()
     {
         $this->assertContains(
                 'loadResourceWithCompletePathInRootReturnsContent()',
                 $this->resourceLoader->load(__FILE__)
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function loadLocalWithCompletePathWithLoaderReturnsLoaderResult()
+    {
+        $rootpath = new Rootpath();
+        $this->assertEquals(
+                'foo',
+                $this->resourceLoader->load(
+                        $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini'),
+                        function($resource) use($rootpath)
+                        {
+                            $this->assertEquals(
+                                    $resource,
+                                    $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini')
+                            );
+                            return 'foo';
+                        }
+                )
         );
     }
 
