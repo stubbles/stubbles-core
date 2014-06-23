@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams\filter;
+use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\streams\AbstractDecoratedOutputStream;
 use stubbles\streams\OutputStream;
 /**
@@ -22,18 +23,25 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
      *
      * @type  StreamFilter
      */
-    protected $streamFilter;
+    private $streamFilter;
 
     /**
      * constructor
      *
-     * @param  OutputStream  $outputStream  stream to apply filter onto
-     * @param  StreamFilter  $streamFilter  stream filter to be applied
+     * @param   OutputStream            $outputStream  stream to apply filter onto
+     * @param   StreamFilter|callable   $streamFilter  stream filter to be applied
+     * @throws  IllegalArgumentException  in case given stream filter is neither a StreamFilter nor a callable
      */
-    public function __construct(OutputStream $outputStream, StreamFilter $streamFilter)
+    public function __construct(OutputStream $outputStream, $streamFilter)
     {
         parent::__construct($outputStream);
-        $this->streamFilter = $streamFilter;
+        if ($streamFilter instanceof StreamFilter) {
+            $this->streamFilter = $streamFilter;
+        } elseif (is_callable($streamFilter)) {
+            $this->streamFilter = new CallableStreamFilter($streamFilter);
+        } else {
+            throw new IllegalArgumentException('Given stream filter is neither a callable nor an instance of stubbles\streams\filter\StreamFilter');
+        }
     }
 
     /**

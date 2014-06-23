@@ -89,6 +89,7 @@
   * allowed conversion of `stubbles\peer\streams\memory\MemoryOutputStream` to a string, will contain buffer content
   * added `stubbles\peer\http\emptyAcceptHeader()`
   * added `stubbles\streams\filter\CallableStreamFilter`
+  * both `stubbles\streams\filter\FilteredInputStream` and `stubbles\streams\filter\FilteredOutputStream` now also accept a callable as stream filter
 
 
 3.5.3 (2014-05-07)
