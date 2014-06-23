@@ -90,6 +90,7 @@
   * added `stubbles\peer\http\emptyAcceptHeader()`
   * added `stubbles\streams\filter\CallableStreamFilter`
   * both `stubbles\streams\filter\FilteredInputStream` and `stubbles\streams\filter\FilteredOutputStream` now also accept a callable as stream filter
+  * `net\stubbles\ioc\App::createModeBindingModule()` now accepts a callable as second parameter which returns a mode
 
 
 3.5.3 (2014-05-07)

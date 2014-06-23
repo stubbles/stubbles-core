@@ -89,6 +89,38 @@ class ModeBindingModuleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.0.0
+     */
+    public function bindsModeProvidedViaCallable()
+    {
+        $this->mockMode->expects($this->once())
+                       ->method('registerErrorHandler')
+                       ->with($this->equalTo($this->root->url()));
+        $this->mockMode->expects($this->once())
+                       ->method('registerExceptionHandler')
+                       ->with($this->equalTo($this->root->url()));
+        $modeBindingModule = new ModeBindingModule($this->root->url(), function() { return $this->mockMode; });
+        $binder            = new Binder();
+        $modeBindingModule->configure($binder);
+        $this->assertTrue($binder->hasExplicitBinding('stubbles\lang\Mode'));
+        $this->assertSame($this->mockMode,
+                          $binder->getInjector()
+                                 ->getInstance('stubbles\lang\Mode')
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @since  4.0.0
+     */
+    public function createWithNonModeThrowsIllegalArgumentException()
+    {
+        new ModeBindingModule($this->root->url(), new \stdClass());
+    }
+
+    /**
+     * @test
      * @since  3.4.0
      */
     public function doesNotBindPropertiesWhenConfigFileIsMissing()
