@@ -72,11 +72,24 @@ class Binder
     }
 
     /**
+     * binds properties from given properties file
+     *
+     * @param   string                $propertiesFile  file where properties are stored
+     * @param   \stubbles\lang\Mode   $mode
+     * @return  \stubbles\lang\Properties
+     * @since   4.0.0
+     */
+    public function bindPropertiesFromFile($propertiesFile, Mode $mode)
+    {
+        return $this->bindProperties(Properties::fromFile($propertiesFile), $mode);
+    }
+
+    /**
      * binds properties
      *
      * @param   Properties  $properties
      * @param   Mode        $mode
-     * @return  Properties
+     * @return  \stubbles\lang\Properties
      * @since   3.4.0
      */
     public function bindProperties(Properties $properties, Mode $mode)

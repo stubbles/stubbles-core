@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use org\bovigo\vfs\vfsStream;
+use stubbles\lang\Properties;
 /**
  * Test for stubbles\ioc\Binder
  *
@@ -207,13 +209,33 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     public function bindPropertiesCreatesBinding()
     {
         $mockMode   = $this->getMock('stubbles\lang\Mode');
-        $properties = new \stubbles\lang\Properties([]);
+        $properties = new Properties([]);
         $this->mockIndex->expects($this->once())
                         ->method('bindProperties')
                         ->with($this->equalTo($properties), $this->equalTo($mockMode))
                         ->will($this->returnArgument(0));
         $this->assertSame($properties,
                           $this->binder->bindProperties($properties, $mockMode)
+        );
+    }
+
+    /**
+     * @since  4.0.0
+     * @test
+     */
+    public function bindPropertiesFromFileCreatesBinding()
+    {
+        $file = vfsStream::newFile('config.ini')
+                         ->withContent("[config]\nfoo=bar")
+                         ->at(vfsStream::setup());
+        $mockMode   = $this->getMock('stubbles\lang\Mode');
+        $properties = new Properties(['config' => ['foo' => 'bar']]);
+        $this->mockIndex->expects($this->once())
+                        ->method('bindProperties')
+                        ->with($this->equalTo($properties), $this->equalTo($mockMode))
+                        ->will($this->returnArgument(0));
+        $this->assertEquals($properties,
+                          $this->binder->bindPropertiesFromFile($file->url(), $mockMode)
         );
     }
 

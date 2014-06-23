@@ -10,7 +10,6 @@
 namespace stubbles\ioc\module;
 use stubbles\ioc\Binder;
 use stubbles\lang\Mode;
-use stubbles\lang\Properties;
 /**
  * Binding module to configure the binder with a runtime mode.
  */
@@ -21,9 +20,7 @@ class ModeBindingModule implements BindingModule
      *
      * @type  string[]
      */
-    private $pathTypes       = ['config',
-                                'log'
-                               ];
+    private $pathTypes       = ['config', 'log'];
     /**
      * path to config file
      *
@@ -91,8 +88,8 @@ class ModeBindingModule implements BindingModule
     {
         $binder->bind('stubbles\lang\Mode')
                ->toInstance($this->mode);
-        if (file_exists($this->getConfigFilePath())) {
-            $binder->bindProperties(Properties::fromFile($this->getConfigFilePath()), $this->mode);
+        if (file_exists($this->propertiesFile())) {
+            $binder->bindPropertiesFromFile($this->propertiesFile(), $this->mode);
         }
 
         $binder->bindConstant('stubbles.project.path')
@@ -108,7 +105,7 @@ class ModeBindingModule implements BindingModule
      *
      * @return  string
      */
-    private function getConfigFilePath()
+    private function propertiesFile()
     {
         return $this->projectPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.ini';
     }
