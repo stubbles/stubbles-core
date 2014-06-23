@@ -83,14 +83,23 @@ class ResourceLoader
      * It is not possible to load resources outside of the root path by
      * providing a complete path, a complete path must always lead to a resource
      * located within the root path.
+     * In case no $loader is the resource will be loaded with file_get_contents().
+     * The given loader must accept a path and return the result from the load
+     * operation.
      *
-     * @param   string  $resource
-     * @return  string
+     * @param   string    $resource
+     * @param   callable  $loader    optional  code to load resource with, defaults to file_get_contents()
+     * @return  mixed     result of call to $loader, or file contents if no loader specified
      * @since   4.0.0
      */
-    public function load($resource)
+    public function load($resource, callable $loader = null)
     {
-        return file_get_contents($this->checkedPathFor($resource));
+        $checkedPath = $this->checkedPathFor($resource);
+        if (null == $loader) {
+            return file_get_contents($checkedPath);
+        }
+
+        return $loader($this->checkedPathFor($resource));
     }
 
     /**
