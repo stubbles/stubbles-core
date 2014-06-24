@@ -12,6 +12,7 @@ namespace stubbles\streams\filter;
  * Interface for stream filters.
  *
  * @api
+ * @deprecated  since 4.0.0, use predicates instead, will be removed with 5.0.0
  */
 interface StreamFilter
 {

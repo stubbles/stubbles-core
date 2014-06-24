@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams\filter;
-use stubbles\lang\exception\IllegalArgumentException;
+use stubbles\predicate\Predicate;
 use stubbles\streams\AbstractDecoratedInputStream;
 use stubbles\streams\InputStream;
 /**
@@ -21,26 +21,23 @@ class FilteredInputStream extends AbstractDecoratedInputStream
     /**
      * stream filter to be applied
      *
-     * @type  stubbles\streams\filter\StreamFilter
+     * @type  stubbles\predicate\Predicate
      */
-    private $streamFilter;
+    private $predicate;
 
     /**
      * constructor
      *
-     * @param   InputStream            $inputStream   input stream to filter
-     * @param   StreamFilter|callable  $streamFilter  stream filter to be applied
-     * @throws  IllegalArgumentException  in case given stream filter is neither a StreamFilter nor a callable
+     * @param   InputStream                      $inputStream   input stream to filter
+     * @param   StreamFilter|callable|Predicate  $predicate     predicate to check if something should be passed
      */
-    public function __construct(InputStream $inputStream, $streamFilter)
+    public function __construct(InputStream $inputStream, $predicate)
     {
         parent::__construct($inputStream);
-        if ($streamFilter instanceof StreamFilter) {
-            $this->streamFilter = $streamFilter;
-        } elseif (is_callable($streamFilter)) {
-            $this->streamFilter = new CallableStreamFilter($streamFilter);
+        if ($predicate instanceof StreamFilter) {
+            $this->predicate = new StreamFilterPredicate($predicate);
         } else {
-            throw new IllegalArgumentException('Given stream filter is neither a callable nor an instance of stubbles\streams\filter\StreamFilter');
+            $this->predicate = Predicate::castFrom($predicate);
         }
     }
 
@@ -54,7 +51,7 @@ class FilteredInputStream extends AbstractDecoratedInputStream
     {
         while (!$this->inputStream->eof()) {
             $data = $this->inputStream->read($length);
-            if (!$this->streamFilter->shouldFilter($data)) {
+            if ($this->predicate->test($data)) {
                 return $data;
             }
         }
@@ -72,7 +69,7 @@ class FilteredInputStream extends AbstractDecoratedInputStream
     {
         while (!$this->inputStream->eof()) {
             $data = $this->inputStream->readLine($length);
-            if (!$this->streamFilter->shouldFilter($data)) {
+            if ($this->predicate->test($data)) {
                 return $data;
             }
         }

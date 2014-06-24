@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams\filter;
-use stubbles\lang\exception\IllegalArgumentException;
+use stubbles\predicate\Predicate;
 use stubbles\streams\AbstractDecoratedOutputStream;
 use stubbles\streams\OutputStream;
 /**
@@ -21,26 +21,23 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
     /**
      * stream filter to be applied
      *
-     * @type  StreamFilter
+     * @type  stubbles\predicate\Predicate
      */
-    private $streamFilter;
+    private $predicate;
 
     /**
      * constructor
      *
-     * @param   OutputStream            $outputStream  stream to apply filter onto
-     * @param   StreamFilter|callable   $streamFilter  stream filter to be applied
-     * @throws  IllegalArgumentException  in case given stream filter is neither a StreamFilter nor a callable
+     * @param   OutputStream                     $outputStream  stream to apply filter onto
+     * @param   StreamFilter|callable|Predicate  $predicate     predicate to check if something should be passed
      */
-    public function __construct(OutputStream $outputStream, $streamFilter)
+    public function __construct(OutputStream $outputStream, $predicate)
     {
         parent::__construct($outputStream);
-        if ($streamFilter instanceof StreamFilter) {
-            $this->streamFilter = $streamFilter;
-        } elseif (is_callable($streamFilter)) {
-            $this->streamFilter = new CallableStreamFilter($streamFilter);
+        if ($predicate instanceof StreamFilter) {
+            $this->predicate = new StreamFilterPredicate($predicate);
         } else {
-            throw new IllegalArgumentException('Given stream filter is neither a callable nor an instance of stubbles\streams\filter\StreamFilter');
+            $this->predicate = Predicate::castFrom($predicate);
         }
     }
 
@@ -52,7 +49,7 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
      */
     public function write($bytes)
     {
-        if (!$this->streamFilter->shouldFilter($bytes)) {
+        if ($this->predicate->test($bytes)) {
             return $this->outputStream->write($bytes);
         }
 
@@ -67,7 +64,7 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
      */
     public function writeLine($bytes)
     {
-        if (!$this->streamFilter->shouldFilter($bytes)) {
+        if ($this->predicate->test($bytes)) {
             return $this->outputStream->writeLine($bytes);
         }
 

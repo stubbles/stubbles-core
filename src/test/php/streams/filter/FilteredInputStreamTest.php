@@ -127,28 +127,6 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @since  4.0.0
-     */
-    public function canCreateInstanceWithCallableAsStreamFilter()
-    {
-        $callable = function($data)
-                    {
-                        $this->assertEquals('foo', $data);
-                        return true;
-                    };
-        $this->mockInputStream->expects($this->exactly(2))
-                              ->method('eof')
-                              ->will($this->onConsecutiveCalls(false, true));
-        $this->mockInputStream->expects($this->once())
-                              ->method('readLine')
-                              ->with($this->equalTo(8192))
-                              ->will($this->returnValue('foo'));
-        $this->filteredInputStream = new FilteredInputStream($this->mockInputStream, $callable);
-        $this->assertEquals('', $this->filteredInputStream->readLine());
-    }
-
-    /**
-     * @test
      * @expectedException  stubbles\lang\exception\IllegalArgumentException
      * @since  4.0.0
      */

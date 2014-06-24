@@ -119,24 +119,6 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @since  4.0.0
-     */
-    public function canCreateInstanceWithCallableAsStreamFilter()
-    {
-        $callable = function($data)
-                    {
-                        return 'foo' !== $data;
-                    };
-        $this->mockOutputStream->expects($this->once())
-                               ->method('writeLine')
-                               ->with($this->equalTo('foo'))
-                               ->will($this->returnValue(3));
-        $this->filteredOutputStream = new FilteredOutputStream($this->mockOutputStream, $callable);
-        $this->assertEquals(3, $this->filteredOutputStream->writeLines(['foo', 'bar']));
-    }
-
-    /**
-     * @test
      * @expectedException  stubbles\lang\exception\IllegalArgumentException
      * @since  4.0.0
      */
