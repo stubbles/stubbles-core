@@ -10,9 +10,9 @@
 namespace stubbles\streams\filter;
 use stubbles\predicate\Predicate;
 /**
- * Description of StreamFilterPredicate
+ * Specialised predicate for backward compatibility of stream filters.
  *
- * @author fkleine
+ * @deprecated  since 4.0.0, use real predicates instead, will be removed with 5.0.0
  */
 class StreamFilterPredicate extends Predicate
 {
