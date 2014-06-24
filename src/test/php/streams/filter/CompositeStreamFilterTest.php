@@ -44,18 +44,7 @@ class CompositeStreamFilterTest extends \PHPUnit_Framework_TestCase
         $this->mockStreamFilter2     = $this->getMock('stubbles\streams\filter\StreamFilter');
         $this->compositeStreamFilter = new CompositeStreamFilter();
         $this->compositeStreamFilter->addStreamFilter($this->mockStreamFilter1)
-                                    ->addStreamFilter($this->mockStreamFilter2)
-                                    ->addStreamFilter(function($data) { return 'bar' === $data; });
-    }
-
-    /**
-     * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
-     * @since  4.0.0
-     */
-    public function addWithNoStreamFilterAndNoCallableThrowsIllegalArgumentException()
-    {
-        $this->compositeStreamFilter->addStreamFilter(new \stdClass());
+                                    ->addStreamFilter($this->mockStreamFilter2);
     }
 
     /**

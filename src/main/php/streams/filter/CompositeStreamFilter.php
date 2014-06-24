@@ -26,20 +26,13 @@ class CompositeStreamFilter implements StreamFilter
     /**
      * add a stream filter
      *
-     * @param   StreamFilter|callable  $streamFilter
+     * @param   StreamFilter  $streamFilter
      * @return  CompositeStreamFilter
      * @throws  IllegalArgumentException
      */
-    public function addStreamFilter($streamFilter)
+    public function addStreamFilter(StreamFilter $streamFilter)
     {
-        if ($streamFilter instanceof StreamFilter) {
-            $this->streamFilter[] = $streamFilter;
-        } elseif (is_callable($streamFilter)) {
-            $this->streamFilter[] = new CallableStreamFilter($streamFilter);
-        } else {
-            throw new IllegalArgumentException('Given stream filter is neither a callable nor an instance of stubbles\streams\filter\StreamFilter');
-        }
-
+        $this->streamFilter[] = $streamFilter;
         return $this;
     }
 
