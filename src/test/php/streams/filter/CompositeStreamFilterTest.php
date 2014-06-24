@@ -45,7 +45,7 @@ class CompositeStreamFilterTest extends \PHPUnit_Framework_TestCase
         $this->compositeStreamFilter = new CompositeStreamFilter();
         $this->compositeStreamFilter->addStreamFilter($this->mockStreamFilter1)
                                     ->addStreamFilter($this->mockStreamFilter2)
-                                    ->addStreamFilter(function($data) { return 'foo' === $data; });
+                                    ->addStreamFilter(function($data) { return 'bar' === $data; });
     }
 
     /**
