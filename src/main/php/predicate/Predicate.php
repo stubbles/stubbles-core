@@ -12,6 +12,7 @@ use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Evaluates if a given value fulfills a criteria.
  *
+ * @api
  * @since  4.0.0
  */
 abstract class Predicate
