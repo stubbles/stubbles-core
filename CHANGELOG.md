@@ -65,6 +65,8 @@
     * deprecated `stubbles\peer\http\HttpResponse::getHeader()`, use `stubbles\peer\http\HttpResponse::headers()` instead
     * deprecated `stubbles\peer\http\HttpResponse::getBody()`, use `stubbles\peer\http\HttpResponse::body()` instead
     * deprecated `stubbles\peer\streams\memory\MemoryOutputStream::getBuffer()`, use `stubbles\peer\streams\memory\MemoryOutputStream::buffer()` instead
+    * deprecated `stubbles\peer\streams\filter\StreamFilter`, use predicates instead
+    * deprecated `stubbles\peer\streams\filter\CompositeStreamFilter`, use predicates instead
   * deprecated `stubbles\peer\BsdSocket::getDomain()`, will be removed with 5.0.0
   * deprecated `stubbles\peer\Socket::getHost()`, will be removed with 5.0.0
   * deprecated `stubbles\peer\Socket::getPort()`, will be removed with 5.0.0
@@ -88,8 +90,6 @@
   * added `stubbles\peer\http\HttpUri::castFrom()`
   * allowed conversion of `stubbles\peer\streams\memory\MemoryOutputStream` to a string, will contain buffer content
   * added `stubbles\peer\http\emptyAcceptHeader()`
-  * added `stubbles\streams\filter\CallableStreamFilter`
-  * both `stubbles\streams\filter\FilteredInputStream` and `stubbles\streams\filter\FilteredOutputStream` now also accept a callable as stream filter
   * `net\stubbles\ioc\App::createModeBindingModule()` now accepts a callable as second parameter which returns a mode
   * added `stubbles\predicate`
 
