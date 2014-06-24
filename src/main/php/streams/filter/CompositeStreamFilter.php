@@ -13,6 +13,7 @@ use stubbles\lang\exception\IllegalArgumentException;
  * Composite to combine a list of stream filters.
  *
  * @api
+ * @deprecated  since 4.0.0, use predicates instead, will be removed with 5.0.0
  */
 class CompositeStreamFilter implements StreamFilter
 {
