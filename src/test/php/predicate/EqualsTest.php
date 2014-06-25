@@ -39,14 +39,14 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  scalar  $contained
+     * @param  scalar  $expected
      * @param  mixed   $value
      * @test
      * @dataProvider  tuplesEvaluatingToTrue
      */
-    public function evaluatesToTrue($contained, $value)
+    public function evaluatesToTrue($expected, $value)
     {
-        $equals = new Equals($contained);
+        $equals = new Equals($expected);
         $this->assertTrue($equals($value));
     }
 
@@ -71,14 +71,14 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  scalar  $contained
+     * @param  scalar  $expected
      * @param  mixed   $value
      * @test
      * @dataProvider  tuplesEvaluatingToFalse
      */
-    public function evaluatesToFalse($contained, $value)
+    public function evaluatesToFalse($expected, $value)
     {
-        $equals = new Equals($contained);
+        $equals = new Equals($expected);
         $this->assertFalse($equals($value));
     }
 }
