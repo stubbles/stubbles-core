@@ -19,7 +19,7 @@ use stubbles\lang\exception\IllegalArgumentException;
  * @api
  * @since  4.0.0
  */
-class Equal extends Predicate
+class Equals extends Predicate
 {
     /**
      * the expected password

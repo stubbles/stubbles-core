@@ -16,7 +16,7 @@ use stubbles\peer\http\HttpUri;
  * @api
  * @since  4.0.0
  */
-class HttpUriPredicate extends Predicate
+class IsHttpUri extends Predicate
 {
     /**
      * whether to check dns for existence of given url or not

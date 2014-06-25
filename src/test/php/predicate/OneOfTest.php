@@ -47,7 +47,7 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  validValues
      */
-    public function validValuesValidateToTrue($value)
+    public function validValueEvaluatesToTrue($value)
     {
         $this->assertTrue($this->oneOf->test($value));
     }
@@ -68,7 +68,7 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  invalidValues
      */
-    public function invalidValueValidatesToFalse($value)
+    public function invalidValueEvaluatesToFalse($value)
     {
         $this->assertFalse($this->oneOf->test($value));
     }

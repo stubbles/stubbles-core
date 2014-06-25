@@ -33,10 +33,10 @@ class RegexTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  validValues
      */
-    public function validValuesValidateToTrue($regex, $value)
+    public function validValueEvaluatesToTrue($regex, $value)
     {
-        $regexValidator = new Regex($regex);
-        $this->assertTrue($regexValidator->test($value));
+        $regex = new Regex($regex);
+        $this->assertTrue($regex($value));
     }
 
     /**
@@ -58,19 +58,19 @@ class RegexTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  invalidValues
      */
-    public function invalidValueValidatesToFalse($regex, $value)
+    public function invalidValueEvaluatesToFalse($regex, $value)
     {
-        $regexValidator = new Regex($regex);
-        $this->assertFalse($regexValidator->test($value));
+        $regex = new Regex($regex);
+        $this->assertFalse($regex($value));
     }
 
     /**
      * @test
      * @expectedException  stubbles\lang\exception\RuntimeException
      */
-    public function invalidRegex()
+    public function invalidRegexThrowsRuntimeExceptionOnEvaluation()
     {
-        $regexValidator = new Regex('^([a-z]{3})$');
-        $regexValidator->test('foo');
+        $regex = new Regex('^([a-z]{3})$');
+        $regex('foo');
     }
 }

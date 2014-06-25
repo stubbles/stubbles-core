@@ -9,26 +9,26 @@
  */
 namespace stubbles\predicate;
 /**
- * Tests for stubbles\predicate\Mail.
+ * Tests for stubbles\predicate\IsMailAddress.
  *
  * @group  predicate
  * @since  4.0.0
  */
-class MailTest extends \PHPUnit_Framework_TestCase
+class IsMailAddressTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  Mail
+     * @type  IsMailAddress
      */
-    protected $mail;
+    protected $isMailAddress;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mail = new Mail();
+        $this->isMailAddress = new IsMailAddress();
     }
 
     /**
@@ -46,9 +46,9 @@ class MailTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  validValues
      */
-    public function validValuesValidateToTrue($value)
+    public function validValueEvaluatesToTrue($value)
     {
-        $this->assertTrue($this->mail->test($value));
+        $this->assertTrue($this->isMailAddress->test($value));
     }
 
     /**
@@ -77,9 +77,9 @@ class MailTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  invalidValues
      */
-    public function invalidValueValidatesToFalse($value)
+    public function invalidValueEvaluatesToFalse($value)
     {
-        $this->assertFalse($this->mail->test($value));
+        $this->assertFalse($this->isMailAddress->test($value));
     }
 
     /**
@@ -87,7 +87,7 @@ class MailTest extends \PHPUnit_Framework_TestCase
      */
     public function validatesIndependendOfLowerOrUpperCase()
     {
-        $this->assertTrue($this->mail->test('Example@example.ORG'));
-        $this->assertTrue($this->mail->test('Example.Foo.Bar@EXAMPLE.org'));
+        $this->assertTrue($this->isMailAddress->test('Example@example.ORG'));
+        $this->assertTrue($this->isMailAddress->test('Example.Foo.Bar@EXAMPLE.org'));
     }
 }

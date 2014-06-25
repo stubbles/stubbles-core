@@ -14,8 +14,10 @@ namespace stubbles\predicate;
  * @api
  * @since  4.0.0
  */
-class Mail extends Predicate
+class IsMailAddress extends Predicate
 {
+    use ReusablePredicate;
+
     /**
      * test that the given value is an e-mail address
      *

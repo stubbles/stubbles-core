@@ -9,12 +9,12 @@
  */
 namespace stubbles\predicate;
 /**
- * Tests for stubbles\predicate\Equal.
+ * Tests for stubbles\predicate\Equals.
  *
  * @group  predicate
  * @since  4.0.0
  */
-class EqualTest extends \PHPUnit_Framework_TestCase
+class EqualsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -22,7 +22,7 @@ class EqualTest extends \PHPUnit_Framework_TestCase
      */
     public function constructionWithObjectThrowsIllegalArgumentException()
     {
-        new Equal(new \stdClass());
+        new Equals(new \stdClass());
     }
 
     /**
@@ -44,10 +44,10 @@ class EqualTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  tuplesEvaluatingToTrue
      */
-    public function validatesToTrue($contained, $value)
+    public function evaluatesToTrue($contained, $value)
     {
-        $validator = new Equal($contained);
-        $this->assertTrue($validator->test($value));
+        $equals = new Equals($contained);
+        $this->assertTrue($equals($value));
     }
 
     /**
@@ -76,9 +76,9 @@ class EqualTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  tuplesEvaluatingToFalse
      */
-    public function validatesToFalse($contained, $value)
+    public function evaluatesToFalse($contained, $value)
     {
-        $validator = new Equal($contained);
-        $this->assertFalse($validator->test($value));
+        $equals = new Equals($contained);
+        $this->assertFalse($equals($value));
     }
 }

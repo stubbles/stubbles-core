@@ -9,26 +9,26 @@
  */
 namespace stubbles\predicate;
 /**
- * Tests for stubbles\predicate\HttpUriPredicate.
+ * Tests for stubbles\predicate\IsHttpUri.
  *
  * @group  predicate
  * @since  4.0.0
  */
-class HttpUriPredicateTest extends \PHPUnit_Framework_TestCase
+class IsHttpUriTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  HttpUriPredicate
+     * @type  IsHttpUri
      */
-    protected $httpUriPredicate;
+    protected $isHttpUri;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->httpUriPredicate = new HttpUriPredicate();
+        $this->isHttpUri = new IsHttpUri();
     }
 
     /**
@@ -50,36 +50,36 @@ class HttpUriPredicateTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  invalidValues
      */
-    public function invalidValueValidatesToFalse($invalid)
+    public function invalidValueEvaluatesToFalse($invalid)
     {
-        $this->assertFalse($this->httpUriPredicate->test($invalid));
+        $this->assertFalse($this->isHttpUri->test($invalid));
     }
 
     /**
      * @test
      */
-    public function validHttpUrlValidatesToTrue()
+    public function validHttpUrlEvaluatesToTrue()
     {
-        $this->assertTrue($this->httpUriPredicate->test('http://example.net/'));
+        $this->assertTrue($this->isHttpUri->test('http://example.net/'));
     }
 
     /**
      * @test
      */
-    public function validHttpUrlWithDnsEntryValidatesToTrue()
+    public function validHttpUrlWithDnsEntryEvaluatesToTrue()
     {
         $this->assertTrue(
-                $this->httpUriPredicate->enableDnsCheck()->test('http://localhost/')
+                $this->isHttpUri->enableDnsCheck()->test('http://localhost/')
         );
     }
 
     /**
      * @test
      */
-    public function validHttpUrlWithoutDnsEntryValidatesToFalse()
+    public function validHttpUrlWithoutDnsEntryEvaluatesToFalse()
     {
         $this->assertFalse(
-                $this->httpUriPredicate->enableDnsCheck()->test('http://stubbles.doesNotExist/')
+                $this->isHttpUri->enableDnsCheck()->test('http://stubbles.doesNotExist/')
         );
     }
 }
