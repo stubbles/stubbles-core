@@ -13,8 +13,9 @@ namespace stubbles\streams\filter;
  *
  * @group  streams
  * @group  streams_filter
+ * @deprecated  since 4.0.0, will be removed with 5.0.0
  */
-class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
+class FilteredOutputStreamFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -33,7 +34,7 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    private $mockPredicate;
+    private $mockStreamFilter;
 
     /**
      * set up test environment
@@ -41,8 +42,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->mockOutputStream     = $this->getMock('stubbles\streams\OutputStream');
-        $this->mockPredicate        = $this->getMock('stubbles\predicate\Predicate');
-        $this->filteredOutputStream = new FilteredOutputStream($this->mockOutputStream, $this->mockPredicate);
+        $this->mockStreamFilter     = $this->getMock('stubbles\streams\filter\StreamFilter');
+        $this->filteredOutputStream = new FilteredOutputStream($this->mockOutputStream, $this->mockStreamFilter);
     }
 
     /**
@@ -54,9 +55,9 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
                                ->method('write')
                                ->with($this->equalTo('foo'))
                                ->will($this->returnValue(3));
-        $this->mockPredicate->expects($this->once())
-                            ->method('test')
-                            ->will($this->returnValue(true));
+        $this->mockStreamFilter->expects($this->once())
+                               ->method('shouldFilter')
+                               ->will($this->returnValue(false));
         $this->assertEquals(3, $this->filteredOutputStream->write('foo'));
     }
 
@@ -67,9 +68,9 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockOutputStream->expects($this->never())
                                ->method('write');
-        $this->mockPredicate->expects($this->once())
-                            ->method('test')
-                            ->will($this->returnValue(false));
+        $this->mockStreamFilter->expects($this->once())
+                               ->method('shouldFilter')
+                               ->will($this->returnValue(true));
         $this->assertEquals(0, $this->filteredOutputStream->write('foo'));
     }
 
@@ -82,9 +83,9 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
                                ->method('writeLine')
                                ->with($this->equalTo('foo'))
                                ->will($this->returnValue(3));
-        $this->mockPredicate->expects($this->once())
-                            ->method('test')
-                            ->will($this->returnValue(true));
+        $this->mockStreamFilter->expects($this->once())
+                               ->method('shouldFilter')
+                               ->will($this->returnValue(false));
         $this->assertEquals(3, $this->filteredOutputStream->writeLine('foo'));
     }
 
@@ -95,9 +96,9 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockOutputStream->expects($this->never())
                                ->method('writeLine');
-        $this->mockPredicate->expects($this->once())
-                            ->method('test')
-                            ->will($this->returnValue(false));
+        $this->mockStreamFilter->expects($this->once())
+                               ->method('shouldFilter')
+                               ->will($this->returnValue(true));
         $this->assertEquals(0, $this->filteredOutputStream->writeLine('foo'));
     }
 
@@ -111,9 +112,9 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
                                ->method('writeLine')
                                ->with($this->equalTo('foo'))
                                ->will($this->returnValue(3));
-        $this->mockPredicate->expects($this->exactly(2))
-                            ->method('test')
-                            ->will($this->onConsecutiveCalls(true, false));
+        $this->mockStreamFilter->expects($this->exactly(2))
+                               ->method('shouldFilter')
+                               ->will($this->onConsecutiveCalls(false, true));
         $this->assertEquals(3, $this->filteredOutputStream->writeLines(['foo', 'bar']));
     }
 

@@ -13,8 +13,9 @@ namespace stubbles\streams\filter;
  *
  * @group  streams
  * @group  streams_filter
+ * @deprecated  since 4.0.0, will be removed with 5.0.0
  */
-class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
+class FilteredInputStreamFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
@@ -29,11 +30,11 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     private $mockInputStream;
     /**
-     * mocked predicate
+     * mocked stream filter
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    private $mockPredicate;
+    private $mockStreamFilter;
 
     /**
      * set up test environment
@@ -41,8 +42,8 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->mockInputStream     = $this->getMock('stubbles\streams\InputStream');
-        $this->mockPredicate       = $this->getMock('stubbles\predicate\Predicate');
-        $this->filteredInputStream = new FilteredInputStream($this->mockInputStream, $this->mockPredicate);
+        $this->mockStreamFilter    = $this->getMock('stubbles\streams\filter\StreamFilter');
+        $this->filteredInputStream = new FilteredInputStream($this->mockInputStream, $this->mockStreamFilter);
     }
 
     /**
@@ -59,9 +60,9 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
                               ->method('read')
                               ->with($this->equalTo(8192))
                               ->will($this->onConsecutiveCalls('foo', 'bar'));
-        $this->mockPredicate->expects($this->exactly(2))
-                            ->method('test')
-                            ->will($this->onConsecutiveCalls(false, true));
+        $this->mockStreamFilter->expects($this->exactly(2))
+                               ->method('shouldFilter')
+                               ->will($this->onConsecutiveCalls(true, false));
         $this->assertEquals('bar', $this->filteredInputStream->read());
     }
 
@@ -79,9 +80,9 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
                               ->method('read')
                               ->with($this->equalTo(8192))
                               ->will($this->returnValue('foo'));
-        $this->mockPredicate->expects($this->once())
-                            ->method('test')
-                            ->will($this->returnValue(false));
+        $this->mockStreamFilter->expects($this->once())
+                               ->method('shouldFilter')
+                               ->will($this->returnValue(true));
         $this->assertEquals('', $this->filteredInputStream->read());
     }
 
@@ -99,9 +100,9 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
                               ->method('readLine')
                               ->with($this->equalTo(8192))
                               ->will($this->onConsecutiveCalls('foo', 'bar'));
-        $this->mockPredicate->expects($this->exactly(2))
-                            ->method('test')
-                            ->will($this->onConsecutiveCalls(false, true));
+        $this->mockStreamFilter->expects($this->exactly(2))
+                               ->method('shouldFilter')
+                               ->will($this->onConsecutiveCalls(true, false));
         $this->assertEquals('bar', $this->filteredInputStream->readLine());
     }
 
@@ -119,9 +120,9 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
                               ->method('readLine')
                               ->with($this->equalTo(8192))
                               ->will($this->returnValue('foo'));
-        $this->mockPredicate->expects($this->once())
-                            ->method('test')
-                            ->will($this->returnValue(false));
+        $this->mockStreamFilter->expects($this->once())
+                               ->method('shouldFilter')
+                               ->will($this->returnValue(true));
         $this->assertEquals('', $this->filteredInputStream->readLine());
     }
 
