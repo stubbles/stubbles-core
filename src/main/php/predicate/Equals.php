@@ -51,10 +51,6 @@ class Equals extends Predicate
      */
     public function test($value)
     {
-        if ($this->expected !== $value) {
-            return false;
-        }
-
-        return true;
+        return $this->expected === $value;
     }
 }
