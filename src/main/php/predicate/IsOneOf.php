@@ -14,7 +14,7 @@ namespace stubbles\predicate;
  * @api
  * @since  4.0.0
  */
-class OneOf extends Predicate
+class IsOneOf extends Predicate
 {
     /**
      * list of allowed values

@@ -9,26 +9,26 @@
  */
 namespace stubbles\predicate;
 /**
- * Tests for stubbles\predicate\OneOf.
+ * Tests for stubbles\predicate\IsOneOf.
  *
  * @group  predicate
  * @since  4.0.0
  */
-class OneOfTest extends \PHPUnit_Framework_TestCase
+class IsOneOfTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  OneOf
+     * @type  IsOneOf
      */
-    private $oneOf;
+    private $isOneOf;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->oneOf = new OneOf(['foo', 'bar']);
+        $this->isOneOf = new IsOneOf(['foo', 'bar']);
     }
 
     /**
@@ -49,7 +49,7 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
      */
     public function validValueEvaluatesToTrue($value)
     {
-        $this->assertTrue($this->oneOf->test($value));
+        $this->assertTrue($this->isOneOf->test($value));
     }
 
     /**
@@ -70,6 +70,6 @@ class OneOfTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueEvaluatesToFalse($value)
     {
-        $this->assertFalse($this->oneOf->test($value));
+        $this->assertFalse($this->isOneOf->test($value));
     }
 }
