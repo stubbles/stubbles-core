@@ -94,6 +94,7 @@
   * added `stubbles\predicate`:
     * `stubbles\predicate\Predicate` as abstract base implementation
     * `stubbles\predicate\CallablePredicate` to wrap something callable as a predicate
+    * `stubbles\predicate\Contains`
     * `stubbles\predicate\Equals`
     * `stubbles\predicate\IsExistingDirectory`
     * `stubbles\predicate\IsExistingFile`
