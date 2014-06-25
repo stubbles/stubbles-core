@@ -91,7 +91,19 @@
   * allowed conversion of `stubbles\peer\streams\memory\MemoryOutputStream` to a string, will contain buffer content
   * added `stubbles\peer\http\emptyAcceptHeader()`
   * `net\stubbles\ioc\App::createModeBindingModule()` now accepts a callable as second parameter which returns a mode
-  * added `stubbles\predicate`
+  * added `stubbles\predicate`:
+    * `stubbles\predicate\Predicate` as abstract base implementation
+    * `stubbles\predicate\CallablePredicate` to wrap something callable as a predicate
+    * `stubbles\predicate\Equals`
+    * `stubbles\predicate\IsExistingDirectory`
+    * `stubbles\predicate\IsExistingFile`
+    * `stubbles\predicate\IsHttpUri`
+    * `stubbles\predicate\IsIpAddress`
+    * `stubbles\predicate\IsIpV4Address`
+    * `stubbles\predicate\IsIpV6Address`
+    * `stubbles\predicate\IsMailAddress`
+    * `stubbles\predicate\IsOneOf`
+    * `stubbles\predicate\Regex`
 
 
 3.5.3 (2014-05-07)
