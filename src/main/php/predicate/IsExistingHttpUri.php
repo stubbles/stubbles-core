@@ -11,12 +11,12 @@ namespace stubbles\predicate;
 use stubbles\peer\MalformedUriException;
 use stubbles\peer\http\HttpUri;
 /**
- * Predicate to test that a string is a http uri.
+ * Predicate to test that a string is an existing http uri, i.e. has a DNS record.
  *
  * @api
  * @since  4.0.0
  */
-class IsHttpUri extends Predicate
+class IsExistingHttpUri extends Predicate
 {
     use ReusablePredicate;
 
@@ -33,11 +33,9 @@ class IsHttpUri extends Predicate
         }
 
         try {
-            HttpUri::fromString($value);
+            return HttpUri::fromString($value)->hasDnsRecord();
         } catch (MalformedUriException $murle) {
             return false;
         }
-
-        return true;
     }
 }

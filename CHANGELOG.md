@@ -98,6 +98,7 @@
     * `stubbles\predicate\Equals`
     * `stubbles\predicate\IsExistingDirectory`
     * `stubbles\predicate\IsExistingFile`
+    * `stubbles\predicate\IsExistingHttpUri`
     * `stubbles\predicate\IsHttpUri`
     * `stubbles\predicate\IsIpAddress`
     * `stubbles\predicate\IsIpV4Address`

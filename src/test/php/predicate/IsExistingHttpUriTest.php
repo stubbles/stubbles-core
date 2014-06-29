@@ -9,26 +9,26 @@
  */
 namespace stubbles\predicate;
 /**
- * Tests for stubbles\predicate\IsHttpUri.
+ * Tests for stubbles\predicate\IsExistingHttpUri.
  *
  * @group  predicate
  * @since  4.0.0
  */
-class IsHttpUriTest extends \PHPUnit_Framework_TestCase
+class IsExistingHttpUriTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  IsHttpUri
+     * @type  IsExistingHttpUri
      */
-    protected $isHttpUri;
+    protected $isExistingHttpUri;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->isHttpUri = new IsHttpUri();
+        $this->isExistingHttpUri = new IsExistingHttpUri();
     }
 
     /**
@@ -52,15 +52,7 @@ class IsHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueEvaluatesToFalse($invalid)
     {
-        $this->assertFalse($this->isHttpUri->test($invalid));
-    }
-
-    /**
-     * @test
-     */
-    public function validHttpUrlEvaluatesToTrue()
-    {
-        $this->assertTrue($this->isHttpUri->test('http://example.net/'));
+        $this->assertFalse($this->isExistingHttpUri->test($invalid));
     }
 
     /**
@@ -69,17 +61,17 @@ class IsHttpUriTest extends \PHPUnit_Framework_TestCase
     public function validHttpUrlWithDnsEntryEvaluatesToTrue()
     {
         $this->assertTrue(
-                $this->isHttpUri->test('http://localhost/')
+                $this->isExistingHttpUri->test('http://localhost/')
         );
     }
 
     /**
      * @test
      */
-    public function validHttpUrlWithoutDnsEntryEvaluatesToTrue()
+    public function validHttpUrlWithoutDnsEntryEvaluatesToFalse()
     {
-        $this->assertTrue(
-                $this->isHttpUri->test('http://stubbles.doesNotExist/')
+        $this->assertFalse(
+                $this->isExistingHttpUri->test('http://stubbles.doesNotExist/')
         );
     }
 }
