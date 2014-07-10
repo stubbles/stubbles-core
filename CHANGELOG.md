@@ -106,6 +106,7 @@
     * `stubbles\predicate\IsMailAddress`
     * `stubbles\predicate\IsOneOf`
     * `stubbles\predicate\Regex`
+  * added `stubbles\streams\InputStreamIterator`,  `stubbles\streams\MappingInputStream` and `stubbles\streams\MappingOutputStream`
 
 
 3.5.3 (2014-05-07)
