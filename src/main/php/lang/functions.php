@@ -304,6 +304,31 @@ namespace stubbles\lang {
 
         return $string;
     }
+
+    /**
+     * ensures that the given callable is really callable
+     *
+     * Internal functions like strlen() or is_string() require an *exact* amount
+     * of arguments. If they receive too many arguments they just report an error.
+     * This is a problem when you pass such a function as callable to a place
+     * where it will receive more than it's exact amount of arguments.
+     *
+     * @param   callable  $callable
+     * @return  callable
+     */
+    function ensureCallable(callable $callable)
+    {
+        if (!is_string($callable)) {
+            return $callable;
+        }
+
+        $function = reflect($callable);
+        if ($function->isInternal()) {
+            return reflect($callable)->wrapInClosure();
+        }
+
+        return $callable;
+    }
 }
 namespace stubbles\lang\exception {
     /**

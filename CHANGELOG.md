@@ -108,6 +108,7 @@
     * `stubbles\predicate\Regex`
   * `stubbles\lang\reflect()` can now also reflect functions
   * `stubbles\lang\reflect()` now throws a `stubbles\lang\exception\IllegalArgumentException` if the value can not be reflected
+  * added `stubbles\lang\ensureCallable()`
 
 
 3.5.3 (2014-05-07)

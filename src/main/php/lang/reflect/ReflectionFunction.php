@@ -160,4 +160,33 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
 
         return new ReflectionExtension($extensionName);
     }
+
+    /**
+     * Wrap functions in a dynamic wrapper instead of invoking through the
+     * closure returned by ReflectionFunction::getClosure().
+     *
+     * The latter will pass through excess arguments, which is a problem
+     * for functions such as `strlen()` which expect an *exact* amount of
+     * arguments.
+     *
+     * @return  \Closure
+     * @since   4.0.0
+     */
+    public function wrapInClosure()
+    {
+        static $wrappedFunctions = [];
+
+        $signature = '';
+        $arguments = '';
+        foreach (parent::getParameters() as $position => $param) {
+            $signature .= ', ' . ($param->isPassedByReference() ? '&' : '') . '$_' . $position . ($param->isOptional() ? '= null' : '');
+            $arguments .= ', $_' . $position;
+        }
+
+        if (!isset($wrappedFunctions[$this->functionName])) {
+            $wrappedFunctions[$this->functionName] = eval('return function(' . substr($signature, 2) . ') { return ' . $this->functionName . '(' . substr($arguments, 2) . '); };');
+        }
+
+        return $wrappedFunctions[$this->functionName];
+    }
 }

@@ -190,7 +190,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function invalidValues()
+    public static function invalidValues()
     {
         return [[404], [true], [4.04]];
     }
@@ -204,5 +204,72 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function reflectInvalidValueThrowsIllegalArgumentException($invalidValue)
     {
         reflect($invalidValue);
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function ensureCallableDoesNotChangeClosures()
+    {
+        $closure = function() { return true; };
+        $this->assertSame($closure, ensureCallable($closure));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function ensureCallableDoesNotChangeCallbackWithInstance()
+    {
+        $callback = [$this, __FUNCTION__];
+        $this->assertSame($callback, ensureCallable($callback));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function ensureCallableDoesNotChangeCallbackWithStaticMethod()
+    {
+        $callback = [__CLASS__, 'invalidValues'];
+        $this->assertSame($callback, ensureCallable($callback));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function ensureCallableDoesNotWrapUserlandFunction()
+    {
+        $this->assertSame('stubbles\lang\ensureCallable', ensureCallable('stubbles\lang\ensureCallable'));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function ensureCallableWrapsInternalFunction()
+    {
+        $this->assertInstanceOf('\Closure', ensureCallable('strlen'));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function ensureCallableAlwaysReturnsSameClosureForSameFunction()
+    {
+        $this->assertSame(ensureCallable('strlen'), ensureCallable('strlen'));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function ensureCallableReturnsClosureThatPassesArgumentsAndReturnsValue()
+    {
+        $strlen = ensureCallable('strlen');
+        $this->assertEquals(3, $strlen('foo'));
     }
 }
