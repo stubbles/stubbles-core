@@ -1,3 +1,9 @@
+4.1.1 (2014-??-??)
+------------------
+
+  * added `stubbles\streams\InputStreamIterator`,  `stubbles\streams\MappingInputStream` and `stubbles\streams\MappingOutputStream`
+
+
 4.0.0 (2014-06-??)
 ------------------
 
@@ -106,7 +112,8 @@
     * `stubbles\predicate\IsMailAddress`
     * `stubbles\predicate\IsOneOf`
     * `stubbles\predicate\Regex`
-  * added `stubbles\streams\InputStreamIterator`,  `stubbles\streams\MappingInputStream` and `stubbles\streams\MappingOutputStream`
+  * `stubbles\lang\reflect()` can now also reflect functions
+  * `stubbles\lang\reflect()` now throws a `stubbles\lang\exception\IllegalArgumentException` if the value can not be reflected
 
 
 3.5.3 (2014-05-07)
