@@ -140,4 +140,69 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 exception\lastErrorMessage()
         );
     }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function reflectWithMethodNameReturnsReflectionMethod()
+    {
+        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionMethod', reflect(__CLASS__, __FUNCTION__));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function reflectWithClassNameReturnsReflectionClass()
+    {
+        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionClass', reflect(__CLASS__));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function reflectWithClassInstanceReturnsReflectionObject()
+    {
+        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionObject', reflect($this));
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function reflectWithFunctionNameReturnsReflectionFunction()
+    {
+        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionFunction', reflect('stubbles\lang\reflect'));
+    }
+
+    /**
+     * @test
+     * @expectedException  ReflectionException
+     * @since  4.0.0
+     */
+    public function reflectWithUnknownClassAndFunctionNameThrowsReflectionException()
+    {
+        reflect('doesNotExist');
+    }
+
+    /**
+     * @return  array
+     */
+    public function invalidValues()
+    {
+        return [[404], [true], [4.04]];
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @dataProvider  invalidValues
+     * @since  4.0.0
+     */
+    public function reflectInvalidValueThrowsIllegalArgumentException($invalidValue)
+    {
+        reflect($invalidValue);
+    }
 }

@@ -8,13 +8,15 @@
  * @package  stubbles
  */
 namespace stubbles\lang {
-    use \stubbles\lang\Properties;
-    use \stubbles\lang\reflect\MixedType;
-    use \stubbles\lang\reflect\ReflectionClass;
-    use \stubbles\lang\reflect\ReflectionMethod;
-    use \stubbles\lang\reflect\ReflectionObject;
-    use \stubbles\lang\reflect\ReflectionPrimitive;
-    use \stubbles\lang\reflect\annotation\AnnotationCache;
+    use stubbles\lang\exception\IllegalArgumentException;
+    use stubbles\lang\Properties;
+    use stubbles\lang\reflect\MixedType;
+    use stubbles\lang\reflect\ReflectionClass;
+    use stubbles\lang\reflect\ReflectionFunction;
+    use stubbles\lang\reflect\ReflectionMethod;
+    use stubbles\lang\reflect\ReflectionObject;
+    use stubbles\lang\reflect\ReflectionPrimitive;
+    use stubbles\lang\reflect\annotation\AnnotationCache;
 
     /**
      * creates new properties instance from given property data
@@ -71,16 +73,21 @@ namespace stubbles\lang {
     /**
      * reflects given input and returns an appropriate reflector
      *
-     * If no method name is provided it will return an instance of
+     * If no method name is provided it will check whether $class denotes a
+     * class name or is an object instance. If yes it returns an instance of
      * stubbles\lang\reflect\BaseReflectionClass which allows reflection on the
      * provided class.
+     * In case $class is a function name it will return a
+     * stubbles\lang\reflect\ReflectionFunction which allows reflection on the
+     * function.
      * In case a method name is provided it will return an instance of
      * stubbles\lang\reflect\ReflectionMethod which allows reflection on the
      * specific method.
      *
-     * @param   string|object  $class       class name of or object instance to reflect
+     * @param   string|object  $class       class name, function name of or object instance to reflect
      * @param   string         $methodName  optional  specific method to reflect
-     * @return  lang\reflect\BaseReflectionClass|ReflectionMethod
+     * @return  stubbles\lang\reflect\BaseReflectionClass|stubbles\lang\reflect\ReflectionMethod|stubbles\lang\reflect\ReflectionFunction
+     * @throws  IllegalArgumentException
      * @since   3.1.0
      * @api
      */
@@ -91,10 +98,18 @@ namespace stubbles\lang {
         }
 
         if (is_string($class)) {
-            return ReflectionClass::fromName($class);
+            if (class_exists($class)) {
+                return ReflectionClass::fromName($class);
+            }
+
+            return new ReflectionFunction($class);
         }
 
-        return ReflectionObject::fromInstance($class);
+        if (is_object($class)) {
+            return ReflectionObject::fromInstance($class);
+        }
+
+        throw new IllegalArgumentException('Given class must either be a function name, class name or class instance, ' . gettype($class) . ' given');
     }
 
     /**
