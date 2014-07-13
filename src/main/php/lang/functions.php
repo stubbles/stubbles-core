@@ -315,6 +315,7 @@ namespace stubbles\lang {
      *
      * @param   callable  $callable
      * @return  callable
+     * @since   4.0.0
      */
     function ensureCallable(callable $callable)
     {
