@@ -21,12 +21,39 @@ class PeekTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function peekCallsConsumerWithCurrentValueOnIteration()
+    public function peekCallsValueConsumerWithCurrentValueOnIteration()
     {
-        $peek = new Peek(new \ArrayIterator(['foo', 'bar', 'baz']), function($value) { $this->assertEquals(3, strlen($value)); });
+        $result = '';
+        $peek = new Peek(new \ArrayIterator(['foo', 'bar', 'baz']), function($value) use(&$result) { $result = $result . $value; });
+        foreach ($peek as $value) {
+            // do nothing
+        }
+
+        $this->assertEquals('foobarbaz', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function peekCallsKeyConsumerWithCurrentKeyOnIteration()
+    {
+        $result = '';
+        $peek = new Peek(new \ArrayIterator(['foo' => 303, 'bar' => 404, 'baz' => 505]), function() { }, function($key) use(&$result) { $result = $result . $key; });
+        foreach ($peek as $key => $value) {
+            // do nothing
+        }
+
+        $this->assertEquals('foobarbaz', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function keyConsumerIsNotCalledWhenNoKeyInForeachRequested()
+    {
+        $peek = new Peek(new \ArrayIterator(['foo' => 303, 'bar' => 404, 'baz' => 505]), function() { }, function() { $this->fail('Not expected to be called'); });
         foreach ($peek as $value) {
             // do nothing
         }
     }
-
 }

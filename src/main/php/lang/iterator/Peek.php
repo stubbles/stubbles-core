@@ -16,34 +16,58 @@ namespace stubbles\lang\iterator;
 class Peek extends \IteratorIterator
 {
     /**
-     * actual mapping functionality
+     * consumer for values
      *
      * @type  callable
      */
-    private $consumer;
+    private $valueConsumer;
+    /**
+     * consumer for keys
+     *
+     * @type  callable
+     */
+    private $keyConsumer;
 
     /**
      * constructor
      *
      * @param  \Iterator  $iterator  iterator to map values of
-     * @param  callable   $consumer  consumer which is invoked with current element
+     * @param  callable   $valueConsumer  consumer which is invoked with current value
+     * @param  callable   $keyConsumer    optional  consumer which is invoked with current key
      */
-    public function __construct(\Iterator $iterator, callable $consumer)
+    public function __construct(\Iterator $iterator, callable $valueConsumer, callable $keyConsumer = null)
     {
         parent::__construct($iterator);
-        $this->consumer = $consumer;
+        $this->valueConsumer = $valueConsumer;
+        $this->keyConsumer   = $keyConsumer;
     }
 
     /**
      * returns the current element
      *
-     * @return  string
+     * @return  mixed
      */
     public function current()
     {
-        $consume = $this->consumer;
+        $consumeValue = $this->valueConsumer;
         $current = parent::current();
-        $consume($current);
+        $consumeValue($current);
         return $current;
+    }
+
+    /**
+     * returns the current key
+     *
+     * @return  mixed
+     */
+    public function key()
+    {
+        $key = parent::key();
+        if (null !== $this->keyConsumer) {
+            $consumeKey = $this->keyConsumer;
+            $consumeKey($key);
+        }
+
+        return $key;
     }
 }
