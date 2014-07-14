@@ -80,7 +80,6 @@ class Generator implements \Iterator
      */
     public function current()
     {
-        var_dump('current');
         return $this->value;
     }
 
@@ -91,7 +90,6 @@ class Generator implements \Iterator
      */
     public function key()
     {
-        var_dump('key');
         return $this->elementsGenerated;
     }
 
@@ -100,7 +98,6 @@ class Generator implements \Iterator
      */
     public function next()
     {
-        var_dump('next');
         $operation   = $this->operation;
         $this->value = $operation($this->value);
         $this->elementsGenerated++;
@@ -111,7 +108,6 @@ class Generator implements \Iterator
      */
     public function rewind()
     {
-        var_dump('rewind');
         $this->elementsGenerated = 0;
         $this->value             = $this->seed;
     }
@@ -123,7 +119,6 @@ class Generator implements \Iterator
      */
     public function valid()
     {
-        var_dump('valid');
         $validate = $this->validator;
         return $validate($this->value, $this->elementsGenerated);
     }
