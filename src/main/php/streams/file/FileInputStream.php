@@ -11,6 +11,7 @@ namespace stubbles\streams\file;
 use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\exception\IllegalStateException;
 use stubbles\lang\exception\IOException;
+use stubbles\streams\InputStream;
 use stubbles\streams\ResourceInputStream;
 use stubbles\streams\Seekable;
 /**
@@ -59,6 +60,27 @@ class FileInputStream extends ResourceInputStream implements Seekable
     public function __destruct()
     {
         $this->close();
+    }
+
+    /**
+     * casts given value to an input stream
+     *
+     * @param   \stubbles\streams\InputStream|string  $value
+     * @return  \stubbles\streams\InputStream
+     * @throws  IllegalArgumentException
+     * @since   4.0.0
+     */
+    public static function castFrom($value)
+    {
+        if ($value instanceof InputStream) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            return new self($value);
+        }
+
+        throw new IllegalArgumentException('Given value is neither an instance of stubbles\streams\InputStream nor a string denoting a file');
     }
 
     /**

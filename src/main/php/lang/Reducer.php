@@ -48,12 +48,7 @@ class Reducer
      */
     public function with(callable $accumulate, $identity = null)
     {
-        $result = $identity;
-        foreach ($this->sequence as $key => $element) {
-            $result = $accumulate($result, $element, $key);
-        }
-
-        return $result;
+        return $this->sequence->reduce($accumulate, $identity);
     }
 
     /**

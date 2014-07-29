@@ -298,18 +298,22 @@ class Sequence implements \IteratorAggregate, \Countable
      * will be returned which provides convenience methods for some common
      * reduction operations.
      *
-     * @param   callable  $accumulator  optional  function which acumulates result and element to a new result
-     * @param   mixed     $identity     optional  initial return value in case sequence is empty, defaults to null
+     * @param   callable  $accumulate  optional  function which acumulates result and element to a new result
+     * @param   mixed     $identity    optional  initial return value in case sequence is empty, defaults to null
      * @return  mixed|\stubbles\lang\Reducer
      */
-    public function reduce(callable $accumulator = null, $identity = null)
+    public function reduce(callable $accumulate = null, $identity = null)
     {
-        $reduce = new Reducer($this);
-        if (null !== $accumulator) {
-            return $reduce->with($accumulator, $identity);
+        if (null === $accumulate) {
+            return new Reducer($this);
         }
 
-        return $reduce;
+        $result = $identity;
+        foreach ($this->elements as $key => $element) {
+            $result = $accumulate($result, $element, $key);
+        }
+
+        return $result;
     }
 
     /**
