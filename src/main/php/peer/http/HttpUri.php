@@ -23,11 +23,34 @@ use stubbles\peer\Uri;
 abstract class HttpUri extends Uri
 {
     /**
+     * creates http uri from given uri parts
+     *
+     * @param   string  $scheme       scheme of http uri, must be either http or https
+     * @param   string  $host         host name of http uri
+     * @param   int     $port         optional  port of http uri
+     * @param   string  $path         optional  path of http uri, defaults to /
+     * @param   string  $queryString  optional  query string of http uri
+     * @return  \stubbles\peer\http\HttpUri
+     * @since   4.0.0
+     */
+    public static function fromParts($scheme, $host, $port = null, $path = '/', $queryString = null)
+    {
+        return self::fromString(
+                $scheme
+                . '://'
+                . $host
+                . (null === $port ? '' : ':' . $port)
+                . $path
+                . ((null !== $queryString) ? (substr($queryString, 0, 1) !== '?' ? '?' . $queryString : $queryString) : $queryString)
+        );
+    }
+
+    /**
      * parses an uri out of a string
      *
      * @param   string  $uriString  string to create instance from
      * @param   string  $rfc        optional  RFC to base validation on, defaults to Http::RFC_7230
-     * @return  HttpUri
+     * @return  \stubbles\peer\http\HttpUri
      * @throws  IllegalArgumentException  when passed RFC is unknown
      * @throws  MalformedUriException
      */
@@ -56,9 +79,9 @@ abstract class HttpUri extends Uri
     /**
      * casts given value to an instance of HttpUri
      *
-     * @param   string|HttpUri  $value  value to cast to HttpUri
-     * @param   string          $name   optional  name of parameter to cast from
-     * @return  HttpUri
+     * @param   string|\stubbles\peer\http\HttpUri  $value  value to cast to HttpUri
+     * @param   string                              $name   optional  name of parameter to cast from
+     * @return  \stubbles\peer\http\HttpUri
      * @throws  IllegalArgumentException
      * @since   4.0.0
      */
@@ -186,7 +209,7 @@ abstract class HttpUri extends Uri
     /**
      * transposes uri to http
      *
-     * @return  HttpUri
+     * @return  \stubbles\peer\http\HttpUri
      * @since   2.0.0
      */
     public function toHttp()
@@ -201,7 +224,7 @@ abstract class HttpUri extends Uri
     /**
      * transposes uri to https
      *
-     * @return  HttpUri
+     * @return  \stubbles\peer\http\HttpUri
      * @since   2.0.0
      */
     public function toHttps()
@@ -224,8 +247,8 @@ abstract class HttpUri extends Uri
      *                            ->get();
      * </code>
      *
-     * @param   HeaderList  $headers  list of headers to be used
-     * @return  HttpConnection
+     * @param   \stubbles\peer\HeaderList  $headers  list of headers to be used
+     * @return  \stubbles\peer\http\HttpConnection
      */
     public function connect(HeaderList $headers = null)
     {
@@ -236,7 +259,7 @@ abstract class HttpUri extends Uri
      * opens socket to this uri
      *
      * @param   int  $timeout  connection timeout
-     * @return  Socket
+     * @return  \stubbles\peer\Socket
      * @since   2.0.0
      */
     public function openSocket($timeout = 5)

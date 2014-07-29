@@ -88,6 +88,7 @@
   * added `stubbles\peer\http\Http::OPTIONS`
   * added `stubbles\peer\http\HttpVersion`
   * added `stubbles\peer\http\HttpUri::castFrom()`
+  * added `stubbles\peer\http\HttpUri::fromParts()`
   * allowed conversion of `stubbles\peer\streams\memory\MemoryOutputStream` to a string, will contain buffer content
   * added `stubbles\peer\http\emptyAcceptHeader()`
   * `net\stubbles\ioc\App::createModeBindingModule()` now accepts a callable as second parameter which returns a mode
