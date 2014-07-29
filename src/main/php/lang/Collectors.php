@@ -25,11 +25,26 @@ class Collectors
     /**
      * constructor
      *
+     * @internal  create an instance with $sequence->collect() instead
      * @param  \stubbles\lang\Sequence  $sequence
      */
     public function __construct(Sequence $sequence)
     {
         $this->sequence = $sequence;
+    }
+
+    /**
+     * collects all elements into structure defined by supplier
+     *
+     * @api
+     * @param   callable  $supplier     returns a fresh structure to collect elements into
+     * @param   callable  $accumulator  accumulates elements into structure
+     * @param   callable  $finisher     optional  final operation after all elements have been added to the structure
+     * @return  mixed
+     */
+    public function with(callable $supplier, callable $accumulator, callable $finisher = null)
+    {
+        return $this->sequence->collect(new Collector($supplier, $accumulator, $finisher));
     }
 
     /**
@@ -65,7 +80,7 @@ class Collectors
     public function inPartitions(callable $predicate, Collector $base = null)
     {
         $base = (null === $base) ? Collector::forList() : $base;
-        return $this->sequence->collectWith(
+        return $this->with(
                 function() use($base)
                 {
                     return [true  => $base->restart(),
@@ -96,7 +111,7 @@ class Collectors
     public function inGroups(callable $classifier, Collector $base = null)
     {
         $base = (null === $base) ? Collector::forList() : $base;
-        return $this->sequence->collectWith(
+        return $this->with(
                 function() { return []; },
                 function(&$groups, $element) use($classifier, $base)
                 {
@@ -142,7 +157,7 @@ class Collectors
      */
     public function byJoining($delimiter = ', ', $prefix = '', $suffix = '', $keySeparator = null)
     {
-        return $this->sequence->collectWith(
+        return $this->with(
                 function () { return null; },
                 function(&$joinedElements, $element, $key) use($prefix, $delimiter, $keySeparator)
                 {

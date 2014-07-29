@@ -321,7 +321,11 @@ class Sequence implements \IteratorAggregate, \Countable
      *
      * This is a terminal operation.
      *
-     * @param   \stubbles\lang\Collector  $collector
+     * In case no collector is provided an instance of \stubbles\lang\Collectors
+     * will be returned which provides convenience methods for some common
+     * collection operations.
+     *
+     * @param   \stubbles\lang\Collector  $collector  optional
      * @return  mixed|\stubbles\lang\Collectors
      */
     public function collect(Collector $collector = null)
@@ -335,21 +339,6 @@ class Sequence implements \IteratorAggregate, \Countable
         }
 
         return $collector->finish();
-    }
-
-    /**
-     * collects all elements into structure defined by supplier
-     *
-     * This is a terminal operation.
-     *
-     * @param   callable  $supplier     returns a fresh structure to collect elements into
-     * @param   callable  $accumulator  accumulates elements into structure
-     * @param   callable  $finisher     optional  final operation after all elements have been added to the structure
-     * @return  mixed
-     */
-    public function collectWith(callable $supplier, callable $accumulator, callable $finisher = null)
-    {
-        return $this->collect(new Collector($supplier, $accumulator, $finisher));
     }
 
     /**

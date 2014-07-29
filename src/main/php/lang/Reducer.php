@@ -32,7 +32,7 @@ class Reducer
     /**
      * constructor
      *
-     * @internal  Create a reducer with $sequence->reduce() instead
+     * @internal  create a reducer with $sequence->reduce() instead
      * @param  \stubbles\lang\Sequence  $sequence
      */
     public function __construct(Sequence $sequence)
