@@ -51,9 +51,12 @@ class PeekTest extends \PHPUnit_Framework_TestCase
      */
     public function keyConsumerIsNotCalledWhenNoKeyInForeachRequested()
     {
-        $peek = new Peek(new \ArrayIterator(['foo' => 303, 'bar' => 404, 'baz' => 505]), function() { }, function() { $this->fail('Not expected to be called'); });
+        $i = 0;
+        $peek = new Peek(new \ArrayIterator(['foo' => 303, 'bar' => 404, 'baz' => 505]), function() { }, function() { $this->fail('Key consumer is not expected to be called'); });
         foreach ($peek as $value) {
-            // do nothing
+            $i++;
         }
+
+        $this->assertEquals(3, $i);
     }
 }
