@@ -121,23 +121,38 @@ class Collectors
     /**
      * creates collector which concatenates all elements into a single string
      *
+     * If no key separator is provided keys will not be part of the resulting
+     * string.
+     * <code>
+     * Sequence::of(['foo' => 303, 'bar' => 808, 'baz'=> 909])
+     *         ->collect()
+     *         ->toString(); // results in '303, 808, 9090'
+     *
+     * Sequence::of(['foo' => 303, 'bar' => 808, 'baz'=> 909])
+     *         ->collect()
+     *         ->byJoining(', ', '', '', ': '); // results in 'foo: 303, bar: 808, baz: 9090'
+     * </code>
+     *
      * @api
-     * @param   string  $delimiter  optional  sepearator between elements
-     * @param   string  $prefix     optional  string prefix
-     * @param   string  $suffix     optional  string suffix
+     * @param   string  $delimiter     delimiter between elements, defaults to ', '
+     * @param   string  $prefix        optional  prefix for complete string, empty by default
+     * @param   string  $suffix        optional  suffix for complete string, empty by default
+     * @param   string  $keySeparator  optional  separator between key and element
      * @return  string
      */
-    public function asString($delimiter = ', ', $prefix = '', $suffix = '')
+    public function byJoining($delimiter = ', ', $prefix = '', $suffix = '', $keySeparator = null)
     {
         return $this->sequence->collectWith(
                 function () { return null; },
-                function(&$joinedElements, $element) use($prefix, $delimiter)
+                function(&$joinedElements, $element, $key) use($prefix, $delimiter, $keySeparator)
                 {
                     if (null === $joinedElements) {
-                        $joinedElements = $prefix . $element;
+                        $joinedElements = $prefix;
                     } else {
-                        $joinedElements .= $delimiter . $element;
+                        $joinedElements .= $delimiter;
                     }
+
+                    $joinedElements .= (null !== $keySeparator ? $key . $keySeparator : null) . $element;
                 },
                 function($joinedElements) use($suffix) { return $joinedElements . $suffix; }
         );

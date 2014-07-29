@@ -32,6 +32,7 @@ class Reducer
     /**
      * constructor
      *
+     * @internal  Create a reducer with $sequence->reduce() instead
      * @param  \stubbles\lang\Sequence  $sequence
      */
     public function __construct(Sequence $sequence)
@@ -42,21 +43,21 @@ class Reducer
     /**
      * reduce with given callable
      *
-     * @param   ccallable  $accumulate
+     * @param   ccallable  $accumulator
      * @param   mixed      $identity
      * @return  mixed
      */
-    public function with(callable $accumulate, $identity = null)
+    public function with(callable $accumulator, $identity = null)
     {
-        return $this->sequence->reduce($accumulate, $identity);
+        return $this->sequence->reduce($accumulator, $identity);
     }
 
     /**
      * reduce to sum of all elements
      *
+     * @api
      * @param   callable $summer  optional  different summing function, i.e. when elements are not numbers
      * @return  int
-     * @api
      */
     public function toSum(callable $summer = null)
     {
@@ -70,9 +71,9 @@ class Reducer
     /**
      * reduce to smallest element
      *
+     * @api
      * @param   callable  $min  optional  different function to calculate the minimum, i.e. when elements are not numbers
      * @return  mixed
-     * @api
      */
     public function toMin(callable $min = null)
     {
@@ -94,9 +95,9 @@ class Reducer
      *
      * This is a terminal operation.
      *
+     * @api
      * @param   callable  $max  optional  different function to calculate the maximum, i.e. when elements are not numbers
      * @return  mixed
-     * @api
      */
     public function toMax(callable $max = null)
     {
