@@ -269,7 +269,8 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function collectUsedForAveraging()
     {
         $result = Sequence::of([1, 2, 3, 4])
-                          ->collectWith(
+                          ->collect()
+                          ->with(
                                 function() { return ['total' => 0, 'sum' => 0]; },
                                 function(&$result, $element) { $result['total']++; $result['sum'] += $element; }
         );
@@ -282,7 +283,8 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function collectUsedForJoining()
     {
         $result = Sequence::of(['a', 'b', 'c'])
-                          ->collectWith(
+                          ->collect()
+                          ->with(
                                 function() { return ''; },
                                 function(&$result, $arg) { $result .= ', '.$arg; },
                                 function($result) { return substr($result, 2); }
