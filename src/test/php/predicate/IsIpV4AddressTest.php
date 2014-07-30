@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use stubbles\peer\IpAddress;
 /**
  * Tests for stubbles\predicate\IsIpV4Address.
  *
@@ -45,6 +46,14 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
     public function nullIsNoIpAndEvaluatesToFalse()
     {
         $this->assertFalse($this->isIpV4Address->test(null));
+    }
+
+    /**
+     * @test
+     */
+    public function emptyStringIsNoIpAndEvaluatesToFalse()
+    {
+        $this->assertFalse($this->isIpV4Address->test(''));
     }
 
     /**
@@ -111,5 +120,13 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
     public function correctIpEvaluatesToTrue()
     {
         $this->assertTrue($this->isIpV4Address->test('1.2.3.4'));
+    }
+
+    /**
+     * @test
+     */
+    public function instanceOfIpAddressEvaluatesToTrue()
+    {
+        $this->assertTrue($this->isIpV4Address->test(new IpAddress('127.0.0.1')));
     }
 }

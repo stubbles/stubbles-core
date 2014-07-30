@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use stubbles\peer\IpAddress;
 /**
  * Tests for stubbles\predicate\IsIpAddress.
  *
@@ -45,6 +46,14 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
     public function nullIsNoIpAndEvaluatesToFalse()
     {
         $this->assertFalse($this->isIpAddress->test(null));
+    }
+
+    /**
+     * @test
+     */
+    public function emptyStringIsNoIpAndEvaluatesToFalse()
+    {
+        $this->assertFalse($this->isIpAddress->test(''));
     }
 
     /**
@@ -215,5 +224,13 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
     public function shortenedPostfixIpV6EvaluatesToTrue()
     {
         $this->assertTrue($this->isIpAddress->test('febc:a574:382b:23c1:aa49::'));
+    }
+
+    /**
+     * @test
+     */
+    public function instanceOfIpAddressEvaluatesToTrue()
+    {
+        $this->assertTrue($this->isIpAddress->test(new IpAddress('127.0.0.1')));
     }
 }
