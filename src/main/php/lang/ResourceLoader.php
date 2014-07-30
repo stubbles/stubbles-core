@@ -177,7 +177,7 @@ class ResourceLoader
      *
      * @param   string  $resourceName  the resource to retrieve the uris for
      * @return  string[]
-     * @deprecated  since 4.0.0, use listResourceUris() instead, will be removed with 5.0.0
+     * @deprecated  since 4.0.0, use availableResourceUris() instead, will be removed with 5.0.0
      */
     public function getResourceUris($resourceName)
     {
