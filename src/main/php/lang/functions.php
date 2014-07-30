@@ -98,7 +98,7 @@ namespace stubbles\lang {
         }
 
         if (is_string($class)) {
-            if (class_exists($class)) {
+            if (class_exists($class) || interface_exists($class)) {
                 return ReflectionClass::fromName($class);
             }
 
