@@ -5,7 +5,9 @@
         "This file is @generated automatically"
     ],
     "hash": "1207e6b4cc8930c6121fe4337c3b7443",
-    "packages": [],
+    "packages": [
+
+    ],
     "packages-dev": [
         {
             "name": "mikey179/vfsStream",
@@ -697,12 +699,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-core-dev.git",
-                "reference": "785a9b39f2d2efbf29d207eafa4825f4429c8d29"
+                "reference": "b3e4ec64f958b69eacac0218623dc951449c6a46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-core-dev/zipball/785a9b39f2d2efbf29d207eafa4825f4429c8d29",
-                "reference": "785a9b39f2d2efbf29d207eafa4825f4429c8d29",
+                "url": "https://api.github.com/repos/stubbles/stubbles-core-dev/zipball/b3e4ec64f958b69eacac0218623dc951449c6a46",
+                "reference": "b3e4ec64f958b69eacac0218623dc951449c6a46",
                 "shasum": ""
             },
             "require": {
@@ -725,7 +727,7 @@
             ],
             "description": "Development stuff for Stubbles Core.",
             "homepage": "http://stubbles.net/",
-            "time": "2014-05-31 17:19:21"
+            "time": "2014-07-30 14:55:43"
         },
         {
             "name": "symfony/yaml",
@@ -777,7 +779,9 @@
             "time": "2014-07-09 09:05:48"
         }
     ],
-    "aliases": [],
+    "aliases": [
+
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "stubbles/core-dev": 20
@@ -785,5 +789,7 @@
     "platform": {
         "php": ">=5.4.0"
     },
-    "platform-dev": []
+    "platform-dev": [
+
+    ]
 }
