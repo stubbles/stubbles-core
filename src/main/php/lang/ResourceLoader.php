@@ -149,13 +149,18 @@ class ResourceLoader
     /**
      * returns a list of all available uris for a resource
      *
+     * The returned list is sorted alphabetically, meaning that local resources
+     * of the current project are always returned as first entry if they exist,
+     * and all vendor resources after. Order of vendor resources is also in
+     * alphabetical order of vendor/package names.
+     *
      * @param   string  $resourceName  the resource to retrieve the uris for
      * @return  string[]
      * @since   4.0.0
      */
     public function availableResourceUris($resourceName)
     {
-        return array_values(
+        $resourceUris = array_values(
                 array_filter(
                         array_map(
                               function($sourcePath) use($resourceName)
@@ -170,6 +175,8 @@ class ResourceLoader
                         }
                 )
         );
+        sort($resourceUris);
+        return $resourceUris;
     }
 
     /**
