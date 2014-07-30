@@ -32,7 +32,7 @@ class MapBinding extends MultiBinding
      * @api
      * @param   string  $key
      * @param   mixed   $value
-     * @return  MapBinding
+     * @return  \stubbles\ioc\binding\MapBinding
      */
     public function withEntry($key, $value)
     {
@@ -45,8 +45,8 @@ class MapBinding extends MultiBinding
      *
      * @api
      * @param   string                    $key
-     * @param   string|InjectionProvider  $provider
-     * @return  MapBinding
+     * @param   string|\stubbles\ioc\InjectionProvider  $provider
+     * @return  \stubbles\ioc\binding\MapBinding
      */
     public function withEntryFromProvider($key, $provider)
     {
@@ -60,7 +60,7 @@ class MapBinding extends MultiBinding
      * @api
      * @param   string    $key
      * @param   \Closure  $closure
-     * @return  MapBinding
+     * @return  \stubbles\ioc\binding\MapBinding
      * @since   2.1.0
      */
     public function withEntryFromClosure($key, \Closure $closure)

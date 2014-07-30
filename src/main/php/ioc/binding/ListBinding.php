@@ -31,7 +31,7 @@ class ListBinding extends MultiBinding
      *
      * @api
      * @param   mixed  $value
-     * @return  ListBinding
+     * @return  \stubbles\ioc\binding\ListBinding
      */
     public function withValue($value)
     {
@@ -43,8 +43,8 @@ class ListBinding extends MultiBinding
      * adds a value to the list created by an injection provider
      *
      * @api
-     * @param   string|InjectionProvider  $provider
-     * @return  ListBinding
+     * @param   string|\stubbles\ioc\InjectionProvider  $provider
+     * @return  \stubbles\ioc\binding\ListBinding
      */
     public function withValueFromProvider($provider)
     {
@@ -57,7 +57,7 @@ class ListBinding extends MultiBinding
      *
      * @api
      * @param   \Closure  $closure
-     * @return  ListBinding
+     * @return  \stubbles\ioc\binding\ListBinding
      * @since   2.1.0
      */
     public function withValueFromClosure(\Closure $closure)

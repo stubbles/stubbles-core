@@ -23,14 +23,14 @@ class Binder
     /**
      * index for faster access to bindings
      *
-     * @type  BindingIndex
+     * @type  \stubbles\ioc\binding\BindingIndex
      */
     private $bindingIndex;
 
     /**
      * constructor
      *
-     * @param  BindingIndex  $index
+     * @param  \stubbles\ioc\binding\BindingIndex  $index
      */
     public function __construct(BindingIndex $index = null)
     {
@@ -40,8 +40,8 @@ class Binder
     /**
      * sets the session scope
      *
-     * @param   BindingScope  $sessionScope
-     * @return  Binder
+     * @param   \stubbles\ioc\binding\BindingScope  $sessionScope
+     * @return  \stubbles\ioc\Binder
      */
     public function setSessionScope(BindingScope $sessionScope)
     {
@@ -52,8 +52,8 @@ class Binder
     /**
      * adds a new binding to the injector
      *
-     * @param   Binding  $binding
-     * @return  Binding
+     * @param   \stubbles\ioc\binding\Binding  $binding
+     * @return  \stubbles\ioc\binding\Binding
      */
     public function addBinding(Binding $binding)
     {
@@ -64,7 +64,7 @@ class Binder
      * Bind a new interface to a class
      *
      * @param   string  $interface
-     * @return  stubbles\ioc\binding\ClassBinding
+     * @return  \stubbles\ioc\binding\ClassBinding
      */
     public function bind($interface)
     {
@@ -87,8 +87,8 @@ class Binder
     /**
      * binds properties
      *
-     * @param   Properties  $properties
-     * @param   Mode        $mode
+     * @param   \stubbles\lang\Properties  $properties
+     * @param   \stubbles\lang\Mode        $mode
      * @return  \stubbles\lang\Properties
      * @since   3.4.0
      */
@@ -101,7 +101,7 @@ class Binder
      * bind a constant
      *
      * @param   string  $name  name of constant to bind
-     * @return  stubbles\ioc\binding\ConstantBinding
+     * @return  \stubbles\ioc\binding\ConstantBinding
      */
     public function bindConstant($name)
     {
@@ -115,7 +115,7 @@ class Binder
      * to add more values to it.
      *
      * @param   string  $name
-     * @return  stubbles\ioc\binding\ListBinding
+     * @return  \stubbles\ioc\binding\ListBinding
      * @since   2.0.0
      */
     public function bindList($name)
@@ -130,7 +130,7 @@ class Binder
      * to add more key-value pairs to it.
      *
      * @param   string  $name
-     * @return  stubbles\ioc\binding\MapBinding
+     * @return  \stubbles\ioc\binding\MapBinding
      * @since   2.0.0
      */
     public function bindMap($name)
@@ -198,7 +198,7 @@ class Binder
     /**
      * Get an injector for this binder
      *
-     * @return  Injector
+     * @return  \stubbles\ioc\Injector
      */
     public function getInjector()
     {

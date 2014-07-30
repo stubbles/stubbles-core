@@ -19,7 +19,7 @@ interface BindingModule
     /**
      * configure the binder
      *
-     * @param  Binder  $binder
+     * @param  \stubbles\ioc\Binder  $binder
      */
     public function configure(Binder $binder);
 }

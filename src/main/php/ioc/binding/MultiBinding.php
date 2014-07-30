@@ -61,9 +61,9 @@ abstract class MultiBinding implements Binding
     /**
      * creates a closure which uses the given provider to create the value
      *
-     * @param   string|InjectionProvider  $provider
+     * @param   string|\stubbles\ioc\InjectionProvider  $provider
      * @return  \Closure
-     * @throws  llegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     protected function getProviderCreator($provider)
     {
@@ -88,8 +88,8 @@ abstract class MultiBinding implements Binding
     /**
      * returns the created instance
      *
-     * @param   Injector  $injector
-     * @param   string    $name
+     * @param   \stubbles\ioc\Injector  $injector
+     * @param   string                  $name
      * @return  mixed
      */
     public function getInstance(Injector $injector, $name)
@@ -104,10 +104,10 @@ abstract class MultiBinding implements Binding
     /**
      * creates the instance
      *
-     * @param   Injector  $injector
+     * @param   \stubbles\ioc\Injector  $injector
      * @param   string    $type
      * @return  array
-     * @throws  BindingException
+     * @throws  \stubbles\ioc\binding\BindingException
      */
     private function resolve(Injector $injector, $type)
     {
@@ -132,8 +132,8 @@ abstract class MultiBinding implements Binding
      * an instance of the class defined with $type. In any other case there's no
      * type mismatch
      *
-     * @param   string|BaseReflectionClass  $type
-     * @param   mixed                       $value
+     * @param   string|\stubbles\lang\reflect\BaseReflectionClass  $type
+     * @param   mixed                                              $value
      * @return  bool
      */
     private function isTypeMismatch($type, $value)

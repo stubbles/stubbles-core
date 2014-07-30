@@ -11,7 +11,6 @@ namespace stubbles\ioc;
 use stubbles\ioc\binding\BindingException;
 use stubbles\ioc\binding\BindingIndex;
 use stubbles\lang\reflect\BaseReflectionClass;
-use stubbles\lang\reflect\ReflectionClass;
 use stubbles\lang\reflect\ReflectionMethod;
 use stubbles\lang\reflect\ReflectionObject;
 use stubbles\lang\reflect\ReflectionParameter;
@@ -25,14 +24,14 @@ class Injector
     /**
      * index for faster access to bindings
      *
-     * @type  BindingIndex
+     * @type  \stubbles\ioc\binding\BindingIndex
      */
     private $bindingIndex;
 
     /**
      * constructor
      *
-     * @param  BindingIndex   $bindingIndex
+     * @param  \stubbles\ioc\binding\BindingIndex   $bindingIndex
      * @since  1.5.0
      */
     public function __construct(BindingIndex $bindingIndex)
@@ -86,7 +85,7 @@ class Injector
     /**
      * parses binding name from given name
      *
-     * @param   string|BaseReflectionClass  $name
+     * @param   string|\stubbles\lang\reflect\BaseReflectionClass  $name
      * @return  string
      */
     private function getBindingName($name)
@@ -174,8 +173,8 @@ class Injector
     /**
      * handle injections for given instance
      *
-     * @param   object               $instance
-     * @param   BaseReflectionClass  $class
+     * @param   object                                      $instance
+     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
      */
     public function handleInjections($instance, BaseReflectionClass $class = null)
     {
@@ -204,10 +203,10 @@ class Injector
     /**
      * returns a list of all injection values for given method
      *
-     * @param   ReflectionMethod     $method
-     * @param   BaseReflectionClass  $class
+     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
+     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
      * @return  array
-     * @throws  BindingException
+     * @throws  \stubbles\ioc\binding\BindingException
      */
     public function getInjectionValuesForMethod(ReflectionMethod $method, BaseReflectionClass $class)
     {
@@ -234,7 +233,7 @@ class Injector
     /**
      * returns default binding name for all parameters on given method
      *
-     * @param   ReflectionMethod  $method
+     * @param   \stubbles\lang\reflect\ReflectionMethod  $method
      * @return  string
      */
     private function getMethodBindingName(ReflectionMethod $method)
@@ -261,8 +260,8 @@ class Injector
     /**
      * returns type of param
      *
-     * @param   ReflectionMethod     $method
-     * @param   ReflectionParameter  $param
+     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
+     * @param   \stubbles\lang\reflect\ReflectionParameter  $param
      * @return  string
      */
     private function getParamType(ReflectionMethod $method, ReflectionParameter $param)
@@ -290,9 +289,9 @@ class Injector
     /**
      * detects name for binding
      *
-     * @param   ReflectionParameter  $param
+     * @param   \stubbles\lang\reflect\ReflectionParameter  $param
      * @param   string               $default
-     * @return  string|ReflectionClass
+     * @return  string|\stubbles\lang\reflect\ReflectionClass
      */
     private function detectBindingName(ReflectionParameter $param, $default)
     {
@@ -330,10 +329,10 @@ class Injector
     /**
      * creates the called method message
      *
-     * @param   BaseReflectionClass  $class
-     * @param   ReflectionMethod     $method
-     * @param   ReflectionParameter  $parameter
-     * @param   string               $type
+     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
+     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
+     * @param   \stubbles\lang\reflect\ReflectionParameter  $parameter
+     * @param   string                                      $type
      * @return  string
      */
     private function createCalledMethodMessage(BaseReflectionClass $class, ReflectionMethod $method, ReflectionParameter $parameter, $type)

@@ -27,8 +27,8 @@ class SingletonBindingScope implements BindingScope
     /**
      * returns the requested instance from the scope
      *
-     * @param   BaseReflectionClass  $impl      concrete implementation
-     * @param   InjectionProvider    $provider
+     * @param   \stubbles\lang\reflect\BaseReflectionClass  $impl      concrete implementation
+     * @param   \stubbles\ioc\InjectionProvider    $provider
      * @return  object
      */
     public function getInstance(BaseReflectionClass $impl, InjectionProvider $provider)
