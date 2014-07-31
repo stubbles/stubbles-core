@@ -98,7 +98,7 @@ interface ReflectionRoutine extends Annotatable
     /**
      * returns a list of all parameters
      *
-     * @return  ReflectionParameter[]
+     * @return  \stubbles\lang\reflect\ReflectionParameter[]
      */
     public function getParameters();
 
@@ -136,14 +136,14 @@ interface ReflectionRoutine extends Annotatable
      * value of this method may be wrong. This is due to missing type hints for
      * return values in PHP itself.
      *
-     * @return  ReflectionType
+     * @return  \stubbles\lang\reflect\ReflectionType
      */
     public function getReturnType();
 
     /**
      * returns the extension to where this class belongs too
      *
-     * @return  ReflectionExtension
+     * @return  \stubbles\lang\reflect\ReflectionExtension
      * @since   2.0.0
      */
     public function getExtension();

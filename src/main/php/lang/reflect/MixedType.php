@@ -20,14 +20,14 @@ class MixedType extends Enum implements ReflectionType
      * mixed type of type mixed
      *
      * @api
-     * @type  MixedType
+     * @type  \stubbles\lang\reflect\MixedType
      */
     public static $MIXED;
     /**
      * mixed type of type object
      *
      * @api
-     * @type  MixedType
+     * @type  \stubbles\lang\reflect\MixedType
      */
     public static $OBJECT;
 
@@ -57,7 +57,7 @@ class MixedType extends Enum implements ReflectionType
      *
      * @api
      * @param   string  $name
-     * @return  ReflectionPrimitive
+     * @return  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static function forName($name)
     {

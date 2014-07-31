@@ -69,7 +69,7 @@ class ReflectionExtension extends \ReflectionExtension
     /**
      * returns a list of all functions
      *
-     * @return  ReflectionFunction[]
+     * @return  \stubbles\lang\reflect\ReflectionFunction[]
      */
     public function getFunctions()
     {
@@ -85,7 +85,7 @@ class ReflectionExtension extends \ReflectionExtension
     /**
      * returns a list of all classes
      *
-     * @return  ReflectionClass[]
+     * @return  \stubbles\lang\reflect\ReflectionClass[]
      */
     public function getClasses()
     {

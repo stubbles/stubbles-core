@@ -27,7 +27,7 @@ interface MethodMatcher
     /**
      * checks whether the matcher is satisfied with the given method
      *
-     * @param   ReflectionMethod  $method
+     * @param   \stubbles\lang\reflect\ReflectionMethod  $method
      * @return  bool
      */
     public function matchesAnnotatableMethod(ReflectionMethod $method);

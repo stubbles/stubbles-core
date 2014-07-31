@@ -52,8 +52,8 @@ class Properties implements \Iterator
      *
      * @api
      * @param   string  $propertyString
-     * @return  Properties
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\lang\Properties
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @since   2.0.0
      */
     public static function fromString($propertyString)
@@ -71,9 +71,9 @@ class Properties implements \Iterator
      *
      * @api
      * @param   string  $propertiesFile  full path to file containing properties
-     * @return  Properties
-     * @throws  FileNotFoundException  if file can not be found or is not readable
-     * @throws  IOException            if file contains errors and can not be parsed
+     * @return  \stubbles\lang\Properties
+     * @throws  \stubbles\lang\exception\FileNotFoundException  if file can not be found or is not readable
+     * @throws  \stubbles\lang\exception\IOException            if file contains errors and can not be parsed
      */
     public static function fromFile($propertiesFile)
     {
@@ -97,8 +97,8 @@ class Properties implements \Iterator
      * section from the other instance overwrite the section from this instance.
      *
      * @api
-     * @param   Properties  $otherProperties
-     * @return  Properties
+     * @param   \stubbles\lang\Properties  $otherProperties
+     * @return  \stubbles\lang\Properties
      * @since   1.3.0
      */
     public function merge(Properties $otherProperties)

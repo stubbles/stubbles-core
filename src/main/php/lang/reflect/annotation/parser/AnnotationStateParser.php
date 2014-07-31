@@ -29,13 +29,13 @@ class AnnotationStateParser implements AnnotationParser
     /**
      * possible states
      *
-     * @type  AnnotationState[]
+     * @type  \stubbles\lang\reflect\annotation\parser\state\AnnotationState[]
      */
     private $states             = [];
     /**
      * the current state
      *
-     * @type  AnnotationParserState
+     * @type  \stubbles\lang\reflect\annotation\parser\state\AnnotationParserState
      */
     private $currentState       = null;
     /**

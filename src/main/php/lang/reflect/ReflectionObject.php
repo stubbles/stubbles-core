@@ -41,7 +41,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
      * creates new instance for given object
      *
      * @param   object  $object
-     * @return  ReflectionObject
+     * @return  \stubbles\lang\reflect\ReflectionObject
      * @since   3.0.0
      */
     public static function fromInstance($object)
@@ -64,7 +64,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
      * return the specified annotation
      *
      * @param   string          $annotationName
-     * @return  Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      */
     public function getAnnotation($annotationName)
     {
@@ -118,7 +118,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
     /**
      * returns the constructor or null if none exists
      *
-     * @return  ReflectionMethod
+     * @return  \stubbles\lang\reflect\ReflectionMethod
      */
     public function getConstructor()
     {
@@ -129,7 +129,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
      * returns the specified method or null if it does not exist
      *
      * @param   string  $name  name of method to return
-     * @return  ReflectionMethod
+     * @return  \stubbles\lang\reflect\ReflectionMethod
      */
     public function getMethod($name)
     {
@@ -144,7 +144,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
      * returns a list of all methods
      *
      * @param   int  $filter  desired method types
-     * @return  ReflectionMethod[]
+     * @return  \stubbles\lang\reflect\ReflectionMethod[]
      */
     public function getMethods($filter = null)
     {
@@ -165,8 +165,8 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
     /**
      * returns a list of all methods which satify the given matcher
      *
-     * @param   MethodMatcher  $methodMatcher
-     * @return  ReflectionMethod[]
+     * @param   \stubbles\lang\reflect\matcher\MethodMatcher  $methodMatcher
+     * @return  \stubbles\lang\reflect\ReflectionMethod[]
      */
     public function getMethodsByMatcher(MethodMatcher $methodMatcher)
     {
@@ -188,7 +188,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
      * returns the specified property or null if it does not exist
      *
      * @param   string  $name  name of property to return
-     * @return  ReflectionProperty
+     * @return  \stubbles\lang\reflect\ReflectionProperty
      */
     public function getProperty($name)
     {
@@ -203,7 +203,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
      * returns a list of all properties
      *
      * @param   int  $filter  desired property types
-     * @return  ReflectionProperty[]
+     * @return  \stubbles\lang\reflect\ReflectionProperty[]
      */
     public function getProperties($filter = null)
     {
@@ -224,8 +224,8 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
     /**
      * returns a list of all properties which satify the given matcher
      *
-     * @param   PropertyMatcher  $propertyMatcher
-     * @return  ReflectionProperty[]
+     * @param   \stubbles\lang\reflect\matcher\PropertyMatcher  $propertyMatcher
+     * @return  \stubbles\lang\reflect\ReflectionProperty[]
      */
     public function getPropertiesByMatcher(PropertyMatcher $propertyMatcher)
     {
@@ -246,7 +246,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
     /**
      * returns a list of all interfaces
      *
-     * @return  ReflectionClass[]
+     * @return  \stubbles\lang\reflect\ReflectionClass[]
      */
     public function getInterfaces()
     {
@@ -262,7 +262,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
     /**
      * returns a list of all interfaces
      *
-     * @return  ReflectionClass
+     * @return  \stubbles\lang\reflect\ReflectionClass
      */
     public function getParentClass()
     {
@@ -277,7 +277,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
     /**
      * returns the extension to where this class belongs too
      *
-     * @return  ReflectionExtension
+     * @return  \stubbles\lang\reflect\ReflectionExtension
      */
     public function getExtension()
     {

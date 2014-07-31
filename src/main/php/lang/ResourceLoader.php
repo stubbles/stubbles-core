@@ -22,7 +22,7 @@ class ResourceLoader
     /**
      * root path of application
      *
-     * @type  Rootpath
+     * @type  \stubbles\lang\Rootpath
      */
     private $rootpath;
 
@@ -31,7 +31,7 @@ class ResourceLoader
      *
      * If no root path is given it tries to detect it automatically.
      *
-     * @param  string|Rootpath  $rootpath  optional
+     * @param  string|\stubbles\lang\Rootpath  $rootpath  optional
      */
     public function __construct($rootpath = null)
     {
@@ -110,8 +110,8 @@ class ResourceLoader
      *
      * @param   string  $resource
      * @return  string
-     * @throws  FileNotFoundException
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\FileNotFoundException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     private function checkedPathFor($resource)
     {

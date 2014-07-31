@@ -66,7 +66,7 @@ class LogErrorHandler implements ErrorHandler
      * sets the mode for new log directories
      *
      * @param   int  $filemode
-     * @return  stubbles\lang\LogErrorHandler
+     * @return  \stubbles\lang\errorhandler\LogErrorHandler
      */
     public function setFilemode($filemode)
     {

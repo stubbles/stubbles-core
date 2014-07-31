@@ -34,7 +34,7 @@ class Rootpath
      * If no root path is given it tries to detect it automatically.
      *
      * @param   string  $rootpath  optional  path to root
-     * @throws  IllegalArgumentException  in case a root path is given but does not exist
+     * @throws  \stubbles\lang\exception\IllegalArgumentException  in case a root path is given but does not exist
      */
     public function __construct($rootpath = null)
     {
@@ -66,8 +66,8 @@ class Rootpath
     /**
      * casts given value to an instance of Rootpath
      *
-     * @param   string|Rootpath  $rootpath
-     * @return  Rootpath
+     * @param   string|\stubbles\lang\Rootpath  $rootpath
+     * @return  \stubbles\lang\Rootpath
      */
     public static function castFrom($rootpath)
     {

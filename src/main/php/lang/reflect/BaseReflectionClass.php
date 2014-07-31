@@ -26,7 +26,7 @@ interface BaseReflectionClass extends ReflectionType, Annotatable
     /**
      * returns the constructor or null if none exists
      *
-     * @return  ReflectionMethod
+     * @return  \stubbles\lang\reflect\ReflectionMethod
      */
     public function getConstructor();
 
@@ -34,7 +34,7 @@ interface BaseReflectionClass extends ReflectionType, Annotatable
      * returns the specified method or null if it does not exist
      *
      * @param   string  $name  name of method to return
-     * @return  ReflectionMethod
+     * @return  \stubbles\lang\reflect\ReflectionMethod
      */
     public function getMethod($name);
 
@@ -42,7 +42,7 @@ interface BaseReflectionClass extends ReflectionType, Annotatable
      * returns a list of all methods
      *
      * @param   int   $filter  desired method types
-     * @return  ReflectionMethod[]
+     * @return  \stubbles\lang\reflect\ReflectionMethod[]
      */
     public function getMethods($filter = null);
 
@@ -50,7 +50,7 @@ interface BaseReflectionClass extends ReflectionType, Annotatable
      * returns a list of all methods which satify the given matcher
      *
      * @param   MethodMatcher  $methodMatcher
-     * @return  ReflectionMethod[]
+     * @return  \stubbles\lang\reflect\ReflectionMethod[]
      */
     public function getMethodsByMatcher(MethodMatcher $methodMatcher);
 
@@ -58,7 +58,7 @@ interface BaseReflectionClass extends ReflectionType, Annotatable
      * returns the specified property or null if it does not exist
      *
      * @param   string  $name  name of property to return
-     * @return  ReflectionProperty
+     * @return  \stubbles\lang\reflect\ReflectionProperty
      */
     public function getProperty($name);
 
@@ -66,36 +66,36 @@ interface BaseReflectionClass extends ReflectionType, Annotatable
      * returns a list of all properties
      *
      * @param   int  $filter  desired property types
-     * @return  ReflectionProperty[]
+     * @return  \stubbles\lang\reflect\ReflectionProperty[]
      */
     public function getProperties($filter = null);
 
     /**
      * returns a list of all properties which satify the given matcher
      *
-     * @param   PropertyMatcher   $propertyMatcher
-     * @return  ReflectionProperty[]
+     * @param   \stubbles\lang\reflect\matcher\PropertyMatcher   $propertyMatcher
+     * @return  \stubbles\lang\reflect\ReflectionProperty[]
      */
     public function getPropertiesByMatcher(PropertyMatcher $propertyMatcher);
 
     /**
      * returns a list of all interfaces
      *
-     * @return  ReflectionClass[]
+     * @return  \stubbles\lang\reflect\ReflectionClass[]
      */
     public function getInterfaces();
 
     /**
      * returns a list of all interfaces
      *
-     * @return  ReflectionClass
+     * @return  \stubbles\lang\reflect\ReflectionClass
      */
     public function getParentClass();
 
     /**
      * returns the extension to where this class belongs too
      *
-     * @return  ReflectionExtension
+     * @return  \stubbles\lang\reflect\ReflectionExtension
      */
     public function getExtension();
 

@@ -101,8 +101,8 @@ final class SecureString
      * select en-/decryption mechanism
      *
      * @param   string  $type
-     * @throws  IllegalArgumentException  when given backing is unknown
-     * @throws  IllegalStateException     when trying to change the backing while there are still secure strings in the store
+     * @throws  \stubbles\lang\exception\IllegalArgumentException  when given backing is unknown
+     * @throws  \stubbles\lang\exception\IllegalStateException     when trying to change the backing while there are still secure strings in the store
      */
     public static function switchBacking($type)
     {
@@ -138,7 +138,7 @@ final class SecureString
     /**
      * switches backing to mcrypt
      *
-     * @throws  RuntimeException  when mcrypt extension not available
+     * @throws  \stubbles\lang\exception\RuntimeException  when mcrypt extension not available
      */
     private static function useMcryptBacking()
     {
@@ -157,7 +157,7 @@ final class SecureString
     /**
      * switches backing to openssl
      *
-     * @throws  RuntimeException  when openssl extension not available
+     * @throws  \stubbles\lang\exception\RuntimeException  when openssl extension not available
      */
     private static function useOpenSslBacking()
     {
@@ -197,8 +197,8 @@ final class SecureString
      * Please note the given characters are passed as reference and will be
      * blanked out after creation of the instance.
      *
-     * @param   string|SecureString  $string  characters to secure
-     * @return  SecureString
+     * @param   string|\stubbles\lang\SecureString  $string  characters to secure
+     * @return  \stubbles\lang\SecureString
      */
     public static function create($string)
     {
@@ -231,7 +231,7 @@ final class SecureString
     /**
      * explicitly create an instance where the actual string is null
      *
-     * @return  SecureString
+     * @return  \stubbles\lang\SecureString
      */
     public static function forNull()
     {
@@ -276,7 +276,7 @@ final class SecureString
      * revealing of the value to be intended stored secure.
      *
      * @return  string
-     * @throws  IllegalStateException  in case the secure string can not be found
+     * @throws  \stubbles\lang\exception\IllegalStateException  in case the secure string can not be found
      */
     public function unveil()
     {
@@ -297,8 +297,8 @@ final class SecureString
      *
      * @param   int  $start
      * @param   int  $length  optional
-     * @return  SecureString
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\lang\SecureString
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @link    http://php.net/manual/en/function.substr.php
      */
     public function substring($start, $length = null)
@@ -328,7 +328,7 @@ final class SecureString
     /**
      * prevent serialization
      *
-     * @throws  IllegalAccessException
+     * @throws  \stubbles\lang\exception\IllegalAccessException
      */
     public function __sleep()
     {

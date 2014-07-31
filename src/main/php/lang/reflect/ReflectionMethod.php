@@ -26,7 +26,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
     /**
      * declaring class
      *
-     * @type  BaseReflectionClass
+     * @type  \stubbles\lang\reflect\BaseReflectionClass
      */
     protected $refClass;
     /**
@@ -39,8 +39,8 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
     /**
      * constructor
      *
-     * @param  string|BaseReflectionClass  $class       name of class to reflect
-     * @param  string                      $methodName  name of method to reflect
+     * @param  string|\stubbles\lang\reflect\BaseReflectionClass  $class       name of class to reflect
+     * @param  string                                             $methodName  name of method to reflect
      */
     public function __construct($class, $methodName)
     {
@@ -76,7 +76,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
      * return the specified annotation
      *
      * @param   string          $annotationName
-     * @return  Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      */
     public function getAnnotation($annotationName)
     {
@@ -119,7 +119,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
     /**
      * returns the class that declares this method
      *
-     * @return  BaseReflectionClass
+     * @return  \stubbles\lang\reflect\BaseReflectionClass
      */
     public function getDeclaringClass()
     {
@@ -138,7 +138,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
     /**
      * returns a list of all parameters
      *
-     * @return  ReflectionParameter[]
+     * @return  \stubbles\lang\reflect\ReflectionParameter[]
      */
     public function getParameters()
     {
@@ -165,7 +165,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
      * return value of this method may be wrong. This is due to missing type
      * hints for return values in PHP itself.
      *
-     * @return  ReflectionType
+     * @return  \stubbles\lang\reflect\ReflectionType
      */
     public function getReturnType()
     {
@@ -186,7 +186,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
     /**
      * returns the extension to where this class belongs too
      *
-     * @return  ReflectionExtension
+     * @return  \stubbles\lang\reflect\ReflectionExtension
      * @since   2.0.0
      */
     public function getExtension()

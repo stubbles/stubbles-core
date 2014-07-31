@@ -75,7 +75,7 @@ class AnnotationCache
      *
      * @param   \Closure  $readCache   function which can return cached annotation data
      * @param   \Closure  $storeCache  function which takes cached annotation data and stores it
-     * @throws  RuntimeException
+     * @throws  \stubbles\lang\exception\RuntimeException
      * @since   3.0.0
      */
     public static function start(\Closure $readCache, \Closure $storeCache)
@@ -156,10 +156,10 @@ class AnnotationCache
     /**
      * store an annotation in the cache
      *
-     * @param  int         $target          target of the annotation
-     * @param  string      $targetName      name of the target
-     * @param  string      $annotationName  name of the annotation
-     * @param  Annotation  $annotation      the annotation to store
+     * @param  int                                           $target          target of the annotation
+     * @param  string                                        $targetName      name of the target
+     * @param  string                                        $annotationName  name of the annotation
+     * @param  \stubbles\lang\reflect\annotation\Annotation  $annotation      the annotation to store
      */
     public static function put($target, $targetName, $annotationName, Annotation $annotation = null)
     {
@@ -236,7 +236,7 @@ class AnnotationCache
      * @param   int         $target          target of the annotation
      * @param   string      $targetName      name of the target
      * @param   string      $annotationName  name of the annotation
-     * @return  Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      */
     public static function get($target, $targetName, $annotationName)
     {

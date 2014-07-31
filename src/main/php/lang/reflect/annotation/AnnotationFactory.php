@@ -20,7 +20,7 @@ class AnnotationFactory
     /**
      * instance of the annotation parser
      *
-     * @type  AnnotationStateParser
+     * @type  \stubbles\lang\reflect\annotation\parser\AnnotationStateParser
      */
     private static $parser      = null;
     /**
@@ -37,7 +37,7 @@ class AnnotationFactory
      * @param   string      $annotationName   name of the annotation to create
      * @param   int         $target           the target for which the annotation should be created
      * @param   string      $targetName       the name of the target (property, class, method or function name)
-     * @return  Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      * @throws  \ReflectionException
      */
     public static function create($comment, $annotationName, $target, $targetName)

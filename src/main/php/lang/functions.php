@@ -22,7 +22,7 @@ namespace stubbles\lang {
      * creates new properties instance from given property data
      *
      * @param   array  $propertyData
-     * @return  Properties
+     * @return  \stubbles\lang\Properties
      * @since   3.1.0
      * @api
      */
@@ -35,7 +35,7 @@ namespace stubbles\lang {
      * parses given property string and returns properties instance
      *
      * @param   string  $propertyString
-     * @return  Properties
+     * @return  \stubbles\lang\Properties
      * @since   3.1.0
      * @api
      */
@@ -48,7 +48,7 @@ namespace stubbles\lang {
      * parses properties from given file and returns properties instance
      *
      * @param   string  $propertiesFile
-     * @return  Properties
+     * @return  \stubbles\lang\Properties
      * @since   3.1.0
      * @api
      */
@@ -61,7 +61,7 @@ namespace stubbles\lang {
      * shortcut for reflect($class, '__construct')
      *
      * @param   string|object  $class  class name of or object instance to reflect constructor of
-     * @return  lang\reflect\ReflectionMethod
+     * @return  \stubbles\lang\reflect\ReflectionMethod
      * @since   3.1.0
      * @api
      */
@@ -86,8 +86,8 @@ namespace stubbles\lang {
      *
      * @param   string|object  $class       class name, function name of or object instance to reflect
      * @param   string         $methodName  optional  specific method to reflect
-     * @return  stubbles\lang\reflect\BaseReflectionClass|stubbles\lang\reflect\ReflectionMethod|stubbles\lang\reflect\ReflectionFunction
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\lang\reflect\BaseReflectionClass|\stubbles\lang\reflect\ReflectionMethod|\stubbles\lang\reflect\ReflectionFunction
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @since   3.1.0
      * @api
      */
