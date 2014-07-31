@@ -29,7 +29,7 @@ abstract class ResourceOutputStream implements OutputStream
      * sets the resource to be used
      *
      * @param   resource  $handle
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     protected function setHandle($handle)
     {
@@ -45,8 +45,8 @@ abstract class ResourceOutputStream implements OutputStream
      *
      * @param   string  $bytes
      * @return  int     amount of written bytes
-     * @throws  IllegalStateException
-     * @throws  IOException
+     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \stubbles\lang\exception\IOException
      */
     public function write($bytes)
     {

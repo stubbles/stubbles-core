@@ -68,7 +68,7 @@ class Socket
      * @param   int     $port     port to use for opening the socket
      * @param   string  $prefix   prefix for host, e.g. ssl://
      * @param   int     $timeout  connection timeout
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function __construct($host, $port = 80, $prefix = null, $timeout = 5)
     {
@@ -95,7 +95,7 @@ class Socket
      *
      * @param   int  $connectTimeout  timeout for establishing the connection
      * @return  bool  true if connect was successful
-     * @throws  ConnectionException
+     * @throws  \stubbles\peer\ConnectionException
      */
     public function connect($connectTimeout = 2)
     {
@@ -128,7 +128,7 @@ class Socket
     /**
      * closes a connection
      *
-     * @return  Socket
+     * @return  \stubbles\peer\Socket
      */
     public function disconnect()
     {
@@ -144,7 +144,7 @@ class Socket
      * set timeout for connections
      *
      * @param   int  $timeout  timeout for connection in seconds
-     * @return  Socket
+     * @return  \stubbles\peer\Socket
      */
     public function setTimeout($timeout)
     {
@@ -182,8 +182,8 @@ class Socket
      *
      * @param   int  $length  length of data to read
      * @return  string  data read from socket
-     * @throws  ConnectionException
-     * @throws  IllegalStateException
+     * @throws  \stubbles\peer\ConnectionException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function read($length = 4096)
     {
@@ -221,8 +221,8 @@ class Socket
      *
      * @param   int  $length  length of data to read
      * @return  string  data read from socket
-     * @throws  ConnectionException
-     * @throws  IllegalStateException
+     * @throws  \stubbles\peer\ConnectionException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function readBinary($length = 1024)
     {
@@ -243,8 +243,8 @@ class Socket
      *
      * @param   string  $data  data to write
      * @return  int  amount of bytes written to socket
-     * @throws  ConnectionException
-     * @throws  IllegalStateException
+     * @throws  \stubbles\peer\ConnectionException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function write($data)
     {

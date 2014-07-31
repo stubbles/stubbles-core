@@ -18,56 +18,56 @@ class ReflectionPrimitive extends Enum implements ReflectionType
      * primitive of type string
      *
      * @api
-     * @type  ReflectionPrimitive
+     * @type  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static $STRING;
     /**
      * primitive of type int
      *
      * @api
-     * @type  ReflectionPrimitive
+     * @type  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static $INT;
     /**
      * primitive of type int, marked as integer
      *
      * @api
-     * @type  ReflectionPrimitive
+     * @type  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static $INTEGER;
     /**
      * primitive of type float
      *
      * @api
-     * @type  ReflectionPrimitive
+     * @type  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static $FLOAT;
     /**
      * primitive of type double, equal to float
      *
      * @api
-     * @type  ReflectionPrimitive
+     * @type  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static $DOUBLE;
     /**
      * primitive of type bool
      *
      * @api
-     * @type  ReflectionPrimitive
+     * @type  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static $BOOL;
     /**
      * primitive of type bool, marked as boolean
      *
      * @api
-     * @type  ReflectionPrimitive
+     * @type  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static $BOOLEAN;
     /**
      * primitive of type array
      *
      * @api
-     * @type  ReflectionPrimitive
+     * @type  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static $ARRAY;
 
@@ -119,7 +119,7 @@ class ReflectionPrimitive extends Enum implements ReflectionType
      *
      * @api
      * @param   string  $name
-     * @return  ReflectionPrimitive
+     * @return  \stubbles\lang\reflect\ReflectionPrimitive
      */
     public static function forName($name)
     {

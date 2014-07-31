@@ -18,7 +18,7 @@ interface StreamFactory
      *
      * @param   mixed  $source   source to create input stream from
      * @param   array  $options  list of options for the input stream
-     * @return  InputStream
+     * @return  \stubbles\streams\InputStream
      */
     public function createInputStream($source, array $options = []);
 
@@ -27,7 +27,7 @@ interface StreamFactory
      *
      * @param   mixed  $target   target to create output stream for
      * @param   array  $options  list of options for the output stream
-     * @return  OutputStream
+     * @return  \stubbles\streams\OutputStream
      */
     public function createOutputStream($target, array $options = []);
 }

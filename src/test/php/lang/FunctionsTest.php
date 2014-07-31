@@ -188,6 +188,15 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  4.0.0
+     */
+    public function reflectInterface()
+    {
+        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionClass', reflect('stubbles\lang\reflect\BaseReflectionClass'));
+    }
+
+    /**
      * @return  array
      */
     public static function invalidValues()

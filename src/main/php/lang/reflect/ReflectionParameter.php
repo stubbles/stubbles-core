@@ -27,7 +27,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     /**
      * reflection instance of routine containing this parameter
      *
-     * @type  ReflectionRoutine
+     * @type  \stubbles\lang\reflect\ReflectionRoutine
      */
     protected $refRoutine;
     /**
@@ -40,8 +40,8 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     /**
      * constructor
      *
-     * @param  string|array|ReflectionRoutine  $routine    name or reflection instance of routine
-     * @param  string                          $paramName  name of parameter to reflect
+     * @param  string|array|\stubbles\lang\reflect\ReflectionRoutine  $routine    name or reflection instance of routine
+     * @param  string                                                 $paramName  name of parameter to reflect
      */
     public function __construct($routine, $paramName)
     {
@@ -79,7 +79,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
      * return the specified annotation
      *
      * @param   string          $annotationName
-     * @return  Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      */
     public function getAnnotation($annotationName)
     {
@@ -140,7 +140,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     /**
      * helper method to return the reflection routine defining this parameter
      *
-     * @return  ReflectionRoutine
+     * @return  \stubbles\lang\reflect\ReflectionRoutine
      */
     public function getDeclaringFunction()
     {
@@ -158,7 +158,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     /**
      * returns the class that declares this parameter
      *
-     * @return  ReflectionClass
+     * @return  \stubbles\lang\reflect\ReflectionClass
      */
     public function getDeclaringClass()
     {
@@ -172,7 +172,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     /**
      * returns the type (class) hint for this parameter
      *
-     * @return  ReflectionClass
+     * @return  \stubbles\lang\reflect\ReflectionClass
      */
     public function getClass()
     {
@@ -187,7 +187,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     /**
      * returns parameter type information
      *
-     * @return  ReflectionType
+     * @return  \stubbles\lang\reflect\ReflectionType
      * @throws  \ReflectionException
      */
     public function getType()

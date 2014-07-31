@@ -43,7 +43,7 @@ abstract class Enum
     /**
      * forbid cloning of enums
      *
-     * @throws  stubRuntimeException
+     * @throws  \stubbles\lang\exception\RuntimeException
      */
     public final function __clone()
     {
@@ -77,8 +77,8 @@ abstract class Enum
      *
      * @api
      * @param   string  $name
-     * @return  Enum
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\lang\Enum
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public static function forName($name)
     {
@@ -95,8 +95,8 @@ abstract class Enum
      *
      * @api
      * @param   string  $value
-     * @return  Enum
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\lang\Enum
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public static function forValue($value)
     {
@@ -114,7 +114,7 @@ abstract class Enum
      * returns a list of all instances for given enum
      *
      * @api
-     * @return  Enum[]
+     * @return  \stubbles\lang\Enum[]
      */
     public static function instances()
     {

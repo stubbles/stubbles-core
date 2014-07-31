@@ -36,7 +36,7 @@ class ConstantBinding implements Binding
     /**
      * provider to use for this binding
      *
-     * @type  InjectionProvider
+     * @type  \stubbles\ioc\InjectionProvider
      */
     private $provider      = null;
     /**
@@ -76,8 +76,8 @@ class ConstantBinding implements Binding
      * 'toProviderClass()' method.
      *
      * @api
-     * @param   InjectionProvider  $provider
-     * @return  ConstantBinding
+     * @param   \stubbles\ioc\InjectionProvider  $provider
+     * @return  \stubbles\ioc\binding\ConstantBinding
      * @since   1.6.0
      */
     public function toProvider(InjectionProvider $provider)
@@ -93,8 +93,8 @@ class ConstantBinding implements Binding
      * 'toProvider()' method.
      *
      * @api
-     * @param   string|BaseReflectionClass  $providerClass
-     * @return  ConstantBinding
+     * @param   string|\stubbles\lang\reflect\BaseReflectionClass  $providerClass
+     * @return  \stubbles\ioc\binding\ConstantBinding
      * @since   1.6.0
      */
     public function toProviderClass($providerClass)
@@ -109,7 +109,7 @@ class ConstantBinding implements Binding
      *
      * @api
      * @param   \Closure  $closure
-     * @return  ConstantBinding
+     * @return  \stubbles\ioc\binding\ConstantBinding
      * @since   2.1.0
      */
     public function toClosure(\Closure $closure)
@@ -131,8 +131,8 @@ class ConstantBinding implements Binding
     /**
      * returns the created instance
      *
-     * @param   Injector  $injector
-     * @param   string    $name
+     * @param   \stubbles\ioc\Injector  $injector
+     * @param   string                  $name
      * @return  mixed
      */
     public function getInstance(Injector $injector, $name)

@@ -193,8 +193,8 @@ class DefaultMode implements Mode
      *
      * @param   string|object  $class       name or instance of exception handler class
      * @param   string         $methodName  name of exception handler method
-     * @return  Mode
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\lang\Mode
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function setExceptionHandler($class, $methodName = 'handleException')
     {
@@ -239,8 +239,8 @@ class DefaultMode implements Mode
      *
      * @param   string|object  $class       name or instance of error handler class
      * @param   string         $methodName  name of error handler method
-     * @return  Mode
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\lang\Mode
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function setErrorHandler($class, $methodName = 'handle')
     {

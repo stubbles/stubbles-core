@@ -32,7 +32,7 @@ abstract class App
      *
      * @api
      * @param   string  $projectPath  path to project
-     * @return  App
+     * @return  \stubbles\ioc\App
      */
     public static function create($projectPath)
     {
@@ -49,7 +49,7 @@ abstract class App
      * @api
      * @param   string  $className    full qualified class name of class to create an instance of
      * @param   string  $projectPath  path to project
-     * @return  App
+     * @return  \stubbles\ioc\App
      */
     public static function createInstance($className, $projectPath)
     {
@@ -62,7 +62,7 @@ abstract class App
      *
      * @param   string  $className    full qualified class name of class to create an instance of
      * @param   string  $projectPath  path to project
-     * @return  BindingModule[]
+     * @return  \stubbles\ioc\module\BindingModule[]
      * @since   1.3.0
      */
     private static function getBindingsForApp($className, $projectPath)
@@ -79,8 +79,8 @@ abstract class App
      *
      * @api
      * @param   string         $projectPath  path to project files
-     * @param   Mode|callable  $mode         optional  runtime mode
-     * @return  ModeBindingModule
+     * @param   \stubbles\lang\Mode|callable  $mode         optional  runtime mode
+     * @return  \stubbles\ioc\module\ModeBindingModule
      * @since   2.0.0
      */
     protected static function createModeBindingModule($projectPath, $mode = null)

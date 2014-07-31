@@ -28,7 +28,7 @@ class Contains extends Predicate
      * constructor
      *
      * @param   scalar|null  $contained
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function __construct($contained)
     {

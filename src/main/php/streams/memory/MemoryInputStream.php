@@ -108,7 +108,7 @@ class MemoryInputStream implements InputStream, Seekable
      *
      * @param   int  $offset  new position or amount of bytes to seek
      * @param   int  $whence  one of Seekable::SET, Seekable::CURRENT or Seekable::END
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function seek($offset, $whence = Seekable::SET)
     {

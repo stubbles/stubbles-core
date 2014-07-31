@@ -31,7 +31,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
     /**
      * reflection instance for class declaring this property
      *
-     * @type  BaseReflectionClass
+     * @type  \stubbles\lang\reflect\BaseReflectionClass
      */
     protected $refClass;
     /**
@@ -44,8 +44,8 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
     /**
      * constructor
      *
-     * @param  string|BaseReflectionClass  $class         name of class to reflect
-     * @param  string                      $propertyName  name of property to reflect
+     * @param  string|\stubbles\lang\reflect\BaseReflectionClass  $class         name of class to reflect
+     * @param  string                                             $propertyName  name of property to reflect
      */
     public function __construct($class, $propertyName)
     {
@@ -79,7 +79,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      * return the specified annotation
      *
      * @param   string          $annotationName
-     * @return  Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      */
     public function getAnnotation($annotationName)
     {
@@ -122,7 +122,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
     /**
      * returns the class that declares this parameter
      *
-     * @return  BaseReflectionClass
+     * @return  \stubbles\lang\reflect\BaseReflectionClass
      */
     public function getDeclaringClass()
     {

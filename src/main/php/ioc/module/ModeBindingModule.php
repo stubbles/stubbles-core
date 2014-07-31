@@ -21,7 +21,7 @@ class ModeBindingModule implements BindingModule
      *
      * @type  string[]
      */
-    private $pathTypes       = ['config', 'log'];
+    private $pathTypes   = ['config', 'log'];
     /**
      * path to config file
      *
@@ -31,16 +31,16 @@ class ModeBindingModule implements BindingModule
     /**
      * mode instance to bind
      *
-     * @type  Mode
+     * @type  \stubbles\lang\Mode
      */
     protected $mode;
 
     /**
      * constructor
      *
-     * @param   string         $projectPath  path to project files
-     * @param   Mode|callable  $mode         optional  runtime mode
-     * @throws  IllegalArgumentException
+     * @param   string                        $projectPath  path to project files
+     * @param   \stubbles\lang\Mode|callable  $mode         optional  runtime mode
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function __construct($projectPath, $mode = null)
     {
@@ -64,7 +64,7 @@ class ModeBindingModule implements BindingModule
     /**
      * returns fallback mode
      *
-     * @return  Mode
+     * @return  \stubbles\lang\Mode
      */
     protected function getFallbackMode()
     {
@@ -80,7 +80,7 @@ class ModeBindingModule implements BindingModule
      *
      * @api
      * @param   string  $pathType
-     * @return  ModeBindingModule
+     * @return  \stubbles\ioc\module\ModeBindingModule
      */
     public function addPathType($pathType)
     {
@@ -91,7 +91,7 @@ class ModeBindingModule implements BindingModule
     /**
      * configure the binder
      *
-     * @param  Binder  $binder
+     * @param  \stubbles\ioc\Binder  $binder
      */
     public function configure(Binder $binder)
     {

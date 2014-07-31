@@ -44,7 +44,7 @@ class BsdSocket extends Socket
     /**
      * list of options for the socket
      *
-     * @type  SocketOptions
+     * @type  \stubbles\peer\SocketOptions
      */
     protected $options;
     /**
@@ -65,10 +65,10 @@ class BsdSocket extends Socket
      * Port can be null for SocketDomain::$AF_UNIX, all other domains require
      * a port.
      *
-     * @param   SocketDomain   $domain   one of SocketDomain::$AF_INET, SocketDomain::$AF_INET6 or SocketDomain::$AF_UNIX
-     * @param   string         $host     host to connect socket to
-     * @param   int            $port     port to connect socket to
-     * @throws  IllegalArgumentException
+     * @param   \stubbles\peer\SocketDomain  $domain   one of SocketDomain::$AF_INET, SocketDomain::$AF_INET6 or SocketDomain::$AF_UNIX
+     * @param   string                       $host     host to connect socket to
+     * @param   int                          $port     optional  port to connect socket to, defaults to 80
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function __construct(SocketDomain $domain, $host, $port = null)
     {
@@ -84,7 +84,7 @@ class BsdSocket extends Socket
     /**
      * returns the domain
      *
-     * @return  SocketDomain
+     * @return  \stubbles\peer\SocketDomain
      * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
     public function getDomain()
@@ -96,9 +96,9 @@ class BsdSocket extends Socket
      * sets the socket type
      *
      * @param   int  $type  one of SOCK_STREAM, SOCK_DGRAM, SOCK_RAW, SOCK_SEQPACKET or SOCK_RDM
-     * @return  BsdSocket
-     * @throws  IllegalArgumentException
-     * @throws  IllegalStateException
+     * @return  \stubbles\peer\BsdSocket
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function setType($type)
     {
@@ -138,8 +138,8 @@ class BsdSocket extends Socket
     /**
      * enables tcp protocol
      *
-     * @return  BsdSocket
-     * @throws  IllegalStateException
+     * @return  \stubbles\peer\BsdSocket
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function useTcp()
     {
@@ -164,8 +164,8 @@ class BsdSocket extends Socket
     /**
      * enables udp protocol
      *
-     * @return  BsdSocket
-     * @throws  IllegalStateException
+     * @return  \stubbles\peer\BsdSocket
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function useUdp()
     {
@@ -193,7 +193,7 @@ class BsdSocket extends Socket
      * @param   int    $level  protocol level of option
      * @param   int    $name   option name
      * @param   mixed  $value  option value
-     * @return  BsdSocket
+     * @return  \stubbles\peer\BsdSocket
      */
     public function setOption($level, $name, $value)
     {
@@ -232,8 +232,8 @@ class BsdSocket extends Socket
      * opens a socket connection
      *
      * @param   int  $connectTimeout  timeout for establishing the connection
-     * @return  BsdSocket
-     * @throws  ConnectionException
+     * @return  \stubbles\peer\BsdSocket
+     * @throws  \stubbles\peer\ConnectionException
      */
     public function connect($connectTimeout = 2)
     {
@@ -260,7 +260,7 @@ class BsdSocket extends Socket
     /**
      * closes a connection
      *
-     * @return  BsdSocket
+     * @return  \stubbles\peer\BsdSocket
      */
     public function disconnect()
     {
@@ -287,7 +287,7 @@ class BsdSocket extends Socket
      *
      * @param   int  $length  length of data to read
      * @return  string
-     * @throws  IllegalStateException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function read($length = 4096)
     {
@@ -314,7 +314,7 @@ class BsdSocket extends Socket
      *
      * @param   int  $length  length of data to read
      * @return  string
-     * @throws  IllegalStateException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function readBinary($length = 1024)
     {
@@ -330,8 +330,8 @@ class BsdSocket extends Socket
      *
      * @param   string  $data  data to write
      * @return  int
-     * @throws  ConnectionException
-     * @throws  IllegalStateException
+     * @throws  \stubbles\peer\ConnectionException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function write($data)
     {
@@ -353,7 +353,7 @@ class BsdSocket extends Socket
      * @param   int  $length  length of data to read
      * @param   int  $type    one of PHP_BINARY_READ or PHP_NORMAL_READ
      * @return  string
-     * @throws  ConnectionException
+     * @throws  \stubbles\peer\ConnectionException
      */
     protected function doRead($length, $type)
     {

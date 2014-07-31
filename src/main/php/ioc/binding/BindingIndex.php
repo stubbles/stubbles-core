@@ -21,13 +21,13 @@ class BindingIndex
     /**
      * list of available binding scopes
      *
-     * @type  BindingScopes
+     * @type  \stubbles\ioc\binding\BindingScopes
      */
     private $scopes;
     /**
      * added bindings that are in the index not yet
      *
-     * @type  Binding[]
+     * @type  \stubbles\ioc\binding\Binding[]
      */
     private $bindings = [];
     /**
@@ -37,20 +37,20 @@ class BindingIndex
      * index is a requirement because the key for a binding is not necessarily
      * complete when the binding is added to the injector.
      *
-     * @type  Binding[]
+     * @type  \stubbles\ioc\binding\Binding[]
      */
     private $index    = [];
     /**
      * special binding for properties
      *
-     * @type  PropertyBinding
+     * @type  \stubbles\ioc\binding\PropertyBinding
      */
     private $propertyBinding;
 
     /**
      * constructor
      *
-     * @param  BindingScopes  $scopes
+     * @param  \stubbles\ioc\binding\BindingScopes  $scopes
      */
     public function __construct(BindingScopes $scopes = null)
     {
@@ -100,8 +100,8 @@ class BindingIndex
     /**
      * sets the session scope
      *
-     * @param   BindingScope  $sessionScope
-     * @return  BindingIndex
+     * @param   \stubbles\ioc\binding\BindingScope  $sessionScope
+     * @return  \stubbles\ioc\binding\BindingIndex
      */
     public function setSessionScope(BindingScope $sessionScope)
     {
@@ -112,8 +112,8 @@ class BindingIndex
     /**
      * adds a new binding to the injector
      *
-     * @param   Binding  $binding
-     * @return  Binding
+     * @param   \stubbles\ioc\binding\Binding  $binding
+     * @return  \stubbles\ioc\binding\Binding
      */
     public function addBinding(Binding $binding)
     {
@@ -125,7 +125,7 @@ class BindingIndex
      * Bind a new interface to a class
      *
      * @param   string  $interface
-     * @return  ClassBinding
+     * @return  \stubbles\ioc\binding\ClassBinding
      */
     public function bind($interface)
     {
@@ -154,9 +154,9 @@ class BindingIndex
     /**
      * binds properties
      *
-     * @param   Properties  $properties
-     * @param   Mode        $mode
-     * @return  Properties
+     * @param   \stubbles\lang\Properties  $properties
+     * @param   \stubbles\lang\Mode        $mode
+     * @return  \stubbles\lang\Properties
      * @since   3.4.0
      */
     public function bindProperties(Properties $properties, Mode $mode)
@@ -184,7 +184,7 @@ class BindingIndex
      * bind a constant
      *
      * @param   string  $name  name of constant to bind
-     * @return  ConstantBinding
+     * @return  \stubbles\ioc\binding\ConstantBinding
      */
     public function bindConstant($name)
     {
@@ -198,7 +198,7 @@ class BindingIndex
      * to add more values to it.
      *
      * @param   string  $name
-     * @return  ListBinding
+     * @return  \stubbles\ioc\binding\ListBinding
      */
     public function bindList($name)
     {
@@ -216,7 +216,7 @@ class BindingIndex
      * to add more key-value pairs to it.
      *
      * @param   string  $name
-     * @return  MapBinding
+     * @return  \stubbles\ioc\binding\MapBinding
      */
     public function bindMap($name)
     {
@@ -298,8 +298,8 @@ class BindingIndex
      *
      * @param   string  $type
      * @param   string  $name
-     * @return  Binding
-     * @throws  BindingException
+     * @return  \stubbles\ioc\binding\Binding
+     * @throws  \stubbles\ioc\binding\BindingException
      */
     public function getBinding($type, $name = null)
     {
@@ -316,7 +316,7 @@ class BindingIndex
      *
      * @param   string  $type
      * @param   string  $name
-     * @return  Binding
+     * @return  \stubbles\ioc\binding\Binding
      */
     private function findBinding($type, $name)
     {
@@ -340,7 +340,7 @@ class BindingIndex
      * returns the binding for a constant
      *
      * @param   string  $name
-     * @return  Binding
+     * @return  \stubbles\ioc\binding\ConstantBinding
      */
     public function getConstantBinding($name = null)
     {
@@ -351,7 +351,7 @@ class BindingIndex
      * returns the binding for a list
      *
      * @param   string  $name
-     * @return  Binding
+     * @return  \stubbles\ioc\binding\ListBinding
      */
     public function getListBinding($name)
     {
@@ -362,7 +362,7 @@ class BindingIndex
      * returns the binding for a map
      *
      * @param   string  $name
-     * @return  Binding
+     * @return  \stubbles\ioc\binding\MapBinding
      */
     public function getMapBinding($name)
     {
@@ -387,7 +387,7 @@ class BindingIndex
     /**
      * returns the binding index
      *
-     * @return  Binding[]
+     * @return  \stubbles\ioc\binding\Binding[]
      */
     private function getIndex()
     {
@@ -411,8 +411,8 @@ class BindingIndex
      *
      * If this is not the case it will fall back to the implicit binding.
      *
-     * @param   ReflectionClass  $class
-     * @return  Binding
+     * @param   \stubbles\lang\reflect\ReflectionClass  $class
+     * @return  \stubbles\ioc\binding\Binding
      */
     private function getAnnotatedBinding(ReflectionClass $class)
     {
@@ -438,8 +438,8 @@ class BindingIndex
      * and not an interface. Obviously, it makes sense to say that a class is
      * always bound to itself if no other bindings were defined.
      *
-     * @param   ReflectionClass  $class
-     * @return  Binding
+     * @param   \stubbles\lang\reflect\ReflectionClass  $class
+     * @return  \stubbles\ioc\binding\Binding
      */
     private function getImplicitBinding(ReflectionClass $class)
     {

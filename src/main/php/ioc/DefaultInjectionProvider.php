@@ -21,21 +21,21 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * injector to use for dependencies
      *
-     * @type  Injector
+     * @type  \stubbles\ioc\Injector
      */
     protected $injector;
     /**
      * concrete implementation to use
      *
-     * @type  BaseReflectionClass
+     * @type  \stubbles\lang\reflect\BaseReflectionClass
      */
     protected $impl;
 
     /**
      * constructor
      *
-     * @param  Injector             $injector
-     * @param  BaseReflectionClass  $impl
+     * @param  \stubbles\ioc\Injector                      $injector
+     * @param  \stubbles\lang\reflect\BaseReflectionClass  $impl
      */
     public function __construct(Injector $injector, BaseReflectionClass $impl)
     {

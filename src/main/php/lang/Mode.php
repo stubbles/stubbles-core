@@ -40,7 +40,7 @@ interface Mode
      *
      * @param   string|object  $class        name or instance of exception handler class
      * @param   string         $methodName   name of exception handler method
-     * @return  Mode
+     * @return  \stubbles\lang\Mode
      */
     public function setExceptionHandler($class, $methodName);
 
@@ -63,7 +63,7 @@ interface Mode
      *
      * @param   string|object  $class        name or instance of error handler class
      * @param   string         $methodName   name of error handler method
-     * @return  Mode
+     * @return  \stubbles\lang\Mode
      */
     public function setErrorHandler($class, $methodName);
 

@@ -19,21 +19,21 @@ class BindingScopes
     /**
      * scope for singleton objects
      *
-     * @type  BindingScope
+     * @type  \stubbles\ioc\binding\BindingScope
      */
     protected $singletonScope;
     /**
      * scope for session resources
      *
-     * @type  BindingScope
+     * @type  \stubbles\ioc\binding\BindingScope
      */
     protected $sessionScope;
 
     /**
      * constructor
      *
-     * @param  BindingScope  $singletonScope
-     * @param  BindingScope  $sessionScope
+     * @param  \stubbles\ioc\binding\BindingScope  $singletonScope
+     * @param  \stubbles\ioc\binding\BindingScope  $sessionScope
      * @since  1.5.0
      */
     public function  __construct(BindingScope $singletonScope = null, BindingScope $sessionScope = null)
@@ -47,7 +47,7 @@ class BindingScopes
     /**
      * returns scope for singleton objects
      *
-     * @return  BindingScope
+     * @return  \stubbles\ioc\binding\BindingScope
      * @since   1.5.0
      */
     public function getSingletonScope()
@@ -58,8 +58,8 @@ class BindingScopes
     /**
      * sets session binding scope
      *
-     * @param   BindingScope  $sessionScope
-     * @return  BindingScopes
+     * @param   \stubbles\ioc\binding\BindingScope  $sessionScope
+     * @return  \stubbles\ioc\binding\BindingScopes
      */
     public function setSessionScope(BindingScope $sessionScope)
     {
@@ -72,8 +72,8 @@ class BindingScopes
      *
      * If no session scope is known a RuntimeException will be thrown.
      *
-     * @return  BindingScope
-     * @throws  RuntimeException
+     * @return  \stubbles\ioc\binding\BindingScope
+     * @throws  \stubbles\lang\exception\RuntimeException
      * @since   1.5.0
      */
     public function getSessionScope()

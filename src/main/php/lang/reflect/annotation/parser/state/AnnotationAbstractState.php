@@ -19,14 +19,14 @@ abstract class AnnotationAbstractState
     /**
      * the parser this state belongs to
      *
-     * @type  AnnotationParser
+     * @type  \stubbles\lang\reflect\annotation\parser\AnnotationParser
      */
     protected $parser;
 
     /**
      * constructor
      *
-     * @param  AnnotationParser  $parser
+     * @param  \stubbles\lang\reflect\annotation\parser\AnnotationParser  $parser
      */
     public function __construct(AnnotationParser $parser)
     {

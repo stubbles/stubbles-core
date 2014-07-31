@@ -23,7 +23,7 @@ class ModifiableProperties extends Properties
      * @api
      * @param   string  $section
      * @param   array   $data
-     * @return  ModifiableProperties
+     * @return  \stubbles\lang\ModifiableProperties
      */
     public function setSection($section, array $data)
     {
@@ -41,7 +41,7 @@ class ModifiableProperties extends Properties
      * @param   string  $section
      * @param   string  $name
      * @param   mixed   $value
-     * @return  ModifiableProperties
+     * @return  \stubbles\lang\ModifiableProperties
      */
     public function setValue($section, $name, $value)
     {
@@ -63,7 +63,7 @@ class ModifiableProperties extends Properties
      * @param   string  $section
      * @param   string  $name
      * @param   bool    $value
-     * @return  ModifiableProperties
+     * @return  \stubbles\lang\ModifiableProperties
      */
     public function setBooleanValue($section, $name, $value)
     {
@@ -80,7 +80,7 @@ class ModifiableProperties extends Properties
      * @param   string  $section
      * @param   string  $name
      * @param   array   $value
-     * @return  ModifiableProperties
+     * @return  \stubbles\lang\ModifiableProperties
      */
     public function setArrayValue($section, $name, array $value)
     {
@@ -97,7 +97,7 @@ class ModifiableProperties extends Properties
      * @param   string  $section
      * @param   string  $name
      * @param   array   $hash
-     * @return  ModifiableProperties
+     * @return  \stubbles\lang\ModifiableProperties
      */
     public function setHashValue($section, $name, array $hash)
     {
@@ -119,7 +119,7 @@ class ModifiableProperties extends Properties
      * @param   string  $section
      * @param   string  $name
      * @param   array   $range
-     * @return  ModifiableProperties
+     * @return  \stubbles\lang\ModifiableProperties
      */
     public function setRangeValue($section, $name, array $range)
     {

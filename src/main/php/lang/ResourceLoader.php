@@ -22,7 +22,7 @@ class ResourceLoader
     /**
      * root path of application
      *
-     * @type  Rootpath
+     * @type  \stubbles\lang\Rootpath
      */
     private $rootpath;
 
@@ -31,7 +31,7 @@ class ResourceLoader
      *
      * If no root path is given it tries to detect it automatically.
      *
-     * @param  string|Rootpath  $rootpath  optional
+     * @param  string|\stubbles\lang\Rootpath  $rootpath  optional
      */
     public function __construct($rootpath = null)
     {
@@ -110,8 +110,8 @@ class ResourceLoader
      *
      * @param   string  $resource
      * @return  string
-     * @throws  FileNotFoundException
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\FileNotFoundException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     private function checkedPathFor($resource)
     {
@@ -149,13 +149,18 @@ class ResourceLoader
     /**
      * returns a list of all available uris for a resource
      *
+     * The returned list is sorted alphabetically, meaning that local resources
+     * of the current project are always returned as first entry if they exist,
+     * and all vendor resources after. Order of vendor resources is also in
+     * alphabetical order of vendor/package names.
+     *
      * @param   string  $resourceName  the resource to retrieve the uris for
      * @return  string[]
      * @since   4.0.0
      */
     public function availableResourceUris($resourceName)
     {
-        return array_values(
+        $resourceUris = array_values(
                 array_filter(
                         array_map(
                               function($sourcePath) use($resourceName)
@@ -170,6 +175,8 @@ class ResourceLoader
                         }
                 )
         );
+        sort($resourceUris);
+        return $resourceUris;
     }
 
     /**
@@ -177,7 +184,7 @@ class ResourceLoader
      *
      * @param   string  $resourceName  the resource to retrieve the uris for
      * @return  string[]
-     * @deprecated  since 4.0.0, use listResourceUris() instead, will be removed with 5.0.0
+     * @deprecated  since 4.0.0, use availableResourceUris() instead, will be removed with 5.0.0
      */
     public function getResourceUris($resourceName)
     {

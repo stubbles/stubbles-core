@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
+use stubbles\lang;
 use stubbles\lang\exception\MethodNotSupportedException;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\lang\reflect\ReflectionClass;
@@ -271,6 +272,6 @@ class Annotation
      */
     public function __toString()
     {
-        return \stubbles\lang\__toString($this);
+        return lang\__toString($this);
     }
 }

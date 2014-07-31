@@ -17,13 +17,13 @@ class HttpConnection
     /**
      * request object to open connection
      *
-     * @type  HttpUri
+     * @type  \stubbles\peer\http\HttpUri
      */
     private $httpUri  = null;
     /**
      * contains request headers
      *
-     * @type  HeaderList
+     * @type  \stubbles\peer\HeaderList
      */
     private $headers  = null;
     /**
@@ -36,8 +36,8 @@ class HttpConnection
     /**
      * constructor
      *
-     * @param  HttpUri     $httpUri  uri to create connection to
-     * @param  HeaderList  $headers  list of headers to be used
+     * @param  \stubbles\peer\http\HttpUri  $httpUri  uri to create connection to
+     * @param  \stubbles\peer\HeaderList    $headers  list of headers to be used
      */
     public function __construct(HttpUri $httpUri, HeaderList $headers = null)
     {
@@ -50,7 +50,7 @@ class HttpConnection
      *
      * @api
      * @param   int  $timeout  timeout for connection in seconds
-     * @return  HttpConnection
+     * @return  \stubbles\peer\http\HttpConnection
      */
     public function timeout($timeout)
     {
@@ -63,7 +63,7 @@ class HttpConnection
      *
      * @api
      * @param   string  $userAgent
-     * @return  HttpConnection
+     * @return  \stubbles\peer\http\HttpConnection
      */
     public function asUserAgent($userAgent)
     {
@@ -76,7 +76,7 @@ class HttpConnection
      *
      * @api
      * @param   string  $referer
-     * @return  HttpConnection
+     * @return  \stubbles\peer\http\HttpConnection
      */
     public function referedFrom($referer)
     {
@@ -89,7 +89,7 @@ class HttpConnection
      *
      * @api
      * @param   array  $cookieValues  list of key-value pairs
-     * @return  HttpConnection
+     * @return  \stubbles\peer\http\HttpConnection
      */
     public function withCookie(array $cookieValues)
     {
@@ -103,7 +103,7 @@ class HttpConnection
      * @api
      * @param   string  $user
      * @param   string  $password
-     * @return  HttpConnection
+     * @return  \stubbles\peer\http\HttpConnection
      */
     public function authorizedAs($user, $password)
     {
@@ -117,7 +117,7 @@ class HttpConnection
      * @api
      * @param   string  $key    name of header
      * @param   string  $value  value of header
-     * @return  HttpConnection
+     * @return  \stubbles\peer\http\HttpConnection
      */
     public function usingHeader($key, $value)
     {
@@ -130,7 +130,7 @@ class HttpConnection
      *
      * @api
      * @param   string  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @return  \stubbles\peer\http\HttpResponse
      */
     public function get($version = HttpVersion::HTTP_1_1)
     {
@@ -143,7 +143,7 @@ class HttpConnection
      *
      * @api
      * @param   string  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @return  \stubbles\peer\http\HttpResponse
      */
     public function head($version = HttpVersion::HTTP_1_1)
     {
@@ -157,7 +157,7 @@ class HttpConnection
      * @api
      * @param   string|array  $body
      * @param   string        $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @return  \stubbles\peer\http\HttpResponse
      */
     public function post($body, $version = HttpVersion::HTTP_1_1)
     {
@@ -171,7 +171,7 @@ class HttpConnection
      * @api
      * @param   string  $body
      * @param   string  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @return  \stubbles\peer\http\HttpResponse
      * @since   2.0.0
      */
     public function put($body, $version = HttpVersion::HTTP_1_1)
@@ -185,7 +185,7 @@ class HttpConnection
      *
      * @api
      * @param   string  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @return  \stubbles\peer\http\HttpResponse
      * @since   2.0.0
      */
     public function delete($version = HttpVersion::HTTP_1_1)

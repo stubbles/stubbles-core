@@ -37,7 +37,7 @@ class ClassBinding implements Binding
     /**
      * class that implements this binding
      *
-     * @type  ReflectionClass
+     * @type  \stubbles\lang\reflect\ReflectionClass
      */
     private $impl;
     /**
@@ -49,7 +49,7 @@ class ClassBinding implements Binding
     /**
      * scope of the binding
      *
-     * @type  BindingScope
+     * @type  \stubbles\ioc\binding\BindingScope
      */
     private $scope;
     /**
@@ -61,7 +61,7 @@ class ClassBinding implements Binding
     /**
      * provider to use for this binding
      *
-     * @type  InjectionProvider
+     * @type  \stubbles\ioc\InjectionProvider
      */
     private $provider;
     /**
@@ -73,15 +73,15 @@ class ClassBinding implements Binding
     /**
      * list of available binding scopes
      *
-     * @type  BindingScopes
+     * @type  \stubbles\ioc\binding\BindingScopes
      */
     private $scopes;
 
     /**
      * constructor
      *
-     * @param  string         $type
-     * @param  BindingScopes  $scopes
+     * @param  string                               $type
+     * @param  \stubbles\ioc\binding\BindingScopes  $scopes
      */
     public function __construct($type, BindingScopes $scopes)
     {
@@ -94,9 +94,9 @@ class ClassBinding implements Binding
      * set the concrete implementation
      *
      * @api
-     * @param   BaseReflectionClass|string  $impl
-     * @return  ClassBinding
-     * @throws  IllegalArgumentException
+     * @param   \stubbles\lang\reflect\BaseReflectionClass|string  $impl
+     * @return  \stubbles\ioc\binding\ClassBinding
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function to($impl)
     {
@@ -116,8 +116,8 @@ class ClassBinding implements Binding
      *
      * @api
      * @param   object  $instance
-     * @return  ClassBinding
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\ioc\binding\ClassBinding
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function toInstance($instance)
     {
@@ -136,8 +136,8 @@ class ClassBinding implements Binding
      * 'toProviderClass()' method.
      *
      * @api
-     * @param   InjectionProvider  $provider
-     * @return  ClassBinding
+     * @param   \stubbles\ioc\InjectionProvider  $provider
+     * @return  \stubbles\ioc\binding\ClassBinding
      */
     public function toProvider(InjectionProvider $provider)
     {
@@ -152,8 +152,8 @@ class ClassBinding implements Binding
      * 'toProvider()' method.
      *
      * @api
-     * @param   string|BaseReflectionClass  $providerClass
-     * @return  ClassBinding
+     * @param   string|\stubbles\lang\reflect\BaseReflectionClass  $providerClass
+     * @return  \stubbles\ioc\binding\ClassBinding
      */
     public function toProviderClass($providerClass)
     {
@@ -167,7 +167,7 @@ class ClassBinding implements Binding
      *
      * @api
      * @param   \Closure  $closure
-     * @return  ClassBinding
+     * @return  \stubbles\ioc\binding\ClassBinding
      * @since   2.1.0
      */
     public function toClosure(\Closure $closure)
@@ -180,7 +180,7 @@ class ClassBinding implements Binding
      * binds the class to the singleton scope
      *
      * @api
-     * @return  ClassBinding
+     * @return  \stubbles\ioc\binding\ClassBinding
      * @since   1.5.0
      */
     public function asSingleton()
@@ -193,7 +193,7 @@ class ClassBinding implements Binding
      * binds the class to the session scope
      *
      * @api
-     * @return  ClassBinding
+     * @return  \stubbles\ioc\binding\ClassBinding
      * @since   1.5.0
      */
     public function inSession()
@@ -206,8 +206,8 @@ class ClassBinding implements Binding
      * set the scope
      *
      * @api
-     * @param   BindingScope  $scope
-     * @return  ClassBinding
+     * @param   \stubbles\ioc\binding\BindingScope  $scope
+     * @return  \stubbles\ioc\binding\ClassBinding
      */
     public function in(BindingScope $scope)
     {
@@ -220,7 +220,7 @@ class ClassBinding implements Binding
      *
      * @api
      * @param   string            $name
-     * @return  ClassBinding
+     * @return  \stubbles\ioc\binding\ClassBinding
      */
     public function named($name)
     {
@@ -231,10 +231,10 @@ class ClassBinding implements Binding
     /**
      * returns the created instance
      *
-     * @param   Injector  $injector
-     * @param   string    $name
+     * @param   \stubbles\ioc\Injector  $injector
+     * @param   string                  $name
      * @return  mixed
-     * @throws  BindingException
+     * @throws  \stubbles\ioc\binding\BindingException
      */
     public function getInstance(Injector $injector, $name)
     {

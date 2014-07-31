@@ -440,4 +440,49 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     {
         HttpUri::castFrom(new \stdClass());
     }
+
+    /**
+     * @test
+     * @expectedException  stubbles\peer\MalformedUriException
+     * @since  4.0.0
+     */
+    public function createFromPartsWithInvalidSchemeThrowsMalformedUriException()
+    {
+        HttpUri::fromParts('foo', 'localhost');
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function createFromPartsWithDefaultPortAndPathAndNoQueryString()
+    {
+        $this->assertEquals(
+                'http://localhost/',
+                HttpUri::fromParts('http', 'localhost')
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function createFromAllParts()
+    {
+        $this->assertEquals(
+                'https://localhost:8080/index.php?foo=bar',
+                HttpUri::fromParts('https', 'localhost', 8080, '/index.php', 'foo=bar')
+        );
+    }
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function fromPartsReturnsInstanceOfHttpUri()
+    {
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpUri',
+                HttpUri::fromParts('https', 'localhost', 8080, '/index.php', 'foo=bar')
+        );
+    }
 }

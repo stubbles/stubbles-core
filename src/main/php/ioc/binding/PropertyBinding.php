@@ -25,7 +25,7 @@ class PropertyBinding implements Binding
     /**
      * actual properties
      *
-     * @type  Properties
+     * @type  \stubbles\lang\Properties
      */
     private $properties;
     /**
@@ -38,8 +38,8 @@ class PropertyBinding implements Binding
     /**
      * constructor
      *
-     * @param  Properties  $properties
-     * @param  Mode        $mode
+     * @param  \stubbles\lang\Properties  $properties
+     * @param  \stubbles\lang\Mode        $mode
      */
     public function __construct(Properties $properties, Mode $mode)
     {
@@ -65,10 +65,10 @@ class PropertyBinding implements Binding
     /**
      * returns the created instance
      *
-     * @param   Injector  $injector
+     * @param   \stubbles\ioc\Injector  $injector
      * @param   string    $name
      * @return  mixed
-     * @throws  BindingException
+     * @throws  \stubbles\ioc\binding\BindingException
      */
     public function getInstance(Injector $injector, $name)
     {

@@ -18,14 +18,14 @@ class CompositeErrorHandler implements ErrorHandler
     /**
      * list of registered error handlers
      *
-     * @type  ErrorHandler[]
+     * @type  \stubbles\lang\errorhandler\ErrorHandler[]
      */
     private $errorHandlers = [];
 
     /**
      * adds an error handler to the collection
      *
-     * @param  ErrorHandler  $errorHandler
+     * @param  \stubbles\lang\errorhandler\ErrorHandler  $errorHandler
      */
     public function addErrorHandler(ErrorHandler $errorHandler)
     {

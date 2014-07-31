@@ -24,7 +24,7 @@ class SocketDomain extends Enum
      * Requires a port to connect.
      *
      * @api
-     * @type  SocketDomain
+     * @type  \stubbles\peer\SocketDomain
      */
     public static $AF_INET;
     /**
@@ -36,7 +36,7 @@ class SocketDomain extends Enum
      * Requires a port to connect.
      *
      * @api
-     * @type  SocketDomain
+     * @type  \stubbles\peer\SocketDomain
      */
     public static $AF_INET6;
     /**
@@ -47,7 +47,7 @@ class SocketDomain extends Enum
      * Does not require a port to connect.
      *
      * @api
-     * @type  SocketDomain
+     * @type  \stubbles\peer\SocketDomain
      */
     public static $AF_UNIX;
     /**
@@ -117,7 +117,7 @@ class SocketDomain extends Enum
      * @param   string    $host
      * @param   int       $port
      * @return  resource
-     * @throws  ConnectionException
+     * @throws  \stubbles\peer\ConnectionException
      */
     public function connect($fp, $host, $port)
     {

@@ -94,6 +94,7 @@
   * added `stubbles\peer\http\Http::OPTIONS`
   * added `stubbles\peer\http\HttpVersion`
   * added `stubbles\peer\http\HttpUri::castFrom()`
+  * added `stubbles\peer\http\HttpUri::fromParts()`
   * allowed conversion of `stubbles\peer\streams\memory\MemoryOutputStream` to a string, will contain buffer content
   * added `stubbles\peer\http\emptyAcceptHeader()`
   * `net\stubbles\ioc\App::createModeBindingModule()` now accepts a callable as second parameter which returns a mode
@@ -115,6 +116,7 @@
   * `stubbles\lang\reflect()` can now also reflect functions
   * `stubbles\lang\reflect()` now throws a `stubbles\lang\exception\IllegalArgumentException` if the value can not be reflected
   * added `stubbles\lang\ensureCallable()`
+  * added `stubbles\peer\IpAddress`
 
 
 3.5.3 (2014-05-07)

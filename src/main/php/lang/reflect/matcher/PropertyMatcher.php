@@ -27,7 +27,7 @@ interface PropertyMatcher
     /**
      * checks whether the matcher is satisfied with the given property
      *
-     * @param   ReflectionProperty  $property
+     * @param   \stubbles\lang\reflect\ReflectionProperty  $property
      * @return  bool
      */
     public function matchesAnnotatableProperty(ReflectionProperty $property);

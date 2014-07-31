@@ -26,8 +26,8 @@ interface Annotatable
     /**
      * return the specified annotation
      *
-     * @param   string          $annotationName
-     * @return  stubAnnotation
+     * @param   string  $annotationName
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      */
     public function getAnnotation($annotationName);
 }

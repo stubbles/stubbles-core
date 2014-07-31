@@ -21,21 +21,21 @@ class HttpRequest
     /**
      * the http address to setup a connection to
      *
-     * @type  HttpUri
+     * @type  \stubbles\peer\http\HttpUri
      */
     protected $httpUri = null;
     /**
      * contains request headers
      *
-     * @type  HeaderList
+     * @type  \stubbles\peer\HeaderList
      */
     protected $headers = null;
 
     /**
      * constructor
      *
-     * @param  HttpUri     $httpUri  HTTP URI to perform a request to
-     * @param  HeaderList  $header   list of request headers
+     * @param  \stubbles\peer\http\HttpUri  $httpUri  HTTP URI to perform a request to
+     * @param  \stubbles\peer\HeaderList    $header   list of request headers
      */
     public function __construct(HttpUri $httpUri, HeaderList $header)
     {
@@ -46,9 +46,9 @@ class HttpRequest
     /**
      * static constructor
      *
-     * @param   HttpUri     $httpUri
-     * @param   HeaderList  $header
-     * @return  HttpRequest
+     * @param   \stubbles\peer\http\HttpUri  $httpUri
+     * @param   \stubbles\peer\HeaderList    $header
+     * @return  \stubbles\peer\http\HttpRequest
      * @since   2.0.0
      */
     public static function create(HttpUri $httpUri, HeaderList $header)
@@ -59,9 +59,9 @@ class HttpRequest
     /**
      * initializes a get request
      *
-     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
-     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @param   int                                     $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|\stubbles\peer\http\HttpVersion  $version  optional  http version, defaults to HTTP/1.1
+     * @return  \stubbles\peer\http\HttpResponse
      */
     public function get($timeout = 30, $version = HttpVersion::HTTP_1_1)
     {
@@ -73,9 +73,9 @@ class HttpRequest
     /**
      * initializes a head request
      *
-     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
-     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @param   int                                     $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|\stubbles\peer\http\HttpVersion  $version  optional  http version, defaults to HTTP/1.1
+     * @return  \stubbles\peer\http\HttpResponse
      */
     public function head($timeout = 30, $version = HttpVersion::HTTP_1_1)
     {
@@ -93,10 +93,10 @@ class HttpRequest
      * latter is the case an post form submit content type will be added to the
      * request.
      *
-     * @param   string|array        $body     post request body
-     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
-     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @param   string|array                            $body     post request body
+     * @param   int                                     $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|\stubbles\peer\http\HttpVersion  $version  optional  http version, defaults to HTTP/1.1
+     * @return  \stubbles\peer\http\HttpResponse
      */
     public function post($body, $timeout = 30, $version = HttpVersion::HTTP_1_1)
     {
@@ -116,10 +116,10 @@ class HttpRequest
     /**
      * initializes a put request
      *
-     * @param   string              $body     post request body
-     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
-     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @param   string                                  $body     post request body
+     * @param   int                                     $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|\stubbles\peer\http\HttpVersion  $version  optional  http version, defaults to HTTP/1.1
+     * @return  \stubbles\peer\http\HttpResponse
      * @since   2.0.0
      */
     public function put($body, $timeout = 30, $version = HttpVersion::HTTP_1_1)
@@ -135,9 +135,9 @@ class HttpRequest
     /**
      * initializes a put request
      *
-     * @param   int                 $timeout  optional  connection timeout, defaults to 30 seconds
-     * @param   string|HttpVersion  $version  optional  http version, defaults to HTTP/1.1
-     * @return  HttpResponse
+     * @param   int                                     $timeout  optional  connection timeout, defaults to 30 seconds
+     * @param   string|\stubbles\peer\http\HttpVersion  $version  optional  http version, defaults to HTTP/1.1
+     * @return  \stubbles\peer\http\HttpResponse
      * @since   2.0.0
      */
     public function delete($timeout = 30, $version = HttpVersion::HTTP_1_1)
@@ -166,10 +166,10 @@ class HttpRequest
     /**
      * helper method to send the headers
      *
-     * @param   OutputStream        $out      output stream to write request to
-     * @param   string              $method   http method
-     * @param   string|HttpVersion  $version  http version
-     * @throws  IllegalArgumentException
+     * @param   \stubbles\streams\OutputStream          $out      output stream to write request to
+     * @param   string                                  $method   http method
+     * @param   string|\stubbles\peer\http\HttpVersion  $version  http version
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     private function processHeader(OutputStream $out, $method, $version)
     {

@@ -27,7 +27,7 @@ class BindingFactory
      * BindingFactory::createInjector($module1, $module2, $module3);
      * </code>
      *
-     * @return  Injector
+     * @return  \stubbles\ioc\Injector
      */
     public static function createInjector()
     {
@@ -39,9 +39,9 @@ class BindingFactory
      * binder so that the bootstrap file can request an instance of the entry
      * class
      *
-     * @param   BindingModule[]  $bindingModules
-     * @return  Binder
-     * @throws  IllegalArgumentException
+     * @param   \stubbles\ioc\module\BindingModule[]  $bindingModules
+     * @return  \stubbles\ioc\Binder
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @since   1.3.0
      */
     public static function createBinder(array $bindingModules)
@@ -71,7 +71,7 @@ class BindingFactory
      * else all arguments will be returned.
      *
      * @param   array  $args
-     * @return  BindingModule[]
+     * @return  \stubbles\ioc\module\BindingModule[]
      */
     protected static function extractArgs(array $args)
     {

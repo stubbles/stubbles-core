@@ -44,7 +44,7 @@ class Regex extends Predicate
      *
      * @param   mixed  $value
      * @return  bool
-     * @throws  RuntimeException  in case the used regular expresion is invalid
+     * @throws  \stubbles\lang\exception\RuntimeException  in case the used regular expresion is invalid
      */
     public function test($value)
     {

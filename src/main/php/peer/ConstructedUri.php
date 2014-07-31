@@ -20,7 +20,7 @@ class ConstructedUri extends Uri
     /**
      * constructor
      *
-     * @param  ParsedUri  $uri
+     * @param  \stubbles\peer\ParsedUri  $uri
      */
     protected function __construct(ParsedUri $uri)
     {

@@ -43,7 +43,7 @@ class HttpVersion
      *
      * @param   string  $httpVersion  a http version string like "HTTP/1.1"
      * @return  Version
-     * @throws  IllegalArgumentException  in case string can not be parsed successfully
+     * @throws  \stubbles\lang\exception\IllegalArgumentException  in case string can not be parsed successfully
      */
     public static function fromString($httpVersion)
     {
@@ -63,9 +63,9 @@ class HttpVersion
     /**
      * tries to case given $httpVersion value to an instance of HttpVersion
      *
-     * @param   string|HttpVersion  $httpVersion  value to cast from
-     * @return  HttpVersion
-     * @throws  IllegalArgumentException  in case neither $httpVersion nor $default represent a valid HTTP version
+     * @param   string|\stubbles\peer\http\HttpVersion  $httpVersion  value to cast from
+     * @return  \stubbles\peer\http\HttpVersion
+     * @throws  \stubbles\lang\exception\IllegalArgumentException  in case neither $httpVersion nor $default represent a valid HTTP version
      */
     public static function castFrom($httpVersion)
     {
@@ -102,7 +102,7 @@ class HttpVersion
      * @param   int|string  $number
      * @param   int|string  $type
      * @return  int
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     private function castInt($number, $type)
     {
@@ -141,7 +141,7 @@ class HttpVersion
     /**
      * checks if given http version is equal to this http version
      *
-     * @param   string|HttpVersion  $httpVersion
+     * @param   string|\stubbles\peer\http\HttpVersion  $httpVersion
      * @return  bool
      */
     public function equals($httpVersion)
