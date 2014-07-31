@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use stubbles\lang;
 use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Query string handling.
@@ -30,7 +31,7 @@ class QueryString
      * spaces.
      *
      * @param   string  $queryString
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function __construct($queryString = null)
     {
@@ -143,8 +144,8 @@ class QueryString
      *
      * @param   string  $name   name of parameter
      * @param   mixed   $value  value of parameter
-     * @return  QueryString
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\peer\QueryString
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function addParam($name, $value)
     {
@@ -160,7 +161,7 @@ class QueryString
      * remove a param
      *
      * @param   string  $name  name of parameter
-     * @return  QueryString
+     * @return  \stubbles\peer\QueryString
      */
     public function removeParam($name)
     {
@@ -206,6 +207,6 @@ class QueryString
      */
     public function __toString()
     {
-        return \stubbles\lang\__toString($this);
+        return lang\__toString($this);
     }
 }

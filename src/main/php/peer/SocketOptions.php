@@ -33,7 +33,7 @@ class SocketOptions
      * binds options to connection
      *
      * @param   resource  $connection
-     * @return  SocketOptions
+     * @return  \stubbles\peer\SocketOptions
      */
     public function bindToConnection($connection)
     {
@@ -63,7 +63,7 @@ class SocketOptions
      * @param   int    $level  protocol level of option
      * @param   int    $name   option name
      * @param   mixed  $value  option value
-     * @return  SocketOptions
+     * @return  \stubbles\peer\SocketOptions
      */
     public function set($level, $name, $value)
     {
@@ -97,7 +97,7 @@ class SocketOptions
      * @param   int    $level  protocol level of option
      * @param   int    $name   option name
      * @param   mixed  $value  option value
-     * @return  SocketOptions
+     * @return  \stubbles\peer\SocketOptions
      */
     protected function store($level, $name, $value)
     {
@@ -120,8 +120,8 @@ class SocketOptions
      * @param   int    $level  protocol level of option
      * @param   int    $name   option name
      * @param   mixed  $value  option value
-     * @return  SocketOptions
-     * @throws  ConnectionException
+     * @return  \stubbles\peer\SocketOptions
+     * @throws  \stubbles\peer\ConnectionException
      */
     protected function setOnConnection($level, $name, $value)
     {
@@ -159,7 +159,7 @@ class SocketOptions
      * @param   int    $name     option name
      * @param   mixed  $default  value to return if option not set
      * @return  mixed
-     * @throws  ConnectionException
+     * @throws  \stubbles\peer\ConnectionException
      */
     protected function getFromConnection($level, $name, $default)
     {

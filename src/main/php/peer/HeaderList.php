@@ -38,7 +38,7 @@ class HeaderList implements \IteratorAggregate
      * creates headerlist from given string
      *
      * @param   string  $headers  string to parse for headers
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public static function fromString($headers)
     {
@@ -69,9 +69,9 @@ class HeaderList implements \IteratorAggregate
      * If the header to append contain an already set header the existing header
      * value will be overwritten by the new one.
      *
-     * @param   string|array|HeaderList  $headers
-     * @return  HeaderList
-     * @throws  IllegalArgumentException
+     * @param   string|array|\stubbles\peer\HeaderList  $headers
+     * @return  \stubbles\peer\HeaderList
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @since   2.0.0
      */
     public function append($headers)
@@ -95,8 +95,8 @@ class HeaderList implements \IteratorAggregate
      *
      * @param   string  $key    name of header
      * @param   string  $value  value of header
-     * @return  HeaderList
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\peer\HeaderList
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function put($key, $value)
     {
@@ -116,7 +116,7 @@ class HeaderList implements \IteratorAggregate
      * removes header with given key
      *
      * @param   string  $key  name of header
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function remove($key)
     {
@@ -131,7 +131,7 @@ class HeaderList implements \IteratorAggregate
      * creates header for user agent
      *
      * @param   string  $userAgent  name of user agent
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function putUserAgent($userAgent)
     {
@@ -143,7 +143,7 @@ class HeaderList implements \IteratorAggregate
      * creates header for referer
      *
      * @param   string  $referer  referer uri
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function putReferer($referer)
     {
@@ -155,7 +155,7 @@ class HeaderList implements \IteratorAggregate
      * creates header for cookie
      *
      * @param   array  $cookieValues  cookie values
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function putCookie(array $cookieValues)
     {
@@ -173,7 +173,7 @@ class HeaderList implements \IteratorAggregate
      *
      * @param   string  $user      login name
      * @param   string  $password  login password
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function putAuthorization($user, $password)
     {
@@ -185,7 +185,7 @@ class HeaderList implements \IteratorAggregate
      * adds a date header
      *
      * @param   int  $date  timestamp to use as date, defaults to current timestamp
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function putDate($date = null)
     {
@@ -202,7 +202,7 @@ class HeaderList implements \IteratorAggregate
     /**
      * creates X-Binford header
      *
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function enablePower()
     {
@@ -213,7 +213,7 @@ class HeaderList implements \IteratorAggregate
     /**
      * removes all headers
      *
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function clear()
     {

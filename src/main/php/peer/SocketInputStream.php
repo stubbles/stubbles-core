@@ -19,14 +19,14 @@ class SocketInputStream implements InputStream
     /**
      * socket to read from
      *
-     * @type  Socket
+     * @type  \stubbles\peer\Socket
      */
     protected $socket;
 
     /**
      * constructor
      *
-     * @param  Socket  $socket
+     * @param  \stubbles\peer\Socket  $socket
      */
     public function __construct(Socket $socket)
     {

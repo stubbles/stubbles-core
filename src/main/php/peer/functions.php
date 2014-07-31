@@ -74,9 +74,9 @@ namespace stubbles\peer {
      * Port can be null for SocketDomain::$AF_UNIX, all other domains require
      * a port.
      *
-     * @param   SocketDomain   $domain   one of SocketDomain::$AF_INET, SocketDomain::$AF_INET6 or SocketDomain::$AF_UNIX
-     * @param   string         $host     host to connect socket to
-     * @param   int            $port     port to connect socket to
+     * @param   \stubbles\peer\SocketDomain  $domain  one of SocketDomain::$AF_INET, SocketDomain::$AF_INET6 or SocketDomain::$AF_UNIX
+     * @param   string                       $host    host to connect socket to
+     * @param   int                          $port    optional  port to connect socket to, defaults to 80
      * @return  \stubbles\peer\BsdSocket
      * @since   3.1.0
      * @api

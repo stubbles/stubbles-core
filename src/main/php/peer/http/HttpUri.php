@@ -51,8 +51,8 @@ abstract class HttpUri extends Uri
      * @param   string  $uriString  string to create instance from
      * @param   string  $rfc        optional  RFC to base validation on, defaults to Http::RFC_7230
      * @return  \stubbles\peer\http\HttpUri
-     * @throws  IllegalArgumentException  when passed RFC is unknown
-     * @throws  MalformedUriException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException  when passed RFC is unknown
+     * @throws  \stubbles\lang\exception\MalformedUriException
      */
     public static function fromString($uriString, $rfc = Http::RFC_7230)
     {
@@ -82,7 +82,7 @@ abstract class HttpUri extends Uri
      * @param   string|\stubbles\peer\http\HttpUri  $value  value to cast to HttpUri
      * @param   string                              $name   optional  name of parameter to cast from
      * @return  \stubbles\peer\http\HttpUri
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @since   4.0.0
      */
     public static function castFrom($value, $name = 'Uri')
@@ -103,7 +103,7 @@ abstract class HttpUri extends Uri
      *
      * @param   string  $rfc
      * @return  bool
-     * @throws  MalformedUriException
+     * @throws  \stubbles\lang\exception\MalformedUriException
      */
     private function isValidForRfc($rfc)
     {

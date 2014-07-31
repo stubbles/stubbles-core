@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+use stubbles\lang;
 use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class to work with all kinds of Accept* headers.
@@ -27,7 +28,7 @@ class AcceptHeader implements \Countable
      * method to create an instance from a string header value
      *
      * @param   string  $headerValue
-     * @return  AcceptHeader
+     * @return  \stubbles\peer\http\AcceptHeader
      */
     public static function parse($headerValue)
     {
@@ -68,8 +69,8 @@ class AcceptHeader implements \Countable
      *
      * @param   string  $acceptable
      * @param   float   $priority    defaults to 1.0
-     * @return  AcceptHeader
-     * @throws  IllegalArgumentException
+     * @return  \stubbles\peer\http\AcceptHeader
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function addAcceptable($acceptable, $priority = 1.0)
     {
@@ -234,6 +235,6 @@ class AcceptHeader implements \Countable
      */
     public function __toString()
     {
-        return \stubbles\lang\__toString($this);
+        return lang\__toString($this);
     }
 }

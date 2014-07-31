@@ -26,8 +26,8 @@ abstract class Uri
      * parses an uri out of a string
      *
      * @param   string  $uriString  string to create instance from
-     * @return  Uri
-     * @throws  MalformedUriException
+     * @return  \stubbles\peer\Uri
+     * @throws  \stubbles\peer\MalformedUriException
      */
     public static function fromString($uriString)
     {
@@ -348,7 +348,7 @@ abstract class Uri
      * remove a param from uri
      *
      * @param   string  $name  name of parameter
-     * @return  Uri
+     * @return  \stubbles\peer\Uri
      * @since   1.1.2
      */
     public function removeParam($name)

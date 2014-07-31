@@ -34,7 +34,7 @@ class IpAddress
      * the predicate returns false an IllegalArgumentException will be thrown.
      *
      * @param   int|string  $ip
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function __construct($ip)
     {

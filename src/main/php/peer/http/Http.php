@@ -275,7 +275,7 @@ class Http
      * @api
      * @param   int  $statusCode
      * @return  string
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @since   4.0.0
      */
     public static function reasonPhraseFor($statusCode)
@@ -293,7 +293,7 @@ class Http
      * @api
      * @param   int  $statusCode
      * @return  string
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @deprecated  since 4.0.0, use reasonPhraseFor() instead, will be removed with 5.0.0
      */
     public static function getReasonPhrase($statusCode)

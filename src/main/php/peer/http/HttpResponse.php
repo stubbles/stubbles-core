@@ -18,7 +18,7 @@ class HttpResponse
     /**
      * the socket we read the response from
      *
-     * @type  InputStream
+     * @type  \stubbles\streams\InputStream
      */
     protected $inputStream;
     /**
@@ -30,7 +30,7 @@ class HttpResponse
     /**
      * http version of response
      *
-     * @type  HttpVersion
+     * @type  \stubbles\peer\http\HttpVersion
      */
     protected $version      = null;
     /**
@@ -48,7 +48,7 @@ class HttpResponse
     /**
      * contains headers of response
      *
-     * @type  HeaderList
+     * @type  \stubbles\peer\HeaderList
      */
     protected $headers;
     /**
@@ -61,7 +61,7 @@ class HttpResponse
     /**
      * constructor
      *
-     * @param  InputStream  $inputStream  stream to read response from
+     * @param  \stubbles\streams\InputStream  $inputStream  stream to read response from
      */
     public function __construct(InputStream $inputStream)
     {
@@ -72,8 +72,8 @@ class HttpResponse
     /**
      * static constructor
      *
-     * @param   InputStream  $inputStream  stream to read response from
-     * @return  HttpResponse
+     * @param   \stubbles\streams\InputStream  $inputStream  stream to read response from
+     * @return  \stubbles\peer\http\HttpResponse
      * @since   2.0.0
      */
     public static function create(InputStream $inputStream)
@@ -110,7 +110,7 @@ class HttpResponse
      * returns http version of response
      *
      * @api
-     * @return  HttpVersion
+     * @return  \stubbles\peer\http\HttpVersion
      * @since   4.0.0
      */
     public function httpVersion()
@@ -122,7 +122,7 @@ class HttpResponse
      * returns http version of response
      *
      * @api
-     * @return  HttpVersion
+     * @return  \stubbles\peer\http\HttpVersion
      * @since   2.0.0
      * @deprecated since 4.0.0, use httpVersion() instead, will be removed with 5.0.0
      */
@@ -215,7 +215,7 @@ class HttpResponse
      * returns list of headers from response
      *
      * @api
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      */
     public function headers()
     {
@@ -226,7 +226,7 @@ class HttpResponse
      * returns list of headers from response
      *
      * @api
-     * @return  HeaderList
+     * @return  \stubbles\peer\HeaderList
      * @deprecated since 4.0.0, use headers() instead, will be removed with 5.0.0
      */
     public function getHeader()
@@ -260,7 +260,7 @@ class HttpResponse
     /**
      * reads response headers
      *
-     * @return  HttpResponse
+     * @return  \stubbles\peer\http\HttpResponse
      */
     private function readHeader()
     {
@@ -315,7 +315,7 @@ class HttpResponse
     /**
      * reads the response body
      *
-     * @return  HttpResponse
+     * @return  \stubbles\peer\http\HttpResponse
      */
     private function readBody()
     {

@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use stubbles\lang;
 /**
  * Represents a parses uri.
  *
@@ -24,7 +25,7 @@ class ParsedUri
     /**
      * query string of uri
      *
-     * @type  QueryString
+     * @type  \stubbles\peer\QueryString
      */
     private $queryString;
 
@@ -32,7 +33,7 @@ class ParsedUri
      * constructor
      *
      * @param   string  $uri
-     * @throws  MalformedUriException
+     * @throws  \stubbles\peer\MalformedUriException
      */
     public function __construct($uri)
     {
@@ -65,7 +66,7 @@ class ParsedUri
      * new values.
      *
      * @param   array  $changedUri
-     * @return  ParsedUri
+     * @return  \stubbles\peer\ParsedUri
      */
     public function transpose(array $changedUri)
     {
@@ -316,7 +317,7 @@ class ParsedUri
     /**
      * returns the query string
      *
-     * @return  QueryString
+     * @return  \stubbles\peer\QueryString
      */
     public function queryString()
     {
@@ -355,6 +356,6 @@ class ParsedUri
      */
     public function __toString()
     {
-        return \stubbles\lang\__toString($this);
+        return lang\__toString($this);
     }
 }
