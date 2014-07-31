@@ -28,8 +28,8 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
     /**
      * constructor
      *
-     * @param   OutputStream                     $outputStream  stream to apply filter onto
-     * @param   StreamFilter|callable|Predicate  $predicate     predicate to check if something should be passed
+     * @param   \stubbles\streams\OutputStream                                                $outputStream  stream to apply filter onto
+     * @param   \stubbles\streams\filter\StreamFilter|callable|\stubbles\predicate\Predicate  $predicate     predicate to check if something should be passed
      */
     public function __construct(OutputStream $outputStream, $predicate)
     {

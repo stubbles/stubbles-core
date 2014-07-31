@@ -19,7 +19,7 @@ class StreamFilterPredicate extends Predicate
     /**
      * stream filter to use as predicate
      *
-     * @type  StreamFilter
+     * @type  \stubbles\streams\filter\StreamFilter
      */
     private $streamFilter;
 

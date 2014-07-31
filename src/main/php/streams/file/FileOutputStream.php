@@ -41,7 +41,7 @@ class FileOutputStream extends ResourceOutputStream
      * @param   string|resource  $file
      * @param   string           $mode     opening mode if $file is a filename
      * @param   bool             $delayed
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function __construct($file, $mode = 'wb', $delayed = false)
     {
@@ -98,7 +98,7 @@ class FileOutputStream extends ResourceOutputStream
      * @param   string   $file
      * @param   string   $mode
      * @return  resource
-     * @throws  IOException
+     * @throws  \stubbles\lang\exception\IOException
      */
     protected function openFile($file, $mode)
     {

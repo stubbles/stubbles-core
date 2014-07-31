@@ -16,7 +16,7 @@ class PrefixedStreamFactory implements StreamFactory
     /**
      * decorated stream factory
      *
-     * @type  StreamFactory
+     * @type  \stubbles\streams\StreamFactory
      */
     protected $streamFactory;
     /**
@@ -29,8 +29,8 @@ class PrefixedStreamFactory implements StreamFactory
     /**
      * constructor
      *
-     * @param  StreamFactory  $streamFactory
-     * @param  string         $prefix
+     * @param  \stubbles\streams\StreamFactory  $streamFactory
+     * @param  string                           $prefix
      */
     public function __construct(StreamFactory $streamFactory, $prefix)
     {
@@ -43,7 +43,7 @@ class PrefixedStreamFactory implements StreamFactory
      *
      * @param   mixed  $source   source to create input stream from
      * @param   array  $options  list of options for the input stream
-     * @return  InputStream
+     * @return  \stubbles\streams\InputStream
      */
     public function createInputStream($source, array $options = [])
     {
@@ -55,7 +55,7 @@ class PrefixedStreamFactory implements StreamFactory
      *
      * @param   mixed  $target   target to create output stream for
      * @param   array  $options  list of options for the output stream
-     * @return  OutputStream
+     * @return  \stubbles\streams\OutputStream
      */
     public function createOutputStream($target, array $options = [])
     {

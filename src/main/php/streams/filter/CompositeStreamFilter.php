@@ -20,16 +20,16 @@ class CompositeStreamFilter implements StreamFilter
     /**
      * list of stream filters to apply
      *
-     * @type  StreamFilter[]
+     * @type  \stubbles\streams\filter\StreamFilter[]
      */
     protected $streamFilter = [];
 
     /**
      * add a stream filter
      *
-     * @param   StreamFilter  $streamFilter
-     * @return  CompositeStreamFilter
-     * @throws  IllegalArgumentException
+     * @param   \stubbles\streams\filter\StreamFilter  $streamFilter
+     * @return  \stubbles\streams\filter\CompositeStreamFilter
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function addStreamFilter(StreamFilter $streamFilter)
     {

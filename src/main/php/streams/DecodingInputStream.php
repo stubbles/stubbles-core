@@ -25,8 +25,8 @@ class DecodingInputStream extends AbstractDecoratedInputStream
     /**
      * constructor
      *
-     * @param  InputStream  $inputStream
-     * @param  string       $charset      charset of input stream
+     * @param  \stubbles\streams\InputStream  $inputStream
+     * @param  string                         $charset      charset of input stream
      */
     public function __construct(InputStream $inputStream, $charset)
     {

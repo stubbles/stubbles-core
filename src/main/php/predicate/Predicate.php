@@ -22,7 +22,7 @@ abstract class Predicate
      *
      * @param   \stubbles\predicate\Predicate|callable  $predicate
      * @return  \stubbles\predicate\Predicate
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public static function castFrom($predicate)
     {

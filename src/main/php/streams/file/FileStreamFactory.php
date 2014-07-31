@@ -39,7 +39,7 @@ class FileStreamFactory implements StreamFactory
      *
      * @param   mixed  $source   source to create input stream from
      * @param   array  $options  list of options for the input stream
-     * @return  FileInputStream
+     * @return  \stubbles\streams\file\FileInputStream
      */
     public function createInputStream($source, array $options = [])
     {
@@ -55,7 +55,7 @@ class FileStreamFactory implements StreamFactory
      *
      * @param   mixed  $target   target to create output stream for
      * @param   array  $options  list of options for the output stream
-     * @return  FileOutputStream
+     * @return  \stubbles\streams\file\FileOutputStream
      */
     public function createOutputStream($target, array $options = [])
     {

@@ -25,8 +25,8 @@ class EncodingOutputStream extends AbstractDecoratedOutputStream
     /**
      * constructor
      *
-     * @param  OutputStream  $outputStream
-     * @param  string        $charset       charset of output stream
+     * @param  \stubbles\streams\OutputStream  $outputStream
+     * @param  string                          $charset       charset of output stream
      */
     public function __construct(OutputStream $outputStream, $charset)
     {

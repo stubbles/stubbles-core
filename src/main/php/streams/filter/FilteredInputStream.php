@@ -28,8 +28,8 @@ class FilteredInputStream extends AbstractDecoratedInputStream
     /**
      * constructor
      *
-     * @param   InputStream                      $inputStream   input stream to filter
-     * @param   StreamFilter|callable|Predicate  $predicate     predicate to check if something should be passed
+     * @param   \stubbles\streams\InputStream                                                 $inputStream   input stream to filter
+     * @param   \stubbles\streams\filter\StreamFilter|callable|\stubbles\predicate\Predicate  $predicate     predicate to check if something should be passed
      */
     public function __construct(InputStream $inputStream, $predicate)
     {

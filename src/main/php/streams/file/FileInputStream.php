@@ -32,8 +32,8 @@ class FileInputStream extends ResourceInputStream implements Seekable
      *
      * @param   string|resource  $file
      * @param   string           $mode  opening mode if $file is a filename
-     * @throws  IOException
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function __construct($file, $mode = 'rb')
     {
@@ -84,7 +84,7 @@ class FileInputStream extends ResourceInputStream implements Seekable
      *
      * @param   int  $offset
      * @param   int  $whence  one of Seekable::SET, Seekable::CURRENT or Seekable::END
-     * @throws  IllegalStateException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function seek($offset, $whence = Seekable::SET)
     {
@@ -99,8 +99,8 @@ class FileInputStream extends ResourceInputStream implements Seekable
      * return current position
      *
      * @return  int
-     * @throws  IllegalStateException
-     * @throws  IOException
+     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \stubbles\lang\exception\IOException
      */
     public function tell()
     {

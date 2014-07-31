@@ -18,14 +18,14 @@ abstract class AbstractDecoratedOutputStream implements OutputStream
     /**
      * input stream to encode into internal encoding
      *
-     * @type  OutputStream
+     * @type  \stubbles\streams\OutputStream
      */
     protected $outputStream;
 
     /**
      * constructor
      *
-     * @param  OutputStream  $outputStream
+     * @param  \stubbles\streams\OutputStream  $outputStream
      */
     public function __construct(OutputStream $outputStream)
     {

@@ -29,7 +29,7 @@ abstract class ResourceInputStream implements InputStream
      * sets the resource to be used
      *
      * @param   resource  $handle
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     protected function setHandle($handle)
     {
@@ -45,8 +45,8 @@ abstract class ResourceInputStream implements InputStream
      *
      * @param   int  $length  max amount of bytes to read
      * @return  string
-     * @throws  IllegalStateException
-     * @throws  IOException
+     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \stubbles\lang\exception\IOException
      */
     public function read($length = 8192)
     {
@@ -71,8 +71,8 @@ abstract class ResourceInputStream implements InputStream
      *
      * @param   int  $length  max amount of bytes to read
      * @return  string
-     * @throws  IllegalStateException
-     * @throws  IOException
+     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \stubbles\lang\exception\IOException
      */
     public function readLine($length = 8192)
     {
@@ -96,7 +96,7 @@ abstract class ResourceInputStream implements InputStream
      * returns the amount of bytes left to be read
      *
      * @return  int
-     * @throws  IllegalStateException
+     * @throws  \stubbles\lang\exception\IllegalStateException
      */
     public function bytesLeft()
     {
