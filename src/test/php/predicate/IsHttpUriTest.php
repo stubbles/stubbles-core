@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use stubbles\peer\http\HttpUri;
 /**
  * Tests for stubbles\predicate\IsHttpUri.
  *
@@ -56,30 +57,46 @@ class IsHttpUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
+     * @return  array
      */
-    public function validHttpUrlEvaluatesToTrue()
+    public function validValues()
     {
-        $this->assertTrue($this->isHttpUri->test('http://example.net/'));
+        return [
+            ['http://localhost/'],
+            [HttpUri::fromString('http://localhost/')]
+        ];
     }
 
     /**
      * @test
+     * @dataProvider  validValues
      */
-    public function validHttpUrlWithDnsEntryEvaluatesToTrue()
+    public function validHttpUrlWithDnsEntryEvaluatesToTrue($value)
     {
         $this->assertTrue(
-                $this->isHttpUri->test('http://localhost/')
+                $this->isHttpUri->test($value)
         );
     }
 
     /**
-     * @test
+     * @return  array
      */
-    public function validHttpUrlWithoutDnsEntryEvaluatesToTrue()
+    public function validValuesWithoutDnsEntry()
+    {
+        return [
+            ['http://stubbles.doesNotExist/'],
+            [HttpUri::fromString('http://stubbles.doesNotExist/')]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  validValuesWithoutDnsEntry
+     */
+    public function validHttpUrlWithoutDnsEntryEvaluatesToTrue($value)
     {
         $this->assertTrue(
-                $this->isHttpUri->test('http://stubbles.doesNotExist/')
+                $this->isHttpUri->test($value)
         );
     }
 }
