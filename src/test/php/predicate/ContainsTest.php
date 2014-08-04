@@ -45,6 +45,7 @@ class ContainsTest extends \PHPUnit_Framework_TestCase
                 [false, false],
                 [5, 5],
                 [5, 55],
+                [5, 25],
                 [5, 'foo5'],
                 [5, 'fo5o'],
                 ['foo', 'foobar'],
