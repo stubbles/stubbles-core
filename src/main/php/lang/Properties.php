@@ -283,6 +283,25 @@ class Properties implements \Iterator
     }
 
     /**
+     * parses value and returns the parsing result
+     *
+     * @param   string  $section
+     * @param   string  $key
+     * @param   mixed   $default
+     * @return  mixed
+     * @see     \stubbles\lang\Parse::toType()
+     * @since   4.1.0
+     */
+    public function parseValue($section, $key, $default = null)
+    {
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
+            return Parse::toType($this->propertyData[$section][$key]);
+        }
+
+        return $default;
+    }
+
+    /**
      * returns a string from a section or a default string if the section or key does not exist
      *
      * @api
