@@ -1,6 +1,13 @@
 4.1.0 (2014-08-??)
 ------------------
 
+### BC breaks
+
+  * `stubbles\lang\Properties::parseBool() on property value `'1'` does not yield `true` any more, use one of `'true'`, `'yes'` or `'on'` instead
+
+
+### Other changes
+
   * added `stubbles\lang\Parse`
     * unified string to value parsing for properties and annotation values
     * properties bound via `stubbles\ioc\Binder::bindProperties()` are now injected as parsed values instead of as string values only

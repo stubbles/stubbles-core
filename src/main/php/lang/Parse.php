@@ -23,7 +23,7 @@ class Parse
      *
      * @type  string[]
      */
-    private static $booleanTrue  = ['1', 'yes', 'true', 'on'];
+    private static $booleanTrue  = ['yes', 'true', 'on'];
     /**
      * list of known type recognitions
      *
@@ -37,7 +37,7 @@ class Parse
     public static function __static()
     {
         self::addRecognition(function($string) { if (self::toBool($string)) { return true; } });
-        self::addRecognition(function($string) { if (in_array(strtolower($string), ['0', 'no', 'false', 'off'])) { return false; } });
+        self::addRecognition(function($string) { if (in_array(strtolower($string), ['no', 'false', 'off'])) { return false; } });
         self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+$/', $string) != false) { return self::toInt($string);} });
         self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $string) != false) { return self::toFloat($string); } });
         self::addRecognition(function($string)
@@ -74,8 +74,8 @@ class Parse
      * String value                                         => result
      * null, ''                                             => string value as it is
      * 'null'                                               => null
-     * '1', 'yes', 'true', 'on'                             => true
-     * '0', 'no', 'false', 'off'                            => false
+     * 'yes', 'true', 'on'                             => true
+     * 'no', 'false', 'off'                            => false
      * string containing of numbers only                    => integer
      * string containing of numbers and a dot               => float
      * string starting with [, ending with ]

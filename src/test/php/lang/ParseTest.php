@@ -89,12 +89,10 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function stringToBoolConversions()
     {
         return [
-            [true, '1'],
             [true, 'yes'],
             [true, 'true'],
             [true, 'on'],
             [false, '3.14'],
-            [false, '0'],
             [false, 'no'],
             [false, 'false'],
             [false, 'off'],
@@ -290,11 +288,11 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [null, null],
             ['', ''],
             [null, 'null'],
-            [true, '1'],
+            [1, '1'],
             [true, 'yes'],
             [true, 'true'],
             [true, 'on'],
-            [false, '0'],
+            [0, '0'],
             [false, 'no'],
             [false, 'false'],
             [false, 'off'],
