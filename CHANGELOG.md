@@ -1,6 +1,13 @@
 4.1.0 (2014-08-??)
 ------------------
 
+  * added `stubbles\lang\Parse`, unified string to value parsing for properties and annotation values
+` * added `stubbles\lang\Properties::parseValue()`
+
+
+4.0.1 (2014-08-05)
+------------------
+
   * ensure `stubbles\predicate\IsExistingDirectory` and `stubbles\predicate\IsExistingFile` use current working directoy when no base path given
 
 
