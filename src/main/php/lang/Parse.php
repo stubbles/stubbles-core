@@ -43,11 +43,7 @@ class Parse
         self::addRecognition(function($string)
             {
                 if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
-                    if (strstr($string, ':') !== false) {
-                        return self::toMap($string);
-                    }
-
-                    return self::toList($string);
+                    return (strstr($string, ':') !== false) ? self::toMap($string) : self::toList($string);
                 }
             });
         self::addRecognition(function($string) { if (strstr($string, '..') !== false) { return self::toRange($string); } });
@@ -77,9 +73,9 @@ class Parse
      * These are the conversions being tried in their order:
      * String value                                         => result
      * null, ''                                             => string value as it is
+     * 'null'                                               => null
      * '1', 'yes', 'true', 'on'                             => true
      * '0', 'no', 'false', 'off'                            => false
-     * 'null'                                               => null
      * string containing of numbers only                    => integer
      * string containing of numbers and a dot               => float
      * string starting with [, ending with ]
@@ -168,7 +164,32 @@ class Parse
      */
     public static function toList($string)
     {
-        return explode('|', $string);
+        $withoutParenthesis = self::removeParenthesis($string);
+        if (empty($withoutParenthesis)) {
+            return [];
+        }
+
+
+        if (strstr($withoutParenthesis, '|') !== false) {
+            return explode('|', $withoutParenthesis);
+        }
+
+        return [$withoutParenthesis];
+    }
+
+    /**
+     * removes leading and trailing parenthesis from list and map strings
+     *
+     * @param   string  $string
+     * @return  string
+     */
+    private static function removeParenthesis($string)
+    {
+        if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
+            return substr($string, 1, strlen($string) - 2);
+        }
+
+        return $string;
     }
 
     /**
@@ -218,6 +239,10 @@ class Parse
      */
     public static function toRange($string)
     {
+        if (empty($string)) {
+            return [];
+        }
+
         if (!strstr($string, '..')) {
             return [];
         }
