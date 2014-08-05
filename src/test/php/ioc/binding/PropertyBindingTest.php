@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
+use stubbles\lang;
 use stubbles\lang\Properties;
 /**
  * Test for stubbles\ioc\binding\PropertyBinding.
@@ -46,9 +47,12 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                                        ->disableOriginalConstructor()
                                        ->getMock();
         $this->mockMode         = $this->getMock('stubbles\lang\Mode');
-        $this->propertyBinding  = new PropertyBinding(new Properties(['PROD'   => ['foo.bar' => 'baz'],
+        $this->propertyBinding  = new PropertyBinding(new Properties(['PROD'   => ['foo.bar' => 'baz',
+                                                                                   'baz'     => __CLASS__ . '.class'
+                                                                                  ],
                                                                       'config' => ['foo.bar' => 'default',
-                                                                                   'other'   => 'someValue'
+                                                                                   'other'   => 'someValue',
+                                                                                   'baz'     => 'stubbles\lang\Properties.class'
                                                                                   ]
                                                                      ]
                                                       ),
@@ -151,5 +155,35 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                        ->method('name')
                        ->will($this->returnValue('PROD'));
         $this->propertyBinding->getInstance($this->mockInjector, 'does.not.exist');
+    }
+
+    /**
+     * @test
+     * @since  4.1.0
+     */
+    public function returnsParsedValuesForModeSpecificProperties()
+    {
+        $this->mockMode->expects($this->any())
+                       ->method('name')
+                       ->will($this->returnValue('PROD'));
+        $this->assertEquals(
+                lang\reflect(__CLASS__),
+                $this->propertyBinding->getInstance($this->mockInjector, 'baz')
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.1.0
+     */
+    public function returnsParsedValuesForCommonProperties()
+    {
+        $this->mockMode->expects($this->any())
+                       ->method('name')
+                       ->will($this->returnValue('DEV'));
+        $this->assertEquals(
+                lang\reflect('stubbles\lang\Properties'),
+                $this->propertyBinding->getInstance($this->mockInjector, 'baz')
+        );
     }
 }

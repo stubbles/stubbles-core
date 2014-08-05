@@ -66,18 +66,18 @@ class PropertyBinding implements Binding
      * returns the created instance
      *
      * @param   \stubbles\ioc\Injector  $injector
-     * @param   string    $name
+     * @param   string                  $name
      * @return  mixed
      * @throws  \stubbles\ioc\binding\BindingException
      */
     public function getInstance(Injector $injector, $name)
     {
         if ($this->properties->containValue($this->mode->name(), $name)) {
-            return $this->properties->value($this->mode->name(), $name);
+            return $this->properties->parseValue($this->mode->name(), $name);
         }
 
         if ($this->properties->containValue('config', $name)) {
-            return $this->properties->value('config', $name);
+            return $this->properties->parseValue('config', $name);
         }
 
         throw new BindingException('Missing property ' . $name . ' in runtime mode ' . $this->mode->name());
