@@ -61,7 +61,8 @@ class ResourceLoader
      * opens an input stream to read resource contents
      *
      * Resource can either be a complete path to a resource or a local path. In
-     * case it is a local path it is searched within the root path.
+     * case it is a local path it is searched within the src/main/resources
+     * of the current project.
      * It is not possible to open resources outside of the root path by
      * providing a complete path, a complete path must always lead to a resource
      * located within the root path.
@@ -79,13 +80,14 @@ class ResourceLoader
      * loads resource contents
      *
      * Resource can either be a complete path to a resource or a local path. In
-     * case it is a local path it is searched within the root path.
+     * case it is a local path it is searched within the src/main/resources
+     * of the current project.
      * It is not possible to load resources outside of the root path by
      * providing a complete path, a complete path must always lead to a resource
      * located within the root path.
-     * In case no $loader is the resource will be loaded with file_get_contents().
-     * The given loader must accept a path and return the result from the load
-     * operation.
+     * In case no $loader is given the resource will be loaded with
+     * file_get_contents(). The given loader must accept a path and return the
+     * result from the load operation.
      *
      * @param   string    $resource
      * @param   callable  $loader    optional  code to load resource with, defaults to file_get_contents()
@@ -99,7 +101,7 @@ class ResourceLoader
             return file_get_contents($checkedPath);
         }
 
-        return $loader($this->checkedPathFor($resource));
+        return $loader($checkedPath);
     }
 
     /**

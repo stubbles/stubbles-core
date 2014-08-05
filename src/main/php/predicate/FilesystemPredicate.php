@@ -49,10 +49,10 @@ abstract class FilesystemPredicate extends Predicate
         }
 
         if (null !== $this->basePath) {
-            return $this->fileExists($this->basePath . '/' . $value);
+            return $this->fileExists($this->basePath . DIRECTORY_SEPARATOR . $value);
         }
 
-        return $this->fileExists($value);
+        return $this->fileExists($value) || $this->fileExists(getcwd() . DIRECTORY_SEPARATOR . $value);
     }
 
     /**
