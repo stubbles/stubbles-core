@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation\parser;
+use stubbles\lang\Parse;
 use stubbles\lang\reflect\ReflectionClass;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationState;
@@ -205,42 +206,6 @@ class AnnotationStateParser implements AnnotationParser
             return (string) $value;
         }
 
-        if ('true' === $value) {
-            return true;
-        }
-
-        if ('false' === $value) {
-            return false;
-        }
-
-        if ('null' === strtolower($value)) {
-            return null;
-        }
-
-        if (preg_match('/^[+-]?[0-9]+$/', $value) != false) {
-            return (integer) $value;
-        }
-
-        if (preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $value) != false) {
-            return (double) $value;
-        }
-
-        $classnameMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $value, $classnameMatches) != false) {
-            return new ReflectionClass($classnameMatches[1]);
-        }
-
-        $enumMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)::\$([a-zA-Z_]{1}[a-zA-Z0-9_]*)/', $value, $enumMatches) != false) {
-            $enumClassName = $enumMatches[1];
-            $instanceName  = $enumMatches[2];
-            return $enumClassName::forName($instanceName);
-        }
-
-        if (defined($value) == true) {
-            return constant($value);
-        }
-
-        return (string) $value;
+        return Parse::toType($value);
     }
 }

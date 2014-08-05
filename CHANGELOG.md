@@ -1,4 +1,4 @@
-4.0.1 (2014-08-??)
+4.1.0 (2014-08-??)
 ------------------
 
   * ensure `stubbles\predicate\IsExistingDirectory` and `stubbles\predicate\IsExistingFile` use current working directoy when no base path given

@@ -312,7 +312,7 @@ class Properties implements \Iterator
     public function parseInt($section, $key, $default = 0)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return intval($this->propertyData[$section][$key]);
+            return Parse::toInt($this->propertyData[$section][$key]);
         }
 
         return $default;
@@ -330,7 +330,7 @@ class Properties implements \Iterator
     public function parseFloat($section, $key, $default = 0.0)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return floatval($this->propertyData[$section][$key]);
+            return Parse::toFloat($this->propertyData[$section][$key]);
         }
 
         return $default;
@@ -351,8 +351,7 @@ class Properties implements \Iterator
     public function parseBool($section, $key, $default = false)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            $val = $this->propertyData[$section][$key];
-            return ('1' == $val || 'yes' === $val || 'true' === $val || 'on' === $val);
+            return Parse::toBool($this->propertyData[$section][$key]);
         }
 
         return $default;
@@ -385,7 +384,7 @@ class Properties implements \Iterator
             return [];
         }
 
-        return explode('|', $this->propertyData[$section][$key]);
+        return Parse::toList($this->propertyData[$section][$key]);
     }
 
     /**
@@ -414,21 +413,7 @@ class Properties implements \Iterator
             return $default;
         }
 
-        if (empty($this->propertyData[$section][$key])) {
-            return [];
-        }
-
-        $hash = [];
-        foreach (explode('|', $this->propertyData[$section][$key]) as $keyValue) {
-            if (strstr($keyValue, ':') !== false) {
-                list($key, $value) = explode(':', $keyValue, 2);
-                $hash[$key]        = $value;
-            } else {
-                $hash[] = $keyValue;
-            }
-        }
-
-        return $hash;
+        return Parse::toMap($this->propertyData[$section][$key]);
     }
 
     /**
@@ -458,16 +443,7 @@ class Properties implements \Iterator
             return $default;
         }
 
-        if (!strstr($this->propertyData[$section][$key], '..')) {
-            return [];
-        }
-
-        list($min, $max) = explode('..', $this->propertyData[$section][$key]);
-        if (null == $min || null == $max) {
-            return [];
-        }
-
-        return range($min, $max);
+        return Parse::toRange($this->propertyData[$section][$key]);
     }
 
     /**
