@@ -723,7 +723,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->properties->parseBool('scalar', 'floatValue1'));
         $this->assertFalse($this->properties->parseBool('scalar', 'floatValue2'));
         $this->assertFalse($this->properties->parseBool('scalar', 'boolValue1'));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue2'));
+        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue2'));
         $this->assertTrue($this->properties->parseBool('scalar', 'boolValue3'));
         $this->assertTrue($this->properties->parseBool('scalar', 'boolValue4'));
         $this->assertTrue($this->properties->parseBool('scalar', 'boolValue5'));
@@ -768,7 +768,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->properties->parseBool('scalar', 'floatValue1', true));
         $this->assertFalse($this->properties->parseBool('scalar', 'floatValue2', true));
         $this->assertFalse($this->properties->parseBool('scalar', 'boolValue1', true));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue2', true));
+        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue2', true));
         $this->assertTrue($this->properties->parseBool('scalar', 'boolValue3', true));
         $this->assertTrue($this->properties->parseBool('scalar', 'boolValue4', true));
         $this->assertTrue($this->properties->parseBool('scalar', 'boolValue5', true));
