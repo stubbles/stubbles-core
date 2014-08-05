@@ -295,6 +295,10 @@ class Properties implements \Iterator
     public function parseValue($section, $key, $default = null)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
+            if ($this->propertyData[$section][$key] instanceof SecureString) {
+                return $this->propertyData[$section][$key];
+            }
+
             return Parse::toType($this->propertyData[$section][$key]);
         }
 

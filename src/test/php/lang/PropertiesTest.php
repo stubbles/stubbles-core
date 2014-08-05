@@ -1233,6 +1233,19 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @group  secure_string
+     * @since  4.1.0
+     */
+    public function parseSecureStringValueReturnsSecureStringInstance()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\SecureString',
+                properties(['foo' => ['password' => 'baz']])->parseValue('foo', 'password')
+        );
+    }
+
+    /**
      * @return  array
      */
     public function parseList()
