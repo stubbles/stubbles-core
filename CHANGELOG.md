@@ -1,3 +1,9 @@
+4.0.2 (2014-08-06)
+------------------
+
+  * fixed bug: transposing `stubbles\peer\http\HttpUri` to another scheme must change the port
+
+
 4.0.1 (2014-08-05)
 ------------------
 
