@@ -21,13 +21,19 @@
     * `parseRange()`
 
 
+4.0.2 (2014-08-06)
+------------------
+
+  * fixed bug: transposing `stubbles\peer\http\HttpUri` to another scheme must change the port
+
+
 4.0.1 (2014-08-05)
 ------------------
 
   * ensure `stubbles\predicate\IsExistingDirectory` and `stubbles\predicate\IsExistingFile` use current working directoy when no base path given
 
 
-4.0.0 (2014-06-??)
+4.0.0 (2014-07-31)
 ------------------
 
 ### BC breaks

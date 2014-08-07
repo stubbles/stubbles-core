@@ -209,31 +209,41 @@ abstract class HttpUri extends Uri
     /**
      * transposes uri to http
      *
+     * @param   int  $port  optional  new port to use, defaults to 80
      * @return  \stubbles\peer\http\HttpUri
      * @since   2.0.0
      */
-    public function toHttp()
+    public function toHttp($port = Http::PORT)
     {
         if ($this->isHttp()) {
+            if ($this->port() != $port) {
+                return new ConstructedHttpUri($this->parsedUri->transpose(['port' => $port]));
+            }
+
             return $this;
         }
 
-        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME]));
+        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME, 'port' => $port]));
     }
 
     /**
      * transposes uri to https
      *
+     * @param   int  $port  optional  new port to use, defaults to 443
      * @return  \stubbles\peer\http\HttpUri
      * @since   2.0.0
      */
-    public function toHttps()
+    public function toHttps($port = Http::PORT_SSL)
     {
         if ($this->isHttps()) {
+            if ($this->port() != $port) {
+                return new ConstructedHttpUri($this->parsedUri->transpose(['port' => $port]));
+            }
+
             return $this;
         }
 
-        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME_SSL]));
+        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME_SSL, 'port' => $port]));
     }
 
     /**
