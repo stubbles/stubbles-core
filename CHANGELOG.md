@@ -11,7 +11,14 @@
   * added `stubbles\lang\Parse`
     * unified string to value parsing for properties and annotation values
     * properties bound via `stubbles\ioc\Binder::bindProperties()` are now injected as parsed values instead of as string values only
-` * added `stubbles\lang\Properties::parseValue()`
+` * added `stubbles\lang\Properties::parseValue()`, deprecated other parsing methods, will be removed with 5.0.0
+    * `parseString()
+    * `parseInt()`
+    * `parseFloat()`
+    * `parseBool()`
+    * `parseArray()`
+    * `parseHash()`
+    * `parseRange()`
 
 
 4.0.1 (2014-08-05)

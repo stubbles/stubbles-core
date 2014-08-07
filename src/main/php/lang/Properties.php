@@ -313,6 +313,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   string  $default  string to return if section or key does not exist
      * @return  string
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseString($section, $key, $default = null)
     {
@@ -331,6 +332,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   int     $default  value to return if section or key does not exist
      * @return  int
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseInt($section, $key, $default = 0)
     {
@@ -349,6 +351,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   float   $default  value to return if section or key does not exist
      * @return  float
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseFloat($section, $key, $default = 0.0)
     {
@@ -370,6 +373,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   bool    $default  value to return if section or key does not exist
      * @return  bool
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseBool($section, $key, $default = false)
     {
@@ -396,6 +400,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   array   $default  array to return if section or key does not exist
      * @return  array
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseArray($section, $key, array $default = null)
     {
@@ -429,6 +434,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   array   $default  array to return if section or key does not exist
      * @return  array
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseHash($section, $key, array $default = null)
     {
@@ -459,6 +465,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   array   $default  range to return if section or key does not exist
      * @return  array
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseRange($section, $key, array $default = [])
     {
