@@ -63,7 +63,7 @@ class AnnotationParamNameState extends AnnotationAbstractState implements Annota
 
         if (')' === $token) {
             if (strlen($this->name) > 0) {
-                $this->parser->registerSingleAnnotationParam($this->name, false);
+                $this->parser->registerSingleAnnotationParam($this->name);
             }
 
             $this->parser->changeState(AnnotationState::DOCBLOCK);

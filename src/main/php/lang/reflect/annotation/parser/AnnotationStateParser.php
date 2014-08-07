@@ -145,13 +145,11 @@ class AnnotationStateParser implements AnnotationParser
     /**
      * register single annotation param
      *
-     * @param   string  $value     the value of the param
-     * @param   bool    $asString  whether the value is a string or not
+     * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function registerSingleAnnotationParam($value, $asString = false)
+    public function registerSingleAnnotationParam($value)
     {
-        $value = $this->convertAnnotationValue($value, $asString);
         if (count($this->annotations[$this->currentAnnotation]['params']) > 0) {
             throw new \ReflectionException('Error parsing annotation ' . $this->currentAnnotation);
         }
@@ -162,12 +160,11 @@ class AnnotationStateParser implements AnnotationParser
     /**
      * set the annoation param value for the current annotation
      *
-     * @param  string  $value     the value of the param
-     * @param  bool    $asString  whether the value is a string or not
+     * @param  string  $value  the value of the param
      */
-    public function setAnnotationParamValue($value, $asString = false)
+    public function setAnnotationParamValue($value)
     {
-        $this->annotations[$this->currentAnnotation]['params'][$this->currentParam] = $this->convertAnnotationValue($value, $asString);
+        $this->annotations[$this->currentAnnotation]['params'][$this->currentParam] = $value;
     }
 
     /**
@@ -191,21 +188,5 @@ class AnnotationStateParser implements AnnotationParser
         unset($this->annotations[$this->currentAnnotation]);
         $this->currentAnnotation .= '#' . $argument;
         $this->annotations[$this->currentAnnotation]['argument'] = $argument;
-    }
-
-    /**
-     * convert an annotation value
-     *
-     * @param   string   $value     the value to convert
-     * @param   boolean  $asString  whether value should be treated as string or not
-     * @return  mixed
-     */
-    protected function convertAnnotationValue($value, $asString)
-    {
-        if (true == $asString) {
-            return (string) $value;
-        }
-
-        return Parse::toType($value);
     }
 }

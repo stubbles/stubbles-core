@@ -140,7 +140,7 @@ class AnnotationParamNameStateTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('registerSingleAnnotationParam')
-                                   ->with($this->equalTo('a'), $this->equalTo(false));
+                                   ->with($this->equalTo('a'));
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::DOCBLOCK));

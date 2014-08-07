@@ -8,7 +8,22 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
+use stubbles\lang\Enum;
 use stubbles\lang\reflect\ReflectionClass;
+/**
+ * Helper class for the test.
+ */
+class MyTestClass extends Enum
+{
+    const TEST_CONSTANT = 'baz';
+    public static $FOO;
+
+    public static function __static()
+    {
+        self::$FOO = new self('FOO');
+    }
+}
+MyTestClass::__static();
 /**
  * Test for stubbles\lang\reflect\annotation\Annotation.
  *
@@ -74,7 +89,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsSpecialValueForAllMethodCallsWithIs()
     {
-        $this->annotation->setValue(true);
+        $this->annotation->setValue('true');
         $this->assertTrue($this->annotation->isFoo());
         $this->assertTrue($this->annotation->isOther());
     }
@@ -169,11 +184,20 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
+     * @return  array
      */
-    public function returnsValueOfBooleanProperty()
+    public function booleanValues()
     {
-        $this->annotation->foo = true;
+        return [['true'], ['yes'], ['on']];
+    }
+
+    /**
+     * @test
+     * @dataProvider  booleanValues
+     */
+    public function returnsValueOfBooleanProperty($bool)
+    {
+        $this->annotation->foo = $bool;
         $this->assertTrue($this->annotation->isFoo());
     }
 
@@ -209,7 +233,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function returnTrueForPropertyCheckIfPropertySet()
     {
         $this->annotation->foo = 'bar';
-        $this->annotation->baz = true;
+        $this->annotation->baz = 'true';
         $this->assertTrue($this->annotation->hasFoo());
         $this->assertTrue($this->annotation->hasBaz());
     }
@@ -240,17 +264,84 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function canAccessBooleanPropertyAsMethod()
     {
-        $this->annotation->foo = true;
+        $this->annotation->foo = 'true';
         $this->assertTrue($this->annotation->foo());
     }
 
     /**
-     * @link  http://stubbles.net/ticket/63
-     * @test
+     * @return  array
      */
-    public function reflectionClassInstancesAreRestoredAfterUnserialize()
+    public function valueTypes()
     {
-        $this->annotation->foo = new ReflectionClass($this);
-        $this->assertStringStartsWith('/**', unserialize(serialize($this->annotation))->getFoo()->getDocComment());
+        return [
+            [true, 'true'],
+            [false, 'false'],
+            [null, 'null'],
+            [4562, '4562'],
+            [-13, '-13'],
+            [2.34, '2.34'],
+            [-5.67, '-5.67'],
+            [new ReflectionClass(__CLASS__), __CLASS__ . '.class'],
+            ['true', "'true'"],
+            ['null', '"null"'],
+            [MyTestClass::TEST_CONSTANT, 'stubbles\lang\reflect\annotation\MyTestClass::TEST_CONSTANT'],
+            [MyTestClass::$FOO, 'stubbles\lang\reflect\annotation\MyTestClass::$FOO']
+        ];
+    }
+
+    /**
+     *
+     * @param type $expected
+     * @param type $stringValue
+     * @test
+     * @dataProvider  valueTypes
+     * @since  4.1.0
+     */
+    public function parsesValuesToTypes($expected, $stringValue)
+    {
+        $this->annotation->foo = $stringValue;
+        $this->assertEquals($expected, $this->annotation->foo());
+    }
+
+    /**
+     *
+     * @param type $expected
+     * @param type $stringValue
+     * @test
+     * @dataProvider  valueTypes
+     * @since  4.1.0
+     */
+    public function parsesValuesToTypesWithGet($expected, $stringValue)
+    {
+        $this->annotation->foo = $stringValue;
+        $this->assertEquals($expected, $this->annotation->getFoo());
+    }
+
+    /**
+     *
+     * @param type $expected
+     * @param type $stringValue
+     * @test
+     * @dataProvider  valueTypes
+     * @since  4.1.0
+     */
+    public function parsesValuesToTypesWithGetValueByName($expected, $stringValue)
+    {
+        $this->annotation->foo = $stringValue;
+        $this->assertEquals($expected, $this->annotation->getValueByName('foo'));
+    }
+
+    /**
+     *
+     * @param type $expected
+     * @param type $stringValue
+     * @test
+     * @dataProvider  valueTypes
+     * @since  4.1.0
+     */
+    public function parsesValuesToTypesWithSingleValue($expected, $stringValue)
+    {
+        $this->annotation->setValue($stringValue);
+        $this->assertEquals($expected, $this->annotation->getValue());
     }
 }

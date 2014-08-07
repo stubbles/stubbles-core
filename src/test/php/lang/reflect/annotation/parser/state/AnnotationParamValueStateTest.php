@@ -118,7 +118,7 @@ class AnnotationParamValueStateTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('setAnnotationParamValue')
-                                   ->with($this->equalTo(''), $this->equalTo(false));
+                                   ->with($this->equalTo(''));
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::PARAMS));
@@ -135,7 +135,7 @@ class AnnotationParamValueStateTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('setAnnotationParamValue')
-                                   ->with($this->equalTo('a'), $this->equalTo(false));
+                                   ->with($this->equalTo('a'));
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::PARAMS));
@@ -169,7 +169,7 @@ class AnnotationParamValueStateTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('setAnnotationParamValue')
-                                   ->with($this->equalTo(''), $this->equalTo(false));
+                                   ->with($this->equalTo(''));
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::DOCBLOCK));
@@ -186,7 +186,7 @@ class AnnotationParamValueStateTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('setAnnotationParamValue')
-                                   ->with($this->equalTo('a'), $this->equalTo(false));
+                                   ->with($this->equalTo('a'));
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::DOCBLOCK));
@@ -220,7 +220,7 @@ class AnnotationParamValueStateTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('setAnnotationParamValue')
-                                   ->with($this->equalTo("a'b"), $this->equalTo(true));
+                                   ->with($this->equalTo("a'b"));
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::PARAMS));
@@ -240,7 +240,7 @@ class AnnotationParamValueStateTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('setAnnotationParamValue')
-                                   ->with($this->equalTo('a"b'), $this->equalTo(true));
+                                   ->with($this->equalTo('a"b'));
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::PARAMS));

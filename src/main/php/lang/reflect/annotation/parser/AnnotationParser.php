@@ -48,20 +48,18 @@ interface AnnotationParser
     /**
      * register single annotation param
      *
-     * @param   string  $value     the value of the param
-     * @param   bool    $asString  whether the value is a string or not
+     * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function registerSingleAnnotationParam($value, $asString = false);
+    public function registerSingleAnnotationParam($value);
 
     /**
      * set the annoation param value for the current annotation
      *
-     * @param   string  $value     the value of the param
-     * @param   bool    $asString  whether the value is a string or not
+     * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function setAnnotationParamValue($value, $asString = false);
+    public function setAnnotationParamValue($value);
 
     /**
      * set the type of the current annotation
