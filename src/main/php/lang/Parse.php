@@ -36,21 +36,21 @@ class Parse
      */
     public static function __static()
     {
-        self::addRecognition(function($string) { if (self::toBool($string)) { return true; } });
-        self::addRecognition(function($string) { if (in_array(strtolower($string), ['no', 'false', 'off'])) { return false; } });
-        self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+$/', $string) != false) { return self::toInt($string);} });
-        self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $string) != false) { return self::toFloat($string); } });
+        self::addRecognition(function($string) { if (self::toBool($string)) { return true; } }, 'booleanTrue');
+        self::addRecognition(function($string) { if (in_array(strtolower($string), ['no', 'false', 'off'])) { return false; } }, 'booleanFalse');
+        self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+$/', $string) != false) { return self::toInt($string);} }, 'int');
+        self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $string) != false) { return self::toFloat($string); } }, 'float');
         self::addRecognition(function($string)
             {
                 if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
                     return (strstr($string, ':') !== false) ? self::toMap($string) : self::toList($string);
                 }
-            });
-        self::addRecognition(function($string) { if (strstr($string, '..') !== false) { return self::toRange($string); } });
-        self::addRecognition(function($string) { try { return HttpUri::fromString($string); } catch (MalformedUriException $murle) { } });
-        self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } });
-        self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } });
-        self::addRecognition(function($string) { if (defined($string)) { return constant($string); } });
+            }, 'array');
+        self::addRecognition(function($string) { if (strstr($string, '..') !== false) { return self::toRange($string); } }, 'range');
+        self::addRecognition(function($string) { try { return HttpUri::fromString($string); } catch (MalformedUriException $murle) { } }, 'stubbles\peer\http\HttpUri');
+        self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'stubbles\lang\reflect\ReflectionClass');
+        self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } }, 'stubbles\lang\Enum');
+        self::addRecognition(function($string) { if (defined($string)) { return constant($string); } }, 'constant');
     }
 
     /**
@@ -59,12 +59,41 @@ class Parse
      * The callable must accept a string value and return a type. If the return
      * value is null the recognition will be treated as failed and the next
      * recognition will be tried.
+     * <code>
+     * Parse::addRecognition(
+     *      function($string)
+     *      {
+     *          if ('Binford 6100' === $string) {
+     *              return new Binford('More power!');
+     *          }
+     *      },
+     *      'binford'
+     * );
+     * Parse::toType('Binford 6100'); // yields instance of Binford
+     * </code>
      *
      * @param  callable  $recognition
+     * @param  string    $name         name under which recognition should be stored
      */
-    public static function addRecognition(callable $recognition)
+    public static function addRecognition(callable $recognition, $name)
     {
-        self::$recognitions[] = $recognition;
+        self::$recognitions[$name] = $recognition;
+    }
+
+    /**
+     * removes recognition with given name
+     *
+     * @param   string  $name  name under which recognition is stored
+     * @return  bool  true if recognition was present and removed, false otherwise
+     */
+    public static function removeRecognition($name)
+    {
+        if (isset(self::$recognitions[$name])) {
+            unset(self::$recognitions[$name]);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -74,8 +103,8 @@ class Parse
      * String value                                         => result
      * null, ''                                             => string value as it is
      * 'null'                                               => null
-     * 'yes', 'true', 'on'                             => true
-     * 'no', 'false', 'off'                            => false
+     * 'yes', 'true', 'on'                                  => true
+     * 'no', 'false', 'off'                                 => false
      * string containing of numbers only                    => integer
      * string containing of numbers and a dot               => float
      * string starting with [, ending with ]
@@ -86,7 +115,7 @@ class Parse
      * <fully\qualified\Classname.class>                    => stubbles\lang\reflect\ReflectionClass
      * <fully\qualified\Classname::$enumName>               => stubbles\lang\Enum
      * string containing name of a constant                 => value of the constant
-     * any recognition added via Parse::addRecognition()    => return type of the callable
+     * recognition added via Parse::addRecognition()        => return type of the callable
      * all other                                            => string value as is
      *
      * @param   string   $string     the value to convert

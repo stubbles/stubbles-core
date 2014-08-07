@@ -34,6 +34,15 @@ MyEnum::__static();
 class ParseTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * clean up test environment
+     */
+    public function tearDown()
+    {
+        Parse::removeRecognition('binford');
+        Parse::__static();
+    }
+
+    /**
      * @return  array
      */
     public function stringToIntConversions()
@@ -328,7 +337,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function userDefinedRecognitionWithSuccessReturnsValueFromUserDefinedConversion()
     {
-        Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } });
+        Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } }, 'binford');
         $this->assertEquals('More power!', Parse::toType('Binford 6100'));
     }
 
@@ -337,7 +346,16 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function userDefinedRecognitionWithoutSuccessReturnsValueAsString()
     {
-        Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } });
+        Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } }, 'binford');
         $this->assertEquals('Binford 610', Parse::toType('Binford 610'));
+    }
+
+    /**
+     * @test
+     */
+    public function canReplaceExistingRecognition()
+    {
+        Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return true; } }, 'booleanTrue');
+        $this->assertTrue(Parse::toType('Binford 6100'));
     }
 }
