@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation\parser;
+use stubbles\lang\Parse;
 use stubbles\lang\reflect\ReflectionClass;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationState;
@@ -144,13 +145,11 @@ class AnnotationStateParser implements AnnotationParser
     /**
      * register single annotation param
      *
-     * @param   string  $value     the value of the param
-     * @param   bool    $asString  whether the value is a string or not
+     * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function registerSingleAnnotationParam($value, $asString = false)
+    public function registerSingleAnnotationParam($value)
     {
-        $value = $this->convertAnnotationValue($value, $asString);
         if (count($this->annotations[$this->currentAnnotation]['params']) > 0) {
             throw new \ReflectionException('Error parsing annotation ' . $this->currentAnnotation);
         }
@@ -161,12 +160,11 @@ class AnnotationStateParser implements AnnotationParser
     /**
      * set the annoation param value for the current annotation
      *
-     * @param  string  $value     the value of the param
-     * @param  bool    $asString  whether the value is a string or not
+     * @param  string  $value  the value of the param
      */
-    public function setAnnotationParamValue($value, $asString = false)
+    public function setAnnotationParamValue($value)
     {
-        $this->annotations[$this->currentAnnotation]['params'][$this->currentParam] = $this->convertAnnotationValue($value, $asString);
+        $this->annotations[$this->currentAnnotation]['params'][$this->currentParam] = $value;
     }
 
     /**
@@ -190,57 +188,5 @@ class AnnotationStateParser implements AnnotationParser
         unset($this->annotations[$this->currentAnnotation]);
         $this->currentAnnotation .= '#' . $argument;
         $this->annotations[$this->currentAnnotation]['argument'] = $argument;
-    }
-
-    /**
-     * convert an annotation value
-     *
-     * @param   string   $value     the value to convert
-     * @param   boolean  $asString  whether value should be treated as string or not
-     * @return  mixed
-     */
-    protected function convertAnnotationValue($value, $asString)
-    {
-        if (true == $asString) {
-            return (string) $value;
-        }
-
-        if ('true' === $value) {
-            return true;
-        }
-
-        if ('false' === $value) {
-            return false;
-        }
-
-        if ('null' === strtolower($value)) {
-            return null;
-        }
-
-        if (preg_match('/^[+-]?[0-9]+$/', $value) != false) {
-            return (integer) $value;
-        }
-
-        if (preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $value) != false) {
-            return (double) $value;
-        }
-
-        $classnameMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $value, $classnameMatches) != false) {
-            return new ReflectionClass($classnameMatches[1]);
-        }
-
-        $enumMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)::\$([a-zA-Z_]{1}[a-zA-Z0-9_]*)/', $value, $enumMatches) != false) {
-            $enumClassName = $enumMatches[1];
-            $instanceName  = $enumMatches[2];
-            return $enumClassName::forName($instanceName);
-        }
-
-        if (defined($value) == true) {
-            return constant($value);
-        }
-
-        return (string) $value;
     }
 }

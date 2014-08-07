@@ -9,6 +9,7 @@
  */
 namespace stubbles\lang\reflect\annotation;
 use stubbles\lang;
+use stubbles\lang\Parse;
 use stubbles\lang\exception\MethodNotSupportedException;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\lang\reflect\ReflectionClass;
@@ -133,7 +134,7 @@ class Annotation
     public function getValueByName($name)
     {
         if (isset($this->properties[$name])) {
-            return $this->properties[$name];
+            return $this->parseType($this->properties[$name]);
         }
 
         return null;
@@ -161,7 +162,7 @@ class Annotation
     public function  __call($name, $arguments)
     {
         if (isset($this->properties[$name])) {
-            return $this->properties[$name];
+            return $this->parseType($this->properties[$name]);
         }
 
         if (substr($name, 0, 3) === 'get') {
@@ -206,14 +207,29 @@ class Annotation
     protected function getProperty($propertyName, $defaultValue)
     {
         if (count($this->properties) === 1 && isset($this->properties['__value'])) {
-            return $this->properties['__value'];
+            return $this->parseType($this->properties['__value']);
         }
 
         if (isset($this->properties[$propertyName])) {
-            return $this->properties[$propertyName];
+            return $this->parseType($this->properties[$propertyName]);
         }
 
         return $defaultValue;
+    }
+
+    /**
+     * parses value to correct type
+     *
+     * @param   string  $value
+     * @return  mixed
+     */
+    private function parseType($value)
+    {
+        if ((substr($value, 0, 1) === '"' && substr($value, -1) === '"') || (substr($value, 0, 1) === "'" && substr($value, -1) === "'")) {
+            return substr($value, 1, strlen($value) - 2);
+        }
+
+        return Parse::toType($value);
     }
 
     /**
@@ -225,11 +241,11 @@ class Annotation
     protected function getBooleanProperty($propertyName)
     {
         if (count($this->properties) === 1 && isset($this->properties['__value'])) {
-            return $this->properties['__value'];
+            return Parse::toBool($this->properties['__value']);
         }
 
         if (isset($this->properties[$propertyName])) {
-            return $this->properties[$propertyName];
+            return Parse::toBool($this->properties[$propertyName]);
         }
 
         return false;
@@ -250,18 +266,6 @@ class Annotation
         }
 
         return isset($this->properties[$propertyName]);
-    }
-
-    /**
-     * restore reflection instances
-     */
-    public function __wakeup()
-    {
-        foreach ($this->properties as $propertyName => $value) {
-            if ($value instanceof BaseReflectionClass) {
-                $this->properties[$propertyName] = new ReflectionClass($value->getName());
-            }
-        }
     }
 
     /**

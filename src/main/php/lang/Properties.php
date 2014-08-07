@@ -283,6 +283,29 @@ class Properties implements \Iterator
     }
 
     /**
+     * parses value and returns the parsing result
+     *
+     * @param   string  $section
+     * @param   string  $key
+     * @param   mixed   $default
+     * @return  mixed
+     * @see     \stubbles\lang\Parse::toType()
+     * @since   4.1.0
+     */
+    public function parseValue($section, $key, $default = null)
+    {
+        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
+            if ($this->propertyData[$section][$key] instanceof SecureString) {
+                return $this->propertyData[$section][$key];
+            }
+
+            return Parse::toType($this->propertyData[$section][$key]);
+        }
+
+        return $default;
+    }
+
+    /**
      * returns a string from a section or a default string if the section or key does not exist
      *
      * @api
@@ -290,6 +313,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   string  $default  string to return if section or key does not exist
      * @return  string
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseString($section, $key, $default = null)
     {
@@ -308,11 +332,12 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   int     $default  value to return if section or key does not exist
      * @return  int
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseInt($section, $key, $default = 0)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return intval($this->propertyData[$section][$key]);
+            return Parse::toInt($this->propertyData[$section][$key]);
         }
 
         return $default;
@@ -326,11 +351,12 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   float   $default  value to return if section or key does not exist
      * @return  float
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseFloat($section, $key, $default = 0.0)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return floatval($this->propertyData[$section][$key]);
+            return Parse::toFloat($this->propertyData[$section][$key]);
         }
 
         return $default;
@@ -347,12 +373,12 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   bool    $default  value to return if section or key does not exist
      * @return  bool
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseBool($section, $key, $default = false)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            $val = $this->propertyData[$section][$key];
-            return ('1' == $val || 'yes' === $val || 'true' === $val || 'on' === $val);
+            return Parse::toBool($this->propertyData[$section][$key]);
         }
 
         return $default;
@@ -374,6 +400,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   array   $default  array to return if section or key does not exist
      * @return  array
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseArray($section, $key, array $default = null)
     {
@@ -385,7 +412,7 @@ class Properties implements \Iterator
             return [];
         }
 
-        return explode('|', $this->propertyData[$section][$key]);
+        return Parse::toList($this->propertyData[$section][$key]);
     }
 
     /**
@@ -407,6 +434,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   array   $default  array to return if section or key does not exist
      * @return  array
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseHash($section, $key, array $default = null)
     {
@@ -414,21 +442,7 @@ class Properties implements \Iterator
             return $default;
         }
 
-        if (empty($this->propertyData[$section][$key])) {
-            return [];
-        }
-
-        $hash = [];
-        foreach (explode('|', $this->propertyData[$section][$key]) as $keyValue) {
-            if (strstr($keyValue, ':') !== false) {
-                list($key, $value) = explode(':', $keyValue, 2);
-                $hash[$key]        = $value;
-            } else {
-                $hash[] = $keyValue;
-            }
-        }
-
-        return $hash;
+        return Parse::toMap($this->propertyData[$section][$key]);
     }
 
     /**
@@ -451,6 +465,7 @@ class Properties implements \Iterator
      * @param   string  $key      name of the key
      * @param   array   $default  range to return if section or key does not exist
      * @return  array
+     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
      */
     public function parseRange($section, $key, array $default = [])
     {
@@ -458,16 +473,7 @@ class Properties implements \Iterator
             return $default;
         }
 
-        if (!strstr($this->propertyData[$section][$key], '..')) {
-            return [];
-        }
-
-        list($min, $max) = explode('..', $this->propertyData[$section][$key]);
-        if (null == $min || null == $max) {
-            return [];
-        }
-
-        return range($min, $max);
+        return Parse::toRange($this->propertyData[$section][$key]);
     }
 
     /**

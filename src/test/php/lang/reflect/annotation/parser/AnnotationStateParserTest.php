@@ -31,8 +31,6 @@ use stubbles\lang\Enum;
  *            negInt=-13,
  *            double=2.34,
  *            negDouble=-5.67,
- *            string1='true',
- *            string2='null',
  *            class=stubbles\lang\reflect\annotation\parser\MyTestClass.class)
  */
 class MyTestClass extends Enum
@@ -126,10 +124,10 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['__value' => 42], $annotations['SingleValue']['params']);
         $this->assertTrue(isset($annotations['Constant']));
         $this->assertEquals('Constant', $annotations['Constant']['type']);
-        $this->assertEquals(['foo' => MyTestClass::TEST_CONSTANT], $annotations['Constant']['params']);
+        $this->assertEquals(['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT'], $annotations['Constant']['params']);
         $this->assertTrue(isset($annotations['Enum']));
         $this->assertEquals('Enum', $annotations['Enum']['type']);
-        $this->assertEquals(['foo' => MyTestClass::$FOO], $annotations['Enum']['params']);
+        $this->assertEquals(['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::$FOO'], $annotations['Enum']['params']);
         $this->assertTrue(isset($annotations['SingleStringValue']));
         $this->assertEquals('SingleStringValue', $annotations['SingleStringValue']['type']);
         $this->assertEquals(['__value' => 'This is a string with chars like = or ,'], $annotations['SingleStringValue']['params']);
@@ -141,21 +139,11 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['one' => 1, 'two' => 2], $annotations['Multiline']['params']);
         $this->assertTrue(isset($annotations['WithTypes']));
         $this->assertEquals('WithTypes', $annotations['WithTypes']['type']);
-        $this->assertTrue($annotations['WithTypes']['params']['true']);
-        $this->assertFalse($annotations['WithTypes']['params']['false']);
-        $this->assertEquals(4562, $annotations['WithTypes']['params']['integer']);
-        $this->assertEquals('integer', gettype($annotations['WithTypes']['params']['integer']));
-        $this->assertNull($annotations['WithTypes']['params']['null']);
-        $this->assertEquals(-13, $annotations['WithTypes']['params']['negInt']);
-        $this->assertEquals('integer', gettype($annotations['WithTypes']['params']['negInt']));
-        $this->assertEquals(2.34, $annotations['WithTypes']['params']['double']);
-        $this->assertEquals('double', gettype($annotations['WithTypes']['params']['double']));
-        $this->assertEquals(-5.67, $annotations['WithTypes']['params']['negDouble']);
-        $this->assertEquals('double', gettype($annotations['WithTypes']['params']['negDouble']));
-        $this->assertEquals('true', $annotations['WithTypes']['params']['string1']);
-        $this->assertEquals('null', $annotations['WithTypes']['params']['string2']);
-        $this->assertInstanceOf('stubbles\lang\\reflect\ReflectionClass', $annotations['WithTypes']['params']['class']);
-        $this->assertEquals('stubbles\lang\\reflect\annotation\parser\MyTestClass', $annotations['WithTypes']['params']['class']->getName());
+        $this->assertEquals('4562', $annotations['WithTypes']['params']['integer']);
+        $this->assertEquals('-13', $annotations['WithTypes']['params']['negInt']);
+        $this->assertEquals('2.34', $annotations['WithTypes']['params']['double']);
+        $this->assertEquals('-5.67', $annotations['WithTypes']['params']['negDouble']);
+        $this->assertEquals('stubbles\lang\\reflect\annotation\parser\MyTestClass.class', $annotations['WithTypes']['params']['class']);
     }
 
     /**

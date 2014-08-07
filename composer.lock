@@ -4,10 +4,8 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1207e6b4cc8930c6121fe4337c3b7443",
-    "packages": [
-
-    ],
+    "hash": "041ffd52399e0dd8fef8a4adee401974",
+    "packages": [],
     "packages-dev": [
         {
             "name": "mikey179/vfsStream",
@@ -779,17 +777,14 @@
             "time": "2014-07-09 09:05:48"
         }
     ],
-    "aliases": [
-
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "stubbles/core-dev": 20
     },
+    "prefer-stable": true,
     "platform": {
         "php": ">=5.4.0"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

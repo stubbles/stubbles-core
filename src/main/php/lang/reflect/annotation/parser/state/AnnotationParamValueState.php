@@ -118,20 +118,20 @@ class AnnotationParamValueState extends AnnotationAbstractState implements Annot
             }
 
             if (',' === $token) {
-                $this->parser->setAnnotationParamValue($this->value, $this->isString);
+                $this->parser->setAnnotationParamValue($this->value);
                 $this->parser->changeState(AnnotationState::PARAMS);
                 return;
             }
 
             if (')' === $token) {
-                $this->parser->setAnnotationParamValue($this->value, $this->isString);
+                $this->parser->setAnnotationParamValue($this->value);
                 $this->parser->changeState(AnnotationState::DOCBLOCK);
                 return;
             }
         } else {
             if ($this->enclosed === $token) {
+                $this->parser->setAnnotationParamValue($this->value);
                 $this->enclosed = null;
-                $this->parser->setAnnotationParamValue($this->value, $this->isString);
                 $this->parser->changeState(AnnotationState::PARAMS);
                 return;
             }

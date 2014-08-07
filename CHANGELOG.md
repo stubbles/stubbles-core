@@ -1,3 +1,26 @@
+4.1.0 (2014-08-??)
+------------------
+
+### BC breaks
+
+  * `stubbles\lang\Properties::parseBool()` on property value `'1'` does not yield `true` any more, use one of `'true'`, `'yes'` or `'on'` instead
+
+
+### Other changes
+
+  * added `stubbles\lang\Parse`
+    * unified string to value parsing for properties and annotation values
+    * properties bound via `stubbles\ioc\Binder::bindProperties()` are now injected as parsed values instead of as string values only
+` * added `stubbles\lang\Properties::parseValue()`, deprecated other parsing methods, will be removed with 5.0.0
+    * `parseString()
+    * `parseInt()`
+    * `parseFloat()`
+    * `parseBool()`
+    * `parseArray()`
+    * `parseHash()`
+    * `parseRange()`
+
+
 4.0.2 (2014-08-06)
 ------------------
 
@@ -10,7 +33,7 @@
   * ensure `stubbles\predicate\IsExistingDirectory` and `stubbles\predicate\IsExistingFile` use current working directoy when no base path given
 
 
-4.0.0 (2014-06-31)
+4.0.0 (2014-07-31)
 ------------------
 
 ### BC breaks
