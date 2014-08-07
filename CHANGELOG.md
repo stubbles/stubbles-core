@@ -3,7 +3,7 @@
 
 ### BC breaks
 
-  * `stubbles\lang\Properties::parseBool() on property value `'1'` does not yield `true` any more, use one of `'true'`, `'yes'` or `'on'` instead
+  * `stubbles\lang\Properties::parseBool()` on property value `'1'` does not yield `true` any more, use one of `'true'`, `'yes'` or `'on'` instead
 
 
 ### Other changes
