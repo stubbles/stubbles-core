@@ -39,8 +39,10 @@ class Properties implements \Iterator
     public function __construct(array $propertyData = [])
     {
         foreach ($propertyData as $section => $values) {
-            if (isset($values['password'])) {
-                $propertyData[$section]['password'] = SecureString::create($values['password']);
+            foreach (array_keys($values) as $key) {
+                if (substr($key, -8) === 'password') {
+                    $propertyData[$section][$key] = SecureString::create($values[$key]);
+                }
             }
         }
 

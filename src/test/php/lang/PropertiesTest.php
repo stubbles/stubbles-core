@@ -1235,6 +1235,19 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  secure_string
+     * @since  4.1.2
+     */
+    public function propertiesWhereKeyEndsWithPasswordBecomeInstancesOfSecureString()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\SecureString',
+                properties(['foo' => ['example.another.password' => 'baz']])->value('foo', 'example.another.password')
+        );
+    }
+
+    /**
+     * @test
+     * @group  secure_string
      * @since  4.1.0
      */
     public function parseSecureStringValueReturnsSecureStringInstance()
