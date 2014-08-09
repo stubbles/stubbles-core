@@ -3,6 +3,7 @@
 
   * fixed bug in `stubbles\lang\exception\Exception::__toString()` always reporting this class instead of the real exception class
   * all properties in `stubbles\lang\Properties` where key ends with `password` are automatically stored as `stubbles\lang\SecureString`
+  * fixed bug that a `var_dump()` of a `stubbles\lang\SecureString` instance reveiled the length of the secured string
 
 
 4.1.1 (2014-08-09)

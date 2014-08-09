@@ -76,12 +76,6 @@ final class SecureString
      * @type  string
      */
     private $id;
-    /**
-     * length of secured string
-     *
-     * @type  int
-     */
-    private $length;
 
     /**
      * static initializer
@@ -213,8 +207,9 @@ final class SecureString
         $self = new self();
         try {
             $encrypt = self::$encrypt;
-            self::$store[$self->id] = $encrypt($string);
-            $self->length           = iconv_strlen($string);
+            self::$store[$self->id] = ['payload' => $encrypt($string),
+                                       'length'  => iconv_strlen($string)
+                                      ];
         } catch (\Exception $e) {
             $e = null;
             // This intentionally catches *ALL* exceptions, in order not to fail
@@ -236,8 +231,7 @@ final class SecureString
     public static function forNull()
     {
         $self = new self();
-        self::$store[$self->id] = true;
-        $self->length = 0;
+        self::$store[$self->id] = ['payload' => true, 'length' => 0];
         return $self;
     }
 
@@ -256,7 +250,7 @@ final class SecureString
      */
     public function isNull()
     {
-        return true === self::$store[$this->id];
+        return true === self::$store[$this->id]['payload'];
     }
 
     /**
@@ -266,7 +260,7 @@ final class SecureString
      */
     public function isContained()
     {
-        return isset(self::$store[$this->id]);
+        return isset(self::$store[$this->id]['payload']);
     }
 
     /**
@@ -289,7 +283,7 @@ final class SecureString
         }
 
         $decrypt = self::$decrypt;
-        return $decrypt(self::$store[$this->id]);
+        return $decrypt(self::$store[$this->id]['payload']);
     }
 
     /**
@@ -322,7 +316,7 @@ final class SecureString
      */
     public function length()
     {
-        return $this->length;
+        return self::$store[$this->id]['length'];
     }
 
     /**
