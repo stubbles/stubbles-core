@@ -1,3 +1,9 @@
+4.1.2 (2014-08-10)
+------------------
+
+  * fixed bug in `stubbles\lang\exception\Exception::__toString()` always reporting this class instead of the real exception class
+
+
 4.1.1 (2014-08-09)
 ------------------
 
