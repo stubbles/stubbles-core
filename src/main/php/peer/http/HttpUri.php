@@ -213,17 +213,22 @@ abstract class HttpUri extends Uri
      * @return  \stubbles\peer\http\HttpUri
      * @since   2.0.0
      */
-    public function toHttp($port = Http::PORT)
+    public function toHttp($port = null)
     {
         if ($this->isHttp()) {
-            if ($this->port() != $port) {
+            if ($this->parsedUri->hasPort() && null !== $port) {
                 return new ConstructedHttpUri($this->parsedUri->transpose(['port' => $port]));
             }
 
             return $this;
         }
 
-        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME, 'port' => $port]));
+        $changes = ['scheme' => Http::SCHEME];
+        if ($this->parsedUri->hasPort()) {
+            $changes['port'] = $port;
+        }
+
+        return new ConstructedHttpUri($this->parsedUri->transpose($changes));
     }
 
     /**
@@ -233,17 +238,22 @@ abstract class HttpUri extends Uri
      * @return  \stubbles\peer\http\HttpUri
      * @since   2.0.0
      */
-    public function toHttps($port = Http::PORT_SSL)
+    public function toHttps($port = null)
     {
         if ($this->isHttps()) {
-            if ($this->port() != $port) {
+            if ($this->parsedUri->hasPort() && null !== $port) {
                 return new ConstructedHttpUri($this->parsedUri->transpose(['port' => $port]));
             }
 
             return $this;
         }
 
-        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME_SSL, 'port' => $port]));
+        $changes = ['scheme' => Http::SCHEME_SSL];
+        if ($this->parsedUri->hasPort()) {
+            $changes['port'] = $port;
+        }
+
+        return new ConstructedHttpUri($this->parsedUri->transpose($changes));
     }
 
     /**

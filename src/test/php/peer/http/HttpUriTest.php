@@ -261,7 +261,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function transposingToHttpsLeavesEverythingExceptSchemeAndPort()
     {
         $this->assertEquals(
-                'https://example.net:443/foo.php?bar=baz#top',
+                'https://example.net/foo.php?bar=baz#top',
                 HttpUri::fromString('http://example.net:8080/foo.php?bar=baz#top')
                        ->toHttps()
                        ->asString()
@@ -275,8 +275,22 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function transposingToHttpChangesPort()
     {
         $this->assertEquals(
-                'http://example.net:80/foo.php?bar=baz#top',
+                'http://example.net:8080/foo.php?bar=baz#top',
                 HttpUri::fromString('http://example.net:8080/foo.php?bar=baz#top')
+                       ->toHttp()
+                       ->asString()
+        );
+    }
+
+    /**
+     * @since  4.1.1
+     * @test
+     */
+    public function transposingToHttpUsesDefaultPortToDefaultIfDefault()
+    {
+        $this->assertEquals(
+                'http://example.net/foo.php?bar=baz#top',
+                HttpUri::fromString('https://example.net/foo.php?bar=baz#top')
                        ->toHttp()
                        ->asString()
         );
@@ -309,7 +323,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function transposingToHttpLeavesEverythingExceptSchemeAndPort()
     {
         $this->assertEquals(
-                'http://example.net:80/foo.php?bar=baz#top',
+                'http://example.net/foo.php?bar=baz#top',
                 HttpUri::fromString('https://example.net:8080/foo.php?bar=baz#top')
                        ->toHttp()
                        ->asString()
@@ -323,8 +337,22 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function transposingToHttpsWithDifferentPort()
     {
         $this->assertEquals(
-                'https://example.net:443/foo.php?bar=baz#top',
+                'https://example.net:8080/foo.php?bar=baz#top',
                 HttpUri::fromString('https://example.net:8080/foo.php?bar=baz#top')
+                       ->toHttps()
+                       ->asString()
+        );
+    }
+
+    /**
+     * @since  4.1.1
+     * @test
+     */
+    public function transposingToHttpsUsesDefaultPortIfIsDefaultPort()
+    {
+        $this->assertEquals(
+                'https://example.net/foo.php?bar=baz#top',
+                HttpUri::fromString('http://example.net/foo.php?bar=baz#top')
                        ->toHttps()
                        ->asString()
         );

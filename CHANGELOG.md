@@ -1,3 +1,9 @@
+4.1.1 (2014-08-09)
+------------------
+
+  * fixed bug with scheme transposing and default ports for http uris
+
+
 4.1.0 (2014-08-08)
 ------------------
 
