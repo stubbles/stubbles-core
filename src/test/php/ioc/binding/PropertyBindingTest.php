@@ -8,8 +8,30 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
+use stubbles\ioc\Binder;
 use stubbles\lang;
 use stubbles\lang\Properties;
+use stubbles\lang\SecureString;
+/**
+ * Class used for tests.
+ *
+ * @since  4.1.3
+ */
+class Example
+{
+    public $password;
+    /**
+     * constructor
+     *
+     * @param  \stubbles\lang\SecureString  $password
+     * @Inject
+     * @Property('example.password')
+     */
+    public function __construct(SecureString $password)
+    {
+        $this->password = $password;
+    }
+}
 /**
  * Test for stubbles\ioc\binding\PropertyBinding.
  *
@@ -47,18 +69,19 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                                        ->disableOriginalConstructor()
                                        ->getMock();
         $this->mockMode         = $this->getMock('stubbles\lang\Mode');
-        $this->propertyBinding  = new PropertyBinding(new Properties(['PROD'   => ['foo.bar' => 'baz',
-                                                                                   'baz'     => __CLASS__ . '.class'
-                                                                                  ],
-                                                                      'config' => ['foo.bar' => 'default',
-                                                                                   'other'   => 'someValue',
-                                                                                   'baz'     => 'stubbles\lang\Properties.class'
-                                                                                  ]
-                                                                     ]
-                                                      ),
-                                                      $this->mockMode
+        $this->propertyBinding  = new PropertyBinding(
+                new Properties(['PROD'   => ['foo.bar' => 'baz',
+                                             'baz'     => __CLASS__ . '.class'
+                                            ],
+                                'config' => ['foo.bar'          => 'default',
+                                             'other'            => 'someValue',
+                                             'baz'              => 'stubbles\lang\Properties.class'
+                                            ]
+                               ]
+                ),
+                $this->mockMode
 
-                                  );
+        );
     }
 
     /**
@@ -185,5 +208,29 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                 lang\reflect('stubbles\lang\Properties'),
                 $this->propertyBinding->getInstance($this->mockInjector, 'baz')
         );
+    }
+
+    /**
+     * @test
+     * @since  4.1.3
+     */
+    public function propertyBindingUsedWhenParamHasTypeHintButIsAnnotated()
+    {
+        $this->mockMode->expects($this->any())
+                       ->method('name')
+                       ->will($this->returnValue('PROD'));
+        $binder     = new Binder();
+        $properties = new Properties(
+                    ['config' => ['example.password' => 'somePassword']]
+                );
+        $binder->bindProperties($properties, $this->mockMode);
+        $example = $binder->getInjector()->getInstance('stubbles\ioc\binding\Example');
+        $this->assertInstanceOf('stubbles\lang\SecureString', $example->password);
+        // ensure all references are removed to clean up environment
+        // otherwise all *SecureStringTests will fail
+        $properties = null;
+        $example->password = null;
+        $binder = null;
+        gc_collect_cycles();
     }
 }

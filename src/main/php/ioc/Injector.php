@@ -268,6 +268,10 @@ class Injector
     {
         $paramClass = $param->getClass();
         if (null !== $paramClass) {
+            if ($method->hasAnnotation('Property') || $param->hasAnnotation('Property')) {
+                return BindingIndex::getPropertyType();
+            }
+
             return $paramClass->getName();
         }
 

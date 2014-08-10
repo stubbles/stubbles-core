@@ -1,3 +1,9 @@
+4.1.3 (2014-08-10)
+------------------
+
+  * fixed bug that property bindings did not work together with type hints, e.g. for `stubbles\lang\SecureString`
+
+
 4.1.2 (2014-08-10)
 ------------------
 
