@@ -249,10 +249,6 @@ protected $commentComplexForArgument = '/**
         $this->assertTrue($anno->getArgh());
         $this->assertEquals('cucumber', $anno->getVeggie());
 
-        // change the value
-        $anno->veggie = 'tomato';
-        $this->assertEquals('tomato', $anno->getVeggie());
-
         // re-fetch
         $anno2  = $class->getAnnotation('MyAnnotation');
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',

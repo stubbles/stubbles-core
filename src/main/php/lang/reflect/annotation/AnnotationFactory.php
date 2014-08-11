@@ -18,12 +18,6 @@ use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
 class AnnotationFactory
 {
     /**
-     * instance of the annotation parser
-     *
-     * @type  \stubbles\lang\reflect\annotation\parser\AnnotationStateParser
-     */
-    private static $parser      = null;
-    /**
      * list of annotation data
      *
      * @type  array
@@ -50,13 +44,9 @@ class AnnotationFactory
             throw new \ReflectionException('Can not find annotation ' . $annotationName);
         }
 
-        $hash = md5($comment . $targetName);
+        $hash = self::hash($comment, $targetName);
         if (!isset(self::$annotations[$hash])) {
-            if (null === self::$parser) {
-                self::$parser = new AnnotationStateParser();
-            }
-
-            self::$annotations[$hash] = self::$parser->parse($comment);
+            self::$annotations[$hash] = self::parse($comment);
         }
 
         if (!isset(self::$annotations[$hash][$annotationName])) {
@@ -65,17 +55,42 @@ class AnnotationFactory
             throw new \ReflectionException('Can not find annotation ' . $annotationName);
         }
 
-        $annotation = new Annotation(self::$annotations[$hash][$annotationName]['type'], $targetName);
-        foreach (self::$annotations[$hash][$annotationName]['params'] as $name => $value) {
-            if ('__value' !== $name) {
-                $annotation->$name = $value;
-            } else {
-                $annotation->setValue($value);
-            }
-        }
-
+        $annotation = new Annotation(
+                self::$annotations[$hash][$annotationName]['type'],
+                $targetName,
+                self::$annotations[$hash][$annotationName]['params']
+        );
         AnnotationCache::put($target, $targetName, $annotationName, $annotation);
         return $annotation;
+    }
+
+    /**
+     * creates a hash for the annotatable element
+     *
+     * @param   string  $comment
+     * @param   string  $targetName
+     * @return  string
+     */
+    private static function hash($comment, $targetName)
+    {
+        return md5($comment . $targetName);
+    }
+
+    /**
+     * parses doc comments and returns data about all annotations found
+     *
+     * @staticvar  \stubbles\lang\reflect\annotation\parser\AnnotationStateParser  $parser
+     * @param      string  $comment
+     * @return     array
+     */
+    private static function parse($comment)
+    {
+        static $parser = null;
+        if (null === $parser) {
+            $parser = new AnnotationStateParser();
+        }
+
+        return $parser->parse($comment);
     }
 
     /**

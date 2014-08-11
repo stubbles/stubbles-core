@@ -11,8 +11,6 @@ namespace stubbles\lang\reflect\annotation;
 use stubbles\lang;
 use stubbles\lang\Parse;
 use stubbles\lang\exception\MethodNotSupportedException;
-use stubbles\lang\reflect\BaseReflectionClass;
-use stubbles\lang\reflect\ReflectionClass;
 /**
  * Interface for an annotation.
  */
@@ -66,11 +64,13 @@ class Annotation
      *
      * @param  string  $name
      * @param  string  $targetName
+     * @param  array   $values      optional  map of all annotation values
      */
-    public function __construct($name, $targetName)
+    public function __construct($name, $targetName, array $values = [])
     {
         $this->name       = $name;
         $this->targetName = $targetName;
+        $this->properties = $values;
     }
 
     /**
@@ -94,16 +94,6 @@ class Annotation
     public function targetName()
     {
         return $this->targetName;
-    }
-
-    /**
-     * sets a single value
-     *
-     * @param  mixed  $value
-     */
-    public function setValue($value)
-    {
-        $this->properties['__value'] = $value;
     }
 
     /**
@@ -145,6 +135,7 @@ class Annotation
      *
      * @param  string  $name
      * @param  mixed   $value
+     * @deprecated  since 4.2.0, annotations should be read only, will be removed with 5.0.0
      */
     public function  __set($name, $value)
     {

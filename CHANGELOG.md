@@ -1,3 +1,11 @@
+4.2.0 (2014-08-??)
+------------------
+
+### BC breaks
+
+  * Deprecated setting of values on annotations. Annotations should be read only. This feature will be removed with 5.0.0.
+
+
 4.1.4 (2014-08-11)
 ------------------
 
