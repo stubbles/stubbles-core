@@ -12,7 +12,7 @@ use stubbles\lang;
 use stubbles\lang\Parse;
 use stubbles\lang\exception\MethodNotSupportedException;
 /**
- * Interface for an annotation.
+ * Represents an annotation on the code.
  */
 class Annotation
 {
@@ -21,13 +21,13 @@ class Annotation
      *
      * @type  string
      */
-    protected $name;
+    private $name;
     /**
-     * properties of annotation
+     * values of annotation
      *
      * @type  array
      */
-    protected $properties = [];
+    private $values     = [];
     /**
      * name of annotation target
      *
@@ -39,14 +39,14 @@ class Annotation
      * constructor
      *
      * @param  string  $name
-     * @param  string  $targetName
+     * @param  string  $targetName  name of target where annotation is for, i.e. the class, method, function, property or parameter
      * @param  array   $values      optional  map of all annotation values
      */
     public function __construct($name, $targetName, array $values = [])
     {
         $this->name       = $name;
         $this->targetName = $targetName;
-        $this->properties = $values;
+        $this->values     = $values;
     }
 
     /**
@@ -84,7 +84,7 @@ class Annotation
      */
     public function hasValueByName($name)
     {
-        return isset($this->properties[$name]);
+        return isset($this->values[$name]);
     }
 
     /**
@@ -99,8 +99,8 @@ class Annotation
      */
     public function getValueByName($name)
     {
-        if (isset($this->properties[$name])) {
-            return $this->parseType($this->properties[$name]);
+        if (isset($this->values[$name])) {
+            return $this->parseType($this->values[$name]);
         }
 
         return null;
@@ -115,7 +115,7 @@ class Annotation
      */
     public function  __set($name, $value)
     {
-        $this->properties[$name] = $value;
+        $this->values[$name] = $value;
     }
 
     /**
@@ -128,8 +128,8 @@ class Annotation
      */
     public function  __call($name, $arguments)
     {
-        if (isset($this->properties[$name])) {
-            return $this->parseType($this->properties[$name]);
+        if (isset($this->values[$name])) {
+            return $this->parseType($this->values[$name]);
         }
 
         if (substr($name, 0, 3) === 'get') {
@@ -173,12 +173,12 @@ class Annotation
      */
     protected function getProperty($propertyName, $defaultValue)
     {
-        if (count($this->properties) === 1 && isset($this->properties['__value'])) {
-            return $this->parseType($this->properties['__value']);
+        if (count($this->values) === 1 && isset($this->values['__value'])) {
+            return $this->parseType($this->values['__value']);
         }
 
-        if (isset($this->properties[$propertyName])) {
-            return $this->parseType($this->properties[$propertyName]);
+        if (isset($this->values[$propertyName])) {
+            return $this->parseType($this->values[$propertyName]);
         }
 
         return $defaultValue;
@@ -207,12 +207,12 @@ class Annotation
      */
     protected function getBooleanProperty($propertyName)
     {
-        if (count($this->properties) === 1 && isset($this->properties['__value'])) {
-            return Parse::toBool($this->properties['__value']);
+        if (count($this->values) === 1 && isset($this->values['__value'])) {
+            return Parse::toBool($this->values['__value']);
         }
 
-        if (isset($this->properties[$propertyName])) {
-            return Parse::toBool($this->properties[$propertyName]);
+        if (isset($this->values[$propertyName])) {
+            return Parse::toBool($this->values[$propertyName]);
         }
 
         return false;
@@ -226,13 +226,13 @@ class Annotation
      */
     protected function hasProperty($propertyName)
     {
-        if (count($this->properties) === 1
-          && isset($this->properties['__value'])
+        if (count($this->values) === 1
+          && isset($this->values['__value'])
           && 'value' === $propertyName) {
-            return isset($this->properties['__value']);
+            return isset($this->values['__value']);
         }
 
-        return isset($this->properties[$propertyName]);
+        return isset($this->values[$propertyName]);
     }
 
     /**
