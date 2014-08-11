@@ -9,29 +9,22 @@
  */
 namespace stubbles\lang\reflect\annotation\parser;
 use stubbles\lang\Enum;
+use stubbles\lang\reflect\annotation\Annotation;
 /**
  * This is a test class that has many annotations.
  *
  * @Foo
  * @FooWithBrackets ()
  * @Bar[TomTom]
- * @Test
  * @MyAnnotation(foo='bar')
  * @TwoParams(foo='bar', test=42)
  * @InvalidChars(foo='ba@r=,')
- * @SingleValue(42)
  * @Constant(foo=stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT)
  * @Enum(foo=stubbles\lang\reflect\annotation\parser\MyTestClass::$FOO)
- * @SingleStringValue('This is a string with chars like = or ,')
  * @WithEscaped(foo='This string contains \' and \\, which is possible using escaping...')
  * @Multiline(one=1,
  *            two=2)
- * @WithTypes(true=true, false=false, integer=4562,
- *            null=null,
- *            negInt=-13,
- *            double=2.34,
- *            negDouble=-5.67,
- *            class=stubbles\lang\reflect\annotation\parser\MyTestClass.class)
+ * @Class(stubbles\lang\reflect\annotation\parser\MyTestClass.class)
  */
 class MyTestClass extends Enum
 {
@@ -56,27 +49,9 @@ class MyTestClass2
      * @MoreArgument2{bar}[Casted](key='value')
      * @MoreArgument3[CastedAround]{bar}
      * @MoreArgument4[CastedAround]{bar}(key='value')
+     * @another
      */
     public function foo($bar) { }
-}
-/**
- * Test class for bug 202.
- */
-class Bug202Class
-{
-    /**
-     * a method with an annotation for its parameter
-     *
-     * @ForArgument1{bar}
-     * @ForArgument2{bar}(key='value')
-     * @MoreArgument1{bar}[Casted]
-     * @MoreArgument2{bar}[Casted](key='value')
-     * @MoreArgument3[CastedAround]{bar}
-     * @MoreArgument4[CastedAround]{bar}(key='value')
-     * @param   string  $bar
-     * @return  string  (this should be 'baz')
-     */
-    public function foo($bar) { return 'baz'; }
 }
 /**
  * Test for stubbles\lang\reflect\annotation\parser\AnnotationStateParser.
@@ -89,148 +64,298 @@ class Bug202Class
 class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * test that checking if an annotation is present works as expected
+     * instance to test
      *
-     * @test
+     * @type  \stubbles\lang\reflect\annotation\parser\AnnotationStateParser
      */
-    public function parse()
+    private $annotationStateParser;
+
+    /**
+     * set up test environment
+     */
+    public function setUp()
     {
-        $clazz                 = new \ReflectionClass('stubbles\lang\reflect\annotation\parser\MyTestClass');
-        $annotationStateParser = new AnnotationStateParser();
-        $annotations           = $annotationStateParser->parse($clazz->getDocComment());
-        $this->assertTrue(isset($annotations['Foo']));
-        $this->assertEquals('Foo', $annotations['Foo']['type']);
-        $this->assertEquals([], $annotations['Foo']['params']);
-        $this->assertTrue(isset($annotations['FooWithBrackets']));
-        $this->assertEquals('FooWithBrackets', $annotations['FooWithBrackets']['type']);
-        $this->assertEquals([], $annotations['FooWithBrackets']['params']);
-        $this->assertTrue(isset($annotations['Bar']));
-        $this->assertEquals('TomTom', $annotations['Bar']['type']);
-        $this->assertEquals([], $annotations['Bar']['params']);
-        $this->assertTrue(isset($annotations['Test']));
-        $this->assertEquals('Test', $annotations['Test']['type']);
-        $this->assertEquals([], $annotations['Test']['params']);
-        $this->assertTrue(isset($annotations['MyAnnotation']));
-        $this->assertEquals('MyAnnotation', $annotations['MyAnnotation']['type']);
-        $this->assertEquals(['foo' => 'bar'], $annotations['MyAnnotation']['params']);
-        $this->assertTrue(isset($annotations['TwoParams']));
-        $this->assertEquals('TwoParams', $annotations['TwoParams']['type']);
-        $this->assertEquals(['foo' => 'bar', 'test' => 42], $annotations['TwoParams']['params']);
-        $this->assertTrue(isset($annotations['InvalidChars']));
-        $this->assertEquals('InvalidChars', $annotations['InvalidChars']['type']);
-        $this->assertEquals(['foo' => 'ba@r=,'], $annotations['InvalidChars']['params']);
-        $this->assertTrue(isset($annotations['SingleValue']));
-        $this->assertEquals('SingleValue', $annotations['SingleValue']['type']);
-        $this->assertEquals(['__value' => 42], $annotations['SingleValue']['params']);
-        $this->assertTrue(isset($annotations['Constant']));
-        $this->assertEquals('Constant', $annotations['Constant']['type']);
-        $this->assertEquals(['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT'], $annotations['Constant']['params']);
-        $this->assertTrue(isset($annotations['Enum']));
-        $this->assertEquals('Enum', $annotations['Enum']['type']);
-        $this->assertEquals(['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::$FOO'], $annotations['Enum']['params']);
-        $this->assertTrue(isset($annotations['SingleStringValue']));
-        $this->assertEquals('SingleStringValue', $annotations['SingleStringValue']['type']);
-        $this->assertEquals(['__value' => 'This is a string with chars like = or ,'], $annotations['SingleStringValue']['params']);
-        $this->assertTrue(isset($annotations['WithEscaped']));
-        $this->assertEquals('WithEscaped', $annotations['WithEscaped']['type']);
-        $this->assertEquals(['foo' => "This string contains ' and \, which is possible using escaping..."], $annotations['WithEscaped']['params']);
-        $this->assertTrue(isset($annotations['Multiline']));
-        $this->assertEquals('Multiline', $annotations['Multiline']['type']);
-        $this->assertEquals(['one' => 1, 'two' => 2], $annotations['Multiline']['params']);
-        $this->assertTrue(isset($annotations['WithTypes']));
-        $this->assertEquals('WithTypes', $annotations['WithTypes']['type']);
-        $this->assertEquals('4562', $annotations['WithTypes']['params']['integer']);
-        $this->assertEquals('-13', $annotations['WithTypes']['params']['negInt']);
-        $this->assertEquals('2.34', $annotations['WithTypes']['params']['double']);
-        $this->assertEquals('-5.67', $annotations['WithTypes']['params']['negDouble']);
-        $this->assertEquals('stubbles\lang\\reflect\annotation\parser\MyTestClass.class', $annotations['WithTypes']['params']['class']);
+        $this->annotationStateParser = new AnnotationStateParser();
     }
 
     /**
-     * test that tabs are recognized correctly
-     *
+     * @param   string  $name
+     * @param   array   $values
+     * @return  \stubbles\lang\reflect\annotation\Annotation
+     */
+    private function createExpectedMyTestClassAnnotation($name, array $values = [])
+    {
+        return new Annotation($name, 'stubbles\lang\reflect\annotation\parser\MyTestClass', $values);
+    }
+
+    /**
+     * @return  \stubbles\lang\reflect\annotation\Annotation
+     */
+    private function parseMyTestClassAnnotation($annotationName)
+    {
+        $clazz       = new \ReflectionClass('stubbles\lang\reflect\annotation\parser\MyTestClass');
+        $annotations = $this->annotationStateParser->parse(
+                $clazz->getDocComment(),
+                'stubbles\lang\reflect\annotation\parser\MyTestClass'
+        );
+        if (isset($annotations[$annotationName])) {
+            return $annotations[$annotationName];
+        }
+
+        return null;
+    }
+
+    /**
      * @test
      */
-    public function tabs()
+    public function parsesAnnotationWithoutValues()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation('Foo'),
+                $this->parseMyTestClassAnnotation('Foo')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationWithoutValuesButParentheses()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation('FooWithBrackets'),
+                $this->parseMyTestClassAnnotation('FooWithBrackets')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesCastedAnnotation()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation('TomTom'),
+                $this->parseMyTestClassAnnotation('Bar')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationWithSingleValue()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation('MyAnnotation', ['foo' => 'bar']),
+                $this->parseMyTestClassAnnotation('MyAnnotation')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationWithValues()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation(
+                        'TwoParams',
+                        ['foo' => 'bar', 'test' => 42]
+                ),
+                $this->parseMyTestClassAnnotation('TwoParams')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationWithValueContainingSignalCharacters()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation(
+                        'InvalidChars',
+                        ['foo' => 'ba@r=,']
+                ),
+                $this->parseMyTestClassAnnotation('InvalidChars')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationWithConstantAsValue()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation(
+                        'Constant',
+                        ['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT']
+                ),
+                $this->parseMyTestClassAnnotation('Constant')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationWithEnumAsValue()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation(
+                        'Enum',
+                        ['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::$FOO']
+                ),
+                $this->parseMyTestClassAnnotation('Enum')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationWithStringContainingEscapedCharacters()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation(
+                        'WithEscaped',
+                        ['foo' => "This string contains ' and \, which is possible using escaping..."]
+                ),
+                $this->parseMyTestClassAnnotation('WithEscaped')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationSpanningMultipleLine()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation(
+                        'Multiline',
+                        ['one' => 1, 'two' => 2]
+                ),
+                $this->parseMyTestClassAnnotation('Multiline')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesAnnotationWithClassAsValue()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClassAnnotation(
+                        'Class',
+                        ['__value' => 'stubbles\lang\\reflect\annotation\parser\MyTestClass.class']
+                ),
+                $this->parseMyTestClassAnnotation('Class')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function tabsAreNoProblemForParsing()
     {
         $comment = "/**\n\t * This is a test class that has many annotations.\n\t *\n\t * @Foo\n\t */";
-        $annotationStateParser = new AnnotationStateParser();
-        $annotations           = $annotationStateParser->parse($comment);
-        $this->assertTrue(isset($annotations['Foo']));
+        $this->assertEquals(
+                ['Foo' => new Annotation('Foo', 'tabs')],
+                $this->annotationStateParser->parse($comment, 'tabs')
+        );
     }
 
     /**
-     * test that parameter argumentations are recognized correctly
-     *
-     * @test
+     * @param   string  $name
+     * @param   array   $values
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      */
-    public function argument()
+    private function createExpectedMyTestClass2Annotation($name, array $values = [])
     {
-        $method                = new \ReflectionMethod('stubbles\lang\\reflect\annotation\parser\MyTestClass2', 'foo');
-        $annotationStateParser = new AnnotationStateParser();
-        $annotations           = $annotationStateParser->parse($method->getDocComment());
-        $this->assertTrue(isset($annotations['ForArgument1#bar']));
-        $this->assertEquals('bar', $annotations['ForArgument1#bar']['argument']);
-        $this->assertEquals('ForArgument1', $annotations['ForArgument1#bar']['type']);
-        $this->assertEquals([], $annotations['ForArgument1#bar']['params']);
-        $this->assertTrue(isset($annotations['ForArgument2#bar']));
-        $this->assertEquals('bar', $annotations['ForArgument2#bar']['argument']);
-        $this->assertEquals('ForArgument2', $annotations['ForArgument2#bar']['type']);
-        $this->assertEquals(['key' => 'value'], $annotations['ForArgument2#bar']['params']);
-        $this->assertTrue(isset($annotations['MoreArgument1#bar']));
-        $this->assertEquals('bar', $annotations['MoreArgument1#bar']['argument']);
-        $this->assertEquals('Casted', $annotations['MoreArgument1#bar']['type']);
-        $this->assertEquals([], $annotations['MoreArgument1#bar']['params']);
-        $this->assertTrue(isset($annotations['MoreArgument2#bar']));
-        $this->assertEquals('bar', $annotations['MoreArgument2#bar']['argument']);
-        $this->assertEquals('Casted', $annotations['MoreArgument2#bar']['type']);
-        $this->assertEquals(['key' => 'value'], $annotations['MoreArgument2#bar']['params']);
-        $this->assertTrue(isset($annotations['MoreArgument3#bar']));
-        $this->assertEquals('bar', $annotations['MoreArgument3#bar']['argument']);
-        $this->assertEquals('CastedAround', $annotations['MoreArgument3#bar']['type']);
-        $this->assertEquals([], $annotations['MoreArgument3#bar']['params']);
-        $this->assertTrue(isset($annotations['MoreArgument4#bar']));
-        $this->assertEquals('bar', $annotations['MoreArgument4#bar']['argument']);
-        $this->assertEquals('CastedAround', $annotations['MoreArgument4#bar']['type']);
-        $this->assertEquals(['key' => 'value'], $annotations['MoreArgument4#bar']['params']);
+        return new Annotation($name, 'stubbles\lang\reflect\annotation\parser\MyTestClass2::foo', $values);
     }
 
     /**
-     * test that parameter argumentations are recognized correctly
-     *
-     * @test
-     * @group  bug202
-     * @see    http://stubbles.net/ticket/202
+     * @return  \stubbles\lang\reflect\annotation\Annotation
      */
-    public function bug202()
+    private function parseMyTestClass2Annotation($annotationName)
     {
-        $method                = new \ReflectionMethod('stubbles\lang\\reflect\annotation\parser\Bug202Class', 'foo');
-        $annotationStateParser = new AnnotationStateParser();
-        $annotations           = $annotationStateParser->parse($method->getDocComment());
-        $this->assertTrue(isset($annotations['ForArgument1#bar']));
-        $this->assertEquals('bar', $annotations['ForArgument1#bar']['argument']);
-        $this->assertEquals('ForArgument1', $annotations['ForArgument1#bar']['type']);
-        $this->assertEquals([], $annotations['ForArgument1#bar']['params']);
-        $this->assertTrue(isset($annotations['ForArgument2#bar']));
-        $this->assertEquals('bar', $annotations['ForArgument2#bar']['argument']);
-        $this->assertEquals('ForArgument2', $annotations['ForArgument2#bar']['type']);
-        $this->assertEquals(['key' => 'value'], $annotations['ForArgument2#bar']['params']);
-        $this->assertTrue(isset($annotations['MoreArgument1#bar']));
-        $this->assertEquals('bar', $annotations['MoreArgument1#bar']['argument']);
-        $this->assertEquals('Casted', $annotations['MoreArgument1#bar']['type']);
-        $this->assertEquals([], $annotations['MoreArgument1#bar']['params']);
-        $this->assertTrue(isset($annotations['MoreArgument2#bar']));
-        $this->assertEquals('bar', $annotations['MoreArgument2#bar']['argument']);
-        $this->assertEquals('Casted', $annotations['MoreArgument2#bar']['type']);
-        $this->assertEquals(['key' => 'value'], $annotations['MoreArgument2#bar']['params']);
-        $this->assertTrue(isset($annotations['MoreArgument3#bar']));
-        $this->assertEquals('bar', $annotations['MoreArgument3#bar']['argument']);
-        $this->assertEquals('CastedAround', $annotations['MoreArgument3#bar']['type']);
-        $this->assertEquals([], $annotations['MoreArgument3#bar']['params']);
-        $this->assertTrue(isset($annotations['MoreArgument4#bar']));
-        $this->assertEquals('bar', $annotations['MoreArgument4#bar']['argument']);
-        $this->assertEquals('CastedAround', $annotations['MoreArgument4#bar']['type']);
-        $this->assertEquals(['key' => 'value'], $annotations['MoreArgument4#bar']['params']);
+        $method      = new \ReflectionMethod('stubbles\lang\\reflect\annotation\parser\MyTestClass2', 'foo');
+        $annotations = $this->annotationStateParser->parse($method->getDocComment(), 'stubbles\lang\\reflect\annotation\parser\MyTestClass2::foo');
+        if (isset($annotations[$annotationName])) {
+            return $annotations[$annotationName];
+        }
+
+        return null;
+    }
+
+    /**
+     * @test
+     */
+    public function parsesArgumentAnnotationFromMethodDocComment()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClass2Annotation('ForArgument1'),
+                $this->parseMyTestClass2Annotation('ForArgument1#bar')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesArgumentAnnotationWithValuesFromMethodDocComment()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClass2Annotation(
+                        'ForArgument2',
+                        ['key' => 'value']
+                ),
+                $this->parseMyTestClass2Annotation('ForArgument2#bar')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesCastedArgumentAnnotationFromMethodDocComment()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClass2Annotation('Casted'),
+                $this->parseMyTestClass2Annotation('MoreArgument1#bar')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesCastedArgumentAnnotationWithValuesFromMethodDocComment()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClass2Annotation(
+                        'Casted',
+                        ['key' => 'value']
+                ),
+                $this->parseMyTestClass2Annotation('MoreArgument2#bar')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesCastedArgumentAnnotationDifferentOrderFromMethodDocComment()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClass2Annotation('CastedAround'),
+                $this->parseMyTestClass2Annotation('MoreArgument3#bar')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parsesCastedArgumentAnnotationDifferentOrderWithValuesFromMethodDocComment()
+    {
+        $this->assertEquals(
+                $this->createExpectedMyTestClass2Annotation(
+                        'CastedAround',
+                        ['key' => 'value']
+                ),
+                $this->parseMyTestClass2Annotation('MoreArgument4#bar')
+        );
     }
 
     /**
@@ -239,11 +364,11 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parseIncompleteDocblockThrowsReflectionException()
     {
-        $annotationStateParser = new AnnotationStateParser();
-        $annotationStateParser->parse('/**
+        $this->annotationStateParser->parse('/**
      * a method with an annotation for its parameter
      *
-     * @ForArgument1{bar}');
+     * @ForArgument1{bar}',
+                'incomplete');
     }
 
 
@@ -254,8 +379,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function changeStateToUnknownStateThrowsReflectionException()
     {
-        $annotationStateParser = new AnnotationStateParser();
-        $annotationStateParser->changeState('invald');
+        $this->annotationStateParser->changeState('invald');
     }
 
     /**
@@ -264,9 +388,8 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function registerSingleAnnotationAfterParamValueThrowsReflectionException()
     {
-        $annotationStateParser = new AnnotationStateParser();
-        $annotationStateParser->registerAnnotationParam('paramName');
-        $annotationStateParser->setAnnotationParamValue('paramValue');
-        $annotationStateParser->registerSingleAnnotationParam('singleAnnotationValue');
+        $this->annotationStateParser->registerAnnotationParam('paramName');
+        $this->annotationStateParser->setAnnotationParamValue('paramValue');
+        $this->annotationStateParser->registerSingleAnnotationParam('singleAnnotationValue');
     }
 }

@@ -27,9 +27,10 @@ interface AnnotationParser
      * parse a docblock and return all annotations found
      *
      * @param   string  $docBlock
-     * @return  array
+     * @param   string  $targetName
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
      */
-    public function parse($docBlock);
+    public function parse($docBlock, $targetName);
 
     /**
      * register a new annotation

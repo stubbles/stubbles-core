@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation\parser;
+use stubbles\lang\reflect\annotation\Annotation;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationArgumentState;
@@ -96,12 +97,13 @@ class AnnotationStateParser implements AnnotationParser
      * parse a docblock and return all annotations found
      *
      * @param   string  $docBlock
-     * @return  array
+     * @param   string  $targetName
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
      * @throws  \ReflectionException
      */
-    public function parse($docBlock)
+    public function parse($docBlock, $targetName)
     {
-        $this->annotations = null;
+        $this->annotations = [];
         $this->changeState(AnnotationState::DOCBLOCK);
         $len = strlen($docBlock);
         for ($i = 0; $i < $len; $i++) {
@@ -113,7 +115,16 @@ class AnnotationStateParser implements AnnotationParser
             throw new \ReflectionException('Annotation parser finished in wrong state, last annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
         }
 
-        return $this->annotations;
+        $annotations = [];
+        foreach ($this->annotations as $name => $annotation) {
+            $annotations[$name] = new Annotation(
+                    $annotation['type'],
+                    $targetName,
+                    $annotation['params']
+            );
+        }
+
+        return $annotations;
     }
 
     /**
