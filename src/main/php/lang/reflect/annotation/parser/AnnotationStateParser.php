@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation\parser;
-use stubbles\lang\Parse;
-use stubbles\lang\reflect\ReflectionClass;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationArgumentState;
