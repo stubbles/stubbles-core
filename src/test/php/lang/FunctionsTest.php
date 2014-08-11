@@ -217,6 +217,42 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.1.4
+     */
+    public function reflectCallbackWithInstanceReturnsReflectionMethod()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\reflect\ReflectionMethod',
+                reflect([$this, __FUNCTION__])
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.1.4
+     */
+    public function reflectCallbackWithClassnameReturnsReflectionMethod()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\reflect\ReflectionMethod',
+                reflect([__CLASS__, __FUNCTION__])
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.1.4
+     */
+    public function reflectClosureReturnsReflectionObject()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\reflect\ReflectionObject',
+                reflect(function() { })
+        );
+    }
+
+    /**
+     * @test
      * @since  4.0.0
      */
     public function ensureCallableDoesNotChangeClosures()

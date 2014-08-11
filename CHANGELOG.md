@@ -1,3 +1,9 @@
+4.1.4 (2014-08-11)
+------------------
+
+  * added support to reflect array callbacks with `stubbles\lang\reflect()`
+
+
 4.1.3 (2014-08-10)
 ------------------
 
