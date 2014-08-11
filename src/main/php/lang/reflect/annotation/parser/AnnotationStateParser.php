@@ -82,7 +82,7 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function changeState($state, $token = null)
     {
-        if (isset($this->states[$state]) == false) {
+        if (!isset($this->states[$state])) {
             throw new \ReflectionException('Unknown state ' . $state);
         }
 
@@ -110,8 +110,8 @@ class AnnotationStateParser implements AnnotationParser
             $this->currentState->process($docBlock{$i});
         }
 
-        if (($this->currentState instanceof AnnotationDocblockState) == false
-          && ($this->currentState instanceof AnnotationTextState) == false) {
+        if (!($this->currentState instanceof AnnotationDocblockState)
+          && !($this->currentState instanceof AnnotationTextState)) {
             throw new \ReflectionException('Annotation parser finished in wrong state, last annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
         }
 
@@ -135,8 +135,7 @@ class AnnotationStateParser implements AnnotationParser
     public function registerAnnotation($name)
     {
         $this->annotations[$name] = ['type'     => $name,
-                                     'params'   => [],
-                                     'argument' => null
+                                     'params'   => []
                                     ];
         $this->currentAnnotation  = $name;
     }
@@ -196,6 +195,5 @@ class AnnotationStateParser implements AnnotationParser
         $this->annotations[$this->currentAnnotation . '#' . $argument] = $this->annotations[$this->currentAnnotation];
         unset($this->annotations[$this->currentAnnotation]);
         $this->currentAnnotation .= '#' . $argument;
-        $this->annotations[$this->currentAnnotation]['argument'] = $argument;
     }
 }
