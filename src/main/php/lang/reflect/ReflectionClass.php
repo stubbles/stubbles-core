@@ -39,7 +39,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
      */
     public function hasAnnotation($annotationName)
     {
-        return AnnotationFactory::has($this->getDocComment(), $annotationName, Annotation::TARGET_CLASS, $this->getName());
+        return AnnotationFactory::has($this->getDocComment(), $annotationName, $this->getName());
     }
 
     /**
@@ -50,7 +50,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
      */
     public function getAnnotation($annotationName)
     {
-        return AnnotationFactory::create($this->getDocComment(), $annotationName, Annotation::TARGET_CLASS, $this->getName());
+        return AnnotationFactory::create($this->getDocComment(), $annotationName, $this->getName());
     }
 
     /**

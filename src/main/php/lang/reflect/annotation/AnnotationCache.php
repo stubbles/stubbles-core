@@ -22,11 +22,7 @@ class AnnotationCache
      *
      * @type  array
      */
-    private static $annotations  = [Annotation::TARGET_CLASS    => [],
-                                    Annotation::TARGET_FUNCTION => [],
-                                    Annotation::TARGET_METHOD   => [],
-                                    Annotation::TARGET_PROPERTY => []
-                                   ];
+    private static $annotations  = [];
     /**
      * flag whether cache contents changed
      *
@@ -145,36 +141,27 @@ class AnnotationCache
      */
     public static function flush()
     {
-        self::$annotations  = [Annotation::TARGET_CLASS    => [],
-                               Annotation::TARGET_FUNCTION => [],
-                               Annotation::TARGET_METHOD   => [],
-                               Annotation::TARGET_PROPERTY => []
-                              ];
+        self::$annotations  = [];
         self::$cacheChanged = true;
     }
 
     /**
      * store an annotation in the cache
      *
-     * @param  int                                           $target          target of the annotation
      * @param  string                                        $targetName      name of the target
      * @param  string                                        $annotationName  name of the annotation
      * @param  \stubbles\lang\reflect\annotation\Annotation  $annotation      the annotation to store
      */
-    public static function put($target, $targetName, $annotationName, Annotation $annotation = null)
+    public static function put($targetName, $annotationName, Annotation $annotation = null)
     {
-        if (!isset(self::$annotations[$target])) {
-            self::$annotations[$target] = [];
-        }
-
-        if (!isset(self::$annotations[$target][$targetName])) {
-            self::$annotations[$target][$targetName] = [];
+        if (!isset(self::$annotations[$targetName])) {
+            self::$annotations[$targetName] = [];
         }
 
         if (null !== $annotation) {
-            self::$annotations[$target][$targetName][$annotationName] = serialize($annotation);
+            self::$annotations[$targetName][$annotationName] = serialize($annotation);
         } else {
-            self::$annotations[$target][$targetName][$annotationName] = '';
+            self::$annotations[$targetName][$annotationName] = '';
         }
 
         self::$cacheChanged = true;
@@ -183,65 +170,54 @@ class AnnotationCache
     /**
      * check, whether an annotation is available in the cache
      *
-     * @param   int     $target          target of the annotation
      * @param   string  $targetName      name of the target
      * @param   string  $annotationName  name of the annotation
      * @return  bool
      */
-    public static function has($target, $targetName, $annotationName)
+    public static function has($targetName, $annotationName)
     {
-        if (!isset(self::$annotations[$target])) {
+        if (!isset(self::$annotations[$targetName])) {
             return false;
         }
 
-        if (!isset(self::$annotations[$target][$targetName])) {
+        if (!isset(self::$annotations[$targetName][$annotationName])) {
             return false;
         }
 
-        if (!isset(self::$annotations[$target][$targetName][$annotationName])) {
-            return false;
-        }
-
-        return self::$annotations[$target][$targetName][$annotationName] !== '';
+        return self::$annotations[$targetName][$annotationName] !== '';
     }
 
     /**
      * check, whether an annotation is available in the cache
      *
-     * @param   int     $target          target of the annotation
      * @param   string  $targetName      name of the target
      * @param   string  $annotationName  name of the annotation
      * @return  bool
      */
-    public static function hasNot($target, $targetName, $annotationName)
+    public static function hasNot($targetName, $annotationName)
     {
-        if (!isset(self::$annotations[$target])) {
+        if (!isset(self::$annotations[$targetName])) {
             return false;
         }
 
-        if (!isset(self::$annotations[$target][$targetName])) {
+        if (!isset(self::$annotations[$targetName][$annotationName])) {
             return false;
         }
 
-        if (!isset(self::$annotations[$target][$targetName][$annotationName])) {
-            return false;
-        }
-
-        return self::$annotations[$target][$targetName][$annotationName] === '';
+        return self::$annotations[$targetName][$annotationName] === '';
     }
 
     /**
      * fetch an annotation from the cache
      *
-     * @param   int         $target          target of the annotation
      * @param   string      $targetName      name of the target
      * @param   string      $annotationName  name of the annotation
      * @return  \stubbles\lang\reflect\annotation\Annotation
      */
-    public static function get($target, $targetName, $annotationName)
+    public static function get($targetName, $annotationName)
     {
-        if (self::has($target, $targetName, $annotationName)) {
-            return unserialize(self::$annotations[$target][$targetName][$annotationName]);
+        if (self::has($targetName, $annotationName)) {
+            return unserialize(self::$annotations[$targetName][$annotationName]);
         }
 
         return null;

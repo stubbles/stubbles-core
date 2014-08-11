@@ -81,7 +81,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                          ->withContent($this->createdCachedAnnotation())
                          ->at($root);
         persistAnnotationsInFile($file->url());
-        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, 'foo', 'bar'));
+        $this->assertTrue(AnnotationCache::has('foo', 'bar'));
     }
 
     /**
@@ -98,7 +98,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                            },
                            function($data) {}
         );
-        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, 'foo', 'bar'));
+        $this->assertTrue(AnnotationCache::has('foo', 'bar'));
     }
 
     /**
@@ -108,7 +108,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     private function createdCachedAnnotation()
     {
-        return serialize([Annotation::TARGET_CLASS => ['foo' => ['bar' => new Annotation('bar', 'someFunction()')]]]);
+        return serialize(['foo' => ['bar' => new Annotation('bar', 'someFunction()')]]);
     }
 
     /**
