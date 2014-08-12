@@ -8,7 +8,6 @@
         "php": ">=5.4.0"
     },
     "require-dev": {
-        "stubbles/core-dev": "dev-master",
         "mikey179/vfsStream": "~1.3",
         "phpunit/phpunit": "~4.1"
     },
@@ -19,6 +18,11 @@
         "files": ["src/main/php/lang/functions.php",
                   "src/main/php/peer/functions.php"
                  ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "stubbles\\test\\": "src/test/helper"
+        }
     },
     "extra": {
         "branch-alias": {

@@ -238,15 +238,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
                                     . 'src' . DIRECTORY_SEPARATOR
                                     . 'main' . DIRECTORY_SEPARATOR
                                     . 'resources' . DIRECTORY_SEPARATOR
-                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini',
-                             ResourceLoader::getRootPath() . DIRECTORY_SEPARATOR
-                                    . 'vendor' . DIRECTORY_SEPARATOR
-                                    . 'stubbles' . DIRECTORY_SEPARATOR
-                                    . 'core-dev' . DIRECTORY_SEPARATOR
-                                    . 'src' . DIRECTORY_SEPARATOR
-                                    . 'main' . DIRECTORY_SEPARATOR
-                                    . 'resources' . DIRECTORY_SEPARATOR
-                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini',
+                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini'
                             ],
                             $this->resourceLoader->availableResourceUris('lang/stubbles.ini')
         );
