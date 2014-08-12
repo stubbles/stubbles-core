@@ -107,18 +107,6 @@ class Annotation
     }
 
     /**
-     * sets value for given property
-     *
-     * @param  string  $name
-     * @param  mixed   $value
-     * @deprecated  since 4.2.0, annotations should be read only, will be removed with 5.0.0
-     */
-    public function  __set($name, $value)
-    {
-        $this->values[$name] = $value;
-    }
-
-    /**
      * responds to a method call of an undefined method
      *
      * @param   string  $name
