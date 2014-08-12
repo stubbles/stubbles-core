@@ -9,6 +9,7 @@
  */
 namespace stubbles\lang\reflect;
 use \stubbles\lang;
+use stubbles\lang\reflect\annotation\Annotation;
 /**
  * class to be used for the test
  */
@@ -44,6 +45,8 @@ class TestMethodCollection2 extends TestMethodCollection
      *
      * @param   int       $param3
      * @return  stubbles\test\lang\reflect\TestWithMethodsAndProperties
+     * @SomeAnnotation
+     * @AnotherAnnotation
      */
     public function methodWithParams2($param3)
     {
@@ -368,6 +371,40 @@ class ReflectionMethodTest extends \PHPUnit_Framework_TestCase
         $refClass = lang\reflect('\DateTime', '__construct');
         $this->assertInstanceOf('stubbles\lang\\reflect\ReflectionExtension',
                                 $refClass->getExtension()
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function hasAnnotationReturnsFalseIfNoAnnotationIsPresent()
+    {
+        $this->assertFalse($this->refMethod1->hasAnnotation('Other'));
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function getAnnotationReturnsAnnotation()
+    {
+        $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
+                                $this->refMethod5->getAnnotation('SomeAnnotation')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotation()
+    {
+        $this->assertEquals(
+                ['SomeAnnotation'    => new Annotation('SomeAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()'),
+                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()')
+                ],
+                $this->refMethod5->annotations('SomeAnnotation')
         );
     }
 }

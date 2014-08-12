@@ -72,7 +72,8 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      */
     public function hasAnnotation($annotationName)
     {
-        return AnnotationFactory::has($this->getDocComment(), $annotationName, $this->className . '::' . $this->propertyName);
+        $separator = $this->isStatic() ? '::$' : '->';
+        return AnnotationFactory::has($this->getDocComment(), $annotationName, $this->className . $separator . $this->propertyName);
     }
 
     /**
@@ -83,7 +84,20 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      */
     public function getAnnotation($annotationName)
     {
-        return AnnotationFactory::create($this->getDocComment(), $annotationName, $this->className . '::' . $this->propertyName);
+        $separator = $this->isStatic() ? '::$' : '->';
+        return AnnotationFactory::create($this->getDocComment(), $annotationName, $this->className . $separator . $this->propertyName);
+    }
+
+    /**
+     * returns map of all annotations for this element
+     *
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @since   5.0.0
+     */
+    public function annotations()
+    {
+        $separator = $this->isStatic() ? '::$' : '->';
+        return AnnotationFactory::createAll($this->getDocComment(), $this->className . $separator . $this->propertyName);
     }
 
     /**

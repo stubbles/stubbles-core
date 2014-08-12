@@ -8,10 +8,12 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
+use stubbles\lang\reflect\annotation\Annotation;
 /**
  * does not return anything
  *
  * @FunctionTest()
+ * @AnotherAnnotation
  */
 function testWithOutParams()
 {
@@ -150,6 +152,20 @@ class ReflectionFunctionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
                                 $this->refFunction2->getAnnotation('FunctionTest')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotation()
+    {
+        $this->assertEquals(
+                ['FunctionTest'      => new Annotation('FunctionTest', 'stubbles\lang\reflect\testWithOutParams()'),
+                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\testWithOutParams()')
+                ],
+                $this->refFunction2->annotations('SomeAnnotation')
         );
     }
 

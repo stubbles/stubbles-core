@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
+use stubbles\lang\reflect\annotation\Annotation;
 /**
  * class for testing purposes
  */
@@ -18,6 +19,7 @@ class TestProperty1
      *
      * @type  mixed
      * @SomeAnnotation
+     * @AnotherAnnotation
      */
     public $property;
     /**
@@ -221,6 +223,20 @@ class ReflectionPropertyTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
                                 $this->refProperty->getAnnotation('SomeAnnotation')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotation()
+    {
+        $this->assertEquals(
+                ['SomeAnnotation'    => new Annotation('SomeAnnotation', 'stubbles\lang\reflect\TestProperty1->property'),
+                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestProperty1->property')
+                ],
+                $this->refProperty->annotations('SomeAnnotation')
         );
     }
 }

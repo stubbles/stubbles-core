@@ -16,7 +16,7 @@ namespace stubbles\lang\reflect\annotation;
 interface Annotatable
 {
     /**
-     * check whether the class has the given annotation or not
+     * check whether the given annotation is present or not
      *
      * @param   string  $annotationName
      * @return  bool
@@ -30,4 +30,12 @@ interface Annotatable
      * @return  \stubbles\lang\reflect\annotation\Annotation
      */
     public function getAnnotation($annotationName);
+
+    /**
+     * returns map of all annotations for this element
+     *
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @since   5.0.0
+     */
+    public function annotations();
 }

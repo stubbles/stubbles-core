@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
+use stubbles\lang\reflect\annotation\Annotation;
 /**
  * Test for stubbles\lang\reflect\ReflectionClass.
  *
@@ -364,6 +365,20 @@ class ReflectionClassTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
                                 $this->refClass2->getAnnotation('SomeAnnotation')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotation()
+    {
+        $this->assertEquals(
+                ['SomeAnnotation'    => new Annotation('SomeAnnotation', $this->refClass2->getName()),
+                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', $this->refClass2->getName())
+                ],
+                $this->refClass2->annotations('SomeAnnotation')
         );
     }
 }

@@ -74,7 +74,10 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
             }
 
             $this->checkName();
-            $this->parser->registerAnnotation($this->name);
+            if (!in_array($this->name, $this->forbiddenAnnotationNames)) {
+                $this->parser->registerAnnotation($this->name);
+            }
+
             $this->changeState(AnnotationState::ANNOTATION);
             return;
         }

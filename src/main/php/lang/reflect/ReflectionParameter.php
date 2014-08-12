@@ -71,7 +71,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     public function hasAnnotation($annotationName)
     {
         $refRoutine = $this->getDeclaringFunction();
-        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName));
+        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName . '()'));
         return AnnotationFactory::has($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, $targetName);
     }
 
@@ -84,8 +84,21 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     public function getAnnotation($annotationName)
     {
         $refRoutine = $this->getDeclaringFunction();
-        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName));
+        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName . '()'));
         return AnnotationFactory::create($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, $targetName);
+    }
+
+    /**
+     * returns map of all annotations for this element
+     *
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @since   5.0.0
+     */
+    public function annotations()
+    {
+        $refRoutine = $this->getDeclaringFunction();
+        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName . '()'));
+        return AnnotationFactory::createAll($refRoutine->getDocComment(), $targetName);
     }
 
     /**

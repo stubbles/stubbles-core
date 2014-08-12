@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
-use stubbles\lang\reflect\annotation\Annotation;
 use stubbles\lang\reflect\annotation\AnnotationFactory;
 use stubbles\lang\reflect\matcher\MethodMatcher;
 use stubbles\lang\reflect\matcher\PropertyMatcher;
@@ -51,6 +50,17 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
     public function getAnnotation($annotationName)
     {
         return AnnotationFactory::create($this->getDocComment(), $annotationName, $this->getName());
+    }
+
+    /**
+     * returns map of all annotations for this element
+     *
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @since   5.0.0
+     */
+    public function annotations()
+    {
+        return AnnotationFactory::createAll($this->getDocComment(), $this->getName());
     }
 
     /**

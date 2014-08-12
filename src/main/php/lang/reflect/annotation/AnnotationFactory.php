@@ -18,7 +18,7 @@ use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
 class AnnotationFactory
 {
     /**
-     * Creates an annotation from the given docblock comment.
+     * creates an annotation from the given docblock comment
      *
      * @param   string  $comment         the docblock comment that contains the annotation data
      * @param   string  $annotationName  name of the annotation to create
@@ -36,11 +36,7 @@ class AnnotationFactory
             throw new \ReflectionException('Can not find annotation ' . $annotationName);
         }
 
-        $annotations = self::parse($comment, $targetName);
-        foreach ($annotations as $name => $annotation) {
-            AnnotationCache::put($targetName, $name, $annotation);
-        }
-
+        $annotations = self::createAll($comment, $targetName);
         if (!isset($annotations[$annotationName])) {
             // put null into cache to save that the annotation does not exist
             AnnotationCache::put($targetName, $annotationName);
@@ -51,12 +47,30 @@ class AnnotationFactory
     }
 
     /**
+     * creates all annotations from the given docblock comment
+     *
+     * @param   string  $comment
+     * @param   string  $targetName
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @since   5.0.0
+     */
+    public static function createAll($comment, $targetName)
+    {
+        $annotations = self::parse($comment, $targetName);
+        foreach ($annotations as $name => $annotation) {
+            AnnotationCache::put($targetName, $name, $annotation);
+        }
+
+        return $annotations;
+    }
+
+    /**
      * parses doc comments and returns data about all annotations found
      *
      * @staticvar  \stubbles\lang\reflect\annotation\parser\AnnotationStateParser  $parser
      * @param      string  $comment
      * @param      string  $targetName
-     * @return     array
+     * @return     \stubbles\lang\reflect\annotation\Annotation[]
      */
     private static function parse($comment, $targetName)
     {

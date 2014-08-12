@@ -78,7 +78,7 @@ class AnnotationNameStateTest extends \PHPUnit_Framework_TestCase
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::DOCBLOCK));
-        $this->mockAnnotationParser->expects($this->once())
+        $this->mockAnnotationParser->expects($this->never())
                                    ->method('registerAnnotation')
                                    ->with($this->equalTo('return'));
 

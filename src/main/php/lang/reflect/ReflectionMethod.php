@@ -84,6 +84,17 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
     }
 
     /**
+     * returns map of all annotations for this element
+     *
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @since   5.0.0
+     */
+    public function annotations()
+    {
+        return AnnotationFactory::createAll($this->getDocComment(), $this->className . '::' . $this->methodName . '()');
+    }
+
+    /**
      * checks whether a value is equal to the class
      *
      * @param   mixed  $compare

@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
-use stubbles\lang\reflect\annotation\Annotation;
 use stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
  * Extended Reflection class for functions that allows usage of annotations.
@@ -50,7 +49,7 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
      */
     public function hasAnnotation($annotationName)
     {
-        return AnnotationFactory::has($this->docComment, $annotationName, $this->functionName);
+        return AnnotationFactory::has($this->docComment, $annotationName, $this->functionName . '()');
     }
 
     /**
@@ -61,7 +60,18 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
      */
     public function getAnnotation($annotationName)
     {
-        return AnnotationFactory::create($this->docComment, $annotationName, $this->functionName);
+        return AnnotationFactory::create($this->docComment, $annotationName, $this->functionName . '()');
+    }
+
+    /**
+     * returns map of all annotations for this element
+     *
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @since   5.0.0
+     */
+    public function annotations()
+    {
+        return AnnotationFactory::createAll($this->docComment, $this->functionName . '()');
     }
 
     /**
