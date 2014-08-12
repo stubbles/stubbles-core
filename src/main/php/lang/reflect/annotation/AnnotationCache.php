@@ -174,10 +174,14 @@ class AnnotationCache
      * @param   string  $annotationName  name of the annotation
      * @return  bool
      */
-    public static function has($targetName, $annotationName)
+    public static function has($targetName, $annotationName = null)
     {
         if (!isset(self::$annotations[$targetName])) {
             return false;
+        }
+
+        if (null === $annotationName) {
+            return true;
         }
 
         if (!isset(self::$annotations[$targetName][$annotationName])) {
@@ -221,5 +225,27 @@ class AnnotationCache
         }
 
         return null;
+    }
+
+    /**
+     * returns list of all annotations for given target
+     *
+     * @param   string  $targetName
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     */
+    public static function getAll($targetName)
+    {
+        if (!self::has($targetName)) {
+            return [];
+        }
+
+        $annotations = [];
+        foreach (self::$annotations[$targetName] as $annotationName => $serializedAnnotation) {
+            if ('' !== $serializedAnnotation) {
+                $annotations[$annotationName] = unserialize($serializedAnnotation);
+            }
+        }
+
+        return $annotations;
     }
 }

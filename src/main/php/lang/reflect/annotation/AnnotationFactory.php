@@ -56,6 +56,10 @@ class AnnotationFactory
      */
     public static function createAll($comment, $targetName)
     {
+        if (AnnotationCache::has($targetName)) {
+            return AnnotationCache::getAll($targetName);
+        }
+
         $annotations = self::parse($comment, $targetName);
         foreach ($annotations as $name => $annotation) {
             AnnotationCache::put($targetName, $name, $annotation);
