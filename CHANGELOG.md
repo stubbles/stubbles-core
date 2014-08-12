@@ -6,6 +6,17 @@
   * Removed possibility to change values on annotations, snnotations should be read only.
 
 
+### Other changes
+
+  * Added possibility to retrieve a map of all annotations for an element:
+    * `stubbles\lang\reflect\ReflectionClass::annotations()`
+    * `stubbles\lang\reflect\ReflectionObject::annotations()`
+    * `stubbles\lang\reflect\ReflectionFunction::annotations()`
+    * `stubbles\lang\reflect\ReflectionMethod::annotations()`
+    * `stubbles\lang\reflect\ReflectionParameter::annotations()`
+    * `stubbles\lang\reflect\ReflectionProperty::annotations()`
+
+
 4.1.4 (2014-08-11)
 ------------------
 
