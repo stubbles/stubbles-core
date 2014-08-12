@@ -56,7 +56,7 @@ class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
      * @return  string
      * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    protected function annotationTargetName()
+    protected function annotationTarget()
     {
         return $this->getName();
     }

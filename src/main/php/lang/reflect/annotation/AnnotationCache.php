@@ -18,9 +18,9 @@ use stubbles\lang\exception\RuntimeException;
 class AnnotationCache
 {
     /**
-     * Property to store annotations
+     * list of stored annotations
      *
-     * @type  array
+     * @type  \stubbles\lang\reflect\annotation\Annotations[]
      */
     private static $annotations  = [];
     /**
@@ -32,7 +32,7 @@ class AnnotationCache
     /**
      * closure which stores the current annotation cache
      *
-     * @type  Closure
+     * @type  callable
      */
     private static $storeCache;
 
@@ -69,12 +69,12 @@ class AnnotationCache
      * );
      * </code>
      *
-     * @param   \Closure  $readCache   function which can return cached annotation data
-     * @param   \Closure  $storeCache  function which takes cached annotation data and stores it
+     * @param   callable  $readCache   function which can return cached annotation data
+     * @param   callable  $storeCache  function which takes cached annotation data and stores it
      * @throws  \stubbles\lang\exception\RuntimeException
      * @since   3.0.0
      */
-    public static function start(\Closure $readCache, \Closure $storeCache)
+    public static function start(callable $readCache, callable $storeCache)
     {
         $annotationData = $readCache();
         if (null != $annotationData) {
@@ -146,35 +146,24 @@ class AnnotationCache
     }
 
     /**
-     * store an annotation in the cache
+     * store annotations in the cache
      *
-     * @param  \stubbles\lang\reflect\annotation\Annotation  $annotation      the annotation to store
+     * @param  \stubbles\lang\reflect\annotation\Annotations  $annotations
      */
-    public static function put(Annotation $annotation)
+    public static function put(Annotations $annotations)
     {
-        if (!isset(self::$annotations[$annotation->targetName()])) {
-            self::$annotations[$annotation->targetName()] = [];
+        if (!isset(self::$annotations[$annotations->target()])) {
+            self::$annotations[$annotations->target()] = [];
         }
 
-        self::$annotations[$annotation->targetName()][$annotation->originalType()] = serialize($annotation);
+        self::$annotations[$annotations->target()] = serialize($annotations);
         self::$cacheChanged = true;
     }
 
     /**
-     * store that given target doesn't have any annotations
+     * check, whether annotations are available in the cache
      *
-     * @param  string  $target
-     */
-    public static function putEmpty($target)
-    {
-        self::$annotations[$target] = [];
-        self::$cacheChanged = true;
-    }
-
-    /**
-     * check, whether an annotation is available in the cache
-     *
-     * @param   string  $target      name of the target
+     * @param   string  $target  name of the target
      * @return  bool
      */
     public static function has($target)
@@ -186,19 +175,14 @@ class AnnotationCache
      * returns list of all annotations for given target
      *
      * @param   string  $target
-     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @return  \stubbles\lang\reflect\annotation\Annotations
      */
     public static function get($target)
     {
         if (!self::has($target)) {
-            return [];
+            return new Annotations($target);
         }
 
-        $annotations = [];
-        foreach (self::$annotations[$target] as $annotationName => $serializedAnnotation) {
-            $annotations[$annotationName] = unserialize($serializedAnnotation);
-        }
-
-        return $annotations;
+        return unserialize(self::$annotations[$target]);
     }
 }

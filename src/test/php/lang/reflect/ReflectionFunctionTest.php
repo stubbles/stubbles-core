@@ -163,10 +163,10 @@ class ReflectionFunctionTest extends \PHPUnit_Framework_TestCase
     public function annotationsReturnsListOfAllAnnotation()
     {
         $this->assertEquals(
-                ['FunctionTest'      => new Annotation('FunctionTest', 'stubbles\lang\reflect\testWithOutParams()'),
-                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\testWithOutParams()')
+                [new Annotation('FunctionTest', 'stubbles\lang\reflect\testWithOutParams()'),
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\testWithOutParams()')
                 ],
-                $this->refFunction2->annotations()
+                $this->refFunction2->annotations()->all()
         );
     }
 
@@ -178,7 +178,7 @@ class ReflectionFunctionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [],
-                $this->refFunction1->annotations()
+                $this->refFunction1->annotations()->all()
         );
     }
 

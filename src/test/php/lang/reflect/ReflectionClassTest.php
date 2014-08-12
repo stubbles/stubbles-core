@@ -375,10 +375,10 @@ class ReflectionClassTest extends \PHPUnit_Framework_TestCase
     public function annotationsReturnsListOfAllAnnotation()
     {
         $this->assertEquals(
-                ['SomeAnnotation'    => new Annotation('SomeAnnotation', $this->refClass2->getName()),
-                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', $this->refClass2->getName())
+                [new Annotation('SomeAnnotation', $this->refClass2->getName()),
+                 new Annotation('AnotherAnnotation', $this->refClass2->getName())
                 ],
-                $this->refClass2->annotations()
+                $this->refClass2->annotations()->all()
         );
     }
 }

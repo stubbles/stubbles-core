@@ -3,12 +3,19 @@
 
 ### BC breaks
 
-  * Removed possibility to change values on annotations, snnotations should be read only.
+  * Removed possibility to change values on annotations, annotations should be read only.
+  * It is now possible to have more than one annotation of the same type. Retrieving only one annotation via one of the following methods will only return the first defined one:
+    * `stubbles\lang\reflect\ReflectionClass::getAnnotation()`
+    * `stubbles\lang\reflect\ReflectionObject::getAnnotation()`
+    * `stubbles\lang\reflect\ReflectionFunction::getAnnotation()`
+    * `stubbles\lang\reflect\ReflectionMethod::getAnnotation()`
+    * `stubbles\lang\reflect\ReflectionParameter::getAnnotation()`
+    * `stubbles\lang\reflect\ReflectionProperty::getAnnotation()`
 
 
 ### Other changes
 
-  * Added possibility to retrieve a map of all annotations for an element:
+  * Added possibility to retrieve all annotations for an element:
     * `stubbles\lang\reflect\ReflectionClass::annotations()`
     * `stubbles\lang\reflect\ReflectionObject::annotations()`
     * `stubbles\lang\reflect\ReflectionFunction::annotations()`

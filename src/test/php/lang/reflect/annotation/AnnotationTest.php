@@ -51,7 +51,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 'someFunction()',
-                $this->createAnnotation()->targetName()
+                $this->createAnnotation()->target()
         );
     }
 
@@ -350,6 +350,18 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
                 $expected,
                 $this->createSingleValueAnnotation($stringValue)->getValue()
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function canBeCastedToString()
+    {
+        $this->assertInternalType(
+                'string',
+                (string) $this->createAnnotation(['foo' => 'value'])
         );
     }
 }

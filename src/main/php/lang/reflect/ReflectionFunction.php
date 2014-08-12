@@ -49,7 +49,7 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
      * @return  string
      * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    protected function annotationTargetName()
+    protected function annotationTarget()
     {
         return $this->functionName . '()';
     }

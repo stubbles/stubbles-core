@@ -38,7 +38,7 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
      * @return  string
      * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    protected function annotationTargetName()
+    protected function annotationTarget()
     {
         return $this->getName();
     }

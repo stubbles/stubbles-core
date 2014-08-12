@@ -402,10 +402,10 @@ class ReflectionMethodTest extends \PHPUnit_Framework_TestCase
     public function annotationsReturnsListOfAllAnnotation()
     {
         $this->assertEquals(
-                ['SomeAnnotation'    => new Annotation('SomeAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()'),
-                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()')
+                [new Annotation('SomeAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()'),
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()')
                 ],
-                $this->refMethod5->annotations()
+                $this->refMethod5->annotations()->all()
         );
     }
 }

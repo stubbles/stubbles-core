@@ -17,67 +17,56 @@ use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
 trait Annotated
 {
     /**
-     * check whether the given annotation is present or not
+     * checks whether at least on occurrence of this annotation is present
      *
-     * @param   string  $annotationName
+     * @param   string  $type
      * @return  bool
      */
-    public function hasAnnotation($annotationName)
+    public function hasAnnotation($type)
     {
-        $annotations = $this->annotations();
-        return isset($annotations[$annotationName]);
+        return $this->annotations()->contain($type);
     }
 
     /**
      * return the specified annotation
      *
-     * @param   string  $annotationName
+     * In case there is more than one annotation of this type the first one is
+     * returned. To retrieve all annotations of a certain type use
+     * annotations()->of($type) instead.
+     *
+     * @param   string  $type
      * @return  \stubbles\lang\reflect\annotation\Annotation
      * @throws  \ReflectionException  when annotation is not present
      */
-    public function getAnnotation($annotationName)
+    public function getAnnotation($type)
     {
         $annotations = $this->annotations();
-        if (!isset($annotations[$annotationName])) {
-            throw new \ReflectionException('Can not find annotation ' . $annotationName);
+        if (!$annotations->contain($type)) {
+            throw new \ReflectionException('Can not find annotation ' . $type);
         }
 
-        return $annotations[$annotationName];
+        return $annotations->of($type)[0];
     }
 
     /**
-     * returns map of all annotations for this element
+     * returns all annotations for this element
      *
-     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @return  \stubbles\lang\reflect\annotation\Annotations
      * @since   5.0.0
      */
     public function annotations()
     {
-        $target = $this->annotationTargetName();
+        $target = $this->annotationTarget();
         if (AnnotationCache::has($target)) {
             return AnnotationCache::get($target);
         }
 
-        list($realTarget) = explode('#', $target);
-        $annotations = AnnotationStateParser::parseFrom($this->getDocComment(), $realTarget);
-        if (empty($annotations)) {
-            AnnotationCache::putEmpty($target);
-            if ($realTarget !== $target) {
-                AnnotationCache::putEmpty($realTarget);
-            }
-
-            return [];
+        list($sourceTarget) = explode('#', $target);
+        foreach (AnnotationStateParser::parseFrom($this->getDocComment(), $sourceTarget) as $annotations) {
+            AnnotationCache::put($annotations);
         }
 
-        $return = [];
-        foreach ($annotations as $annotation) {
-            AnnotationCache::put($annotation);
-            if ($annotation->targetName() === $target) {
-                $return[$annotation->originalType()] = $annotation;
-            }
-        }
-
-        return $return;
+        return AnnotationCache::get($target);
     }
 
     /**
@@ -85,5 +74,5 @@ trait Annotated
      *
      * @return  string
      */
-    protected abstract function annotationTargetName();
+    protected abstract function annotationTarget();
 }

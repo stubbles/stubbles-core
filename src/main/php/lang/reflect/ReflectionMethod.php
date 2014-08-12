@@ -69,7 +69,7 @@ class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
      * @return  string
      * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    protected function annotationTargetName()
+    protected function annotationTarget()
     {
         return $this->className . '::' . $this->methodName . '()';
     }

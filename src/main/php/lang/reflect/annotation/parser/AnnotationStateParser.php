@@ -9,6 +9,7 @@
  */
 namespace stubbles\lang\reflect\annotation\parser;
 use stubbles\lang\reflect\annotation\Annotation;
+use stubbles\lang\reflect\annotation\Annotations;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationArgumentState;
@@ -97,29 +98,29 @@ class AnnotationStateParser implements AnnotationParser
      * parse a docblock and return all annotations found
      *
      * @param   string  $docComment
-     * @param   string  $targetName
-     * @return  \stubbles\lang\reflect\annotation\Annotation[][]
+     * @param   string  $target
+     * @return  \stubbles\lang\reflect\annotation\Annotations[]
      * @throws  \ReflectionException
      */
-    public static function parseFrom($docComment, $targetName)
+    public static function parseFrom($docComment, $target)
     {
         static $self = null;
         if (null === $self) {
             $self = new self();
         }
 
-        return $self->parse($docComment, $targetName);
+        return $self->parse($docComment, $target);
     }
 
     /**
      * parse a docblock and return all annotations found
      *
      * @param   string  $docComment
-     * @param   string  $targetName
-     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @param   string  $target
+     * @return  \stubbles\lang\reflect\annotation\Annotations[]
      * @throws  \ReflectionException
      */
-    public function parse($docComment, $targetName)
+    public function parse($docComment, $target)
     {
         $this->annotations = [];
         $this->changeState(AnnotationState::DOCBLOCK);
@@ -135,21 +136,38 @@ class AnnotationStateParser implements AnnotationParser
 
         $annotations = [];
         foreach ($this->annotations as $annotation) {
-            if (isset($annotation['parameter'])) {
-                $realTargetName = $targetName . '#' . $annotation['parameter'];
-            } else {
-                $realTargetName = $targetName;
+            $realTarget = $this->realTarget($target, $annotation);
+            if (!isset($annotations[$realTarget])) {
+                $annotations[$realTarget] = new Annotations($realTarget);
             }
 
-            $annotations[$annotation['name']] = new Annotation(
-                    $annotation['type'],
-                    $realTargetName,
-                    $annotation['params'],
-                    $annotation['name']
+            $annotations[$realTarget]->add(
+                    new Annotation(
+                            $annotation['type'],
+                            $realTarget,
+                            $annotation['params'],
+                            $annotation['name']
+                    )
             );
         }
 
         return $annotations;
+    }
+
+    /**
+     * calculates real target in case of parameter annotation
+     *
+     * @param   string  $target
+     * @param   array   $annotation
+     * @return  string
+     */
+    private function realTarget($target, $annotation)
+    {
+        if (isset($annotation['parameter'])) {
+            return $target . '#' . $annotation['parameter'];
+        }
+
+        return $target;
     }
 
     /**

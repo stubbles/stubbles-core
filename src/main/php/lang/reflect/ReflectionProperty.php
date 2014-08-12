@@ -71,7 +71,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      * @return  string
      * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    protected function annotationTargetName()
+    protected function annotationTarget()
     {
         return $this->className . ($this->isStatic() ? '::$' : '->') . $this->propertyName;
     }

@@ -81,28 +81,23 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @param   string  $name
      * @param   array   $values
-     * @return  \stubbles\lang\reflect\annotation\Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
      */
-    private function createExpectedMyTestClassAnnotation($name, array $values = [], $originalName = null)
+    private function createExpectedMyTestClassAnnotation($name, array $values = [], $type = null)
     {
-        return new Annotation($name, 'stubbles\lang\reflect\annotation\parser\MyTestClass', $values, $originalName);
+        return [new Annotation($name, 'stubbles\lang\reflect\annotation\parser\MyTestClass', $values, $type)];
     }
 
     /**
-     * @return  \stubbles\lang\reflect\annotation\Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
      */
-    private function parseMyTestClassAnnotation($annotationName)
+    private function parseMyTestClassAnnotation($type)
     {
-        $clazz       = new \ReflectionClass('stubbles\lang\reflect\annotation\parser\MyTestClass');
-        $annotations = $this->annotationStateParser->parse(
+        $clazz = new \ReflectionClass('stubbles\lang\reflect\annotation\parser\MyTestClass');
+        return $this->annotationStateParser->parse(
                 $clazz->getDocComment(),
                 'stubbles\lang\reflect\annotation\parser\MyTestClass'
-        );
-        if (isset($annotations[$annotationName])) {
-            return $annotations[$annotationName];
-        }
-
-        return null;
+        )['stubbles\lang\reflect\annotation\parser\MyTestClass']->of($type);
     }
 
     /**
@@ -254,33 +249,31 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     {
         $comment = "/**\n\t * This is a test class that has many annotations.\n\t *\n\t * @Foo\n\t */";
         $this->assertEquals(
-                ['Foo' => new Annotation('Foo', 'tabs')],
-                $this->annotationStateParser->parse($comment, 'tabs')
+                [new Annotation('Foo', 'tabs')],
+                $this->annotationStateParser->parse($comment, 'tabs')['tabs']->all()
         );
     }
 
     /**
      * @param   string  $name
      * @param   array   $values
-     * @return  \stubbles\lang\reflect\annotation\Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
      */
-    private function createExpectedParameterAnnotation($name, array $values = [], $originalName = null)
+    private function createExpectedParameterAnnotation($name, array $values = [], $type = null)
     {
-        return new Annotation($name, 'stubbles\lang\reflect\annotation\parser\MyTestClass2::foo()#bar', $values, $originalName);
+        return [new Annotation($name, 'stubbles\lang\reflect\annotation\parser\MyTestClass2::foo()#bar', $values, $type)];
     }
 
     /**
-     * @return  \stubbles\lang\reflect\annotation\Annotation
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
      */
-    private function parseMyTestClass2Annotation($annotationName)
+    private function parseMyTestClass2Annotation($type)
     {
-        $method      = new \ReflectionMethod('stubbles\lang\\reflect\annotation\parser\MyTestClass2', 'foo');
-        $annotations = $this->annotationStateParser->parse($method->getDocComment(), 'stubbles\lang\\reflect\annotation\parser\MyTestClass2::foo()');
-        if (isset($annotations[$annotationName])) {
-            return $annotations[$annotationName];
-        }
-
-        return null;
+        $method = new \ReflectionMethod('stubbles\lang\\reflect\annotation\parser\MyTestClass2', 'foo');
+        return $this->annotationStateParser->parse(
+                $method->getDocComment(),
+                'stubbles\lang\\reflect\annotation\parser\MyTestClass2::foo()'
+        )['stubbles\lang\reflect\annotation\parser\MyTestClass2::foo()#bar']->of($type);
     }
 
     /**

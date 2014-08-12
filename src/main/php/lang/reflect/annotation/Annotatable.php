@@ -16,25 +16,30 @@ namespace stubbles\lang\reflect\annotation;
 interface Annotatable
 {
     /**
-     * check whether the given annotation is present or not
+     * checks whether at least on occurrence of this annotation is present
      *
-     * @param   string  $annotationName
+     * @param   string  $type
      * @return  bool
      */
-    public function hasAnnotation($annotationName);
+    public function hasAnnotation($type);
 
     /**
      * return the specified annotation
      *
-     * @param   string  $annotationName
+     * In case there is more than one annotation of this type the first one is
+     * returned. To retrieve all annotations of a certain type use
+     * annotations()->of($type) instead.
+     *
+     * @param   string  $type
      * @return  \stubbles\lang\reflect\annotation\Annotation
+     * @throws  \ReflectionException  when annotation is not present
      */
-    public function getAnnotation($annotationName);
+    public function getAnnotation($type);
 
     /**
-     * returns map of all annotations for this element
+     * returns all annotations for this element
      *
-     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @return  \stubbles\lang\reflect\annotation\Annotations
      * @since   5.0.0
      */
     public function annotations();

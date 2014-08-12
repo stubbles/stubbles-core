@@ -50,14 +50,13 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      */
     public function addingAnnotationWritesCacheFile()
     {
-        $annotation = new Annotation('annotationName', 'foo');
-        AnnotationCache::put($annotation);
+        $annotations = new Annotations('someTarget');
+        AnnotationCache::put($annotations);
         AnnotationCache::__shutdown();
         $this->assertTrue(file_exists(vfsStream::url('root/annotations.cache')));
         $data = unserialize(file_get_contents(vfsStream::url('root/annotations.cache')));
-        $this->assertTrue(isset($data['foo']));
-        $this->assertTrue(isset($data['foo']['annotationName']));
-        $this->assertEquals($annotation, unserialize($data['foo']['annotationName']));
+        $this->assertTrue(isset($data['someTarget']));
+        $this->assertEquals($annotations, unserialize($data['someTarget']));
     }
 
     /**
@@ -67,8 +66,7 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      */
     public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown()
     {
-        $annotation = new Annotation('annotationName', 'foo');
-        AnnotationCache::put($annotation);
+        AnnotationCache::put(new Annotations('someTarget'));
         AnnotationCache::stop();
         AnnotationCache::__shutdown();
         $this->assertFalse(file_exists(vfsStream::url('root/annotations.cache')));
@@ -77,9 +75,9 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function retrieveAnnotationsForUncachedTargetReturnsNull()
+    public function retrieveAnnotationsForUncachedTargetReturnsEmptyAnnotationsList()
     {
-        $this->assertEquals([], AnnotationCache::get('DoesNotExist'));
+        $this->assertEquals(new Annotations('DoesNotExist'), AnnotationCache::get('DoesNotExist'));
     }
 
     /**

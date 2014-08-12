@@ -70,7 +70,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
      * @return  string
      * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    protected function annotationTargetName()
+    protected function annotationTarget()
     {
         if (is_array($this->routineName)) {
             return $this->routineName[0] . '::' . $this->routineName[1] . '()#' . $this->paramName;

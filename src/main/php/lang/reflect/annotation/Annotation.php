@@ -29,31 +29,32 @@ class Annotation
      */
     private $values     = [];
     /**
-     * name of annotation target
+     * target from which annotation was retrieved
      *
      * @type  string
      */
-    private $targetName;
+    private $target;
     /**
      * original annotation type
      *
      * @type  string
      */
-    private $originalType;
+    private $type;
 
     /**
      * constructor
      *
-     * @param  string  $name
-     * @param  string  $targetName  name of target where annotation is for, i.e. the class, method, function, property or parameter
-     * @param  array   $values      optional  map of all annotation values
+     * @param  string  $name    name of annotation, in case of casted annotations it the casted type
+     * @param  string  $target  name of target where annotation is for, i.e. the class, method, function, property or parameter
+     * @param  array   $values  optional  map of all annotation values
+     * @param  string  $type    optional  type of annotation in case $name reflects a casted type
      */
-    public function __construct($name, $targetName, array $values = [], $originalType = null)
+    public function __construct($name, $target, array $values = [], $type = null)
     {
-        $this->name         = $name;
-        $this->targetName   = $targetName;
-        $this->values       = $values;
-        $this->originalType = (null === $originalType) ? $name : $originalType;
+        $this->name   = $name;
+        $this->target = $target;
+        $this->values = $values;
+        $this->type   = (null === $type) ? $name : $type;
     }
 
     /**
@@ -70,13 +71,12 @@ class Annotation
     /**
      * returns name of target where annotation is for, i.e. the class, method, function, property or parameter
      *
-     * @api
      * @return  string
      * @since   4.0.0
      */
-    public function targetName()
+    public function target()
     {
-        return $this->targetName;
+        return $this->target;
     }
 
     /**
@@ -84,9 +84,9 @@ class Annotation
      * @return  string
      * @since   5.0.0
      */
-    public function originalType()
+    public function type()
     {
-        return $this->originalType;
+        return $this->type;
     }
 
     /**
