@@ -94,6 +94,7 @@ class AnnotationStateParser implements AnnotationParser
     }
 
     /**
+     * parse a docblock and return all annotations found
      *
      * @param   string  $docComment
      * @param   string  $targetName
