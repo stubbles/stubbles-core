@@ -63,6 +63,20 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     }
 
     /**
+     * target name of property annotations
+     *
+     * @return  string
+     */
+    private function annotationTargetName()
+    {
+        if (is_array($this->routineName)) {
+            return $this->routineName[0] . '::' . $this->routineName[1] . '()';
+        }
+
+        return $this->routineName . '()';
+    }
+
+    /**
      * check whether the class has the given annotation or not
      *
      * @param   string  $annotationName
@@ -71,8 +85,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     public function hasAnnotation($annotationName)
     {
         $refRoutine = $this->getDeclaringFunction();
-        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName . '()'));
-        return AnnotationFactory::has($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, $targetName);
+        return AnnotationFactory::has($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, $this->annotationTargetName());
     }
 
     /**
@@ -84,8 +97,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     public function getAnnotation($annotationName)
     {
         $refRoutine = $this->getDeclaringFunction();
-        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName . '()'));
-        return AnnotationFactory::create($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, $targetName);
+        return AnnotationFactory::create($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, $this->annotationTargetName());
     }
 
     /**
@@ -97,8 +109,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     public function annotations()
     {
         $refRoutine = $this->getDeclaringFunction();
-        $targetName = ((is_array($this->routineName)) ? ($this->routineName[0] . '::' . $this->routineName[1] . '()') : ($this->routineName . '()'));
-        return AnnotationFactory::createAll($refRoutine->getDocComment(), $targetName);
+        return AnnotationFactory::createAll($refRoutine->getDocComment(), $this->annotationTargetName());
     }
 
     /**

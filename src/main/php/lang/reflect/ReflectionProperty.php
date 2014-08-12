@@ -9,7 +9,6 @@
  */
 namespace stubbles\lang\reflect;
 use stubbles\lang\reflect\annotation\Annotatable;
-use stubbles\lang\reflect\annotation\Annotation;
 use stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
  * Extended Reflection class for class properties that allows usage of annotations.
@@ -65,6 +64,16 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
     }
 
     /**
+     * target name of property annotations
+     *
+     * @return  string
+     */
+    private function annotationTargetName()
+    {
+        return $this->className . ($this->isStatic() ? '::$' : '->') . $this->propertyName;
+    }
+
+    /**
      * check whether the class has the given annotation or not
      *
      * @param   string  $annotationName
@@ -72,8 +81,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      */
     public function hasAnnotation($annotationName)
     {
-        $separator = $this->isStatic() ? '::$' : '->';
-        return AnnotationFactory::has($this->getDocComment(), $annotationName, $this->className . $separator . $this->propertyName);
+        return AnnotationFactory::has($this->getDocComment(), $annotationName, $this->annotationTargetName());
     }
 
     /**
@@ -84,8 +92,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      */
     public function getAnnotation($annotationName)
     {
-        $separator = $this->isStatic() ? '::$' : '->';
-        return AnnotationFactory::create($this->getDocComment(), $annotationName, $this->className . $separator . $this->propertyName);
+        return AnnotationFactory::create($this->getDocComment(), $annotationName, $this->annotationTargetName());
     }
 
     /**
@@ -96,8 +103,7 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      */
     public function annotations()
     {
-        $separator = $this->isStatic() ? '::$' : '->';
-        return AnnotationFactory::createAll($this->getDocComment(), $this->className . $separator . $this->propertyName);
+        return AnnotationFactory::createAll($this->getDocComment(), $this->annotationTargetName());
     }
 
     /**
