@@ -13,6 +13,7 @@ use stubbles\lang\reflect\annotation\Annotation;
  * a function
  *
  * @param       mixed  $param
+ * @FunctionAnnotation
  * @ParamAnno{param}
  * @AnotherAnnotation{param}
  */
@@ -41,8 +42,10 @@ class ParamTestHelper
      *
      * @param  mixed  $param
      * @param  int    $secondParam
+     * @MethodAnnotation
      * @ParamAnno{param}
      * @AnotherAnnotation{param}
+     * @SecondParam{secondParam}
      */
     function paramTest($param, $secondParam)
     {
@@ -59,8 +62,9 @@ class ParamTestHelper2 extends ParamTestHelper
      *
      * @param  ParamTestHelper  $param2
      * @ParamAnno{param2}
+     * @SecondParam{secondParam}
      */
-    function paramTest2(ParamTestHelper $param2)
+    function paramTest2(ParamTestHelper $param2, $secondParam)
     {
         // nothing to do
     }
@@ -218,7 +222,7 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
                 ['ParamAnno'         => new Annotation('ParamAnno', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param'),
                  'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param')
                 ],
-                $this->refParamMethod1->annotations('SomeAnnotation')
+                $this->refParamMethod1->annotations()
         );
     }
 

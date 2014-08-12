@@ -25,6 +25,7 @@ function testWithOutParams()
  * @param   string $param1
  * @param   mixed  $param2
  * @return  string
+ * @SomeParam{param1}
  */
 function testWithParams($param1, $param2)
 {
@@ -165,7 +166,19 @@ class ReflectionFunctionTest extends \PHPUnit_Framework_TestCase
                 ['FunctionTest'      => new Annotation('FunctionTest', 'stubbles\lang\reflect\testWithOutParams()'),
                  'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\testWithOutParams()')
                 ],
-                $this->refFunction2->annotations('SomeAnnotation')
+                $this->refFunction2->annotations()
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsDoesNotContainParameterAnnotations()
+    {
+        $this->assertEquals(
+                [],
+                $this->refFunction1->annotations()
         );
     }
 

@@ -236,7 +236,7 @@ class ReflectionPropertyTest extends \PHPUnit_Framework_TestCase
                 ['SomeAnnotation'    => new Annotation('SomeAnnotation', 'stubbles\lang\reflect\TestProperty1->property'),
                  'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestProperty1->property')
                 ],
-                $this->refProperty->annotations('SomeAnnotation')
+                $this->refProperty->annotations()
         );
     }
 }

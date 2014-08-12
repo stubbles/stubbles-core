@@ -47,6 +47,7 @@ class TestMethodCollection2 extends TestMethodCollection
      * @return  stubbles\test\lang\reflect\TestWithMethodsAndProperties
      * @SomeAnnotation
      * @AnotherAnnotation
+     * @SomeParam{param3}
      */
     public function methodWithParams2($param3)
     {
@@ -404,7 +405,7 @@ class ReflectionMethodTest extends \PHPUnit_Framework_TestCase
                 ['SomeAnnotation'    => new Annotation('SomeAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()'),
                  'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()')
                 ],
-                $this->refMethod5->annotations('SomeAnnotation')
+                $this->refMethod5->annotations()
         );
     }
 }

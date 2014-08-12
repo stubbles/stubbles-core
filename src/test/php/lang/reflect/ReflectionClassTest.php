@@ -378,7 +378,7 @@ class ReflectionClassTest extends \PHPUnit_Framework_TestCase
                 ['SomeAnnotation'    => new Annotation('SomeAnnotation', $this->refClass2->getName()),
                  'AnotherAnnotation' => new Annotation('AnotherAnnotation', $this->refClass2->getName())
                 ],
-                $this->refClass2->annotations('SomeAnnotation')
+                $this->refClass2->annotations()
         );
     }
 }
