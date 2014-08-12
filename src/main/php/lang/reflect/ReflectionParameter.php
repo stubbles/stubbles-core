@@ -116,17 +116,6 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     }
 
     /**
-     * returns map of all annotations for this element
-     *
-     * @return  \stubbles\lang\reflect\annotation\Annotation[]
-     * @since   5.0.0
-     */
-    public function annotations()
-    {
-        return AnnotationFactory::createAll($this->getDocComment(), $this->annotationTargetName());
-    }
-
-    /**
      * checks whether a value is equal to the class
      *
      * @param   mixed  $compare
