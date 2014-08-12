@@ -811,12 +811,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-core-dev.git",
-                "reference": "b3e4ec64f958b69eacac0218623dc951449c6a46"
+                "reference": "70116378b8ce31147d15bb0f0d48f80c1fa61376"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-core-dev/zipball/b3e4ec64f958b69eacac0218623dc951449c6a46",
-                "reference": "b3e4ec64f958b69eacac0218623dc951449c6a46",
+                "url": "https://api.github.com/repos/stubbles/stubbles-core-dev/zipball/70116378b8ce31147d15bb0f0d48f80c1fa61376",
+                "reference": "70116378b8ce31147d15bb0f0d48f80c1fa61376",
                 "shasum": ""
             },
             "require": {
@@ -839,7 +839,7 @@
             ],
             "description": "Development stuff for Stubbles Core.",
             "homepage": "http://stubbles.net/",
-            "time": "2014-07-30 14:55:43"
+            "time": "2014-08-12 06:52:38"
         },
         {
             "name": "symfony/yaml",
