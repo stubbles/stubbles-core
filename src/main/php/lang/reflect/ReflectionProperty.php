@@ -9,7 +9,7 @@
  */
 namespace stubbles\lang\reflect;
 use stubbles\lang\reflect\annotation\Annotatable;
-use stubbles\lang\reflect\annotation\AnnotationFactory;
+use stubbles\lang\reflect\annotation\Annotated;
 /**
  * Extended Reflection class for class properties that allows usage of annotations.
  *
@@ -21,6 +21,8 @@ use stubbles\lang\reflect\annotation\AnnotationFactory;
  */
 class ReflectionProperty extends \ReflectionProperty implements Annotatable
 {
+    use Annotated;
+
     /**
      * Name of the class
      *
@@ -67,43 +69,11 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
      * target name of property annotations
      *
      * @return  string
+     * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    private function annotationTargetName()
+    protected function annotationTargetName()
     {
         return $this->className . ($this->isStatic() ? '::$' : '->') . $this->propertyName;
-    }
-
-    /**
-     * check whether the class has the given annotation or not
-     *
-     * @param   string  $annotationName
-     * @return  bool
-     */
-    public function hasAnnotation($annotationName)
-    {
-        return AnnotationFactory::has($this->getDocComment(), $annotationName, $this->annotationTargetName());
-    }
-
-    /**
-     * return the specified annotation
-     *
-     * @param   string          $annotationName
-     * @return  \stubbles\lang\reflect\annotation\Annotation
-     */
-    public function getAnnotation($annotationName)
-    {
-        return AnnotationFactory::create($this->getDocComment(), $annotationName, $this->annotationTargetName());
-    }
-
-    /**
-     * returns map of all annotations for this element
-     *
-     * @return  \stubbles\lang\reflect\annotation\Annotation[]
-     * @since   5.0.0
-     */
-    public function annotations()
-    {
-        return AnnotationFactory::createAll($this->getDocComment(), $this->annotationTargetName());
     }
 
     /**

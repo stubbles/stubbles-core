@@ -9,7 +9,7 @@
  */
 namespace stubbles\lang\reflect;
 use stubbles\lang\reflect\annotation\Annotatable;
-use stubbles\lang\reflect\annotation\Annotation;
+use stubbles\lang\reflect\annotation\Annotated;
 use stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
  * Extended Reflection class for parameters.
@@ -18,6 +18,8 @@ use stubbles\lang\reflect\annotation\AnnotationFactory;
  */
 class ReflectionParameter extends \ReflectionParameter implements Annotatable
 {
+    use Annotated;
+
     /**
      * name of reflected routine
      *
@@ -66,14 +68,29 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
      * target name of property annotations
      *
      * @return  string
+     * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    private function annotationTargetName()
+    protected function annotationTargetName()
     {
         if (is_array($this->routineName)) {
             return $this->routineName[0] . '::' . $this->routineName[1] . '()';
         }
 
         return $this->routineName . '()';
+    }
+
+    /**
+     * returns doc comment
+     *
+     * The doc comment is the one for the declaring function/method, as
+     * parameters don't have their own doc comments. This is required for
+     * annotation parsing.
+     *
+     * @return  string
+     */
+    protected function getDocComment()
+    {
+        return $this->getDeclaringFunction()->getDocComment();
     }
 
     /**
@@ -84,8 +101,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
      */
     public function hasAnnotation($annotationName)
     {
-        $refRoutine = $this->getDeclaringFunction();
-        return AnnotationFactory::has($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, $this->annotationTargetName());
+        return AnnotationFactory::has($this->getDocComment(), $annotationName . '#' . $this->paramName, $this->annotationTargetName());
     }
 
     /**
@@ -96,8 +112,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
      */
     public function getAnnotation($annotationName)
     {
-        $refRoutine = $this->getDeclaringFunction();
-        return AnnotationFactory::create($refRoutine->getDocComment(), $annotationName . '#' . $this->paramName, $this->annotationTargetName());
+        return AnnotationFactory::create($this->getDocComment(), $annotationName . '#' . $this->paramName, $this->annotationTargetName());
     }
 
     /**
@@ -108,8 +123,7 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
      */
     public function annotations()
     {
-        $refRoutine = $this->getDeclaringFunction();
-        return AnnotationFactory::createAll($refRoutine->getDocComment(), $this->annotationTargetName());
+        return AnnotationFactory::createAll($this->getDocComment(), $this->annotationTargetName());
     }
 
     /**
