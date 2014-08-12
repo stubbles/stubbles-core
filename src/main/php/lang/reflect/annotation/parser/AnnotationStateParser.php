@@ -94,20 +94,37 @@ class AnnotationStateParser implements AnnotationParser
     }
 
     /**
-     * parse a docblock and return all annotations found
      *
-     * @param   string  $docBlock
+     * @param   string  $docComment
      * @param   string  $targetName
      * @return  \stubbles\lang\reflect\annotation\Annotation[]
      * @throws  \ReflectionException
      */
-    public function parse($docBlock, $targetName)
+    public static function parseFrom($docComment, $targetName)
+    {
+        static $self = null;
+        if (null === $self) {
+            $self = new self();
+        }
+
+        return $self->parse($docComment, $targetName);
+    }
+
+    /**
+     * parse a docblock and return all annotations found
+     *
+     * @param   string  $docComment
+     * @param   string  $targetName
+     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @throws  \ReflectionException
+     */
+    public function parse($docComment, $targetName)
     {
         $this->annotations = [];
         $this->changeState(AnnotationState::DOCBLOCK);
-        $len = strlen($docBlock);
+        $len = strlen($docComment);
         for ($i = 0; $i < $len; $i++) {
-            $this->currentState->process($docBlock{$i});
+            $this->currentState->process($docComment{$i});
         }
 
         if (!($this->currentState instanceof AnnotationDocblockState)

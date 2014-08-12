@@ -60,30 +60,12 @@ class AnnotationFactory
             return AnnotationCache::getAll($targetName);
         }
 
-        $annotations = self::parse($comment, $targetName);
+        $annotations = AnnotationStateParser::parseFrom($comment, $targetName);
         foreach ($annotations as $name => $annotation) {
             AnnotationCache::put($targetName, $name, $annotation);
         }
 
         return $annotations;
-    }
-
-    /**
-     * parses doc comments and returns data about all annotations found
-     *
-     * @staticvar  \stubbles\lang\reflect\annotation\parser\AnnotationStateParser  $parser
-     * @param      string  $comment
-     * @param      string  $targetName
-     * @return     \stubbles\lang\reflect\annotation\Annotation[]
-     */
-    private static function parse($comment, $targetName)
-    {
-        static $parser = null;
-        if (null === $parser) {
-            $parser = new AnnotationStateParser();
-        }
-
-        return $parser->parse($comment, $targetName);
     }
 
     /**
