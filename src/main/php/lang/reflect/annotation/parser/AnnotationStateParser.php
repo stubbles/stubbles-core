@@ -98,7 +98,7 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @param   string  $docComment
      * @param   string  $targetName
-     * @return  \stubbles\lang\reflect\annotation\Annotation[]
+     * @return  \stubbles\lang\reflect\annotation\Annotation[][]
      * @throws  \ReflectionException
      */
     public static function parseFrom($docComment, $targetName)
@@ -134,11 +134,18 @@ class AnnotationStateParser implements AnnotationParser
         }
 
         $annotations = [];
-        foreach ($this->annotations as $name => $annotation) {
-            $annotations[$name] = new Annotation(
+        foreach ($this->annotations as $annotation) {
+            if (isset($annotation['parameter'])) {
+                $realTargetName = $targetName . '#' . $annotation['parameter'];
+            } else {
+                $realTargetName = $targetName;
+            }
+
+            $annotations[$annotation['name']] = new Annotation(
                     $annotation['type'],
-                    $targetName,
-                    $annotation['params']
+                    $realTargetName,
+                    $annotation['params'],
+                    $annotation['name']
             );
         }
 
@@ -152,10 +159,12 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function registerAnnotation($name)
     {
-        $this->annotations[$name] = ['type'     => $name,
-                                     'params'   => []
-                                    ];
-        $this->currentAnnotation  = $name;
+        $key = uniqid($name, true);
+        $this->annotations[$key] = ['name'   => $name,
+                                    'type'   => $name,
+                                    'params' => []
+                                   ];
+        $this->currentAnnotation = $key;
     }
 
     /**
@@ -206,12 +215,13 @@ class AnnotationStateParser implements AnnotationParser
     /**
      * sets the argument for which the annotation is declared
      *
-     * @param  string  $argument  name of the argument
+     * @param  string  $parameterName  name of the argument
      */
-    public function setAnnotationForArgument($argument)
+    public function markAsParameterAnnotation($parameterName)
     {
-        $this->annotations[$this->currentAnnotation . '#' . $argument] = $this->annotations[$this->currentAnnotation];
+        $this->annotations[$this->currentAnnotation . '#' . $parameterName] = $this->annotations[$this->currentAnnotation];
         unset($this->annotations[$this->currentAnnotation]);
-        $this->currentAnnotation .= '#' . $argument;
+        $this->currentAnnotation .= '#' . $parameterName;
+        $this->annotations[$this->currentAnnotation]['parameter'] = $parameterName;
     }
 }

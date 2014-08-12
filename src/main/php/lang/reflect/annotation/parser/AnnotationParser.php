@@ -70,9 +70,9 @@ interface AnnotationParser
     public function setAnnotationType($type);
 
     /**
-     * sets the argument for which the annotation is declared
+     * marks the current annotation as being an annotation for a function/method parameter
      *
-     * @param  string  $argument  name of the argument
+     * @param  string  $parameterName  name of the parameter
      */
-    public function setAnnotationForArgument($argument);
+    public function markAsParameterAnnotation($parameterName);
 }

@@ -34,6 +34,12 @@ class Annotation
      * @type  string
      */
     private $targetName;
+    /**
+     * original annotation type
+     *
+     * @type  string
+     */
+    private $originalType;
 
     /**
      * constructor
@@ -42,11 +48,12 @@ class Annotation
      * @param  string  $targetName  name of target where annotation is for, i.e. the class, method, function, property or parameter
      * @param  array   $values      optional  map of all annotation values
      */
-    public function __construct($name, $targetName, array $values = [])
+    public function __construct($name, $targetName, array $values = [], $originalType = null)
     {
-        $this->name       = $name;
-        $this->targetName = $targetName;
-        $this->values     = $values;
+        $this->name         = $name;
+        $this->targetName   = $targetName;
+        $this->values       = $values;
+        $this->originalType = (null === $originalType) ? $name : $originalType;
     }
 
     /**
@@ -70,6 +77,16 @@ class Annotation
     public function targetName()
     {
         return $this->targetName;
+    }
+
+    /**
+     *
+     * @return  string
+     * @since   5.0.0
+     */
+    public function originalType()
+    {
+        return $this->originalType;
     }
 
     /**

@@ -73,10 +73,10 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     protected function annotationTargetName()
     {
         if (is_array($this->routineName)) {
-            return $this->routineName[0] . '::' . $this->routineName[1] . '()';
+            return $this->routineName[0] . '::' . $this->routineName[1] . '()#' . $this->paramName;
         }
 
-        return $this->routineName . '()';
+        return $this->routineName . '()#' . $this->paramName;
     }
 
     /**
@@ -91,28 +91,6 @@ class ReflectionParameter extends \ReflectionParameter implements Annotatable
     protected function getDocComment()
     {
         return $this->getDeclaringFunction()->getDocComment();
-    }
-
-    /**
-     * check whether the class has the given annotation or not
-     *
-     * @param   string  $annotationName
-     * @return  bool
-     */
-    public function hasAnnotation($annotationName)
-    {
-        return AnnotationFactory::has($this->getDocComment(), $annotationName . '#' . $this->paramName, $this->annotationTargetName());
-    }
-
-    /**
-     * return the specified annotation
-     *
-     * @param   string          $annotationName
-     * @return  \stubbles\lang\reflect\annotation\Annotation
-     */
-    public function getAnnotation($annotationName)
-    {
-        return AnnotationFactory::create($this->getDocComment(), $annotationName . '#' . $this->paramName, $this->annotationTargetName());
     }
 
     /**

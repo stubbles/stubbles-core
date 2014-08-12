@@ -201,8 +201,8 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
     public function annotationsReturnsListOfAllAnnotationForFunctionParameter()
     {
         $this->assertEquals(
-                ['ParamAnno#param'         => new Annotation('ParamAnno', 'stubbles\lang\reflect\test_function()'),
-                 'AnotherAnnotation#param' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\test_function()')
+                ['ParamAnno'         => new Annotation('ParamAnno', 'stubbles\lang\reflect\test_function()#param'),
+                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\test_function()#param')
                 ],
                 $this->refParamFunction->annotations('SomeAnnotation')
         );
@@ -215,8 +215,8 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
     public function annotationsReturnsListOfAllAnnotationForMethodParameter()
     {
         $this->assertEquals(
-                ['ParamAnno#param'         => new Annotation('ParamAnno', 'stubbles\lang\reflect\ParamTestHelper::paramTest()'),
-                 'AnotherAnnotation#param' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\ParamTestHelper::paramTest()')
+                ['ParamAnno'         => new Annotation('ParamAnno', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param'),
+                 'AnotherAnnotation' => new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param')
                 ],
                 $this->refParamMethod1->annotations('SomeAnnotation')
         );

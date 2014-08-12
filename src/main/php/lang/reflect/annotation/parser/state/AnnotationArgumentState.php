@@ -45,7 +45,7 @@ class AnnotationArgumentState extends AnnotationAbstractState implements Annotat
                     throw new \ReflectionException('Annotation argument may contain letters, underscores and numbers, but contains an invalid character.');
                 }
 
-                $this->parser->setAnnotationForArgument($this->argument);
+                $this->parser->markAsParameterAnnotation($this->argument);
             }
 
             $this->parser->changeState(AnnotationState::ANNOTATION);

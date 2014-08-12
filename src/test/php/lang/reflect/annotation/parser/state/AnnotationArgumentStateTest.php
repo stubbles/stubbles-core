@@ -47,7 +47,7 @@ class AnnotationArgumentStateTest extends \PHPUnit_Framework_TestCase
     public function processArgumentParenthesisWithoutValueDoesNothing()
     {
         $this->mockAnnotationParser->expects($this->never())
-                                   ->method('setAnnotationForArgument');
+                                   ->method('markAsParameterAnnotation');
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')
                                    ->with($this->equalTo(AnnotationState::ANNOTATION));
@@ -61,7 +61,7 @@ class AnnotationArgumentStateTest extends \PHPUnit_Framework_TestCase
     public function processArgumentParenthesisWithValueStoresValue()
     {
         $this->mockAnnotationParser->expects($this->once())
-                                   ->method('setAnnotationForArgument')
+                                   ->method('markAsParameterAnnotation')
                                    ->with($this->equalTo('a'));
         $this->mockAnnotationParser->expects($this->once())
                                    ->method('changeState')

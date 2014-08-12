@@ -148,102 +148,55 @@ class AnnotationCache
     /**
      * store an annotation in the cache
      *
-     * @param  string                                        $targetName      name of the target
-     * @param  string                                        $annotationName  name of the annotation
      * @param  \stubbles\lang\reflect\annotation\Annotation  $annotation      the annotation to store
      */
-    public static function put($targetName, $annotationName, Annotation $annotation = null)
+    public static function put(Annotation $annotation)
     {
-        if (!isset(self::$annotations[$targetName])) {
-            self::$annotations[$targetName] = [];
+        if (!isset(self::$annotations[$annotation->targetName()])) {
+            self::$annotations[$annotation->targetName()] = [];
         }
 
-        if (null !== $annotation) {
-            self::$annotations[$targetName][$annotationName] = serialize($annotation);
-        } else {
-            self::$annotations[$targetName][$annotationName] = '';
-        }
+        self::$annotations[$annotation->targetName()][$annotation->originalType()] = serialize($annotation);
+        self::$cacheChanged = true;
+    }
 
+    /**
+     * store that given target doesn't have any annotations
+     *
+     * @param  string  $target
+     */
+    public static function putEmpty($target)
+    {
+        self::$annotations[$target] = [];
         self::$cacheChanged = true;
     }
 
     /**
      * check, whether an annotation is available in the cache
      *
-     * @param   string  $targetName      name of the target
-     * @param   string  $annotationName  name of the annotation
+     * @param   string  $target      name of the target
      * @return  bool
      */
-    public static function has($targetName, $annotationName = null)
+    public static function has($target)
     {
-        if (!isset(self::$annotations[$targetName])) {
-            return false;
-        }
-
-        if (null === $annotationName) {
-            return true;
-        }
-
-        if (!isset(self::$annotations[$targetName][$annotationName])) {
-            return false;
-        }
-
-        return self::$annotations[$targetName][$annotationName] !== '';
-    }
-
-    /**
-     * check, whether an annotation is available in the cache
-     *
-     * @param   string  $targetName      name of the target
-     * @param   string  $annotationName  name of the annotation
-     * @return  bool
-     */
-    public static function hasNot($targetName, $annotationName)
-    {
-        if (!isset(self::$annotations[$targetName])) {
-            return false;
-        }
-
-        if (!isset(self::$annotations[$targetName][$annotationName])) {
-            return false;
-        }
-
-        return self::$annotations[$targetName][$annotationName] === '';
-    }
-
-    /**
-     * fetch an annotation from the cache
-     *
-     * @param   string      $targetName      name of the target
-     * @param   string      $annotationName  name of the annotation
-     * @return  \stubbles\lang\reflect\annotation\Annotation
-     */
-    public static function get($targetName, $annotationName)
-    {
-        if (self::has($targetName, $annotationName)) {
-            return unserialize(self::$annotations[$targetName][$annotationName]);
-        }
-
-        return null;
+        return isset(self::$annotations[$target]);
     }
 
     /**
      * returns list of all annotations for given target
      *
-     * @param   string  $targetName
+     * @param   string  $target
      * @return  \stubbles\lang\reflect\annotation\Annotation[]
      */
-    public static function getAll($targetName)
+    public static function get($target)
     {
-        if (!self::has($targetName)) {
+        if (!self::has($target)) {
             return [];
         }
 
         $annotations = [];
-        foreach (self::$annotations[$targetName] as $annotationName => $serializedAnnotation) {
-            if ('' !== $serializedAnnotation) {
-                $annotations[$annotationName] = unserialize($serializedAnnotation);
-            }
+        foreach (self::$annotations[$target] as $annotationName => $serializedAnnotation) {
+            $annotations[$annotationName] = unserialize($serializedAnnotation);
         }
 
         return $annotations;
