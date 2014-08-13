@@ -426,16 +426,6 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     /**
      * @since  4.0.0
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
-     */
-    public function createInstanceWithInvalidRfcThrowsIllegalArgumentException()
-    {
-        HttpUri::fromString('http://example.net/', 'RFC 08/15');
-    }
-
-    /**
-     * @since  4.0.0
-     * @test
      * @expectedException  stubbles\peer\MalformedUriException
      */
     public function createInstanceWithUserInfoThrowsMalformedUriExceptionForDefaultRfc()

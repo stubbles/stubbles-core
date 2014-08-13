@@ -51,15 +51,10 @@ abstract class HttpUri extends Uri
      * @param   string  $uriString  string to create instance from
      * @param   string  $rfc        optional  RFC to base validation on, defaults to Http::RFC_7230
      * @return  \stubbles\peer\http\HttpUri
-     * @throws  \stubbles\lang\exception\IllegalArgumentException  when passed RFC is unknown
      * @throws  \stubbles\lang\exception\MalformedUriException
      */
     public static function fromString($uriString, $rfc = Http::RFC_7230)
     {
-        if (!Http::isValidRfc($rfc)) {
-            throw new IllegalArgumentException('Unknown RFC ' . $rfc . ', please use one of ' . Http::RFC_2616 . ' or ' . Http::RFC_7230);
-        }
-
         if (strlen($uriString) === 0) {
             return null;
         }
