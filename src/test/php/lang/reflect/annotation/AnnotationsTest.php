@@ -107,8 +107,8 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [new Annotation('foo', $this->annotations->target()),
-                 new Annotation('bar', $this->annotations->target()),
-                 new Annotation('foo', $this->annotations->target())
+                 new Annotation('foo', $this->annotations->target()),
+                 new Annotation('bar', $this->annotations->target())
                 ],
                 $this->annotations->add(new Annotation('foo', $this->annotations->target()))
                                   ->add(new Annotation('bar', $this->annotations->target()))
@@ -130,7 +130,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
             $types[] = $annotation->getAnnotationName();
         }
 
-        $this->assertEquals(['foo', 'bar', 'foo'], $types);
+        $this->assertEquals(['foo', 'foo', 'bar'], $types);
     }
 
 }

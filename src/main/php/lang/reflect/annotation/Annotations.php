@@ -9,19 +9,14 @@
  */
 namespace stubbles\lang\reflect\annotation;
 use stubbles\lang\exception\IllegalArgumentException;
+use stubbles\lang\iterator\RecursiveArrayIterator;
 /**
- * Description of Annotations
+ * Contains a list of all annotations for a target.
  *
  * @since  5.0.0
  */
 class Annotations implements \IteratorAggregate
 {
-    /**
-     * list of annotations
-     *
-     * @type  \stubbles\lang\reflect\annotation\Annotation[]
-     */
-    private $annotations = [];
     /**
      * list of annotation types and their instances
      *
@@ -55,10 +50,11 @@ class Annotations implements \IteratorAggregate
     public function add(Annotation $annotation)
     {
         if ($annotation->target() !== $this->target) {
-            throw new IllegalArgumentException('Can not add annotation of target ' . $annotation->target() . ' for target ' . $this->target);
+            throw new IllegalArgumentException(
+                    'Can not add annotation of target ' . $annotation->target() . ' for target ' . $this->target
+            );
         }
 
-        $this->annotations[] = $annotation;
         if (!isset($this->types[$annotation->type()])) {
             $this->types[$annotation->type()] = [$annotation];
         } else {
@@ -81,6 +77,7 @@ class Annotations implements \IteratorAggregate
     /**
      * checks if at least one annotation of given type is present
      *
+     * @api
      * @param   string  $type
      * @return  bool
      */
@@ -113,7 +110,12 @@ class Annotations implements \IteratorAggregate
      */
     public function all()
     {
-        return $this->annotations;
+        $all = [];
+        foreach ($this as $annotation) {
+            $all[] = $annotation;
+        }
+
+        return $all;
     }
 
     /**
@@ -123,6 +125,8 @@ class Annotations implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->annotations);
+        return new \RecursiveIteratorIterator(
+                new RecursiveArrayIterator($this->types)
+        );
     }
 }
