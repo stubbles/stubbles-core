@@ -40,14 +40,30 @@ class Parse
         self::addRecognition(function($string) { if (in_array(strtolower($string), ['no', 'false', 'off'])) { return false; } }, 'booleanFalse');
         self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+$/', $string) != false) { return self::toInt($string);} }, 'int');
         self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $string) != false) { return self::toFloat($string); } }, 'float');
-        self::addRecognition(function($string)
-            {
-                if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
-                    return (strstr($string, ':') !== false) ? self::toMap($string) : self::toList($string);
-                }
-            }, 'array');
+        self::addRecognition(
+                function($string)
+                {
+                    if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
+                        return (strstr($string, ':') !== false) ? self::toMap($string) : self::toList($string);
+                    }
+                },
+                'array'
+        );
         self::addRecognition(function($string) { if (strstr($string, '..') !== false) { return self::toRange($string); } }, 'range');
-        self::addRecognition(function($string) { try { return HttpUri::fromString($string); } catch (MalformedUriException $murle) { } }, 'stubbles\peer\http\HttpUri');
+        self::addRecognition(
+                function($string)
+                {
+                    if (substr($string, 0, 4) === 'http') {
+                        try {
+                            return HttpUri::fromString($string);
+                        } catch (MalformedUriException $murle) { }
+                    }
+
+                    return;
+
+                },
+                'stubbles\peer\http\HttpUri'
+        );
         self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'stubbles\lang\reflect\ReflectionClass');
         self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } }, 'stubbles\lang\Enum');
         self::addRecognition(function($string) { if (defined($string)) { return constant($string); } }, 'constant');
