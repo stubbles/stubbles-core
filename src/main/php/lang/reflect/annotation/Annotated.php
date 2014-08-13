@@ -10,7 +10,7 @@
 namespace stubbles\lang\reflect\annotation;
 use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
 /**
- * Description of Annotated
+ * Collection of all methods for something that can be annotated.
  *
  * @since  5.0.0
  */
