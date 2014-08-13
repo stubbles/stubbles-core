@@ -75,9 +75,9 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function retrieveAnnotationsForUncachedTargetReturnsEmptyAnnotationsList()
+    public function retrieveAnnotationsForUncachedTargetReturnsNull()
     {
-        $this->assertEquals(new Annotations('DoesNotExist'), AnnotationCache::get('DoesNotExist'));
+        $this->assertNull(AnnotationCache::get('DoesNotExist'));
     }
 
     /**

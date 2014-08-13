@@ -62,11 +62,20 @@ trait Annotated
         }
 
         list($sourceTarget) = explode('#', $target);
+        $return = null;
         foreach (AnnotationStateParser::parseFrom($this->getDocComment(), $sourceTarget) as $annotations) {
             AnnotationCache::put($annotations);
+            if ($annotations->target() === $target) {
+                $return = $annotations;
+            }
         }
 
-        return AnnotationCache::get($target);
+        if (null === $return) {
+            $return = new Annotations($target);
+            AnnotationCache::put($return);
+        }
+
+        return $return;
     }
 
     /**

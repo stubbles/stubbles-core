@@ -180,7 +180,7 @@ class AnnotationCache
     public static function get($target)
     {
         if (!self::has($target)) {
-            return new Annotations($target);
+            return null;
         }
 
         return self::$annotations[$target];
