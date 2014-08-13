@@ -5,12 +5,13 @@
 
   * Removed possibility to change values on annotations, annotations should be read only.
   * It is now possible to have more than one annotation of the same type. Retrieving only one annotation via one of the following methods will only return the first defined one:
-    * `stubbles\lang\reflect\ReflectionClass::getAnnotation()`
-    * `stubbles\lang\reflect\ReflectionObject::getAnnotation()`
-    * `stubbles\lang\reflect\ReflectionFunction::getAnnotation()`
-    * `stubbles\lang\reflect\ReflectionMethod::getAnnotation()`
-    * `stubbles\lang\reflect\ReflectionParameter::getAnnotation()`
-    * `stubbles\lang\reflect\ReflectionProperty::getAnnotation()`
+    * `stubbles\lang\reflect\ReflectionClass::annotation()`
+    * `stubbles\lang\reflect\ReflectionObject::annotation()`
+    * `stubbles\lang\reflect\ReflectionFunction::annotation()`
+    * `stubbles\lang\reflect\ReflectionMethod::annotation()`
+    * `stubbles\lang\reflect\ReflectionParameter::annotation()`
+    * `stubbles\lang\reflect\ReflectionProperty::annotation()`
+  * Deprecated `stubbles\lang\reflect\Reflection*::getAnnotation()`, use `stubbles\lang\reflect\Reflection*::annotation()` instead
 
 
 ### Other changes

@@ -393,7 +393,7 @@ class ReflectionMethodTest extends \PHPUnit_Framework_TestCase
     public function getAnnotationReturnsAnnotation()
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refMethod5->getAnnotation('SomeAnnotation')
+                                $this->refMethod5->annotation('SomeAnnotation')
         );
     }
 

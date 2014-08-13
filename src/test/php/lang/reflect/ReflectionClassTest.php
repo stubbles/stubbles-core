@@ -355,7 +355,7 @@ class ReflectionClassTest extends \PHPUnit_Framework_TestCase
      */
     public function getAnnotationThrowsReflectionExceptionIfAnnotationNotSet()
     {
-        $this->refClass1->getAnnotation('SomeAnnotation');
+        $this->refClass1->annotation('SomeAnnotation');
     }
 
     /**
@@ -364,7 +364,7 @@ class ReflectionClassTest extends \PHPUnit_Framework_TestCase
     public function getAnnotationReturnsInstanceOfAnnotationIfAnnotationSet()
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refClass2->getAnnotation('SomeAnnotation')
+                                $this->refClass2->annotation('SomeAnnotation')
         );
     }
 

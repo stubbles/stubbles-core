@@ -418,12 +418,12 @@ class BindingIndex
     {
         if ($class->isInterface() && $class->hasAnnotation('ImplementedBy')) {
             return $this->bind($class->getName())
-                        ->to($class->getAnnotation('ImplementedBy')
+                        ->to($class->annotation('ImplementedBy')
                                    ->getDefaultImplementation()
                           );
         } elseif ($class->hasAnnotation('ProvidedBy')) {
             return $this->bind($class->getName())
-                        ->toProviderClass($class->getAnnotation('ProvidedBy')
+                        ->toProviderClass($class->annotation('ProvidedBy')
                                                 ->getProviderClass()
                           );
         }

@@ -52,7 +52,7 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($constructor->hasAnnotation('Inject'));
         $this->assertTrue($constructor->hasAnnotation('Named'));
         $this->assertEquals('stubbles.project.path',
-                            $constructor->getAnnotation('Named')->getName()
+                            $constructor->annotation('Named')->getName()
         );
     }
 

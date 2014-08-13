@@ -215,7 +215,7 @@ class ReflectionPropertyTest extends \PHPUnit_Framework_TestCase
     public function getAnnotationThrowsReflectionExceptionIfAnnotationNotSet()
     {
         $refProperty = new ReflectionProperty('stubbles\lang\\reflect\TestProperty1', 'privateProperty');
-        $refProperty->getAnnotation('SomeAnnotation');
+        $refProperty->annotation('SomeAnnotation');
     }
 
     /**
@@ -224,7 +224,7 @@ class ReflectionPropertyTest extends \PHPUnit_Framework_TestCase
     public function getAnnotationReturnsInstanceOfAnnotationIfAnnotationSet()
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refProperty->getAnnotation('SomeAnnotation')
+                                $this->refProperty->annotation('SomeAnnotation')
         );
     }
 

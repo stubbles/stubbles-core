@@ -38,7 +38,7 @@ trait Annotated
      * @return  \stubbles\lang\reflect\annotation\Annotation
      * @throws  \ReflectionException  when annotation is not present
      */
-    public function getAnnotation($type)
+    public function annotation($type)
     {
         $annotations = $this->annotations();
         if (!$annotations->contain($type)) {
@@ -46,6 +46,22 @@ trait Annotated
         }
 
         return $annotations->of($type)[0];
+    }
+
+    /**
+     * return the specified annotation
+     *
+     * In case there is more than one annotation of this type the first one is
+     * returned. To retrieve all annotations of a certain type use
+     * annotations()->of($type) instead.
+     *
+     * @param   string  $type
+     * @return  \stubbles\lang\reflect\annotation\Annotation
+     * @throws  \ReflectionException  when annotation is not present
+     */
+    public function getAnnotation($type)
+    {
+        return $this->annotation($type);
     }
 
     /**

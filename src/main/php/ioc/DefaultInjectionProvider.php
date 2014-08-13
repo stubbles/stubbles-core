@@ -69,7 +69,7 @@ class DefaultInjectionProvider implements InjectionProvider
         }
 
         $params = $this->injector->getInjectionValuesForMethod($constructor, $this->impl);
-        if (false === $params && $constructor->getAnnotation('Inject')->isOptional()) {
+        if (false === $params && $constructor->annotation('Inject')->isOptional()) {
             return $this->impl->newInstance();
         }
 

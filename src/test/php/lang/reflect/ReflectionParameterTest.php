@@ -186,19 +186,19 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
     public function retrievedAnnotationsAreOfCorrectType()
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refParamFunction->getAnnotation('ParamAnno')
+                                $this->refParamFunction->annotation('ParamAnno')
         );
 
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refParamMethod1->getAnnotation('ParamAnno')
+                                $this->refParamMethod1->annotation('ParamAnno')
         );
 
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refParamMethod2->getAnnotation('ParamAnno')
+                                $this->refParamMethod2->annotation('ParamAnno')
         );
 
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refParamMethod3->getAnnotation('ParamAnno')
+                                $this->refParamMethod3->annotation('ParamAnno')
         );
     }
 
@@ -240,7 +240,7 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
      */
     public function retrievedNonDeclaredAnnotationThrowsReflectionException()
     {
-        $this->refParamMethod4->getAnnotation('ParamAnno');
+        $this->refParamMethod4->annotation('ParamAnno');
     }
 
     /**

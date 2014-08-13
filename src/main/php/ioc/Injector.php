@@ -215,7 +215,7 @@ class Injector
         foreach ($method->getParameters() as $param) {
             $type  = $this->getParamType($method, $param);
             $name  = $this->detectBindingName($param, $defaultName);
-            if (!$this->hasExplicitBinding($type, $name) && $method->getAnnotation('Inject')->isOptional()) {
+            if (!$this->hasExplicitBinding($type, $name) && $method->annotation('Inject')->isOptional()) {
                 return false;
             }
 
@@ -239,19 +239,19 @@ class Injector
     private function getMethodBindingName(ReflectionMethod $method)
     {
         if ($method->hasAnnotation('List')) {
-            return $method->getAnnotation('List')->getValue();
+            return $method->annotation('List')->getValue();
         }
 
         if ($method->hasAnnotation('Map')) {
-            return $method->getAnnotation('Map')->getValue();
+            return $method->annotation('Map')->getValue();
         }
 
         if ($method->hasAnnotation('Named')) {
-            return $method->getAnnotation('Named')->getName();
+            return $method->annotation('Named')->getName();
         }
 
         if ($method->hasAnnotation('Property')) {
-            return $method->getAnnotation('Property')->getValue();
+            return $method->annotation('Property')->getValue();
         }
 
         return null;
@@ -300,19 +300,19 @@ class Injector
     private function detectBindingName(ReflectionParameter $param, $default)
     {
         if ($param->hasAnnotation('List')) {
-            return $param->getAnnotation('List')->getValue();
+            return $param->annotation('List')->getValue();
         }
 
         if ($param->hasAnnotation('Map')) {
-            return $param->getAnnotation('Map')->getValue();
+            return $param->annotation('Map')->getValue();
         }
 
         if ($param->hasAnnotation('Named')) {
-            return $param->getAnnotation('Named')->getName();
+            return $param->annotation('Named')->getName();
         }
 
         if ($param->hasAnnotation('Property')) {
-            return $param->getAnnotation('Property')->getValue();
+            return $param->annotation('Property')->getValue();
         }
 
         return $default;

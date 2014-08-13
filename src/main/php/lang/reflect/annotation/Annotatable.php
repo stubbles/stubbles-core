@@ -34,6 +34,19 @@ interface Annotatable
      * @return  \stubbles\lang\reflect\annotation\Annotation
      * @throws  \ReflectionException  when annotation is not present
      */
+    public function annotation($type);
+    /**
+     * return the specified annotation
+     *
+     * In case there is more than one annotation of this type the first one is
+     * returned. To retrieve all annotations of a certain type use
+     * annotations()->of($type) instead.
+     *
+     * @param   string  $type
+     * @return  \stubbles\lang\reflect\annotation\Annotation
+     * @throws  \ReflectionException  when annotation is not present
+     * @deprecated  since 5.0.0, use annotation() instead
+     */
     public function getAnnotation($type);
 
     /**
