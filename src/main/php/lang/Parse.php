@@ -280,7 +280,7 @@ class Parse
      * Works also with letters and reverse order a..e, e..a and 5..1.
      *
      * @param   string  $string
-     * @return  mixed
+     * @return  mixed[]
      */
     public static function toRange($string)
     {
@@ -338,6 +338,112 @@ class Parse
         }
 
         return null;
+    }
+
+    /**
+     * a value to parse
+     *
+     * @type  string
+     */
+    private $value;
+
+    /**
+     * constructor
+     *
+     * @param  string  $value
+     * @since  5.0.0
+     */
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * parses initial value as integer
+     *
+     * @return  int
+     * @since   5.0.0
+     */
+    public function asInt()
+    {
+        return self::toInt($this->value);
+    }
+
+    /**
+     * parses initial value as float
+     *
+     * @return  float
+     * @since   5.0.0
+     */
+    public function asFloat()
+    {
+        return self::toFloat($this->value);
+    }
+
+    /**
+     * parses initial value as bool
+     *
+     * @return  bool
+     * @since   5.0.0
+     */
+    public function asBool()
+    {
+        return self::toBool($this->value);
+    }
+
+    /**
+     * parses initial value as list
+     *
+     * @return  string[]
+     * @since   5.0.0
+     */
+    public function asList()
+    {
+        return self::toList($this->value);
+    }
+
+    /**
+     * parses initial value as list
+     *
+     * @return  array
+     * @since   5.0.0
+     */
+    public function asMap()
+    {
+        return self::toMap($this->value);
+    }
+
+    /**
+     * parses initial value as range
+     *
+     * @return  mixed[]
+     * @since   5.0.0
+     */
+    public function asRange()
+    {
+        return self::toRange($this->value);
+    }
+
+    /**
+     * parses initial value as reflection class
+     *
+     * @return  \stubbles\lang\reflect\ReflectionClass
+     * @since   5.0.0
+     */
+    public function asClass()
+    {
+        return self::toClass($this->value);
+    }
+
+    /**
+     * parses initial value as enum instance
+     *
+     * @return  \stubbles\lang\Enum
+     * @since   5.0.0
+     */
+    public function asEnum()
+    {
+        return self::toEnum($this->value);
     }
 }
 Parse::__static();

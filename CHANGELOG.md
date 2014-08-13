@@ -23,6 +23,9 @@
     * `stubbles\lang\reflect\ReflectionMethod::annotations()`
     * `stubbles\lang\reflect\ReflectionParameter::annotations()`
     * `stubbles\lang\reflect\ReflectionProperty::annotations()`
+  * Added non-static usage of `stubbles\lang\Parse`
+    * instance creation takes a string value
+    * all methods `to*()` are additionally available as non-static `as*()` methods except `toType()`
 
 
 4.1.4 (2014-08-11)
