@@ -13,6 +13,8 @@ namespace stubbles\test\lang\reflect;
  *
  * @SomeAnnotation
  * @AnotherAnnotation
+ * @Foo('bar')
+ * @Foo('baz')
  */
 class TestWithOutMethodsAndProperties
 {

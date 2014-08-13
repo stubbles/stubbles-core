@@ -16,6 +16,8 @@ use stubbles\lang\reflect\annotation\Annotation;
  * @FunctionAnnotation
  * @ParamAnno{param}
  * @AnotherAnnotation{param}
+ * @Foo{param}('bar')
+ * @Foo{param}('baz')
  */
 function test_function($param)
 {
@@ -45,6 +47,8 @@ class ParamTestHelper
      * @MethodAnnotation
      * @ParamAnno{param}
      * @AnotherAnnotation{param}
+     * @Foo{param}('bar')
+     * @Foo{param}('baz')
      * @SecondParam{secondParam}
      */
     function paramTest($param, $secondParam)
@@ -206,7 +210,9 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [new Annotation('ParamAnno', 'stubbles\lang\reflect\test_function()#param'),
-                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\test_function()#param')
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\test_function()#param'),
+                 new Annotation('Foo', 'stubbles\lang\reflect\test_function()#param', ['__value' => 'bar']),
+                 new Annotation('Foo', 'stubbles\lang\reflect\test_function()#param', ['__value' => 'baz'])
                 ],
                 $this->refParamFunction->annotations()->all()
         );
@@ -220,7 +226,9 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [new Annotation('ParamAnno', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param'),
-                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param')
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param'),
+                 new Annotation('Foo', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param', ['__value' => 'bar']),
+                 new Annotation('Foo', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param', ['__value' => 'baz'])
                 ],
                 $this->refParamMethod1->annotations()->all()
         );

@@ -14,6 +14,8 @@ use stubbles\lang\reflect\annotation\Annotation;
  *
  * @FunctionTest()
  * @AnotherAnnotation
+ * @Foo('bar')
+ * @Foo('baz')
  */
 function testWithOutParams()
 {
@@ -164,7 +166,9 @@ class ReflectionFunctionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [new Annotation('FunctionTest', 'stubbles\lang\reflect\testWithOutParams()'),
-                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\testWithOutParams()')
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\testWithOutParams()'),
+                 new Annotation('Foo', 'stubbles\lang\reflect\testWithOutParams()', ['__value' => 'bar']),
+                 new Annotation('Foo', 'stubbles\lang\reflect\testWithOutParams()', ['__value' => 'baz'])
                 ],
                 $this->refFunction2->annotations()->all()
         );

@@ -20,6 +20,8 @@ class TestProperty1
      * @type  mixed
      * @SomeAnnotation
      * @AnotherAnnotation
+     * @Foo('bar')
+     * @Foo('baz')
      */
     public $property;
     /**
@@ -234,7 +236,9 @@ class ReflectionPropertyTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [new Annotation('SomeAnnotation', 'stubbles\lang\reflect\TestProperty1->property'),
-                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestProperty1->property')
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestProperty1->property'),
+                 new Annotation('Foo', 'stubbles\lang\reflect\TestProperty1->property', ['__value' => 'bar']),
+                 new Annotation('Foo', 'stubbles\lang\reflect\TestProperty1->property', ['__value' => 'baz'])
                 ],
                 $this->refProperty->annotations()->all()
         );

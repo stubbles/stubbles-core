@@ -411,7 +411,9 @@ class ReflectionObjectTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [new Annotation('SomeAnnotation', $this->refClass2->getName()),
-                 new Annotation('AnotherAnnotation', $this->refClass2->getName())
+                 new Annotation('AnotherAnnotation', $this->refClass2->getName()),
+                 new Annotation('Foo', $this->refClass2->getName(), ['__value' => 'bar']),
+                 new Annotation('Foo', $this->refClass2->getName(), ['__value' => 'baz'])
                 ],
                 $this->refClass2->annotations()->all()
         );
