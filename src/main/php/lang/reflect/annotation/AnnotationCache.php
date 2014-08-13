@@ -156,7 +156,7 @@ class AnnotationCache
             self::$annotations[$annotations->target()] = [];
         }
 
-        self::$annotations[$annotations->target()] = serialize($annotations);
+        self::$annotations[$annotations->target()] = $annotations;
         self::$cacheChanged = true;
     }
 
@@ -183,6 +183,6 @@ class AnnotationCache
             return new Annotations($target);
         }
 
-        return unserialize(self::$annotations[$target]);
+        return self::$annotations[$target];
     }
 }

@@ -383,6 +383,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function registerSingleAnnotationAfterParamValueThrowsReflectionException()
     {
+        $this->annotationStateParser->registerAnnotation('foo');
         $this->annotationStateParser->registerAnnotationParam('paramName');
         $this->annotationStateParser->setAnnotationParamValue('paramValue');
         $this->annotationStateParser->registerSingleAnnotationParam('singleAnnotationValue');

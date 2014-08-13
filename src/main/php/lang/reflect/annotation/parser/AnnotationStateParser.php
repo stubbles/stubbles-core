@@ -52,6 +52,12 @@ class AnnotationStateParser implements AnnotationParser
      */
     private $currentParam       = null;
     /**
+     * current target
+     *
+     * @var  string
+     */
+    private $currentTarget;
+    /**
      * all parsed annotations
      *
      * @type  array
@@ -122,7 +128,8 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function parse($docComment, $target)
     {
-        $this->annotations = [];
+        $this->currentTarget = $target;
+        $this->annotations   = [$target => new Annotations($target)];
         $this->changeState(AnnotationState::DOCBLOCK);
         $len = strlen($docComment);
         for ($i = 0; $i < $len; $i++) {
@@ -134,40 +141,34 @@ class AnnotationStateParser implements AnnotationParser
             throw new \ReflectionException('Annotation parser finished in wrong state, last annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
         }
 
-        $annotations = [];
-        foreach ($this->annotations as $annotation) {
-            $realTarget = $this->realTarget($target, $annotation);
-            if (!isset($annotations[$realTarget])) {
-                $annotations[$realTarget] = new Annotations($realTarget);
-            }
-
-            $annotations[$realTarget]->add(
-                    new Annotation(
-                            $annotation['type'],
-                            $realTarget,
-                            $annotation['params'],
-                            $annotation['name']
-                    )
-            );
-        }
-
-        return $annotations;
+        $this->finalize();
+        return $this->annotations;
     }
 
     /**
-     * calculates real target in case of parameter annotation
-     *
-     * @param   string  $target
-     * @param   array   $annotation
-     * @return  string
+     * finalizes the current annotation
      */
-    private function realTarget($target, $annotation)
+    private function finalize()
     {
-        if (isset($annotation['parameter'])) {
-            return $target . '#' . $annotation['parameter'];
+        if (null === $this->currentAnnotation) {
+            return;
         }
 
-        return $target;
+        $target = isset($this->currentAnnotation['target']) ? $this->currentAnnotation['target'] : $this->currentTarget;
+        if (!isset($this->annotations[$target])) {
+            $this->annotations[$target] = new Annotations($target);
+        }
+
+        $this->annotations[$target]->add(
+                new Annotation(
+                        $this->currentAnnotation['type'],
+                        $target,
+                        $this->currentAnnotation['params'],
+                        $this->currentAnnotation['name']
+                )
+        );
+
+        $this->currentAnnotation = null;
     }
 
     /**
@@ -177,12 +178,11 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function registerAnnotation($name)
     {
-        $key = uniqid($name, true);
-        $this->annotations[$key] = ['name'   => $name,
+        $this->finalize();
+        $this->currentAnnotation = ['name'   => $name,
                                     'type'   => $name,
                                     'params' => []
                                    ];
-        $this->currentAnnotation = $key;
     }
 
     /**
@@ -203,11 +203,11 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function registerSingleAnnotationParam($value)
     {
-        if (count($this->annotations[$this->currentAnnotation]['params']) > 0) {
-            throw new \ReflectionException('Error parsing annotation ' . $this->currentAnnotation);
+        if (count($this->currentAnnotation['params']) > 0) {
+            throw new \ReflectionException('Error parsing annotation ' . $this->currentAnnotation['type']);
         }
 
-        $this->annotations[$this->currentAnnotation]['params']['__value'] = $value;
+        $this->currentAnnotation['params']['__value'] = $value;
     }
 
     /**
@@ -217,7 +217,7 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function setAnnotationParamValue($value)
     {
-        $this->annotations[$this->currentAnnotation]['params'][$this->currentParam] = $value;
+        $this->currentAnnotation['params'][$this->currentParam] = $value;
     }
 
     /**
@@ -227,7 +227,7 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function setAnnotationType($type)
     {
-        $this->annotations[$this->currentAnnotation]['type'] = $type;
+        $this->currentAnnotation['type'] = $type;
     }
 
     /**
@@ -237,9 +237,6 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function markAsParameterAnnotation($parameterName)
     {
-        $this->annotations[$this->currentAnnotation . '#' . $parameterName] = $this->annotations[$this->currentAnnotation];
-        unset($this->annotations[$this->currentAnnotation]);
-        $this->currentAnnotation .= '#' . $parameterName;
-        $this->annotations[$this->currentAnnotation]['parameter'] = $parameterName;
+        $this->currentAnnotation['target'] = $this->currentTarget . '#' . $parameterName;
     }
 }
