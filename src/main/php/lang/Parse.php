@@ -359,6 +359,17 @@ class Parse
     }
 
     /**
+     * returns value as string (i.e., a pass through)
+     *
+     * @return  string
+     * @since   5.0.0
+     */
+    public function asString()
+    {
+        return $this->value;
+    }
+
+    /**
      * parses initial value as integer
      *
      * @return  int

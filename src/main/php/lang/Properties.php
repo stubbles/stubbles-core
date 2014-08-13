@@ -10,6 +10,7 @@
 namespace stubbles\lang;
 use stubbles\lang\exception\FileNotFoundException;
 use stubbles\lang\exception\IllegalArgumentException;
+use stubbles\lang\exception\IllegalAccessException;
 use stubbles\lang\exception\IOException;
 /**
  * Class to read and parse properties.
@@ -109,18 +110,6 @@ class Properties implements \Iterator
     }
 
     /**
-     * returns a list of section keys
-     *
-     * @api
-     * @return  string[]
-     * @deprecated  since 4.0.0, iterate over instance instead, will be removed with 5.0.0
-     */
-    public function getSections()
-    {
-        return array_keys($this->propertyData);
-    }
-
-    /**
      * checks if a certain section exists
      *
      * @api
@@ -165,24 +154,6 @@ class Properties implements \Iterator
     }
 
     /**
-     * returns a whole section if it exists or the default if the section does not exist
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   array   $default  value to return if section does not exist
-     * @return  scalar[]
-     * @deprecated  since 4.0.0, use section() instead, will be removed with 5.0.0
-     */
-    public function getSection($section, array $default = [])
-    {
-        if (isset($this->propertyData[$section])) {
-            return $this->propertyData[$section];
-        }
-
-        return $default;
-    }
-
-    /**
      * returns a list of all keys of a specific section
      *
      * @api
@@ -198,20 +169,6 @@ class Properties implements \Iterator
         }
 
         return $default;
-    }
-
-    /**
-     * returns a list of all keys of a specific section
-     *
-     * @api
-     * @param   string    $section  name of the section
-     * @param   string[]  $default  value to return if section does not exist
-     * @return  string[]
-     * @deprecated  since 4.0.0, use keysForSection() instead, will be removed with 5.0.0
-     */
-    public function getSectionKeys($section, array $default = [])
-    {
-        return $this->keysForSection($section, $default);
     }
 
     /**
@@ -233,20 +190,6 @@ class Properties implements \Iterator
     }
 
     /**
-     * checks if a certain section contains a certain key
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @return  bool
-     * @deprecated  since 4.0.0, use containValue() instead, will be removed with 5.0.0
-     */
-    public function hasValue($section, $key)
-    {
-        return $this->containValue($section, $key);
-    }
-
-    /**
      * returns a value from a section or a default value if the section or key does not exist
      *
      * @api
@@ -257,25 +200,6 @@ class Properties implements \Iterator
      * @since   4.0.0
      */
     public function value($section, $key, $default = null)
-    {
-        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return $this->propertyData[$section][$key];
-        }
-
-        return $default;
-    }
-
-    /**
-     * returns a value from a section or a default value if the section or key does not exist
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   mixed   $default  value to return if section or key does not exist
-     * @return  scalar
-     * @deprecated  since 4.0.0, use value() instead, will be removed with 5.0.0
-     */
-    public function getValue($section, $key, $default = null)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
             return $this->propertyData[$section][$key];
@@ -308,174 +232,29 @@ class Properties implements \Iterator
     }
 
     /**
-     * returns a string from a section or a default string if the section or key does not exist
+     * returns a parser instance for the value
      *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   string  $default  string to return if section or key does not exist
-     * @return  string
-     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
+     * In case the value was recognized as password and is therefore an instance
+     * of \stubbles\lang\SecureString  an IllegalAccessException is thrown as
+     * this value can not be parsed.
+     *
+     * @param   string  $section
+     * @param   string  $key
+     * @return  \stubbles\lang\Parse
+     * @throws  \stubbles\lang\exception\IllegalAccessException
+     * @since   5.0.0
      */
-    public function parseString($section, $key, $default = null)
-    {
-        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return (string) $this->propertyData[$section][$key];
-        }
-
-        return $default;
-    }
-
-    /**
-     * returns an integer or a default value if the section or key does not exist
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   int     $default  value to return if section or key does not exist
-     * @return  int
-     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
-     */
-    public function parseInt($section, $key, $default = 0)
-    {
-        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return Parse::toInt($this->propertyData[$section][$key]);
-        }
-
-        return $default;
-    }
-
-    /**
-     * returns a float or a default value if the section or key does not exist
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   float   $default  value to return if section or key does not exist
-     * @return  float
-     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
-     */
-    public function parseFloat($section, $key, $default = 0.0)
-    {
-        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return Parse::toFloat($this->propertyData[$section][$key]);
-        }
-
-        return $default;
-    }
-
-    /**
-     * returns a boolean or a default value if the section or key does not exist
-     *
-     * The return value is true if the property value is either "1", "yes",
-     * "true" or "on". In any other case the return value will be false.
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   bool    $default  value to return if section or key does not exist
-     * @return  bool
-     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
-     */
-    public function parseBool($section, $key, $default = false)
-    {
-        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return Parse::toBool($this->propertyData[$section][$key]);
-        }
-
-        return $default;
-    }
-
-    /**
-     * returns an array from a section or a default array if the section or key does not exist
-     *
-     * If the value is empty the return value will be an empty array. If the
-     * value is not empty it will be splitted at "|".
-     * Example:
-     * <code>
-     * key = "foo|bar|baz"
-     * </code>
-     * The resulting array would be ['foo', 'bar', 'baz']
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   array   $default  array to return if section or key does not exist
-     * @return  array
-     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
-     */
-    public function parseArray($section, $key, array $default = null)
+    public function parse($section, $key)
     {
         if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
-            return $default;
+            return new Parse(null);
         }
 
-        if (empty($this->propertyData[$section][$key])) {
-            return [];
+        if ($this->propertyData[$section][$key] instanceof SecureString) {
+            throw new IllegalAccessException('Can not parse fields with passwords');
         }
 
-        return Parse::toList($this->propertyData[$section][$key]);
-    }
-
-    /**
-     * returns a hash from a section or a default hash if the section or key does not exist
-     *
-     * If the value is empty the return value will be an empty hash. If the
-     * value is not empty it will be splitted at "|". The resulting array will
-     * be splitted at the first ":", the first part becoming the key and the rest
-     * becoming the value in the hash. If no ":" is present, the whole value will
-     * be appended to the hash using a numeric value.
-     * Example:
-     * <code>
-     * key = "foo:bar|baz"
-     * </code>
-     * The resulting hash would be ['foo' => 'bar', 'baz']
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   array   $default  array to return if section or key does not exist
-     * @return  array
-     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
-     */
-    public function parseHash($section, $key, array $default = null)
-    {
-        if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
-            return $default;
-        }
-
-        return Parse::toMap($this->propertyData[$section][$key]);
-    }
-
-    /**
-     * returns an array containing values from min to max of the range or a default if the section or key does not exist
-     *
-     * Ranges in properties should be written as
-     * <code>
-     * key = 1..5
-     * </code>
-     * This will return an array: [1, 2, 3, 4, 5]
-     * Works also with letters and reverse order:
-     * <code>
-     * letters = a..e
-     * letter_reverse = e..a
-     * numbers_reverse = 5..1
-     * </code>
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   array   $default  range to return if section or key does not exist
-     * @return  array
-     * @deprecated  since 4.1.0, use parseValue() instead, will be removed with 5.0.0
-     */
-    public function parseRange($section, $key, array $default = [])
-    {
-        if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
-            return $default;
-        }
-
-        return Parse::toRange($this->propertyData[$section][$key]);
+        return new Parse($this->propertyData[$section][$key]);
     }
 
     /**

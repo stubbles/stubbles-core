@@ -26,6 +26,7 @@
   * Added non-static usage of `stubbles\lang\Parse`
     * instance creation takes a string value
     * all methods `to*()` are additionally available as non-static `as*()` methods except `toType()`
+  * Added `stubbles\lang\Properties::parse()` which returns an instance of `stubbles\lang\Parse`
 
 
 4.1.4 (2014-08-11)
