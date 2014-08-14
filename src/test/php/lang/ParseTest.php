@@ -52,7 +52,9 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [1, '1'],
             [-303, '-303'],
             [80, '80foo'],
-            [3, '3.14']
+            [3, '3.14'],
+            [0, ''],
+            [null, null]
         ];
     }
 
@@ -81,6 +83,15 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  5.0.0
+     */
+    public function toIntOnNullReturnsNull()
+    {
+        $this->assertNull(Parse::toInt(null));
+    }
+
+    /**
      * @return  array
      */
     public function stringToFloatConversions()
@@ -90,7 +101,9 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [1, '1'],
             [-3.03, '-3.03'],
             [8.0, '8.0foo'],
-            [3.14, '3.14']
+            [3.14, '3.14'],
+            [0, ''],
+            [null, null]
         ];
     }
 
@@ -119,6 +132,15 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  5.0.0
+     */
+    public function toFloatOnNullReturnsNull()
+    {
+        $this->assertNull(Parse::toFloat(null));
+    }
+
+    /**
      * @return  array
      */
     public function stringToBoolConversions()
@@ -132,6 +154,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [false, 'false'],
             [false, 'off'],
             [false, 'other'],
+            [false, ''],
+            [null, null],
 
         ];
     }
@@ -161,6 +185,15 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  5.0.0
+     */
+    public function toBoolOnNullReturnsNull()
+    {
+        $this->assertNull(Parse::toBool(null));
+    }
+
+    /**
      * @return  array
      */
     public function stringToListConversions()
@@ -170,7 +203,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [['foo', 'bar', 'baz'], '[foo|bar|baz]'],
             [[], ''],
             [[], '[]'],
-            [[], null],
+            [null, null],
             [['', ''], '|'],
             [['', ''], '[|]'],
             [['foo'], 'foo'],
@@ -217,7 +250,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [['foo' => 'bar', 'baz'], '[foo:bar|baz]'],
             [[], ''],
             [[], '[]'],
-            [[], null],
+            [null, null],
             [['', ''], '|'],
             [['', ''], '[|]'],
             [['foo'], 'foo'],
@@ -267,7 +300,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [[5, 4, 3, 2, 1], '5..1'],
             [['e', 'd', 'c', 'b', 'a'], 'e..a'],
             [[], ''],
-            [[], null],
+            [null, null],
             [[], 'other']
 
         ];
@@ -483,5 +516,36 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return true; } }, 'booleanTrue');
         $this->assertTrue(Parse::toType('Binford 6100'));
+    }
+
+    /**
+     * @return  array
+     */
+    public function methods()
+    {
+        return [
+            [null, 'asString'],
+            [0, 'asInt'],
+            [0, 'asFloat'],
+            [false, 'asBool'],
+            [null, 'asList'],
+            [null, 'asMap'],
+            [null, 'asRange'],
+            [null, 'asClass'],
+            [null, 'asEnum'],
+        ];
+    }
+    /**
+     *
+     * @param  mixed   $expected
+     * @param  string  $method
+     * @test
+     * @dataProvider  methods
+     * @since  5.0.0
+     */
+    public function parseNull($expected, $method)
+    {
+        $parse = new Parse(null);
+        $this->assertEquals($expected, $parse->$method());
     }
 }

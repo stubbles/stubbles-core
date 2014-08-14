@@ -165,6 +165,10 @@ class Parse
      */
     public static function toInt($string)
     {
+        if (null === $string) {
+            return null;
+        }
+
         return intval($string);
     }
 
@@ -176,6 +180,10 @@ class Parse
      */
     public static function toFloat($string)
     {
+        if (null === $string) {
+            return null;
+        }
+
         return floatval($string);
     }
 
@@ -190,6 +198,10 @@ class Parse
      */
     public static function toBool($string)
     {
+        if (null === $string) {
+            return null;
+        }
+
         return in_array(strtolower($string), self::$booleanTrue);
     }
 
@@ -209,8 +221,12 @@ class Parse
      */
     public static function toList($string)
     {
+        if (null === $string) {
+            return null;
+        }
+
         $withoutParenthesis = self::removeParenthesis($string);
-        if (empty($withoutParenthesis)) {
+        if ('' === $withoutParenthesis) {
             return [];
         }
 
@@ -256,7 +272,9 @@ class Parse
      */
     public static function toMap($string)
     {
-        if (empty($string)) {
+        if (null === $string) {
+            return null;
+        } elseif ('' === $string) {
             return [];
         }
 
@@ -284,7 +302,9 @@ class Parse
      */
     public static function toRange($string)
     {
-        if (empty($string)) {
+        if (null === $string) {
+            return null;
+        } elseif ('' === $string) {
             return [];
         }
 
@@ -311,6 +331,10 @@ class Parse
      */
     public static function toClass($string)
     {
+        if (empty($string)) {
+            return null;
+        }
+
         $classnameMatches = [];
         if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $string, $classnameMatches) != false) {
             return new ReflectionClass($classnameMatches[1]);
@@ -330,6 +354,10 @@ class Parse
      */
     public static function toEnum($string)
     {
+        if (empty($string)) {
+            return null;
+        }
+
         $enumMatches = [];
         if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)::\$([a-zA-Z_]{1}[a-zA-Z0-9_]*)/', $string, $enumMatches) != false) {
             $enumClassName = $enumMatches[1];
