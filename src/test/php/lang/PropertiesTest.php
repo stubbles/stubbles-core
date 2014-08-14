@@ -620,8 +620,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  secure_string
-     * @since  4.1.0
-     * @expectedException   \stubbles\lang\exception\IllegalAccessException
+     * @since  5.0.0
+     * @expectedException   LogicException
      */
     public function parseSecureStringThrowsIllegalAccessException()
     {

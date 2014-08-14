@@ -10,7 +10,6 @@
 namespace stubbles\lang;
 use stubbles\lang\exception\FileNotFoundException;
 use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\IllegalAccessException;
 use stubbles\lang\exception\IOException;
 /**
  * Class to read and parse properties.
@@ -228,7 +227,7 @@ class Properties implements \Iterator
      * @param   string  $section
      * @param   string  $key
      * @return  \stubbles\lang\Parse
-     * @throws  \stubbles\lang\exception\IllegalAccessException
+     * @throws  \LogicException
      * @since   5.0.0
      */
     public function parse($section, $key)
@@ -238,7 +237,7 @@ class Properties implements \Iterator
         }
 
         if ($this->propertyData[$section][$key] instanceof SecureString) {
-            throw new IllegalAccessException('Can not parse fields with passwords');
+            throw new \LogicException('Can not parse fields with passwords');
         }
 
         return new Parse($this->propertyData[$section][$key]);
