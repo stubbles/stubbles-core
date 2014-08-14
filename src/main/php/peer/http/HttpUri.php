@@ -168,18 +168,6 @@ abstract class HttpUri extends Uri
     }
 
     /**
-     * returns port of the uri
-     *
-     * @param   int  $defaultPort  parameter is ignored for http uris
-     * @return  int
-     * @deprecated  since 4.0.0, use port() instead, will be removed with 5.0.0
-     */
-    public function getPort($defaultPort = null)
-    {
-        return $this->port($defaultPort);
-    }
-
-    /**
      * checks whether current scheme is http
      *
      * @return  bool

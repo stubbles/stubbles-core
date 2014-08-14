@@ -167,17 +167,6 @@ class Socket
     }
 
     /**
-     * get timeout for connections
-     *
-     * @return  int
-     * @deprecated  since 4.0.0, use timeout() instead, will be removed with 5.0.0
-     */
-    public function getTimeout()
-    {
-        return $this->timeout;
-    }
-
-    /**
      * read from socket
      *
      * @param   int  $length  length of data to read
@@ -294,17 +283,6 @@ class Socket
     }
 
     /**
-     * returns prefix for host, e.g. ssl://
-     *
-     * @return  string
-     * @deprecated  since 4.0.0, use usesSsl() instead, will be removed with 5.0.0
-     */
-    public function getPrefix()
-    {
-        return $this->prefix;
-    }
-
-    /**
      * check if we reached end of data
      *
      * @return  bool
@@ -334,18 +312,6 @@ class Socket
     }
 
     /**
-     * returns input stream to read from socket
-     *
-     * @return  \stubbles\streams\InputStream
-     * @since   2.0.0
-     * @deprecated  since 4.0.0, use in() instead, will be removed with 5.0.0
-     */
-    public function getInputStream()
-    {
-        return $this->in();
-    }
-
-    /**
      * returns output stream to write to socket
      *
      * @return  \stubbles\streams\OutputStream
@@ -358,17 +324,5 @@ class Socket
         }
 
         return $this->outputStream;
-    }
-
-    /**
-     * returns output stream to write to socket
-     *
-     * @return  \stubbles\streams\OutputStream
-     * @since   2.0.0
-     * @deprecated  since 4.0.0, use out() instead, will be removed with 5.0.0
-     */
-    public function getOutputStream()
-    {
-        return $this->out();
     }
 }

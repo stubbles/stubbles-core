@@ -13,6 +13,7 @@
     * `stubbles\lang\reflect\ReflectionProperty::annotation()`
   * Deprecated `stubbles\lang\reflect\Reflection*::getAnnotation()`, use `stubbles\lang\reflect\Reflection*::annotation()` instead
   * Parsing `null` with any of the `stubbles\lang\Parse` methods will now always return null.
+  * Removed all classes, methods and functions deprecated with 4.0.0 and 4.1.0
 
 
 ### Other changes

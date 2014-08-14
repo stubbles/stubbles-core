@@ -123,19 +123,6 @@ class Properties implements \Iterator
     }
 
     /**
-     * checks if a certain section exists
-     *
-     * @api
-     * @param   string  $section  name of the section
-     * @return  bool
-     * @deprecated  since 4.0.0, use containSection() instead, will be removed with 5.0.0
-     */
-    public function hasSection($section)
-    {
-        return isset($this->propertyData[$section]);
-    }
-
-    /**
      * returns a whole section if it exists or the default if the section does not exist
      *
      * @api

@@ -39,25 +39,6 @@ class ResourceLoader
     }
 
     /**
-     * returns resource uri from local project
-     *
-     * The method will always return a uri, even if the resource does not exist.
-     *
-     * @param   string  $resourceName
-     * @return  string
-     * @since   3.1.2
-     * @deprecated  since 4.0.0, use either open() or load(), will be removed with 5.0.0
-     */
-    public function getProjectResourceUri($resourceName)
-    {
-        return $this->rootpath
-                . DIRECTORY_SEPARATOR . 'src'
-                . DIRECTORY_SEPARATOR . 'main'
-                . DIRECTORY_SEPARATOR . 'resources'
-                . DIRECTORY_SEPARATOR . $resourceName;
-    }
-
-    /**
      * opens an input stream to read resource contents
      *
      * Resource can either be a complete path to a resource or a local path. In
@@ -179,44 +160,5 @@ class ResourceLoader
         );
         sort($resourceUris);
         return $resourceUris;
-    }
-
-    /**
-     * return all uris for a resource
-     *
-     * @param   string  $resourceName  the resource to retrieve the uris for
-     * @return  string[]
-     * @deprecated  since 4.0.0, use availableResourceUris() instead, will be removed with 5.0.0
-     */
-    public function getResourceUris($resourceName)
-    {
-        return $this->availableResourceUris($resourceName);
-    }
-
-    /**
-     * returns root path
-     *
-     * @return  string
-     * @deprecated  since 4.0.0, use stubbles\lang\Rootpath instead, will be removed with 5.0.0
-     */
-    public static function getRootPath()
-    {
-        static $rootpath = null;
-        if (null === $rootpath) {
-            $rootpath = new Rootpath();
-        }
-
-        return (string) $rootpath;
-    }
-
-    /**
-     * returns root path for non-static mockable calls
-     *
-     * @return  string
-     * @deprecated  since 4.0.0, use stubbles\lang\Rootpath instead, will be removed with 5.0.0
-     */
-    public function getRoot()
-    {
-        return (string) $this->rootpath;
     }
 }

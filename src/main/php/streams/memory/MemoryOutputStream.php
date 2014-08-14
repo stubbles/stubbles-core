@@ -86,17 +86,6 @@ class MemoryOutputStream implements OutputStream
      * returns written contents
      *
      * @return  string
-     * @deprecated  since 4.0.0, use buffer() instead, will be removed with 5.0.0
-     */
-    public function getBuffer()
-    {
-        return $this->buffer();
-    }
-
-    /**
-     * returns written contents
-     *
-     * @return  string
      * @since   4.0.0
      */
     public function __toString()
