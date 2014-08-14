@@ -12,10 +12,22 @@
     * `stubbles\lang\reflect\ReflectionParameter::annotation()`
     * `stubbles\lang\reflect\ReflectionProperty::annotation()`
   * Deprecated `stubbles\lang\reflect\Reflection*::getAnnotation()`, use `stubbles\lang\reflect\Reflection*::annotation()` instead
+  * Retrieving a non-existing value from `stubbles\lang\reflect\annotation\Annotation` via method will throw a `BadMethodCallException` instead of `stubbles\lang\exception\MethodNotSupportedException`
   * Parsing `null` with any of the `stubbles\lang\Parse` methods will now always return null.
   * Removed all classes, methods and functions deprecated with 4.0.0 and 4.1.0
+  * The `stubbles\lang\exception\IllegalAccessException` is now also an instance of `LogicException`. It is recommended to use the latter in catch statements, as this increases interoperability.
   * The `stubbles\lang\exception\IllegalArgumentException` is now also an instance of `InvalidArgumentException`. It is recommended to use the latter in catch statements, as this increases interoperability.
-  * Retrieving a non-existing value from `stubbles\lang\reflect\annotation\Annotation` via method will throw a `BadMethodCallException` instead of `stubbles\lang\exception\MethodNotSupportedException`
+  * The `stubbles\lang\exception\IllegalStateException` is now also an instance of `LogicException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * The `stubbles\lang\exception\MethodInvocationException` is now also an instance of `BadMethodCallException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * The `stubbles\lang\exception\MethodNotSupportedException` is now also an instance of `BadMethodCallException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * Deprecated several exceptions where build-in exceptions in PHP exist, will be removed with 6.0.0:
+    * `stubbles\lang\exception\IllegalAccessException`, use `LogicException` instead
+    * `stubbles\lang\exception\IllegalArgumentException`, use `InvalidArgumentException` instead
+    * `stubbles\lang\exception\IllegalStateException`, use `LogicException` instead
+    * `stubbles\lang\exception\MethodInvocationException`, use `BadMethodCallException` instead
+    * `stubbles\lang\exception\MethodNotSupportedException`, use `BadMethodCallException` instead
+    * `stubbles\lang\exception\RuntimeException`, use native `RuntimeException` instead
+  * Deprecated `stubbles\lang\exception\Throwable`, will be removed with 6.0.0
 
 
 ### Other changes

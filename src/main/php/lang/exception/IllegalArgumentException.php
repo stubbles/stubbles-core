@@ -10,6 +10,8 @@
 namespace stubbles\lang\exception;
 /**
  * Exception to be thrown in case an illegal argument was given.
+ *
+ * @deprecated  since 5.0.0, use InvalidArgumentException instead, will be removed with 6.0.0
  */
 class IllegalArgumentException extends \InvalidArgumentException implements Throwable
 {

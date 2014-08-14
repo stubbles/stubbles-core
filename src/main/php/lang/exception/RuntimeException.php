@@ -15,6 +15,8 @@ namespace stubbles\lang\exception;
  * a missing configuration file or wrong class instance is supplied. Instances
  * of this and inherited exceptions should never be catched. The docblock of a
  * method must not indicate that a runtime exception may be thrown.
+ *
+ * @deprecated  since 5.0.0, use \RuntimeException directly, will be removed with 6.0.0
  */
 class RuntimeException extends \RuntimeException implements Throwable
 {
