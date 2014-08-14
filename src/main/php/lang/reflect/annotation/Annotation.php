@@ -124,6 +124,26 @@ class Annotation
     }
 
     /**
+     * returns a parser instance for the value
+     *
+     * Actual call the parsing methods on the parser returns null if a value
+     * with given name does not exist or is not set.
+     *
+     * @api
+     * @param   string  $name
+     * @return  \stubbles\lang\Parse
+     * @since   5.0.0
+     */
+    public function parse($name)
+    {
+        if (isset($this->values[$name])) {
+            return new Parse($this->values[$name]);
+        }
+
+        return new Parse(null);
+    }
+
+    /**
      * responds to a method call of an undefined method
      *
      * @param   string  $name

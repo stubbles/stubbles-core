@@ -364,4 +364,36 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
                 (string) $this->createAnnotation(['foo' => 'value'])
         );
     }
+
+    /**
+     * @return  array
+     * @since  5.0.0
+     */
+    public function parseList()
+    {
+        return [
+            ['This is a string', 'This is a string', 'asString'],
+            [303, '303', 'asInt'],
+            [3.13, '3.13', 'asFloat'],
+            [false, '1', 'asBool'],
+            [true, 'true', 'asBool'],
+            [false, 'false', 'asBool'],
+            [['foo', 'bar', 'baz'], '[foo|bar|baz]', 'asList'],
+            [['foo' => 'bar', 'baz'], 'foo:bar|baz', 'asMap'],
+            [[1, 2, 3, 4, 5], '1..5', 'asRange']
+        ];
+    }
+
+    /**
+     * @param  mixed   $expected
+     * @param  string  $value
+     * @param  string  $type
+     * @test
+     * @dataProvider  parseList
+     * @since  5.0.0
+     */
+    public function parseReturnsValueCastedToRecognizedType($expected, $value, $type)
+    {
+        $this->assertEquals($expected, $this->createAnnotation(['foo' => $value])->parse('foo')->$type());
+    }
 }
