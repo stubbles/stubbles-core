@@ -10,7 +10,6 @@
 namespace stubbles\lang\reflect\annotation;
 use stubbles\lang;
 use stubbles\lang\Parse;
-use stubbles\lang\exception\MethodNotSupportedException;
 /**
  * Represents an annotation on the code.
  */
@@ -149,7 +148,7 @@ class Annotation
      * @param   string  $name
      * @param   array   $arguments
      * @return  mixed
-     * @throws  MethodNotSupportedException
+     * @throws  \BadMethodCallException
      */
     public function  __call($name, $arguments)
     {
@@ -171,7 +170,7 @@ class Annotation
             return $this->hasProperty(strtolower(substr($name, 3, 1)) . substr($name, 4));
         }
 
-        throw new MethodNotSupportedException('The method ' . $name . ' does not exit.');
+        throw new \BadMethodCallException('The method ' . $name . ' does not exit.');
     }
 
     /**

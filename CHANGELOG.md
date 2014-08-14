@@ -15,6 +15,7 @@
   * Parsing `null` with any of the `stubbles\lang\Parse` methods will now always return null.
   * Removed all classes, methods and functions deprecated with 4.0.0 and 4.1.0
   * The `stubbles\lang\exception\IllegalArgumentException` is now also an instance of `InvalidArgumentException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * Retrieving a non-existing value from `stubbles\lang\reflect\annotation\Annotation` via method will throw a BadMethodCallException instead of `stubbles\lang\exception\MethodNotSupportedException`
 
 
 ### Other changes
