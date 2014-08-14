@@ -14,6 +14,7 @@
   * Deprecated `stubbles\lang\reflect\Reflection*::getAnnotation()`, use `stubbles\lang\reflect\Reflection*::annotation()` instead
   * Parsing `null` with any of the `stubbles\lang\Parse` methods will now always return null.
   * Removed all classes, methods and functions deprecated with 4.0.0 and 4.1.0
+  * The `stubbles\lang\exception\IllegalArgumentException` is now also an instance of `InvalidArgumentException`. It is recommended to use the latter in catch statements, as this increases interoperability.
 
 
 ### Other changes
