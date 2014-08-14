@@ -79,6 +79,10 @@ class Annotation
     }
 
     /**
+     * annotation type
+     *
+     * Contains always the real annotation type, as the annotation name in case
+     * of casted annotations reflects the casted type.
      *
      * @return  string
      * @since   5.0.0
