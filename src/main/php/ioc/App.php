@@ -9,7 +9,6 @@
  */
 namespace stubbles\ioc;
 use stubbles\ioc\module\ModeBindingModule;
-use stubbles\lang\Mode;
 /**
  * Application base class.
  */
@@ -53,19 +52,22 @@ abstract class App
      */
     public static function createInstance($className, $projectPath)
     {
-        return BindingFactory::createInjector(self::getBindingsForApp($className, $projectPath))
-                             ->getInstance($className);
+        return BindingFactory::createInjector(
+                        self::getBindingsForApp($className, $projectPath)
+               )
+               ->getInstance($className);
     }
 
     /**
      * creates list of bindings from given class
      *
+     * @internal  must not be used by applications
      * @param   string  $className    full qualified class name of class to create an instance of
      * @param   string  $projectPath  path to project
      * @return  \stubbles\ioc\module\BindingModule[]
      * @since   1.3.0
      */
-    private static function getBindingsForApp($className, $projectPath)
+    protected static function getBindingsForApp($className, $projectPath)
     {
         if (method_exists($className, '__bindings')) {
             return $className::__bindings($projectPath);
@@ -78,7 +80,7 @@ abstract class App
      * creates mode binding module
      *
      * @api
-     * @param   string         $projectPath  path to project files
+     * @param   string                        $projectPath  path to project files
      * @param   \stubbles\lang\Mode|callable  $mode         optional  runtime mode
      * @return  \stubbles\ioc\module\ModeBindingModule
      * @since   2.0.0
