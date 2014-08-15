@@ -14,8 +14,25 @@ use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Binding module to configure the binder with a runtime mode.
  */
-class ModeBindingModule implements BindingModule
+class Runtime implements BindingModule
 {
+    /**
+     * marker whether runtime was already initialized
+     *
+     * @type  bool
+     */
+    private static $initialized = false;
+
+    /**
+     * checks whether runtime was already bound
+     *
+     * @return  bool
+     */
+    public static function initialized()
+    {
+        return self::$initialized;
+    }
+
     /**
      * different path types
      *
@@ -59,6 +76,7 @@ class ModeBindingModule implements BindingModule
 
         $this->mode->registerErrorHandler($projectPath);
         $this->mode->registerExceptionHandler($projectPath);
+        self::$initialized = true;
     }
 
     /**
@@ -80,7 +98,7 @@ class ModeBindingModule implements BindingModule
      *
      * @api
      * @param   string  $pathType
-     * @return  \stubbles\ioc\module\ModeBindingModule
+     * @return  \stubbles\ioc\module\Runtime
      */
     public function addPathType($pathType)
     {
@@ -101,6 +119,8 @@ class ModeBindingModule implements BindingModule
             $binder->bindPropertiesFromFile($this->propertiesFile(), $this->mode);
         }
 
+        $binder->bindConstant('stubbles.project.path')
+                   ->to($this->projectPath);
         foreach ($this->buildPathes($this->projectPath) as $name => $value) {
             $binder->bindConstant($name)
                    ->to($value);

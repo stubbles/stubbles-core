@@ -21,13 +21,12 @@ class AppUsingBindingModule extends App
     /**
      * creates mode binding module
      *
-     * @param   string  $projectPath  path to project
-     * @param   Mode    $mode         runtime mode
-     * @return  ModeBindingModule
+     * @param   \stubbles\lang\Mode  $mode  runtime mode
+     * @return  \stubbles\ioc\module\Runtime
      */
-    public static function getModeBindingModule($projectPath, Mode $mode = null)
+    public static function callBindRuntime(Mode $mode = null)
     {
-        return self::createModeBindingModule($projectPath, $mode);
+        return self::runtime($mode);
     }
 
     /**

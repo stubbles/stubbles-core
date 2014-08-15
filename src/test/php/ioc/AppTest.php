@@ -19,6 +19,18 @@ use stubbles\test\ioc\AppUsingBindingModule;
 class AppTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * clean up test environment
+     */
+    public function tearDown()
+    {
+        $property = new \ReflectionProperty('stubbles\ioc\module\Runtime', 'initialized');
+        $property->setAccessible(true);
+        $property->setValue(null, false);
+        restore_error_handler();
+        restore_exception_handler();
+    }
+
+    /**
      * @since  2.0.0
      * @test
      */
@@ -86,11 +98,11 @@ class AppTest extends \PHPUnit_Framework_TestCase
      * @since  2.0.0
      * @test
      */
-    public function canCreateModeBindingModule()
+    public function canCreateRuntime()
     {
         $this->assertInstanceOf(
-                'stubbles\ioc\module\ModeBindingModule',
-                AppUsingBindingModule::getModeBindingModule(__DIR__)
+                'stubbles\ioc\module\Runtime',
+                AppUsingBindingModule::callBindRuntime()
         );
     }
 

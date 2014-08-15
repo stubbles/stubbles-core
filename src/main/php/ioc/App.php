@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\ioc\module\ModeBindingModule;
+use stubbles\ioc\module\Runtime;
 /**
  * Application base class.
  */
@@ -39,6 +39,13 @@ abstract class App
     }
 
     /**
+     * project path, set when instance is created
+     *
+     * @type  string
+     */
+    private static $projectPath;
+
+    /**
      * creates an object via injection
      *
      * If the class to create an instance of contains a static __bindings() method
@@ -52,6 +59,7 @@ abstract class App
      */
     public static function createInstance($className, $projectPath)
     {
+        self::$projectPath = $projectPath;
         return BindingFactory::createInjector(
                         static::getBindingsForApp($className, $projectPath)
                )
@@ -69,13 +77,10 @@ abstract class App
      */
     protected static function getBindingsForApp($className, $projectPath)
     {
-        $bindings = method_exists($className, '__bindings') ? $className::__bindings($projectPath) : [];
-        $bindings[] = function(Binder $binder) use($projectPath)
-        {
-            $binder->bindConstant('stubbles.project.path')
-                   ->to($projectPath);
-        };
-
+        $bindings = method_exists($className, '__bindings') ? $className::__bindings(self::$projectPath) : [];
+        if (!Runtime::initialized()) {
+            $bindings[] = new Runtime(self::$projectPath);
+        }
 
         return $bindings;
     }
@@ -84,14 +89,13 @@ abstract class App
      * creates mode binding module
      *
      * @api
-     * @param   string                        $projectPath  path to project files
-     * @param   \stubbles\lang\Mode|callable  $mode         optional  runtime mode
-     * @return  \stubbles\ioc\module\ModeBindingModule
+     * @param   \stubbles\lang\Mode|callable  $mode  optional  runtime mode
+     * @return  \stubbles\ioc\module\Runtime
      * @since   2.0.0
      */
-    protected static function createModeBindingModule($projectPath, $mode = null)
+    protected static function runtime($mode = null)
     {
-        return new ModeBindingModule($projectPath, $mode);
+        return new Runtime(self::$projectPath, $mode);
     }
 
     /**
@@ -100,7 +104,7 @@ abstract class App
      * @api
      * @return  \Closure
      */
-    protected static function bindCurrentWorkingDirectory()
+    protected static function currentWorkingDirectory()
     {
         return function(Binder $binder)
         {
@@ -110,12 +114,24 @@ abstract class App
     }
 
     /**
+     * create a binding module which binds current working directory
+     *
+     * @api
+     * @return  \Closure
+     * @deprecated  since 5.0.0, use currentWorkingDirectory() instead, will be removed with 6.0.0
+     */
+    protected static function bindCurrentWorkingDirectory()
+    {
+        return self::currentWorkingDirectory();
+    }
+
+    /**
      * create a binding module which binds current hostnames
      *
      * @api
      * @return  \Closure
      */
-    protected static function bindHostname()
+    protected static function hostname()
     {
         return function(Binder $binder)
         {
@@ -133,5 +149,17 @@ abstract class App
             $binder->bindConstant('stubbles.hostname.fq')
                    ->to($fq);
         };
+    }
+
+    /**
+     * create a binding module which binds current hostnames
+     *
+     * @api
+     * @return  \Closure
+     * @deprecated  since 5.0.0, use hostname() instead, will be removed with 6.0.0
+     */
+    protected static function bindHostname()
+    {
+        return self::hostname();
     }
 }
