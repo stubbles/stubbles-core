@@ -53,7 +53,7 @@ abstract class App
     public static function createInstance($className, $projectPath)
     {
         return BindingFactory::createInjector(
-                        self::getBindingsForApp($className, $projectPath)
+                        static::getBindingsForApp($className, $projectPath)
                )
                ->getInstance($className);
     }
