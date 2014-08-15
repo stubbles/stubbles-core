@@ -31,42 +31,6 @@ class AppUsingBindingModule extends App
     }
 
     /**
-     * creates properties binding module
-     *
-     * @param   string  $projectPath
-     * @return  PropertiesBindingModule
-     */
-    public static function getPropertiesBindingModule($projectPath)
-    {
-        return self::createPropertiesBindingModule($projectPath);
-    }
-
-    /**
-     * enables annotation persistence
-     *
-     * @param  Closure  $readCache
-     * @param  Closure  $storeCache
-     * @since  3.0.0
-     * @deprecated  since 3.1.0, will be removed with 4.0.0
-     */
-    public static function callAnnotationPersistence(\Closure $readCache, \Closure $storeCache)
-    {
-        self::persistAnnotations($readCache, $storeCache);
-    }
-
-    /**
-     * enabled annotation file persistence
-     *
-     * @param  string  $cacheFile
-     * @since  3.0.0
-     * @deprecated  since 3.1.0, will be removed with 4.0.0
-     */
-    public static function callAnnotationFilePersistence($cacheFile)
-    {
-        self::persistAnnotationsInFile($cacheFile);
-    }
-
-    /**
      * returns binding module for current working directory
      *
      * @return  \Closure
