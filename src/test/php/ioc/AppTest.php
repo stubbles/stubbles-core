@@ -60,6 +60,19 @@ class AppTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  5.0.0
+     */
+    public function projectPathIsBoundWithExplicitBindings()
+    {
+        $this->assertEquals(
+                'projectPath',
+                AppClassWithBindings::create('projectPath')->projectPath
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
      */
     public function projectPathIsBoundWithoutExplicitBindings()
     {
