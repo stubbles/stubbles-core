@@ -9,6 +9,7 @@
  */
 namespace stubbles\ioc;
 use stubbles\test\ioc\AppClassWithBindings;
+use stubbles\test\ioc\AppClassWithoutBindings;
 use stubbles\test\ioc\AppUsingBindingModule;
 /**
  * Test for stubbles\ioc\App.
@@ -24,10 +25,10 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function createCreatesInstanceUsingBindings()
     {
         $appCommandWithBindings = AppClassWithBindings::create('projectPath');
-        $this->assertInstanceOf('stubbles\test\ioc\AppClassWithBindings',
-                                $appCommandWithBindings
+        $this->assertInstanceOf(
+                'stubbles\test\ioc\AppClassWithBindings',
+                $appCommandWithBindings
         );
-        $this->assertEquals('projectPath', AppClassWithBindings::getProjectPath());
     }
 
     /**
@@ -38,10 +39,10 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $appCommandWithBindings = App::createInstance('stubbles\test\ioc\AppClassWithBindings',
                                                       'projectPath'
                                   );
-        $this->assertInstanceOf('stubbles\test\ioc\AppClassWithBindings',
-                                $appCommandWithBindings
+        $this->assertInstanceOf(
+                'stubbles\test\ioc\AppClassWithBindings',
+                $appCommandWithBindings
         );
-        $this->assertEquals('projectPath', AppClassWithBindings::getProjectPath());
     }
 
     /**
@@ -49,10 +50,22 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceCreatesInstanceWithoutBindings()
     {
-        $this->assertInstanceOf('stubbles\test\ioc\AppTestBindingModuleTwo',
-                                App::createInstance('stubbles\test\ioc\AppTestBindingModuleTwo',
-                                                    'projectPath'
-                                )
+        $this->assertInstanceOf(
+                'stubbles\test\ioc\AppClassWithoutBindings',
+                App::createInstance('stubbles\test\ioc\AppClassWithoutBindings',
+                                    'projectPath'
+                )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function projectPathIsBoundWithoutExplicitBindings()
+    {
+        $this->assertEquals(
+                'projectPath',
+                AppClassWithoutBindings::create('projectPath')->projectPath
         );
     }
 
@@ -62,8 +75,9 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function canCreateModeBindingModule()
     {
-        $this->assertInstanceOf('stubbles\ioc\module\ModeBindingModule',
-                                AppUsingBindingModule::getModeBindingModule(__DIR__)
+        $this->assertInstanceOf(
+                'stubbles\ioc\module\ModeBindingModule',
+                AppUsingBindingModule::getModeBindingModule(__DIR__)
         );
     }
 
@@ -74,9 +88,9 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function dynamicBindingViaClosure()
     {
-        $this->assertEquals('closure',
-                            AppClassWithBindings::create('projectPath')
-                                                ->wasBoundBy()
+        $this->assertEquals(
+                'closure',
+                AppClassWithBindings::create('projectPath')->wasBoundBy()
         );
     }
 
@@ -93,15 +107,26 @@ class AppTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return  array
+     */
+    public function hostnameKeys()
+    {
+        return [
+            ['stubbles.hostname.nq'],
+            ['stubbles.hostname.fq']
+        ];
+    }
+
+    /**
      * @test
      * @since  3.4.0
+     * @dataProvider  hostnameKeys
      */
-    public function bindHostname()
+    public function bindHostname($key)
     {
         $binder = new Binder();
         $module = AppUsingBindingModule::getBindHostnameModule();
         $module($binder);
-        $this->assertTrue($binder->hasConstant('stubbles.hostname.nq'));
-        $this->assertTrue($binder->hasConstant('stubbles.hostname.fq'));
+        $this->assertTrue($binder->hasConstant($key));
     }
 }

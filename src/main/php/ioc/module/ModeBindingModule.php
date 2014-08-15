@@ -101,8 +101,6 @@ class ModeBindingModule implements BindingModule
             $binder->bindPropertiesFromFile($this->propertiesFile(), $this->mode);
         }
 
-        $binder->bindConstant('stubbles.project.path')
-               ->to($this->projectPath);
         foreach ($this->buildPathes($this->projectPath) as $name => $value) {
             $binder->bindConstant($name)
                    ->to($value);

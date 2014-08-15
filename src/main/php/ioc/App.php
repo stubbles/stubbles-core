@@ -69,11 +69,15 @@ abstract class App
      */
     protected static function getBindingsForApp($className, $projectPath)
     {
-        if (method_exists($className, '__bindings')) {
-            return $className::__bindings($projectPath);
-        }
+        $bindings = method_exists($className, '__bindings') ? $className::__bindings($projectPath) : [];
+        $bindings[] = function(Binder $binder) use($projectPath)
+        {
+            $binder->bindConstant('stubbles.project.path')
+                   ->to($projectPath);
+        };
 
-        return [];
+
+        return $bindings;
     }
 
     /**

@@ -16,17 +16,13 @@ use stubbles\ioc\Binder;
 class AppClassWithBindings extends App
 {
     /**
-     * given project path
-     *
-     * @type  string
-     */
-    protected static $projectPath;
-    /**
      * bound by value for retrieval
      *
      * @type  string
      */
     private $boundBy;
+
+    public $projectPath;
 
     /**
      * return list of bindings required for this command
@@ -36,7 +32,6 @@ class AppClassWithBindings extends App
      */
     public static function __bindings($projectPath)
     {
-        self::$projectPath = $projectPath;
         return array(new AppTestBindingModuleOne(),
                      new AppTestBindingModuleTwo(),
                      function(Binder $binder)
@@ -45,6 +40,17 @@ class AppClassWithBindings extends App
                                 ->to('closure');
                      }
                );
+    }
+
+    /**
+     *
+     * @param  string  $projectPath
+     * @Inject
+     * @Named('stubbles.project.path')
+     */
+    public function setProjectPath($projectPath)
+    {
+        $this->projectPath = $projectPath;
     }
 
     /**
@@ -67,16 +73,6 @@ class AppClassWithBindings extends App
     public function wasBoundBy()
     {
         return $this->boundBy;
-    }
-
-    /**
-     * returns set project path
-     *
-     * @return  string
-     */
-    public static function getProjectPath()
-    {
-        return self::$projectPath;
     }
 
     /**

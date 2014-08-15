@@ -152,21 +152,6 @@ stubbles.webapp.xml.serializeMode=true")
     }
 
     /**
-     * @test
-     */
-    public function projectPathIsBound()
-    {
-        $binder = new Binder();
-        $modeBindingModule = new ModeBindingModule($this->root->url(), $this->mockMode);
-        $modeBindingModule->configure($binder);
-        $this->assertTrue($binder->hasConstant('stubbles.project.path'));
-        $this->assertEquals($this->root->url(),
-                            $binder->getInjector()
-                                   ->getConstant('stubbles.project.path')
-        );
-    }
-
-    /**
      * returns constant names and values
      *
      * @return  array
