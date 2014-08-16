@@ -23,9 +23,6 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        $property = new \ReflectionProperty('stubbles\ioc\module\Runtime', 'initialized');
-        $property->setAccessible(true);
-        $property->setValue(null, false);
         restore_error_handler();
         restore_exception_handler();
     }

@@ -26,11 +26,22 @@ class Runtime implements BindingModule
     /**
      * checks whether runtime was already bound
      *
+     * @internal
      * @return  bool
      */
     public static function initialized()
     {
         return self::$initialized;
+    }
+
+    /**
+     * resets initialzed status
+     *
+     * @internal
+     */
+    public static function reset()
+    {
+        self::$initialized = false;
     }
 
     /**

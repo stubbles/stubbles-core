@@ -38,6 +38,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     {
         $this->root     = vfsStream::setup('projects');
         $this->mockMode = $this->getMock('stubbles\lang\Mode');
+        Runtime::reset();
     }
 
     /**
@@ -45,9 +46,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        $property = new \ReflectionProperty('stubbles\ioc\module\Runtime', 'initialized');
-        $property->setAccessible(true);
-        $property->setValue(null, false);
+        Runtime::reset();
     }
 
     /**
