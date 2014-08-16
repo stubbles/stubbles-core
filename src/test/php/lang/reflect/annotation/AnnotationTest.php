@@ -112,7 +112,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  value_by_name
-     * @since   1.7.0
+     * @since  1.7.0
      */
     public function returnsFalseOnCheckForUnsetProperty()
     {
@@ -122,7 +122,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  value_by_name
-     * @since   1.7.0
+     * @since  1.7.0
      */
     public function returnsTrueOnCheckForSetProperty()
     {
@@ -134,7 +134,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  value_by_name
-     * @since   1.7.0
+     * @since  1.7.0
      */
     public function returnsNullForUnsetProperty()
     {
@@ -144,7 +144,20 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group  value_by_name
-     * @since   1.7.0
+     * @since  5.0.0
+     */
+    public function returnsDefaultForUnsetProperty()
+    {
+        $this->assertEquals(
+                'bar',
+                $this->createAnnotation()->getValueByName('foo', 'bar')
+        );
+    }
+
+    /**
+     * @test
+     * @group  value_by_name
+     * @since  1.7.0
      */
     public function returnsValueForSetProperty()
     {

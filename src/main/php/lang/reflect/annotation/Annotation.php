@@ -114,16 +114,17 @@ class Annotation
      *
      * @api
      * @param   string  $name
+     * @param   mixed   $default  optional  value to return if value not set
      * @return  mixed
      * @since   1.7.0
      */
-    public function getValueByName($name)
+    public function getValueByName($name, $default = null)
     {
         if (isset($this->values[$name])) {
             return $this->parseType($this->values[$name]);
         }
 
-        return null;
+        return $default;
     }
 
     /**
