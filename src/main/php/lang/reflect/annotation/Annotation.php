@@ -152,7 +152,7 @@ class Annotation
      * @param   string  $name
      * @param   array   $arguments
      * @return  mixed
-     * @throws  \BadMethodCallException
+     * @throws  \ReflectionException
      */
     public function  __call($name, $arguments)
     {
@@ -174,7 +174,10 @@ class Annotation
             return $this->hasProperty(strtolower(substr($name, 3, 1)) . substr($name, 4));
         }
 
-        throw new \BadMethodCallException('The method ' . $name . ' does not exit.');
+        $annotationName = $this->type . ($this->name !== $this->type ? ('[' . $this->name . ']') : '');
+        throw new \ReflectionException(
+                'The value with name "' . $name . '" for annotation @' . $annotationName . ' at ' . $this->target . ' does not exist'
+        );
     }
 
     /**

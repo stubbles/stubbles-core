@@ -40,7 +40,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     private function createAnnotation(array $values = [])
     {
-        return new Annotation('annotationName', 'someFunction()', $values);
+        return new Annotation('Life', 'someFunction()', $values, 'Example');
     }
 
     /**
@@ -57,9 +57,10 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  BadMethodCallException
+     * @expectedException  ReflectionException
+     * @expectedExceptionMessage  The value with name "invalid" for annotation @Example[Life] at someFunction() does not exist
      */
-    public function callUndefinedMethodThrowsUnsupportedMethodException()
+    public function callUndefinedMethodThrowsReflectionException()
     {
         $this->createAnnotation()->invalid();
     }
@@ -99,11 +100,13 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  BadMethodCallException
+     * @expectedException  ReflectionException
+     * @expectedExceptionMessage  The value with name "invalid" for annotation @Example at someFunction() does not exist
      */
-    public function throwsUnsupportedMethodExceptionForMethodCallsWithoutGetOrIsOnSpecialValue()
+    public function throwsReflectionExceptionForMethodCallsWithoutGetOrIsOnSpecialValue()
     {
-        $this->createSingleValueAnnotation('true')->invalid();
+        $annotation = new Annotation('Example', 'someFunction()', ['__value' => 'true']);
+        $annotation->invalid();
     }
 
     /**
