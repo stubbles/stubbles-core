@@ -83,6 +83,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param  int     $expectedResult
+     * @param  string  $stringToParse
+     * @test
+     * @dataProvider  stringToIntConversions
+     * @since  5.0.0
+     */
+    public function asIntWithDefaultReturnsValueCastedToInteger($expectedResult, $stringToParse)
+    {
+        if (null === $stringToParse) {
+            $expectedResult = 'foo';
+        }
+
+        $parse = new Parse($stringToParse);
+        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asInt());
+    }
+
+    /**
      * @test
      * @since  5.0.0
      */
@@ -129,6 +146,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         $parse = new Parse($stringToParse);
         $this->assertEquals($expectedResult, $parse->asFloat());
+    }
+
+    /**
+     * @param  float   $expectedResult
+     * @param  string  $stringToParse
+     * @test
+     * @dataProvider  stringToFloatConversions
+     * @since  5.0.0
+     */
+    public function asFloatWithDefaultReturnsValueCastedToFloat($expectedResult, $stringToParse)
+    {
+        if (null === $stringToParse) {
+            $expectedResult = 'foo';
+        }
+
+        $parse = new Parse($stringToParse);
+        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asFloat());
     }
 
     /**
@@ -185,6 +219,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param  bool    $expectedResult
+     * @param  string  $stringToParse
+     * @test
+     * @dataProvider  stringToBoolConversions
+     * @since  5.0.0
+     */
+    public function asBoolWithDefaultReturnsValueCastedToBool($expectedResult, $stringToParse)
+    {
+        if (null === $stringToParse) {
+            $expectedResult = 'foo';
+        }
+
+        $parse = new Parse($stringToParse);
+        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asBool($stringToParse));
+    }
+
+    /**
      * @test
      * @since  5.0.0
      */
@@ -237,6 +288,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param  string[]  $expectedResult
+     * @param  string    $stringToParse
+     * @test
+     * @dataProvider  stringToListConversions
+     * @since  5.0.0
+     */
+    public function asListWithDefaultReturnsValueCastedToList($expectedResult, $stringToParse)
+    {
+        if (null === $stringToParse) {
+            $expectedResult = 'foo';
+        }
+
+        $parse = new Parse($stringToParse);
+        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asList($stringToParse));
+    }
+
+    /**
      * @return  array
      */
     public function stringToMapConversions()
@@ -286,6 +354,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param  array   $expectedResult
+     * @param  string   $stringToParse
+     * @test
+     * @dataProvider  stringToMapConversions
+     * @since  5.0.0
+     */
+    public function asMapWithDefaultReturnsValueCastedToMap($expectedResult, $stringToParse)
+    {
+        if (null === $stringToParse) {
+            $expectedResult = 'foo';
+        }
+
+        $parse = new Parse($stringToParse);
+        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asMap($stringToParse));
+    }
+
+    /**
      * @return  array
      */
     public function stringToRangeConversions()
@@ -331,6 +416,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param  mixed[]  $expectedResult
+     * @param  string   $stringToParse
+     * @test
+     * @dataProvider  stringToRangeConversions
+     * @since  5.0.0
+     */
+    public function asRangeWithDefaultReturnsValueCastedToRange($expectedResult, $stringToParse)
+    {
+        if (null === $stringToParse) {
+            $expectedResult = 'foo';
+        }
+
+        $parse = new Parse($stringToParse);
+        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asRange($stringToParse));
+    }
+
+    /**
      * @return  array
      */
     public function stringToClassConversions()
@@ -370,6 +472,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param  \stubbles\lang\reflect\ReflectionClass  $expectedResult
+     * @param  string                                  $stringToParse
+     * @test
+     * @dataProvider  stringToClassConversions
+     * @since  5.0.0
+     */
+    public function asClassWithDefaultReturnsValueCastedToClassInstance($expectedResult, $stringToParse)
+    {
+        if (null === $stringToParse) {
+            $expectedResult = 'foo';
+        }
+
+        $parse = new Parse($stringToParse);
+        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asClass($stringToParse));
+    }
+
+    /**
      * @test
      * @expectedException  ReflectionException
      */
@@ -387,6 +506,17 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         $parse = new Parse('does\not\Exist.class');
         $parse->asClass();
+    }
+
+    /**
+     * @test
+     * @expectedException  ReflectionException
+     * @since  5.0.0
+     */
+    public function asClassWithNonExistingClassAndDefaultThrowsReflectionException()
+    {
+        $parse = new Parse('does\not\Exist.class');
+        $parse->defaultingTo(__CLASS__ . '.class')->asClass();
     }
 
     /**
@@ -428,6 +558,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param  \stubbles\lang\Enum  $expectedResult
+     * @param  string               $stringToParse
+     * @test
+     * @dataProvider  stringToEnumConversions
+     * @since  5.0.0
+     */
+    public function asEnumWithDefaultReturnsValueCastedToEnumInstance($expectedResult, $stringToParse)
+    {
+        if (null === $stringToParse) {
+            $expectedResult = 'foo';
+        }
+
+        $parse = new Parse($stringToParse);
+        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asEnum($stringToParse));
+    }
+
+    /**
      * @test
      * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
@@ -445,6 +592,18 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         $parse = new Parse('stubbles\lang\MyEnum::$BAR');
         $parse->asEnum();
+    }
+
+    /**
+     * @test
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedExceptionMessage  Class stubbles\lang\MyEnum does not have a property named BAR
+     * @since  5.0.0
+     */
+    public function asEnumWithNonExistingEnumAndDefaultThrowsIllegalArgumentException()
+    {
+        $parse = new Parse('stubbles\lang\MyEnum::$BAR');
+        $parse->defaultingTo('foo')->asEnum();
     }
 
     /**
@@ -535,6 +694,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [null, 'asEnum'],
         ];
     }
+
     /**
      *
      * @param  mixed   $expected
@@ -543,9 +703,23 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      * @dataProvider  methods
      * @since  5.0.0
      */
-    public function parseNull($expected, $method)
+    public function parseNullReturnsNull($expected, $method)
     {
         $parse = new Parse(null);
         $this->assertEquals($expected, $parse->$method());
+    }
+
+    /**
+     *
+     * @param  mixed   $expected
+     * @param  string  $method
+     * @test
+     * @dataProvider  methods
+     * @since  5.0.0
+     */
+    public function parseNullWithDefaultReturnsDefault($expected, $method)
+    {
+        $parse = new Parse(null);
+        $this->assertEquals('foo', $parse->defaultingTo('foo')->$method());
     }
 }

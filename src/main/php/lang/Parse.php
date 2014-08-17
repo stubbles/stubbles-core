@@ -374,6 +374,12 @@ class Parse
      * @type  string
      */
     private $value;
+    /**
+     * default to be returned in case value is null
+     *
+     * @type  mixed
+     */
+    private $default = null;
 
     /**
      * constructor
@@ -387,6 +393,33 @@ class Parse
     }
 
     /**
+     * set a default to be returned in case value is <null>
+     *
+     * @param   mixed  $default
+     * @return  \stubbles\lang\Parse
+     */
+    public function defaultingTo($default)
+    {
+        $this->default = $default;
+        return $this;
+    }
+
+    /**
+     * does the actual parsing
+     *
+     * @param   string  $method  static parse method to call
+     * @return  mixed
+     */
+    private function parse($method)
+    {
+        if (null === $this->value) {
+            return $this->default;
+        }
+
+        return self::$method($this->value);
+    }
+
+    /**
      * returns value as string (i.e., a pass through)
      *
      * @return  string
@@ -394,6 +427,10 @@ class Parse
      */
     public function asString()
     {
+        if (null === $this->value) {
+            return $this->default;
+        }
+
         return $this->value;
     }
 
@@ -405,7 +442,7 @@ class Parse
      */
     public function asInt()
     {
-        return self::toInt($this->value);
+        return $this->parse('toInt');
     }
 
     /**
@@ -416,7 +453,7 @@ class Parse
      */
     public function asFloat()
     {
-        return self::toFloat($this->value);
+        return $this->parse('toFloat');
     }
 
     /**
@@ -427,7 +464,7 @@ class Parse
      */
     public function asBool()
     {
-        return self::toBool($this->value);
+        return $this->parse('toBool');
     }
 
     /**
@@ -438,7 +475,7 @@ class Parse
      */
     public function asList()
     {
-        return self::toList($this->value);
+        return $this->parse('toList');
     }
 
     /**
@@ -449,7 +486,7 @@ class Parse
      */
     public function asMap()
     {
-        return self::toMap($this->value);
+        return $this->parse('toMap');
     }
 
     /**
@@ -460,7 +497,7 @@ class Parse
      */
     public function asRange()
     {
-        return self::toRange($this->value);
+        return $this->parse('toRange');
     }
 
     /**
@@ -471,7 +508,7 @@ class Parse
      */
     public function asClass()
     {
-        return self::toClass($this->value);
+        return $this->parse('toClass');
     }
 
     /**
@@ -482,7 +519,7 @@ class Parse
      */
     public function asEnum()
     {
-        return self::toEnum($this->value);
+        return $this->parse('toEnum');
     }
 }
 Parse::__static();
