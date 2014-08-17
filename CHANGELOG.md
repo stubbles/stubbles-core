@@ -6,6 +6,7 @@
   * Removed `stubbles\ioc\App::createModeBindingModule($projectPath, $mode = null)`
 `   * project path and mode are now bound automatically if not explicitly specified
     * to overrule or configure the defaults use `stubbles\ioc\App::runtime($mode = null)` instead
+  * A `__bindings()` method within an app doesn't receive the project path any more. If it is still required call `self::projectPath()`
   * Deprecated `stubbles\ioc\App::bindCurrentWorkingDirectory()`, use `stubbles\ioc\App::currentWorkingDirectory()` instead, will be removed with 6.0.0
   * Deprecated `stubbles\ioc\App::bindHostname()`, use `stubbles\ioc\App::hostname()` instead, will be removed with 6.0.0
   * Removed possibility to change values on annotations, annotations should be read only.

@@ -27,10 +27,9 @@ class AppClassWithBindings extends App
     /**
      * return list of bindings required for this command
      *
-     * @param   string  $projectPath
      * @return  array
      */
-    public static function __bindings($projectPath)
+    public static function __bindings()
     {
         return array(new AppTestBindingModuleOne(),
                      new AppTestBindingModuleTwo(),

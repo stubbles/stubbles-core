@@ -46,6 +46,19 @@ abstract class App
     private static $projectPath;
 
     /**
+     * returns current project path
+     *
+     * Should only be used during app initialization, but never at runtime.
+     *
+     * @since   5.0.0
+     * @return  string
+     */
+    protected static function projectPath()
+    {
+        return self::$projectPath;
+    }
+
+    /**
      * creates an object via injection
      *
      * If the class to create an instance of contains a static __bindings() method
@@ -62,7 +75,7 @@ abstract class App
         Runtime::reset();
         self::$projectPath = $projectPath;
         return BindingFactory::createInjector(
-                        static::getBindingsForApp($className, $projectPath)
+                        static::getBindingsForApp($className)
                )
                ->getInstance($className);
     }
@@ -76,11 +89,11 @@ abstract class App
      * @return  \stubbles\ioc\module\BindingModule[]
      * @since   1.3.0
      */
-    protected static function getBindingsForApp($className, $projectPath)
+    protected static function getBindingsForApp($className)
     {
-        $bindings = method_exists($className, '__bindings') ? $className::__bindings(self::$projectPath) : [];
+        $bindings = method_exists($className, '__bindings') ? $className::__bindings() : [];
         if (!Runtime::initialized()) {
-            $bindings[] = new Runtime(self::$projectPath);
+            $bindings[] = static::runtime();
         }
 
         return $bindings;
@@ -96,7 +109,7 @@ abstract class App
      */
     protected static function runtime($mode = null)
     {
-        return new Runtime(self::$projectPath, $mode);
+        return new Runtime(self::projectPath(), $mode);
     }
 
     /**
