@@ -51,6 +51,7 @@
   * Added `stubbles\lang\reflect\annotation\Annotation::parse()` which returns an instance of `stubbles\lang\Parse`
   * Added `stubbles\lang\iterator\RecursiveArrayIterator` to iterate recursively on leafs of arrays only
   * Added trait `stubbles\lang\iterator\PropertyBasedIterator` to allow simple iterator implementations for property backed classes
+  * Added `stubbles\lang\iterator\MappingIterator` to allow mapping of keys and values during iteration
 
 
 4.1.4 (2014-08-11)
