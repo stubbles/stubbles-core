@@ -16,7 +16,7 @@ namespace stubbles\lang\iterator;
 class MappingIterator extends \IteratorIterator
 {
     /**
-     * callable which maps the values
+     * callable which maps the values‚
      *
      * @type  callable
      */
@@ -31,11 +31,11 @@ class MappingIterator extends \IteratorIterator
     /**
      * constructor
      *
-     * @param  \Iterator  $iterator     iterator to map values of
-     * @param  callable   $valueMapper  callable which maps the values
-     * @param  callable   $keyMapper    callable which maps the keys
+     * @param  \Traversable  $iterator     iterator to map values of
+     * @param  callable      $valueMapper  callable which maps the values
+     * @param  callable      ‚$keyMapper    callable which maps the keys
      */
-    public function __construct(\Iterator $iterator, callable $valueMapper, callable $keyMapper = null)
+    public function __construct(\Traversable $iterator, callable $valueMapper, callable $keyMapper = null)
     {
         parent::__construct($iterator);
         $this->valueMapper = $valueMapper;
