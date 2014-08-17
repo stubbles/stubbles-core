@@ -49,6 +49,7 @@
     * all methods `to*()` are additionally available as non-static `as*()` methods except `toType()`
   * Added `stubbles\lang\Properties::parse()` which returns an instance of `stubbles\lang\Parse`
   * Added `stubbles\lang\reflect\annotation\Annotation::parse()` which returns an instance of `stubbles\lang\Parse`
+  * Added `stubbles\lang\iterator\RecursiveArrayIterator` to iterate recursively on leafs of arrays only
 
 
 4.1.4 (2014-08-11)
