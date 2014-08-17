@@ -250,28 +250,6 @@ class Socket
     }
 
     /**
-     * get host of current connection
-     *
-     * @return  string
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function getHost()
-    {
-        return $this->host;
-    }
-
-    /**
-     * get port of current connection
-     *
-     * @return  int
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function getPort()
-    {
-        return $this->port;
-    }
-
-    /**
      * checks if socket uses a secure connection
      *
      * @return  bool

@@ -26,26 +26,6 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function containsGivenHost()
-    {
-        $socket = createSocket('example.com');
-        $this->assertEquals('example.com', $socket->getHost());
-    }
-
-    /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function portDefaultsTo80()
-    {
-        $socket = createSocket('example.com');
-        $this->assertEquals(80, $socket->getPort());
-    }
-
-    /**
-     * @test
      */
     public function isNotSecureByDefault()
     {
@@ -87,16 +67,6 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     {
         $socket = createSocket('example.com');
         $this->assertTrue($socket->eof());
-    }
-
-    /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function hasGivenPort()
-    {
-        $socket = createSocket('example.com', 443, 'ssl://', 30);
-        $this->assertEquals(443, $socket->getPort());
     }
 
     /**
