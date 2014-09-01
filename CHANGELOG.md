@@ -1,3 +1,9 @@
+5.0.1 (2014-09-01)
+------------------
+
+  * fixed issue #119: stubbles\peer\ParsedUri should catch IllegalArgumentException from stubbles\peer\QueryString
+
+
 5.0.0 (2014-08-17)
 ------------------
 

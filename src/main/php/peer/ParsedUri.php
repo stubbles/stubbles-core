@@ -46,7 +46,12 @@ class ParsedUri
             $this->uri['host'] = strtolower($this->uri['host']);
         }
 
-        $this->queryString = new QueryString((isset($this->uri['query'])) ? ($this->uri['query']) : (null));
+        try {
+            $this->queryString = new QueryString((isset($this->uri['query'])) ? ($this->uri['query']) : (null));
+        } catch (\InvalidArgumentException $iae) {
+            throw new MalformedUriException($iae->getMessage(), $iae);
+        }
+
         // bugfix for a PHP issue: ftp://user:@auxiliary.kl-s.com/
         // will lead to an unset $this->uri['pass'] which is wrong
         // due to RFC1738 3.1, it has to be an empty string

@@ -1032,4 +1032,15 @@ class UriTest extends \PHPUnit_Framework_TestCase
                     ->queryString()
         );
     }
+
+    /**
+     * @since  5.0.1
+     * @test
+     * @group  issue_119
+     * @expectedException  stubbles\peer\MalformedUriException
+     */
+    public function illegalArgumentExceptionFromUnbalancedQueryStringTurnedIntoMalformedUriException()
+    {
+        Uri::fromString('http://example.org/?foo[bar=300&baz=200');
+    }
 }
