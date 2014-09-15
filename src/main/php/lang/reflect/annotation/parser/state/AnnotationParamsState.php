@@ -20,24 +20,36 @@ class AnnotationParamsState extends AnnotationAbstractState implements Annotatio
      *
      * @type  string[]
      */
-    protected $doNothingTokens = [',', ' ', "\r", "\n", "\t", '*'];
+    private $doNothingTokens = ["\r", "\n", "\t", '*', ' '];
+
+    /**
+     * returns list of tokens that signal state change
+     *
+     * @return  string[]
+     */
+    public function signalTokens()
+    {
+        return [' ', ')'];
+    }
 
     /**
      * processes a token
      *
-     * @param  string  $token
+     * @param   string  $word          parsed word to be processed
+     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string  $nextToken     next token after current token
+     * @return  bool
      */
-    public function process($token)
+    public function process($word, $currentToken, $nextToken)
     {
-        if (')' === $token) {
+        if (')' === $currentToken) {
             $this->parser->changeState(AnnotationState::DOCBLOCK);
-            return;
+        } elseif (in_array($nextToken, $this->doNothingTokens)) {
+            // do nothing
+        } else {
+            $this->parser->changeState(AnnotationState::PARAM_NAME);
         }
 
-        if (in_array($token, $this->doNothingTokens)) {
-            return;
-        }
-
-        $this->parser->changeState(AnnotationState::PARAM_NAME, $token);
+        return true;
     }
 }

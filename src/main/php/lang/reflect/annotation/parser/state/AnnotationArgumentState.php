@@ -16,42 +16,35 @@ namespace stubbles\lang\reflect\annotation\parser\state;
 class AnnotationArgumentState extends AnnotationAbstractState implements AnnotationState
 {
     /**
-     * argument for which the annotation stands for
+     * returns list of tokens that signal state change
      *
-     * @type  string
+     * @return  string[]
      */
-    private $argument = '';
-
-    /**
-     * mark this state as the currently used state
-     */
-    public function selected()
+    public function signalTokens()
     {
-        parent::selected();
-        $this->argument = '';
+        return ['}'];
     }
 
     /**
      * processes a token
      *
-     * @param   string  $token
+     * @param   string  $word          parsed word to be processed
+     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string  $nextToken     next token after current token
+     * @return  bool
      * @throws  \ReflectionException
      */
-    public function process($token)
+    public function process($word, $currentToken, $nextToken)
     {
-        if ('}' === $token) {
-            if (strlen($this->argument) > 0) {
-                if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $this->argument) == false) {
-                    throw new \ReflectionException('Annotation argument may contain letters, underscores and numbers, but contains an invalid character.');
-                }
-
-                $this->parser->markAsParameterAnnotation($this->argument);
+        if (strlen($word) > 0) {
+            if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
+                throw new \ReflectionException('Annotation argument may contain letters, underscores and numbers, but contains an invalid character.');
             }
 
-            $this->parser->changeState(AnnotationState::ANNOTATION);
-            return;
+            $this->parser->markAsParameterAnnotation($word);
         }
 
-        $this->argument .= $token;
+        $this->parser->changeState(AnnotationState::ANNOTATION);
+        return true;
     }
 }

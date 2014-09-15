@@ -15,6 +15,7 @@ use stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationArgumentState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationDocblockState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationNameState;
+use stubbles\lang\reflect\annotation\parser\state\AnnotationParamEnclosedValueState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationParamNameState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationParamsState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationParamValueState;
@@ -39,6 +40,8 @@ class AnnotationStateParser implements AnnotationParser
      * @type  \stubbles\lang\reflect\annotation\parser\state\AnnotationParserState
      */
     private $currentState       = null;
+
+    private $currentSignals     = [];
     /**
      * the name of the current annotation
      *
@@ -69,25 +72,26 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function __construct()
     {
-        $this->states[AnnotationState::DOCBLOCK]        = new AnnotationDocblockState($this);
-        $this->states[AnnotationState::TEXT]            = new AnnotationTextState($this);
-        $this->states[AnnotationState::ANNOTATION]      = new AnnotationAnnotationState($this);
-        $this->states[AnnotationState::ANNOTATION_NAME] = new AnnotationNameState($this);
-        $this->states[AnnotationState::ANNOTATION_TYPE] = new AnnotationTypeState($this);
-        $this->states[AnnotationState::ARGUMENT]        = new AnnotationArgumentState($this);
-        $this->states[AnnotationState::PARAMS]          = new AnnotationParamsState($this);
-        $this->states[AnnotationState::PARAM_NAME]      = new AnnotationParamNameState($this);
-        $this->states[AnnotationState::PARAM_VALUE]     = new AnnotationParamValueState($this);
+        $this->states[AnnotationState::DOCBLOCK]             = new AnnotationDocblockState($this);
+        $this->states[AnnotationState::ANNOTATION]           = new AnnotationAnnotationState($this);
+        $this->states[AnnotationState::ANNOTATION_NAME]      = new AnnotationNameState($this);
+        $this->states[AnnotationState::ANNOTATION_TYPE]      = new AnnotationTypeState($this);
+        $this->states[AnnotationState::ARGUMENT]             = new AnnotationArgumentState($this);
+        $this->states[AnnotationState::PARAMS]               = new AnnotationParamsState($this);
+        $this->states[AnnotationState::PARAM_NAME]           = new AnnotationParamNameState($this);
+        $this->states[AnnotationState::PARAM_VALUE]          = new AnnotationParamValueState($this);
+        $this->states[AnnotationState::PARAM_VALUE_ENCLOSED] = new AnnotationParamEnclosedValueState($this);
     }
 
     /**
      * change the current state
      *
      * @param   int     $state
-     * @param   string  $token  token that should be processed by the state
+     * @param   string  $currentToken  optional  current token that should be processed
+     * @param   string  $nextToken     optional  next token that will be processed
      * @throws  \ReflectionException
      */
-    public function changeState($state, $token = null)
+    public function changeState($state, $currentToken = null, $nextToken = null)
     {
         if (!isset($this->states[$state])) {
             throw new \ReflectionException('Unknown state ' . $state);
@@ -95,8 +99,9 @@ class AnnotationStateParser implements AnnotationParser
 
         $this->currentState = $this->states[$state];
         $this->currentState->selected();
-        if (null != $token) {
-            $this->currentState->process($token);
+        $this->currentSignals = array_flip($this->currentState->signalTokens());
+        if (null != $currentToken) {
+            $this->currentState->process('', $currentToken, $nextToken);
         }
     }
 
@@ -131,14 +136,29 @@ class AnnotationStateParser implements AnnotationParser
         $this->currentTarget = $target;
         $this->annotations   = [$target => new Annotations($target)];
         $this->changeState(AnnotationState::DOCBLOCK);
-        $len = strlen($docComment);
+        $len  = strlen($docComment);
+        $word = '';
         for ($i = 6; $i < $len; $i++) {
-            $this->currentState->process($docComment{$i});
+            $currentToken = $docComment{$i};
+            if ($i + 1 < $len) {
+                $j = $i + 1;
+                $nextToken = $docComment{$j};
+            } else {
+                $nextToken = null;
+            }
+
+            if (isset($this->currentSignals[$currentToken])) {
+                if ($this->currentState->process($word, $currentToken, $nextToken)) {
+                    $word = '';
+                }
+            } else {
+                $word .= $docComment{$i};
+            }
         }
 
         if (!($this->currentState instanceof AnnotationDocblockState)
           && !($this->currentState instanceof AnnotationTextState)) {
-            throw new \ReflectionException('Annotation parser finished in wrong state, last annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
+            throw new \ReflectionException('Annotation parser finished in wrong state for annotation ' . $target . (isset($this->currentAnnotation['name']) ? '@' . $this->currentAnnotation['name'] : '') . ', annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
         }
 
         $this->finalize();
