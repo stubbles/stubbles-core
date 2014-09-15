@@ -185,6 +185,7 @@ class Injector
         foreach ($class->getMethods() as $method) {
             /* @type  $method  ReflectionMethod */
             if (!$method->isPublic()
+              || $method->isStatic()
               || $method->getNumberOfParameters() === 0
               || strncmp($method->getName(), '__', 2) === 0
               || !$method->hasAnnotation('Inject')) {
