@@ -20,28 +20,29 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
      *
      * @type  string[]
      */
-    protected $forbiddenAnnotationNames = ['deprecated',
-                                           'example',
-                                           'ignore',
-                                           'internal',
-                                           'link',
-                                           'method',
-                                           'package',
-                                           'param',
-                                           'property',
-                                           'property-read',
-                                           'property-write',
-                                           'return',
-                                           'see',
-                                           'since',
-                                           'static',
-                                           'subpackage',
-                                           'throws',
-                                           'todo',
-                                           'type',
-                                           'uses',
-                                           'var',
-                                           'version'
+    protected $forbiddenAnnotationNames = ['deprecated' => 1,
+                                           'example' => 1,
+                                           'ignore' => 1,
+                                           'internal' => 1,
+                                           'link' => 1,
+                                           'method' => 1,
+                                           'package' => 1,
+                                           'param' => 1,
+                                           'property' => 1,
+                                           'property-read' => 1,
+                                           'property-write' => 1,
+                                           'return' => 1,
+                                           'see' => 1,
+                                           'since' => 1,
+                                           'static' => 1,
+                                           'subpackage' => 1,
+                                           'throws' => 1,
+                                           'todo' => 1,
+                                           'type' => 1,
+                                           'uses' => 1,
+                                           'var' => 1,
+                                           'version' => 1,
+                                           'api' => 1
                                           ];
     /**
      * name of the annotation
@@ -74,7 +75,7 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
             }
 
             $this->checkName();
-            if (!in_array($this->name, $this->forbiddenAnnotationNames)) {
+            if (!isset($this->forbiddenAnnotationNames[$this->name])) {
                 $this->parser->registerAnnotation($this->name);
             }
 
@@ -83,7 +84,7 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
         }
 
         if ("\n" === $token || "\r" === $token) {
-            if (strlen($this->name) > 0) {
+            if (strlen($this->name) > 0 && !isset($this->forbiddenAnnotationNames[$this->name])) {
                 $this->checkName();
                 $this->parser->registerAnnotation($this->name);
             }
@@ -148,7 +149,7 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
      */
     protected function changeState($targetState)
     {
-        if (in_array($this->name, $this->forbiddenAnnotationNames)) {
+        if (isset($this->forbiddenAnnotationNames[$this->name])) {
             $targetState = AnnotationState::DOCBLOCK;
         }
 

@@ -126,7 +126,7 @@ class AnnotationNameStateTest extends \PHPUnit_Framework_TestCase
      */
     public function processLineBreakAfterForbiddenAnnotation()
     {
-        $this->mockAnnotationParser->expects($this->once())
+        $this->mockAnnotationParser->expects($this->never())
                                    ->method('registerAnnotation')
                                    ->with($this->equalTo('return'));
         $this->mockAnnotationParser->expects($this->once())
@@ -178,7 +178,7 @@ class AnnotationNameStateTest extends \PHPUnit_Framework_TestCase
      */
     public function processCarriageReturnAfterForbiddenAnnotation()
     {
-        $this->mockAnnotationParser->expects($this->once())
+        $this->mockAnnotationParser->expects($this->never())
                                    ->method('registerAnnotation')
                                    ->with($this->equalTo('return'));
         $this->mockAnnotationParser->expects($this->once())
