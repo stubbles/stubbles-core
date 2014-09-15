@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\iterator\RecursiveArrayIterator;
 /**
  * Contains a list of all annotations for a target.
@@ -49,12 +48,6 @@ class Annotations implements \IteratorAggregate
      */
     public function add(Annotation $annotation)
     {
-        if ($annotation->target() !== $this->target) {
-            throw new IllegalArgumentException(
-                    'Can not add annotation of target ' . $annotation->target() . ' for target ' . $this->target
-            );
-        }
-
         if (!isset($this->types[$annotation->type()])) {
             $this->types[$annotation->type()] = [$annotation];
         } else {
