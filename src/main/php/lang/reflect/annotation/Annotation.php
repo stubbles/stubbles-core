@@ -44,11 +44,11 @@ class Annotation
      * constructor
      *
      * @param  string  $name    name of annotation, in case of casted annotations it the casted type
-     * @param  string  $target  name of target where annotation is for, i.e. the class, method, function, property or parameter
+     * @param  string  $target  optional  name of target where annotation is for, i.e. the class, method, function, property or parameter
      * @param  array   $values  optional  map of all annotation values
      * @param  string  $type    optional  type of annotation in case $name reflects a casted type
      */
-    public function __construct($name, $target, array $values = [], $type = null)
+    public function __construct($name, $target = null, array $values = [], $type = null)
     {
         $this->name   = $name;
         $this->target = $target;

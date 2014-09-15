@@ -35,15 +35,6 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
-     */
-    public function addingAnnotationWithDifferentTargetThrowsIllegalArgumentException()
-    {
-        $this->annotations->add(new Annotation('foo', 'anotherTarget'));
-    }
-
-    /**
-     * @test
      */
     public function doNotContainNonAddedAnnotation()
     {
@@ -56,7 +47,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function containsAddedAnnotation()
     {
         $this->assertTrue(
-                $this->annotations->add(new Annotation('foo', $this->annotations->target()))
+                $this->annotations->add(new Annotation('foo'))
                                   ->contain('foo')
         );
     }
@@ -67,8 +58,8 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function containsMoreThanOneAnnotation()
     {
         $this->assertTrue(
-                $this->annotations->add(new Annotation('foo', $this->annotations->target()))
-                                  ->add(new Annotation('foo', $this->annotations->target()))
+                $this->annotations->add(new Annotation('foo'))
+                                  ->add(new Annotation('foo'))
                                   ->contain('foo')
         );
     }
@@ -90,12 +81,12 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function returnsAllAnnotationsOfThisType()
     {
         $this->assertEquals(
-                [new Annotation('foo', $this->annotations->target()),
-                 new Annotation('foo', $this->annotations->target())
+                [new Annotation('foo'),
+                 new Annotation('foo')
                 ],
-                $this->annotations->add(new Annotation('foo', $this->annotations->target()))
-                                  ->add(new Annotation('bar', $this->annotations->target()))
-                                  ->add(new Annotation('foo', $this->annotations->target()))
+                $this->annotations->add(new Annotation('foo'))
+                                  ->add(new Annotation('bar'))
+                                  ->add(new Annotation('foo'))
                                   ->of('foo')
         );
     }
@@ -106,13 +97,13 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function returnsAllAnnotations()
     {
         $this->assertEquals(
-                [new Annotation('foo', $this->annotations->target()),
-                 new Annotation('foo', $this->annotations->target()),
-                 new Annotation('bar', $this->annotations->target())
+                [new Annotation('foo'),
+                 new Annotation('foo'),
+                 new Annotation('bar')
                 ],
-                $this->annotations->add(new Annotation('foo', $this->annotations->target()))
-                                  ->add(new Annotation('bar', $this->annotations->target()))
-                                  ->add(new Annotation('foo', $this->annotations->target()))
+                $this->annotations->add(new Annotation('foo'))
+                                  ->add(new Annotation('bar'))
+                                  ->add(new Annotation('foo'))
                                   ->all()
         );
     }
@@ -122,9 +113,9 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function canIteratorOverAllAnnotations()
     {
-        $this->annotations->add(new Annotation('foo', $this->annotations->target()))
-                          ->add(new Annotation('bar', $this->annotations->target()))
-                          ->add(new Annotation('foo', $this->annotations->target()));
+        $this->annotations->add(new Annotation('foo'))
+                          ->add(new Annotation('bar'))
+                          ->add(new Annotation('foo'));
         $types = [];
         foreach ($this->annotations as $annotation) {
             $types[] = $annotation->getAnnotationName();
