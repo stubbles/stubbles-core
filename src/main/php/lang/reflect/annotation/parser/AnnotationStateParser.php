@@ -132,7 +132,7 @@ class AnnotationStateParser implements AnnotationParser
         $this->annotations   = [$target => new Annotations($target)];
         $this->changeState(AnnotationState::DOCBLOCK);
         $len = strlen($docComment);
-        for ($i = 0; $i < $len; $i++) {
+        for ($i = 6; $i < $len; $i++) {
             $this->currentState->process($docComment{$i});
         }
 
