@@ -60,7 +60,7 @@ class DefaultInjectionProvider implements InjectionProvider
     public function get($name = null)
     {
         $instance = $this->createInstance();
-        $this->handleInjections($instance, $this->impl);
+        $this->handleInjections($instance);
         return $instance;
     }
 
@@ -87,16 +87,11 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * handle injections for given instance
      *
-     * @param   object                                      $instance
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
+     * @param  object  $instance
      */
-    private function handleInjections($instance, BaseReflectionClass $class = null)
+    private function handleInjections($instance)
     {
-        if (null === $class) {
-            $class = new ReflectionObject($instance);
-        }
-
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ($this->impl->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             /* @type  $method  ReflectionMethod */
             if ($method->isStatic()
               || $method->getNumberOfParameters() === 0
@@ -105,7 +100,7 @@ class DefaultInjectionProvider implements InjectionProvider
                 continue;
             }
 
-            $paramValues = $this->injectionValuesForMethod($method, $class);
+            $paramValues = $this->injectionValuesForMethod($method);
             if (false === $paramValues) {
                 continue;
             }
@@ -117,12 +112,11 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * returns a list of all injection values for given method
      *
-     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
+     * @param   \stubbles\lang\reflect\ReflectionMethod  $method
      * @return  array
      * @throws  \stubbles\ioc\binding\BindingException
      */
-    private function injectionValuesForMethod(ReflectionMethod $method, BaseReflectionClass $class)
+    private function injectionValuesForMethod(ReflectionMethod $method)
     {
         $paramValues = [];
         $defaultName = $this->methodBindingName($method);
@@ -135,7 +129,11 @@ class DefaultInjectionProvider implements InjectionProvider
 
             if (!$this->injector->hasBinding($type, $name)) {
                 $typeMsg = $this->createTypeMessage($type, $name);
-                throw new BindingException('Can not inject into ' . $this->createCalledMethodMessage($class, $method, $param, $type)  . '. No binding for type ' . $typeMsg . ' specified.');
+                throw new BindingException(
+                        'Can not inject into ' . $this->impl->getName() . '::' . $method->getName() . '('
+                        . $this->createParamString($param, $type)
+                        . '). No binding for type ' . $typeMsg . ' specified.'
+                );
             }
 
             $paramValues[] = $this->injector->getInstance($type, $name);
@@ -247,21 +245,19 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * creates the called method message
      *
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
-     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
      * @param   \stubbles\lang\reflect\ReflectionParameter  $parameter
      * @param   string                                      $type
      * @return  string
      */
-    private function createCalledMethodMessage(BaseReflectionClass $class, ReflectionMethod $method, ReflectionParameter $parameter, $type)
+    private function createParamString(ReflectionParameter $parameter, $type)
     {
-        $message = $class->getName() . '::' . $method->getName() . '(';
+        $message = '';
         if (!in_array($type, [PropertyBinding::TYPE, ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE])) {
             $message .= $type . ' ';
         } elseif ($parameter->isArray()) {
             $message .= 'array ';
         }
 
-        return $message . '$' . $parameter->getName() . ')';
+        return $message . '$' . $parameter->getName();
     }
 }
