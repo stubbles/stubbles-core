@@ -1,6 +1,9 @@
 5.?.? (2014-09-??)
 ------------------
 
+  * IoC now supports default param values for non-optional injections:
+    If no binding present for a param is bound but the param has a default value
+    the default value will be used for injection.
   * improved performance of annotation parsing
   * improved annotation cache storage functions api
 

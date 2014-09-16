@@ -279,4 +279,17 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
         $bike     = $injector->getInstance('stubbles\test\ioc\BikeWithOptionalTire');
         $this->assertInstanceOf('stubbles\test\ioc\Goodyear', $bike->tire);
     }
+
+    /**
+     * @test
+     * @since  5.1.0
+     */
+    public function constructorInjectionWithOptionalSecondParam()
+    {
+        $binder   = new Binder();
+        $binder->bind('stubbles\test\ioc\Tire')->to('stubbles\test\ioc\Goodyear');
+        $injector = $binder->getInjector();
+        $bike     = $injector->getInstance('stubbles\test\ioc\BikeWithOptionalOtherParam');
+        $this->assertEquals('foo', $bike->other);
+    }
 }

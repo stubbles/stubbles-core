@@ -15,7 +15,6 @@ use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\lang\reflect\ReflectionMethod;
-use stubbles\lang\reflect\ReflectionObject;
 use stubbles\lang\reflect\ReflectionParameter;
 /**
  * Default injection provider.
@@ -31,13 +30,13 @@ class DefaultInjectionProvider implements InjectionProvider
      *
      * @type  \stubbles\ioc\Injector
      */
-    protected $injector;
+    private $injector;
     /**
      * concrete implementation to use
      *
      * @type  \stubbles\lang\reflect\BaseReflectionClass
      */
-    protected $impl;
+    private $class;
 
     /**
      * constructor
@@ -48,7 +47,7 @@ class DefaultInjectionProvider implements InjectionProvider
     public function __construct(Injector $injector, BaseReflectionClass $impl)
     {
         $this->injector = $injector;
-        $this->impl     = $impl;
+        $this->class    = $impl;
     }
 
     /**
@@ -60,7 +59,7 @@ class DefaultInjectionProvider implements InjectionProvider
     public function get($name = null)
     {
         $instance = $this->createInstance();
-        if (!$this->impl->isInternal()) {
+        if (!$this->class->isInternal()) {
             $this->injectIntoSetters($instance);
         }
 
@@ -74,17 +73,17 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     private function createInstance()
     {
-        $constructor = $this->impl->getConstructor();
-        if (null === $constructor || $this->impl->isInternal() || !$constructor->hasAnnotation('Inject')) {
-            return $this->impl->newInstance();
+        $constructor = $this->class->getConstructor();
+        if (null === $constructor || $this->class->isInternal() || !$constructor->hasAnnotation('Inject')) {
+            return $this->class->newInstance();
         }
 
-        $params = $this->injectionValuesForMethod($constructor, $this->impl);
+        $params = $this->injectionValuesForMethod($constructor);
         if (false === $params && $constructor->annotation('Inject')->isOptional()) {
-            return $this->impl->newInstance();
+            return $this->class->newInstance();
         }
 
-        return $this->impl->newInstanceArgs($params);
+        return $this->class->newInstanceArgs($params);
     }
 
     /**
@@ -94,7 +93,7 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     private function injectIntoSetters($instance)
     {
-        foreach ($this->impl->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ($this->class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             /* @type  $method  ReflectionMethod */
             if ($method->isStatic()
               || $method->getNumberOfParameters() === 0
@@ -126,14 +125,18 @@ class DefaultInjectionProvider implements InjectionProvider
         foreach ($method->getParameters() as $param) {
             $type  = $this->paramType($method, $param);
             $name  = $this->detectBindingName($param, $defaultName);
-            if (!$this->injector->hasExplicitBinding($type, $name) && $method->annotation('Inject')->isOptional()) {
+            $hasExplicitBinding = $this->injector->hasExplicitBinding($type, $name);
+            if (!$hasExplicitBinding && $param->isDefaultValueAvailable()) {
+                $paramValues[] = $param->getDefaultValue();
+                continue;
+            } elseif (!$hasExplicitBinding && $method->annotation('Inject')->isOptional()) {
                 return false;
             }
 
             if (!$this->injector->hasBinding($type, $name)) {
                 $typeMsg = $this->createTypeMessage($type, $name);
                 throw new BindingException(
-                        'Can not inject into ' . $this->impl->getName() . '::' . $method->getName() . '('
+                        'Can not inject into ' . $this->class->getName() . '::' . $method->getName() . '('
                         . $this->createParamString($param, $type)
                         . '). No binding for type ' . $typeMsg . ' specified.'
                 );
