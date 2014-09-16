@@ -96,10 +96,9 @@ class DefaultInjectionProvider implements InjectionProvider
             $class = new ReflectionObject($instance);
         }
 
-        foreach ($class->getMethods() as $method) {
+        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             /* @type  $method  ReflectionMethod */
-            if (!$method->isPublic()
-              || $method->isStatic()
+            if ($method->isStatic()
               || $method->getNumberOfParameters() === 0
               || strncmp($method->getName(), '__', 2) === 0
               || !$method->hasAnnotation('Inject')) {
