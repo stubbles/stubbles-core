@@ -60,7 +60,10 @@ class DefaultInjectionProvider implements InjectionProvider
     public function get($name = null)
     {
         $instance = $this->createInstance();
-        $this->handleInjections($instance);
+        if (!$this->impl->isInternal()) {
+            $this->injectIntoSetters($instance);
+        }
+
         return $instance;
     }
 
@@ -72,7 +75,7 @@ class DefaultInjectionProvider implements InjectionProvider
     private function createInstance()
     {
         $constructor = $this->impl->getConstructor();
-        if (null === $constructor || !$constructor->hasAnnotation('Inject')) {
+        if (null === $constructor || $this->impl->isInternal() || !$constructor->hasAnnotation('Inject')) {
             return $this->impl->newInstance();
         }
 
@@ -89,7 +92,7 @@ class DefaultInjectionProvider implements InjectionProvider
      *
      * @param  object  $instance
      */
-    private function handleInjections($instance)
+    private function injectIntoSetters($instance)
     {
         foreach ($this->impl->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             /* @type  $method  ReflectionMethod */
