@@ -1,3 +1,10 @@
+5.?.? (2014-09-??)
+------------------
+
+  * improved performance of annotation parsing
+  * improved annotation cache storage functions api
+
+
 5.0.1 (2014-09-01)
 ------------------
 
