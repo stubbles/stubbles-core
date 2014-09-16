@@ -1,4 +1,4 @@
-5.?.? (2014-09-??)
+5.1.0 (2014-09-??)
 ------------------
 
   * IoC now supports default param values for non-optional injections:
