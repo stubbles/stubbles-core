@@ -58,46 +58,6 @@ class BindingIndex
     }
 
     /**
-     * returns key for property bindings
-     *
-     * @return  string
-     */
-    public static function getPropertyType()
-    {
-        return PropertyBinding::TYPE;
-    }
-
-    /**
-     * returns key for constant bindings
-     *
-     * @return  string
-     */
-    public static function getConstantType()
-    {
-        return ConstantBinding::TYPE;
-    }
-
-    /**
-     * returns key for constant bindings
-     *
-     * @return  string
-     */
-    public static function getListType()
-    {
-        return ListBinding::TYPE;
-    }
-
-    /**
-     * returns key for constant bindings
-     *
-     * @return  string
-     */
-    public static function getMapType()
-    {
-        return MapBinding::TYPE;
-    }
-
-    /**
      * sets the session scope
      *
      * @param   \stubbles\ioc\binding\BindingScope  $sessionScope
