@@ -152,10 +152,6 @@ class AnnotationCache
      */
     public static function put(Annotations $annotations)
     {
-        if (!isset(self::$annotations[$annotations->target()])) {
-            self::$annotations[$annotations->target()] = [];
-        }
-
         self::$annotations[$annotations->target()] = $annotations;
         self::$cacheChanged = true;
     }
