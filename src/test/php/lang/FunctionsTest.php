@@ -78,7 +78,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $root = vfsStream::setup();
         $file = vfsStream::newFile('annotations.cache')
-                         ->withContent($this->createdCachedAnnotation())
+                         ->withContent(serialize($this->createdCachedAnnotation()))
                          ->at($root);
         persistAnnotationsInFile($file->url());
         $this->assertTrue(AnnotationCache::has('foo', 'bar'));
@@ -108,7 +108,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     private function createdCachedAnnotation()
     {
-        return serialize(['foo' => ['bar' => new Annotation('bar', 'someFunction()')]]);
+        return ['foo' => ['bar' => new Annotation('bar', 'someFunction()')]];
     }
 
     /**

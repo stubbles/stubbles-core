@@ -56,7 +56,7 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists(vfsStream::url('root/annotations.cache')));
         $data = unserialize(file_get_contents(vfsStream::url('root/annotations.cache')));
         $this->assertTrue(isset($data['someTarget']));
-        $this->assertEquals($annotations, $data['someTarget']);
+        $this->assertEquals($annotations, unserialize($data['someTarget']));
     }
 
     /**
