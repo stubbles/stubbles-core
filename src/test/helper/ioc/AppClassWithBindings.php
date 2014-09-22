@@ -45,23 +45,13 @@ class AppClassWithBindings extends App
      *
      * @param  string  $projectPath
      * @Inject
-     * @Named('stubbles.project.path')
+     * @Named{projectPath}('stubbles.project.path')
+     * @Named{boundBy}('boundBy')
      */
-    public function setProjectPath($projectPath)
+    public function __construct($projectPath, $boundBy = null)
     {
         $this->projectPath = $projectPath;
-    }
-
-    /**
-     * sets value by how it was bound
-     *
-     * @param  string  $boundBy
-     * @Inject(optional=true)
-     * @Named('boundBy')
-     */
-    public function setBoundBy($boundBy)
-    {
-        $this->boundBy = $boundBy;
+        $this->boundBy     = $boundBy;
     }
 
     /**

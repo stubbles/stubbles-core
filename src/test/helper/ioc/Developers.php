@@ -20,22 +20,13 @@ class Developers
      * Setter method with Named() annotation
      *
      * @param  Employee  $schst
+     * @param  Employee  $mikey
      * @Inject
-     * @Named('schst')
+     * @Named{schst}('schst')
      */
-    public function setSchst(Employee $schst)
+    public function __construct(Employee $schst, Employee $mikey)
     {
         $this->schst = $schst;
-    }
-
-    /**
-     * Setter method without Named() annotation
-     *
-     * @param  Employee  $schst
-     * @Inject
-     */
-    public function setMikey(Employee $mikey)
-    {
         $this->mikey = $mikey;
     }
 }

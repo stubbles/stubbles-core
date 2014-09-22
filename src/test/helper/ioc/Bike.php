@@ -21,12 +21,12 @@ class Bike implements Vehicle
     public $tire;
 
     /**
-     * sets the tire
+     * constructor
      *
      * @param  Tire  $tire
      * @Inject
      */
-    public function setTire(Tire $tire)
+    public function __construct(Tire $tire)
     {
         $this->tire = $tire;
     }

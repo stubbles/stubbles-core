@@ -27,7 +27,7 @@ class Question
      * @Inject
      * @Named('answer')
      */
-    public function setAnswer($answer)
+    public function __construct($answer)
     {
         $this->answer = $answer;
     }

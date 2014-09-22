@@ -23,7 +23,7 @@ class AppClassWithoutBindings extends App
      * @Inject
      * @Named('stubbles.project.path')
      */
-    public function setProjectPath($projectPath)
+    public function __construct($projectPath)
     {
         $this->projectPath = $projectPath;
     }

@@ -32,19 +32,9 @@ class Convertible implements Vehicle
      * @param  Tire $tire
      * @Inject
      */
-    public function setTire(Tire $tire)
+    public function __construct(Tire $tire, Roof $roof = null)
     {
         $this->tire = $tire;
-    }
-
-    /**
-     * sets the root
-     *
-     * @param  Roof  $roof
-     * @Inject(optional=true)
-     */
-    public function setRoof(Roof $roof)
-    {
         $this->roof = $roof;
     }
 

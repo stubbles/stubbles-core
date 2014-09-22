@@ -52,53 +52,29 @@ class PluginHandler
      * @Inject
      * @List{list1}('listConfig')
      * @Map{map1}('mapConfig')
-     */
-    public function __construct(array $list1, array $map1)
-    {
-        $this->list1 = $list1;
-        $this->map1  = $map1;
-    }
-
-    /**
-     * sets list of plugins
-     *
-     * @param  Plugin[]  $list2
-     * @Inject(optional=true)
-     * @List(stubbles\test\ioc\Plugin.class)
-     */
-    public function setPluginList(array $list2)
-    {
-        $this->list2 = $list2;
-    }
-
-    /**
-     * sets map of plugins
-     *
-     * @param  Plugin[]  $map2
-     * @Inject(optional=true)
-     * @Map(stubbles\test\ioc\Plugin.class)
-     */
-    public function setPluginMap(array $map2)
-    {
-        $this->map2 = $map2;
-    }
-
-    /**
-     * sets a bunch of values
-     *
-     * @param  Plugin[]  $map2
-     * @Inject(optional=true)
-     * @Named('foo')
+     * @List{list2}(stubbles\test\ioc\Plugin.class)
+     * @Map{map2}(stubbles\test\ioc\Plugin.class)
+     * @Named{std}('foo')
+     * @Named{answer}('foo')
      * @List{list}('aList')
      * @Map{map}('aMap')
      */
-    public function setMoreStuff(Plugin $std, $answer, array $list, array $map)
+    public function __construct(
+            array $list1,
+            array $map1,
+            array $list2 = null,
+            array $map2 = null,
+            Plugin $std = null, $answer = null, array $list = null, array $map = null)
     {
-        $this->args = array('std'    => $std,
-                            'answer' => $answer,
-                            'list'   => $list,
-                            'map'    => $map
-                      );
+        $this->list1 = $list1;
+        $this->map1  = $map1;
+        $this->list2 = $list2;
+        $this->map2  = $map2;
+        $this->args  = ['std'    => $std,
+                        'answer' => $answer,
+                        'list'   => $list,
+                        'map'    => $map
+                       ];
     }
 
     /**

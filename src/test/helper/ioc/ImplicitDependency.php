@@ -18,13 +18,7 @@ class ImplicitDependency
      *
      * @type  Goodyear
      */
-    protected $goodyearByConstructor;
-    /**
-     * instance from setter injection
-     *
-     * @type  Goodyear
-     */
-    protected $goodyearBySetter;
+    private $goodyearByConstructor;
 
     /**
      * constructor
@@ -38,17 +32,6 @@ class ImplicitDependency
     }
 
     /**
-     * setter
-     *
-     * @param  Goodyear  $goodyear
-     * @Inject
-     */
-    public function setGoodyear(Goodyear $goodyear)
-    {
-        $this->goodyearBySetter = $goodyear;
-    }
-
-    /**
      * returns the instance from constructor injection
      *
      * @return  Goodyear
@@ -56,15 +39,5 @@ class ImplicitDependency
     public function getGoodyearByConstructor()
     {
         return $this->goodyearByConstructor;
-    }
-
-    /**
-     * returns the instance from setter injection
-     *
-     * @return  Goodyear
-     */
-    public function getGoodyearBySetter()
-    {
-        return $this->goodyearBySetter;
     }
 }

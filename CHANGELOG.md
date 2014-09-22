@@ -1,6 +1,14 @@
 5.1.0 (2014-09-??)
 ------------------
 
+### BC breaks
+
+  * Setter injection is now discouraged and disabled by default, and will be removed with 6.0.0.
+    * Reenable the old behaviour with `stubbles\ioc\Binder::enableSetterInjection()`
+
+
+### Other changes
+
   * IoC now supports default param values for non-optional injections:
     If no binding present for a param is bound but the param has a default value
     the default value will be used for injection.

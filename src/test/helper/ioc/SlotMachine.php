@@ -29,22 +29,13 @@ class SlotMachine
     /**
      * Set number 1
      *
-     * @param  Number  $number
+     * @param  Number  $number1
+     * @param  Number  $number2
      * @Inject
      */
-    public function setNumber1(Number $number)
+    public function __construct(Number $number1, Number $number2)
     {
-        $this->number1 = $number;
-    }
-
-    /**
-     * Set number 2
-     *
-     * @param  Number  $number
-     * @Inject
-     */
-    public function setNumber2(Number $number)
-    {
-        $this->number2 = $number;
+        $this->number1 = $number1;
+        $this->number2 = $number2;
     }
 }

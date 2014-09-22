@@ -21,21 +21,12 @@ class PropertyReceiver
      *
      * @param  string  $foo
      * @Inject
-     * @Property('example.foo')
-     */
-    public function setFoo($foo)
-    {
-        $this->foo = $foo;
-    }
-
-    /**
-     *
-     * @param  string  $bar
-     * @Inject
+     * @Property{foo}('example.foo')
      * @Property{bar}('example.bar')
      */
-    public function setBar($bar)
+    public function __construct($foo, $bar)
     {
+        $this->foo = $foo;
         $this->bar = $bar;
     }
 }

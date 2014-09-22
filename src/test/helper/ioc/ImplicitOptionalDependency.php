@@ -21,12 +21,12 @@ class ImplicitOptionalDependency
     protected $goodyearBySetter;
 
     /**
-     * setter
+     * constructor
      *
      * @param  Goodyear  $goodyear
      * @Inject(optional=true)
      */
-    public function setGoodyear(Goodyear $goodyear)
+    public function __construct(Goodyear $goodyear = null)
     {
         $this->goodyearBySetter = $goodyear;
     }
@@ -36,7 +36,7 @@ class ImplicitOptionalDependency
      *
      * @return  Goodyear
      */
-    public function getGoodyearBySetter()
+    public function getGoodyear()
     {
         return $this->goodyearBySetter;
     }

@@ -77,7 +77,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  stubbles\ioc\binding\BindingException
-     * @expectedExceptionMessage  Can not inject into stubbles\test\ioc\PropertyReceiver::setFoo($foo). No binding for type __PROPERTY__ (named "example.foo") specified.
+     * @expectedExceptionMessage  Can not inject into stubbles\test\ioc\PropertyReceiver::__construct($foo). No binding for type __PROPERTY__ (named "example.foo") specified.
      */
     public function instanceCreationThrowsBindingExceptionWhenNoPropertiesBound()
     {

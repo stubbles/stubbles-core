@@ -22,7 +22,7 @@ class MissingArrayInjection
      * @Inject
      * @Named('foo')
      */
-    public function setData(array $data)
+    public function __construct(array $data)
     {
         // intentionally empty
     }
