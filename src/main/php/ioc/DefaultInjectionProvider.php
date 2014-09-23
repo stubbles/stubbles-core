@@ -138,7 +138,9 @@ class DefaultInjectionProvider implements InjectionProvider
                 throw new BindingException(
                         'Can not inject into ' . $this->class->getName() . '::' . $method->getName() . '('
                         . $this->createParamString($param, $type)
-                        . '). No binding for type ' . $typeMsg . ' specified.'
+                        . '). No binding for type ' . $typeMsg
+                        . ' specified. Injection stack: ' . "\n"
+                        . join("\n", $this->injector->stack())
                 );
             }
 

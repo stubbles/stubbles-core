@@ -40,6 +40,12 @@ class Injector
      * @type  \stubbles\ioc\binding\BindingScopes
      */
     private $scopes;
+    /**
+     * denotes how deep in the object graph the current injection takes place
+     *
+     * @type  string[]
+     */
+    private $injectionStack = [];
 
     /**
      * constructor
@@ -131,8 +137,20 @@ class Injector
             return $this;
         }
 
-        return $this->getBinding($type, $name)
-                    ->getInstance($this, $name);
+        array_push($this->injectionStack, $type . '#' . $name);
+        $instance = $this->getBinding($type, $name)->getInstance($this, $name);
+        array_pop($this->injectionStack);
+        return $instance;
+    }
+
+    /**
+     * returns how deep in the object graph the current injection takes place
+     *
+     * @return  string[]
+     */
+    public function stack()
+    {
+        return $this->injectionStack;
     }
 
     /**
