@@ -10,7 +10,6 @@
 namespace stubbles\lang\reflect;
 use stubbles\lang\reflect\annotation\Annotatable;
 use stubbles\lang\reflect\annotation\Annotated;
-use stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
  * Extended Reflection class for parameters.
  *
