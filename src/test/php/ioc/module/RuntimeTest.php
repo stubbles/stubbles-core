@@ -104,11 +104,11 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $runtime = new Runtime($this->root->url());
         $binder  = new Binder();
         $runtime->configure($binder);
-        $this->assertTrue($binder->hasExplicitBinding('stubbles\lang\Mode'));
+        $injector = $binder->getInjector();
+        $this->assertTrue($injector->hasExplicitBinding('stubbles\lang\Mode'));
         $this->assertEquals('PROD',
-                            $binder->getInjector()
-                                   ->getInstance('stubbles\lang\Mode')
-                                   ->name()
+                            $injector->getInstance('stubbles\lang\Mode')
+                                     ->name()
         );
         restore_error_handler();
         restore_exception_handler();

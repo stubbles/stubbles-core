@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\ioc\binding\ListBinding;
+use stubbles\ioc\binding\MapBinding;
 use stubbles\test\ioc\PluginHandler;
 /**
  * Test for list and map bindings.
@@ -42,7 +44,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
     public function injectorReturnsFalseForNonAddedListOnCheck()
     {
         $binder = new Binder();
-        $this->assertFalse($binder->getInjector()->hasList('listConfig'));
+        $this->assertFalse($binder->getInjector()->hasBinding(ListBinding::TYPE, 'listConfig'));
     }
 
     /**
@@ -55,7 +57,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                ->withValue(303)
                ->withValueFromProvider($this->getProviderForValue(313))
                ->withValueFromClosure(function() { return 323; });
-        $this->assertTrue($binder->getInjector()->hasList('listConfig'));
+        $this->assertTrue($binder->getInjector()->hasBinding(ListBinding::TYPE, 'listConfig'));
     }
 
     /**
@@ -65,7 +67,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
     public function injectorRetrievesNonAddedListThrowsBindingException()
     {
         $binder = new Binder();
-        $this->assertFalse($binder->getInjector()->getList('listConfig'));
+        $binder->getInjector()->getInstance(ListBinding::TYPE, 'listConfig');
     }
 
     /**
@@ -79,7 +81,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                ->withValueFromProvider($this->getProviderForValue(313))
                ->withValueFromClosure(function() { return 323; });
         $this->assertEquals([303, 313, 323],
-                            $binder->getInjector()->getList('listConfig')
+                            $binder->getInjector()->getInstance(ListBinding::TYPE, 'listConfig')
         );
     }
 
@@ -111,7 +113,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
     public function injectorReturnsFalseForNonAddedMapOnCheck()
     {
         $binder = new Binder();
-        $this->assertFalse($binder->getInjector()->hasMap('mapConfig'));
+        $this->assertFalse($binder->getInjector()->hasBinding(MapBinding::TYPE, 'mapConfig'));
     }
 
     /**
@@ -124,7 +126,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                ->withEntry('tb', 303)
                ->withEntryFromProvider('dd', $this->getProviderForValue(313))
                ->withEntryFromClosure('hf', function() { return 323; });
-        $this->assertTrue($binder->getInjector()->hasMap('mapConfig'));
+        $this->assertTrue($binder->getInjector()->hasBinding(MapBinding::TYPE, 'mapConfig'));
     }
 
     /**
@@ -134,7 +136,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
     public function injectorRetrievesNonAddedMapThrowsBindingException()
     {
         $binder = new Binder();
-        $this->assertFalse($binder->getInjector()->getMap('mapConfig'));
+        $binder->getInjector()->getInstance(MapBinding::TYPE, 'mapConfig');
     }
 
     /**
@@ -148,7 +150,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                ->withEntryFromProvider('dd', $this->getProviderForValue(313))
                ->withEntryFromClosure('hf', function() { return 323; });
         $this->assertEquals(['tb' => 303, 'dd' => 313, 'hf' => 323],
-                            $binder->getInjector()->getMap('mapConfig')
+                            $binder->getInjector()->getInstance(MapBinding::TYPE, 'mapConfig')
         );
     }
 

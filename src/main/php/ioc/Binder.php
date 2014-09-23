@@ -9,8 +9,13 @@
  */
 namespace stubbles\ioc;
 use stubbles\ioc\binding\Binding;
-use stubbles\ioc\binding\BindingIndex;
 use stubbles\ioc\binding\BindingScope;
+use stubbles\ioc\binding\BindingScopes;
+use stubbles\ioc\binding\ClassBinding;
+use stubbles\ioc\binding\ConstantBinding;
+use stubbles\ioc\binding\ListBinding;
+use stubbles\ioc\binding\MapBinding;
+use stubbles\ioc\binding\PropertyBinding;
 use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 /**
@@ -63,20 +68,38 @@ class Binder
     }
 
     /**
-     * index for faster access to bindings
+     * list of available binding scopes
      *
-     * @type  \stubbles\ioc\binding\BindingIndex
+     * @type  \stubbles\ioc\binding\BindingScopes
      */
-    private $bindingIndex;
+    private $scopes;
+    /**
+     * added bindings that are in the index not yet
+     *
+     * @type  \stubbles\ioc\binding\Binding[]
+     */
+    private $bindings = [];
+    /**
+     * map of list bindings
+     *
+     * @type  \stubbles\ioc\binding\ListBinding[]
+     */
+    private $listBindings = [];
+    /**
+     * map of map bindings
+     *
+     * @type  \stubbles\ioc\binding\MapBinding[]
+     */
+    private $mapBindings  = [];
 
     /**
      * constructor
      *
-     * @param  \stubbles\ioc\binding\BindingIndex  $index
+     * @param  \stubbles\ioc\binding\BindingScopes  $scopes  optional
      */
-    public function __construct(BindingIndex $index = null)
+    public function __construct(BindingScopes $scopes = null)
     {
-        $this->bindingIndex = ((null === $index) ? (new BindingIndex()) : ($index));
+        $this->scopes = ((null === $scopes) ? (new BindingScopes()) : ($scopes));
     }
 
     /**
@@ -87,7 +110,7 @@ class Binder
      */
     public function setSessionScope(BindingScope $sessionScope)
     {
-        $this->bindingIndex->setSessionScope($sessionScope);
+        $this->scopes->setSessionScope($sessionScope);
         return $this;
     }
 
@@ -99,7 +122,8 @@ class Binder
      */
     public function addBinding(Binding $binding)
     {
-        return $this->bindingIndex->addBinding($binding);
+         $this->bindings[] = $binding;
+         return $binding;
     }
 
     /**
@@ -110,14 +134,14 @@ class Binder
      */
     public function bind($interface)
     {
-        return $this->bindingIndex->bind($interface);
+        return $this->addBinding(new ClassBinding($interface, $this->scopes));
     }
 
     /**
      * binds properties from given properties file
      *
-     * @param   string                $propertiesFile  file where properties are stored
-     * @param   \stubbles\lang\Mode   $mode
+     * @param   string               $propertiesFile  file where properties are stored
+     * @param   \stubbles\lang\Mode  $mode
      * @return  \stubbles\lang\Properties
      * @since   4.0.0
      */
@@ -136,7 +160,8 @@ class Binder
      */
     public function bindProperties(Properties $properties, Mode $mode)
     {
-        return $this->bindingIndex->bindProperties($properties, $mode);
+        $this->addBinding(new PropertyBinding($properties, $mode));
+        return $properties;
     }
 
     /**
@@ -147,7 +172,7 @@ class Binder
      */
     public function bindConstant($name)
     {
-        return $this->bindingIndex->bindConstant($name);
+        return $this->addBinding(new ConstantBinding($name));
     }
 
     /**
@@ -162,7 +187,11 @@ class Binder
      */
     public function bindList($name)
     {
-        return $this->bindingIndex->bindList($name);
+        if (!isset($this->listBindings[$name])) {
+            $this->listBindings[$name] = $this->addBinding(new ListBinding($name));
+        }
+
+        return $this->listBindings[$name];
     }
 
     /**
@@ -177,64 +206,11 @@ class Binder
      */
     public function bindMap($name)
     {
-        return $this->bindingIndex->bindMap($name);
-    }
+        if (!isset($this->mapBindings[$name])) {
+            $this->mapBindings[$name] = $this->addBinding(new MapBinding($name));
+        }
 
-    /**
-     * check whether a binding for a type is available (explicit and implicit)
-     *
-     * @param   string  $type
-     * @param   string  $name
-     * @return  bool
-     * @since   2.0.0
-     */
-    public function hasBinding($type, $name = null)
-    {
-        return $this->bindingIndex->hasBinding($type, $name);
-    }
-
-    /**
-     * check whether an excplicit binding for a type is available
-     *
-     * Be aware that implicit bindings turn into explicit bindings when
-     * hasBinding() or getInstance() are called.
-     *
-     * @param   string  $type
-     * @param   string  $name
-     * @return  bool
-     * @since   2.0.0
-     */
-    public function hasExplicitBinding($type, $name = null)
-    {
-        return $this->bindingIndex->hasExplicitBinding($type, $name);
-    }
-
-    /**
-     * check whether a constant is available
-     *
-     * There is no need to distinguish between explicit and implicit binding for
-     * constant bindings as there are only explicit constant bindings and never
-     * implicit ones.
-     *
-     * @param   string  $name  name of constant to check for
-     * @return  bool
-     * @since   2.0.0
-     */
-    public function hasConstant($name)
-    {
-        return $this->bindingIndex->hasConstant($name);
-    }
-
-    /**
-     * checks whether property with given name is available
-     *
-     * @param   string  $name
-     * @return  bool
-     * @since   3.4.0
-     */
-    public function hasProperty($name)
-    {
-        return $this->bindingIndex->hasProperty($name);
+        return $this->mapBindings[$name];
     }
 
     /**
@@ -244,9 +220,6 @@ class Binder
      */
     public function getInjector()
     {
-        $injector = new Injector($this->bindingIndex);
-        $this->bindingIndex->bind(get_class($injector))
-                           ->toInstance($injector);
-        return $injector;
+        return new Injector($this->bindings, $this->scopes);
     }
 }

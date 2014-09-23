@@ -23,33 +23,30 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      * @type  Binder
      */
     private $binder;
-    /**
-     * mocked binding index
-     *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockIndex;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockIndex = $this->getMock('stubbles\ioc\binding\BindingIndex');
-        $this->binder    = new Binder($this->mockIndex);
+        $this->binder = new Binder();
     }
 
     /**
      * @test
      */
-    public function passesSessionScopeToBindingIndex()
+    public function passesSessionScopeToScopes()
     {
+        $mockScopes = $this->getMock('stubbles\ioc\binding\BindingScopes');
         $mockSessionScope = $this->getMock('stubbles\ioc\binding\BindingScope');
-        $this->mockIndex->expects($this->once())
-                        ->method('setSessionScope')
-                        ->with($this->equalTo($mockSessionScope));
-        $this->assertSame($this->binder,
-                          $this->binder->setSessionScope($mockSessionScope));
+        $mockScopes->expects($this->once())
+                   ->method('setSessionScope')
+                   ->with($this->equalTo($mockSessionScope));
+        $binder = new Binder($mockScopes);
+        $this->assertSame(
+                $binder,
+                $binder->setSessionScope($mockSessionScope)
+        );
     }
 
     /**
@@ -59,12 +56,9 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     public function addBindingReturnsAddedBinding()
     {
         $mockBinding = $this->getMock('stubbles\ioc\binding\Binding');
-        $this->mockIndex->expects($this->once())
-                        ->method('addBinding')
-                        ->with($this->equalTo($mockBinding))
-                        ->will($this->returnValue($mockBinding));
-        $this->assertSame($mockBinding,
-                          $this->binder->addBinding($mockBinding)
+        $this->assertSame(
+                $mockBinding,
+                $this->binder->addBinding($mockBinding)
         );
     }
 
@@ -72,15 +66,11 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      * @since  2.0.0
      * @test
      */
-    public function bindCreatesBinding()
+    public function bindCreatesClassBinding()
     {
-        $mockBinding = $this->getMock('stubbles\ioc\binding\Binding');
-        $this->mockIndex->expects($this->once())
-                        ->method('bind')
-                        ->with($this->equalTo('example\MyInterface'))
-                        ->will($this->returnValue($mockBinding));
-        $this->assertSame($mockBinding,
-                          $this->binder->bind('example\MyInterface')
+        $this->assertInstanceOf(
+                'stubbles\ioc\binding\ClassBinding',
+                $this->binder->bind('example\MyInterface')
         );
     }
 
@@ -90,13 +80,9 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindConstantCreatesBinding()
     {
-        $mockBinding = $this->getMock('stubbles\ioc\binding\Binding');
-        $this->mockIndex->expects($this->once())
-                        ->method('bindConstant')
-                        ->with($this->equalTo('foo'))
-                        ->will($this->returnValue($mockBinding));
-        $this->assertSame($mockBinding,
-                          $this->binder->bindConstant('foo')
+        $this->assertInstanceOf(
+                'stubbles\ioc\binding\ConstantBinding',
+                $this->binder->bindConstant('foo')
         );
     }
 
@@ -106,13 +92,9 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindListCreatesBinding()
     {
-        $mockBinding = $this->getMock('stubbles\ioc\binding\Binding');
-        $this->mockIndex->expects($this->once())
-                        ->method('bindList')
-                        ->with($this->equalTo('foo'))
-                        ->will($this->returnValue($mockBinding));
-        $this->assertSame($mockBinding,
-                          $this->binder->bindList('foo')
+        $this->assertInstanceOf(
+                'stubbles\ioc\binding\ListBinding',
+                $this->binder->bindList('foo')
         );
     }
 
@@ -122,72 +104,9 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindMapCreatesBinding()
     {
-        $mockBinding = $this->getMock('stubbles\ioc\binding\Binding');
-        $this->mockIndex->expects($this->once())
-                        ->method('bindMap')
-                        ->with($this->equalTo('foo'))
-                        ->will($this->returnValue($mockBinding));
-        $this->assertSame($mockBinding,
-                          $this->binder->bindMap('foo')
-        );
-    }
-
-    /**
-     * @since  2.0.0
-     * @test
-     */
-    public function hasBindingChecksIndex()
-    {
-        $this->mockIndex->expects($this->once())
-                        ->method('hasBinding')
-                        ->with($this->equalTo('\\stdClass'), $this->equalTo('bar'))
-                        ->will($this->returnValue(true));
-        $this->assertTrue($this->binder->hasBinding('\stdClass', 'bar'));
-    }
-
-    /**
-     * @since  2.0.0
-     * @test
-     */
-    public function hasExplicitBindingChecksIndex()
-    {
-        $this->mockIndex->expects($this->once())
-                        ->method('hasExplicitBinding')
-                        ->with($this->equalTo('\\stdClass'), $this->equalTo('bar'))
-                        ->will($this->returnValue(true));
-        $this->assertTrue($this->binder->hasExplicitBinding('\stdClass', 'bar'));
-    }
-
-    /**
-     * @since  2.0.0
-     * @test
-     */
-    public function hasConstantChecksIndex()
-    {
-        $this->mockIndex->expects($this->once())
-                        ->method('hasConstant')
-                        ->with($this->equalTo('foo'))
-                        ->will($this->returnValue(true));
-        $this->assertTrue($this->binder->hasConstant('foo'));
-    }
-
-    /**
-     * @since  2.0.0
-     * @test
-     */
-    public function addsCreatedInjectorToIndex()
-    {
-        $mockClassBinding = $this->getMockBuilder('stubbles\ioc\binding\ClassBinding')
-                                 ->disableOriginalConstructor()
-                                 ->getMock();
-        $this->mockIndex->expects($this->once())
-                        ->method('bind')
-                        ->with($this->equalTo('stubbles\ioc\Injector'))
-                        ->will($this->returnValue($mockClassBinding));
-        $mockClassBinding->expects($this->once())
-                         ->method('toInstance');
-        $this->assertInstanceOf('stubbles\ioc\Injector',
-                                $this->binder->getInjector()
+        $this->assertInstanceOf(
+                'stubbles\ioc\binding\MapBinding',
+                $this->binder->bindMap('foo')
         );
     }
 
@@ -210,12 +129,9 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     {
         $mockMode   = $this->getMock('stubbles\lang\Mode');
         $properties = new Properties([]);
-        $this->mockIndex->expects($this->once())
-                        ->method('bindProperties')
-                        ->with($this->equalTo($properties), $this->equalTo($mockMode))
-                        ->will($this->returnArgument(0));
-        $this->assertSame($properties,
-                          $this->binder->bindProperties($properties, $mockMode)
+        $this->assertSame(
+                $properties,
+                $this->binder->bindProperties($properties, $mockMode)
         );
     }
 
@@ -230,25 +146,9 @@ class BinderTest extends \PHPUnit_Framework_TestCase
                          ->at(vfsStream::setup());
         $mockMode   = $this->getMock('stubbles\lang\Mode');
         $properties = new Properties(['config' => ['foo' => 'bar']]);
-        $this->mockIndex->expects($this->once())
-                        ->method('bindProperties')
-                        ->with($this->equalTo($properties), $this->equalTo($mockMode))
-                        ->will($this->returnArgument(0));
-        $this->assertEquals($properties,
-                          $this->binder->bindPropertiesFromFile($file->url(), $mockMode)
+        $this->assertEquals(
+                $properties,
+                $this->binder->bindPropertiesFromFile($file->url(), $mockMode)
         );
-    }
-
-    /**
-     * @since  3.4.0
-     * @test
-     */
-    public function hasPropertyChecksIndex()
-    {
-        $this->mockIndex->expects($this->once())
-                        ->method('hasProperty')
-                        ->with($this->equalTo('foo'))
-                        ->will($this->returnValue(true));
-        $this->assertTrue($this->binder->hasProperty('foo'));
     }
 }

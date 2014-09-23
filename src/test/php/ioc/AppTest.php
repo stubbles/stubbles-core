@@ -125,7 +125,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $module = AppUsingBindingModule::getBindCurrentWorkingDirectoryModule();
         $module($binder);
-        $this->assertTrue($binder->hasConstant('stubbles.cwd'));
+        $this->assertTrue($binder->getInjector()->hasConstant('stubbles.cwd'));
     }
 
     /**
@@ -149,6 +149,6 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $module = AppUsingBindingModule::getBindHostnameModule();
         $module($binder);
-        $this->assertTrue($binder->hasConstant($key));
+        $this->assertTrue($binder->getInjector()->hasConstant($key));
     }
 }
