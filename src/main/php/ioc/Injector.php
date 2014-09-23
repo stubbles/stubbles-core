@@ -105,8 +105,8 @@ class Injector
             return $this->hasProperty($name);
         }
 
-        $name = $this->getBindingName($name);
-        if (null !== $name && isset($this->index[$type . '#' . $name])) {
+        $bindingName = $this->getBindingName($name);
+        if (null !== $bindingName && isset($this->index[$type . '#' . $bindingName])) {
             return true;
         }
 
