@@ -42,7 +42,7 @@ trait Annotated
     {
         $annotations = $this->annotations();
         if (!$annotations->contain($type)) {
-            throw new \ReflectionException('Can not find annotation ' . $type);
+            throw new \ReflectionException('Can not find annotation ' . $type . ' for ' . $this->annotationTarget());
         }
 
         return $annotations->of($type)[0];
