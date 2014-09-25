@@ -15,6 +15,7 @@
   * implemented #117: injection stack on binding exceptions
   * improved performance of annotation parsing
   * improved annotation cache storage functions api
+  * properties from config.ini are also now available as instance of `stubbles\lang\Properties`, named `config.ini`
 
 
 5.0.1 (2014-09-01)

@@ -24,6 +24,12 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     private $injector;
     /**
+     * properties to be bound
+     *
+     * @type  \stubbles\lang\Properties
+     */
+    private $properties;
+    /**
      * mocked runtime mode
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
@@ -35,16 +41,16 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        $this->properties = new Properties(
+                ['PROD'   => ['example.foo' => 'baz'],
+                 'config' => ['example.foo' => 'default',
+                              'example.bar' => 'someValue'
+                             ]
+                ]
+        );
         $this->mockMode = $this->getMock('stubbles\lang\Mode');
         $binder = new Binder();
-        $binder->bindProperties(new Properties(['PROD'   => ['example.foo' => 'baz'],
-                                                'config' => ['example.foo' => 'default',
-                                                             'example.bar' => 'someValue'
-                                                            ]
-                                               ]
-                                ),
-                                $this->mockMode
-        );
+        $binder->bindProperties($this->properties, $this->mockMode);
         $this->injector = $binder->getInjector();
     }
 
@@ -83,5 +89,17 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->getInjector()->getInstance('stubbles\test\ioc\PropertyReceiver');
+    }
+
+    /**
+     * @test
+     * @since  5.1.0
+     */
+    public function propertyInstanceIsBound()
+    {
+        $this->assertSame(
+                $this->properties,
+                $this->injector->getInstance('stubbles\lang\Properties', 'config.ini')
+        );
     }
 }

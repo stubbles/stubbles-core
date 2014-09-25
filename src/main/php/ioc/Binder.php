@@ -161,6 +161,9 @@ class Binder
     public function bindProperties(Properties $properties, Mode $mode)
     {
         $this->addBinding(new PropertyBinding($properties, $mode));
+        $this->bind('stubbles\lang\Properties')
+             ->named('config.ini')
+             ->toInstance($properties);
         return $properties;
     }
 
