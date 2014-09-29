@@ -1,4 +1,4 @@
-5.1.0 (2014-09-??)
+5.1.0 (2014-09-29)
 ------------------
 
 ### BC breaks
@@ -10,8 +10,8 @@
 ### Other changes
 
   * IoC now supports default param values for non-optional injections:
-    If no binding present for a param is bound but the param has a default value
-    the default value will be used for injection.
+    If no binding present for a param but the param has a default value the
+    default value will be used for injection.
   * implemented #117: injection stack on binding exceptions
   * improved performance of annotation parsing
   * improved annotation cache storage functions api
