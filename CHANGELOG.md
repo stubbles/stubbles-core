@@ -1,3 +1,9 @@
+5.1.1 (2014-10-03)
+------------------
+
+  * fixed bug: transposing a parsed uri forgot any parameters changed in query string
+
+
 5.1.0 (2014-09-29)
 ------------------
 
