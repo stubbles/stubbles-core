@@ -251,11 +251,27 @@ abstract class Uri
     }
 
     /**
+     * adds given map of params
+     *
+     * @param   array  $params  map of parameters to add
+     * @return  \stubbles\peer\Uri
+     * @since   5.1.2
+     */
+    public function addParams(array $params)
+    {
+        foreach ($params as $name => $value) {
+            $this->addParam($name, $value);
+        }
+
+        return $this;
+    }
+
+    /**
      * add a parameter to the uri
      *
      * @param   string  $name   name of parameter
      * @param   mixed   $value  value of parameter
-     * @return  Uri
+     * @return  \stubbles\peer\Uri
      */
     public function addParam($name, $value)
     {

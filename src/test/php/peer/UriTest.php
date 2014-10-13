@@ -856,6 +856,20 @@ class UriTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  5.1.2
+     */
+    public function addParamsChangesQueryString()
+    {
+        $this->assertEquals(
+                'http://example.org/?wsdl&foo=bar&baz=303',
+                Uri::fromString('http://example.org/?wsdl')
+                   ->addParams(['foo' => 'bar', 'baz' => '303'])
+                   ->asStringWithoutPort()
+        );
+    }
+
+    /**
+     * @test
      */
     public function addParamChangesQueryString()
     {
