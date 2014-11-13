@@ -19,7 +19,7 @@ use stubbles\streams\memory\MemoryOutputStream;
 /**
  * Tests for stubbles\lang\Sequence.
  *
- * @since  4.0.0
+ * @since  5.2.0
  */
 class SequenceTest extends \PHPUnit_Framework_TestCase
 {

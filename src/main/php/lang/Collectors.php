@@ -9,9 +9,9 @@
  */
 namespace stubbles\lang;
 /**
- * Description of CollectorFactory
+ * Provides factory functions for common collectors.
  *
- * @since  4.1.0
+ * @since  5.2.0
  */
 class Collectors
 {

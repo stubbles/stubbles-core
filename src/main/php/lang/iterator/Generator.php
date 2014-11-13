@@ -11,7 +11,7 @@ namespace stubbles\lang\iterator;
 /**
  * Iterator which calls an operation to retrieve the value.
  *
- * @since  4.1.0
+ * @since  5.2.0
  */
 class Generator implements \Iterator
 {

@@ -18,7 +18,7 @@ namespace stubbles\lang;
 /**
  * A reducer takes a sequence and reduces it to one value.
  *
- * @since  4.1.0
+ * @since  5.2.0
  */
 class Reducer
 {

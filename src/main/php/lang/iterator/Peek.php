@@ -11,7 +11,7 @@ namespace stubbles\lang\iterator;
 /**
  * Iterator which allows consumption of an element before iteration continues.
  *
- * @since  4.1.0
+ * @since  5.2.0
  */
 class Peek extends \IteratorIterator
 {

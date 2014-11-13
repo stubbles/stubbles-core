@@ -18,7 +18,7 @@ namespace stubbles\lang;
 /**
  * A collector accumulates elements into a structure, optionally transforming the result into a final representation.
  *
- * @since  4.1.0
+ * @since  5.2.0
  */
 class Collector
 {

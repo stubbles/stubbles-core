@@ -48,7 +48,7 @@ use stubbles\lang\iterator\Peek;
  * existing operations are not sufficient to the task.
  *
  * @api
- * @since  4.1.0
+ * @since  5.2.0
  */
 class Sequence implements \IteratorAggregate, \Countable
 {

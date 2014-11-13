@@ -14,7 +14,7 @@ namespace stubbles\lang\iterator;
  * @group  lang
  * @group  lang_iterator
  * @group  sequence
- * @since  4.1.0
+ * @since  5.2.0
  */
 class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
