@@ -17,7 +17,7 @@
 namespace stubbles\lang;
 use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\iterator\Generator;
-use stubbles\lang\iterator\Mapper;
+use stubbles\lang\iterator\MappingIterator;
 use stubbles\lang\iterator\Peek;
 /**
  * Sequence is a stream of data that can be operated on.
@@ -181,12 +181,13 @@ class Sequence implements \IteratorAggregate, \Countable
      *
      * This is an intermediate operation.
      *
-     * @param   callable  $mapper
+     * @param   callable  $valueMapper  function to map values with
+     * @param   callable  $keyMapper    function to map keys with
      * @return  Sequence
      */
-    public function map(callable $mapper)
+    public function map(callable $valueMapper, callable $keyMapper = null)
     {
-        return new self(new Mapper($this->getIterator(), $mapper));
+        return new self(new MappingIterator($this->getIterator(), $valueMapper, $keyMapper));
     }
 
     /**
