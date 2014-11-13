@@ -28,17 +28,13 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
     /**
      * constructor
      *
-     * @param   \stubbles\streams\OutputStream                                                $outputStream  stream to apply filter onto
-     * @param   \stubbles\streams\filter\StreamFilter|callable|\stubbles\predicate\Predicate  $predicate     predicate to check if something should be passed
+     * @param   \stubbles\streams\OutputStream          $outputStream  stream to apply filter onto
+     * @param   callable|\stubbles\predicate\Predicate  $predicate     predicate to check if something should be passed
      */
     public function __construct(OutputStream $outputStream, $predicate)
     {
         parent::__construct($outputStream);
-        if ($predicate instanceof StreamFilter) {
-            $this->predicate = new StreamFilterPredicate($predicate);
-        } else {
-            $this->predicate = Predicate::castFrom($predicate);
-        }
+        $this->predicate = Predicate::castFrom($predicate);
     }
 
     /**

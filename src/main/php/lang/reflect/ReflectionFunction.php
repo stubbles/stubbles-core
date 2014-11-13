@@ -8,8 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
-use stubbles\lang\reflect\annotation\Annotation;
-use stubbles\lang\reflect\annotation\AnnotationFactory;
+use stubbles\lang\reflect\annotation\Annotated;
 /**
  * Extended Reflection class for functions that allows usage of annotations.
  *
@@ -17,6 +16,8 @@ use stubbles\lang\reflect\annotation\AnnotationFactory;
  */
 class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutine
 {
+    use Annotated;
+
     /**
      * name of the reflected function
      *
@@ -43,25 +44,14 @@ class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutin
     }
 
     /**
-     * check whether the class has the given annotation or not
+     * target name of property annotations
      *
-     * @param   string  $annotationName
-     * @return  bool
+     * @return  string
+     * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    public function hasAnnotation($annotationName)
+    protected function annotationTarget()
     {
-        return AnnotationFactory::has($this->docComment, $annotationName, Annotation::TARGET_FUNCTION, $this->functionName);
-    }
-
-    /**
-     * return the specified annotation
-     *
-     * @param   string  $annotationName
-     * @return  \stubbles\lang\reflect\annotation\Annotation
-     */
-    public function getAnnotation($annotationName)
-    {
-        return AnnotationFactory::create($this->docComment, $annotationName, Annotation::TARGET_FUNCTION, $this->functionName);
+        return $this->functionName . '()';
     }
 
     /**

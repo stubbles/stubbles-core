@@ -16,30 +16,35 @@ namespace stubbles\lang\reflect\annotation\parser\state;
 class AnnotationAnnotationState extends AnnotationAbstractState implements AnnotationState
 {
     /**
+     * returns list of tokens that signal state change
+     *
+     * @return  string[]
+     */
+    public function signalTokens()
+    {
+        return ["\n", '{', '[', '('];
+    }
+
+    /**
      * processes a token
      *
-     * @param  string  $token
+     * @param   string  $word          parsed word to be processed
+     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string  $nextToken     next token after current token
+     * @return  bool
      */
-    public function process($token)
+    public function process($word, $currentToken, $nextToken)
     {
-        if ("\n" === $token) {
+        if ("\n" === $currentToken) {
             $this->parser->changeState(AnnotationState::DOCBLOCK);
-            return;
-        }
-
-        if ('{' === $token) {
+        } elseif ('{' === $currentToken) {
             $this->parser->changeState(AnnotationState::ARGUMENT);
-            return;
-        }
-
-        if ('[' === $token) {
+        } elseif ('[' === $currentToken) {
             $this->parser->changeState(AnnotationState::ANNOTATION_TYPE);
-            return;
+        } elseif ('(' === $currentToken) {
+            $this->parser->changeState(AnnotationState::PARAM_NAME);
         }
 
-        if ('(' === $token) {
-            $this->parser->changeState(AnnotationState::PARAMS);
-            return;
-        }
+        return true;
     }
 }

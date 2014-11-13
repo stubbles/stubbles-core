@@ -46,7 +46,7 @@ class Exception extends \Exception implements Throwable
      */
     public function __toString()
     {
-        $string  = __CLASS__ . " {\n";
+        $string  = get_class($this) . " {\n";
         $string .= '    message(string): ' . $this->getMessage() . "\n";
         $string .= '    file(string): ' . $this->getFile() . "\n";
         $string .= '    line(integer): ' . $this->getLine() . "\n";

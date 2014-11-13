@@ -9,8 +9,7 @@
  */
 namespace stubbles\lang\reflect;
 use stubbles\lang\reflect\annotation\Annotatable;
-use stubbles\lang\reflect\annotation\Annotation;
-use stubbles\lang\reflect\annotation\AnnotationFactory;
+use stubbles\lang\reflect\annotation\Annotated;
 /**
  * Extended Reflection class for class properties that allows usage of annotations.
  *
@@ -22,6 +21,8 @@ use stubbles\lang\reflect\annotation\AnnotationFactory;
  */
 class ReflectionProperty extends \ReflectionProperty implements Annotatable
 {
+    use Annotated;
+
     /**
      * Name of the class
      *
@@ -65,25 +66,14 @@ class ReflectionProperty extends \ReflectionProperty implements Annotatable
     }
 
     /**
-     * check whether the class has the given annotation or not
+     * target name of property annotations
      *
-     * @param   string  $annotationName
-     * @return  bool
+     * @return  string
+     * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    public function hasAnnotation($annotationName)
+    protected function annotationTarget()
     {
-        return AnnotationFactory::has($this->getDocComment(), $annotationName, Annotation::TARGET_PROPERTY, $this->className . '::' . $this->propertyName);
-    }
-
-    /**
-     * return the specified annotation
-     *
-     * @param   string          $annotationName
-     * @return  \stubbles\lang\reflect\annotation\Annotation
-     */
-    public function getAnnotation($annotationName)
-    {
-        return AnnotationFactory::create($this->getDocComment(), $annotationName, Annotation::TARGET_PROPERTY, $this->className . '::' . $this->propertyName);
+        return $this->className . ($this->isStatic() ? '::$' : '->') . $this->propertyName;
     }
 
     /**

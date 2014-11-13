@@ -50,15 +50,13 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      */
     public function addingAnnotationWritesCacheFile()
     {
-        $annotation = new Annotation('annotationName', 'foo');
-        AnnotationCache::put(Annotation::TARGET_CLASS, 'foo', 'annotationName', $annotation);
+        $annotations = new Annotations('someTarget');
+        AnnotationCache::put($annotations);
         AnnotationCache::__shutdown();
         $this->assertTrue(file_exists(vfsStream::url('root/annotations.cache')));
         $data = unserialize(file_get_contents(vfsStream::url('root/annotations.cache')));
-        $this->assertTrue(isset($data[Annotation::TARGET_CLASS]));
-        $this->assertTrue(isset($data[Annotation::TARGET_CLASS]['foo']));
-        $this->assertTrue(isset($data[Annotation::TARGET_CLASS]['foo']['annotationName']));
-        $this->assertEquals($annotation, unserialize($data[Annotation::TARGET_CLASS]['foo']['annotationName']));
+        $this->assertTrue(isset($data['someTarget']));
+        $this->assertEquals($annotations, unserialize($data['someTarget']));
     }
 
     /**
@@ -68,8 +66,7 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      */
     public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown()
     {
-        $annotation = new Annotation('annotationName', 'foo');
-        AnnotationCache::put(Annotation::TARGET_CLASS, 'foo', 'annotationName', $annotation);
+        AnnotationCache::put(new Annotations('someTarget'));
         AnnotationCache::stop();
         AnnotationCache::__shutdown();
         $this->assertFalse(file_exists(vfsStream::url('root/annotations.cache')));
@@ -78,9 +75,9 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function retrieveUncachedAnnotationReturnsNull()
+    public function retrieveAnnotationsForUncachedTargetReturnsNull()
     {
-        $this->assertNull(AnnotationCache::get(Annotation::TARGET_CLASS, 'DoesNotExist', 'annotationName'));
+        $this->assertNull(AnnotationCache::get('DoesNotExist'));
     }
 
     /**

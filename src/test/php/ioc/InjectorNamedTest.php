@@ -16,6 +16,14 @@ namespace stubbles\ioc;
 class InjectorNamedTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * clean up test environment
+     */
+    public function tearDown()
+    {
+        Binder::disableSetterInjection();
+    }
+
+    /**
      * name based setter injection with single param
      *
      * @test
@@ -47,6 +55,7 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
      */
     public function namedSetterInjectionWithMultipleParamAndOneNamedParam()
     {
+        Binder::enableSetterInjection();
         $binder = new Binder();
         $binder->bind('stubbles\test\ioc\Employee')->named('schst')->to('stubbles\test\ioc\Boss');
         $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
@@ -97,6 +106,7 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
      */
     public function namedSetterInjectionWithMultipleParamAndOneNamedConstantParam()
     {
+        Binder::enableSetterInjection();
         $binder = new Binder();
         $binder->bindConstant('boss')->to('role:boss');
         $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
@@ -145,6 +155,7 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
      */
     public function namedSetterInjectionWithMultipleParamAndNamedParamGroup()
     {
+        Binder::enableSetterInjection();
         $binder = new Binder();
         $binder->bind('stubbles\test\ioc\Employee')->named('schst')->to('stubbles\test\ioc\Boss');
         $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');

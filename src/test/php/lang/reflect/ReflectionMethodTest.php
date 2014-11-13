@@ -9,6 +9,7 @@
  */
 namespace stubbles\lang\reflect;
 use \stubbles\lang;
+use stubbles\lang\reflect\annotation\Annotation;
 /**
  * class to be used for the test
  */
@@ -44,6 +45,11 @@ class TestMethodCollection2 extends TestMethodCollection
      *
      * @param   int       $param3
      * @return  stubbles\test\lang\reflect\TestWithMethodsAndProperties
+     * @SomeAnnotation
+     * @AnotherAnnotation
+     * @Foo('bar')
+     * @Foo('baz')
+     * @SomeParam{param3}
      */
     public function methodWithParams2($param3)
     {
@@ -368,6 +374,42 @@ class ReflectionMethodTest extends \PHPUnit_Framework_TestCase
         $refClass = lang\reflect('\DateTime', '__construct');
         $this->assertInstanceOf('stubbles\lang\\reflect\ReflectionExtension',
                                 $refClass->getExtension()
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function hasAnnotationReturnsFalseIfNoAnnotationIsPresent()
+    {
+        $this->assertFalse($this->refMethod1->hasAnnotation('Other'));
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function getAnnotationReturnsAnnotation()
+    {
+        $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
+                                $this->refMethod5->annotation('SomeAnnotation')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotation()
+    {
+        $this->assertEquals(
+                [new Annotation('SomeAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()'),
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()'),
+                 new Annotation('Foo', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()', ['__value' => 'bar']),
+                 new Annotation('Foo', 'stubbles\lang\reflect\TestMethodCollection2::methodWithParams2()', ['__value' => 'baz'])
+                ],
+                $this->refMethod5->annotations()->all()
         );
     }
 }

@@ -9,11 +9,14 @@
  */
 namespace stubbles\ioc;
 use stubbles\ioc\binding\BindingException;
-use stubbles\ioc\binding\BindingIndex;
+use stubbles\ioc\binding\BindingScopes;
+use stubbles\ioc\binding\ClassBinding;
+use stubbles\ioc\binding\ConstantBinding;
+use stubbles\ioc\binding\ListBinding;
+use stubbles\ioc\binding\MapBinding;
+use stubbles\ioc\binding\PropertyBinding;
 use stubbles\lang\reflect\BaseReflectionClass;
-use stubbles\lang\reflect\ReflectionMethod;
-use stubbles\lang\reflect\ReflectionObject;
-use stubbles\lang\reflect\ReflectionParameter;
+use stubbles\lang\reflect\ReflectionClass;
 /**
  * Injector for the IoC functionality.
  *
@@ -24,19 +27,38 @@ class Injector
     /**
      * index for faster access to bindings
      *
-     * @type  \stubbles\ioc\binding\BindingIndex
+     * Do not access this array directly, use getIndex() instead. The binding
+     * index is a requirement because the key for a binding is not necessarily
+     * complete when the binding is added to the injector.
+     *
+     * @type  \stubbles\ioc\binding\Binding[]
      */
-    private $bindingIndex;
+    private $index    = [];
+    /**
+     * list of available binding scopes
+     *
+     * @type  \stubbles\ioc\binding\BindingScopes
+     */
+    private $scopes;
+    /**
+     * denotes how deep in the object graph the current injection takes place
+     *
+     * @type  string[]
+     */
+    private $injectionStack = [];
 
     /**
      * constructor
      *
-     * @param  \stubbles\ioc\binding\BindingIndex   $bindingIndex
+     * @param  \stubbles\ioc\binding\Binding[]   $bindings
      * @since  1.5.0
      */
-    public function __construct(BindingIndex $bindingIndex)
+    public function __construct(array $bindings, BindingScopes $scopes)
     {
-        $this->bindingIndex = $bindingIndex;
+        $this->scopes = $scopes;
+        foreach ($bindings as $binding) {
+            $this->index[$binding->getKey()] = $binding;
+        }
     }
 
     /**
@@ -49,7 +71,27 @@ class Injector
      */
     public function hasBinding($type, $name = null)
     {
-        return $this->bindingIndex->hasBinding($type, $this->getBindingName($name));
+        if (PropertyBinding::TYPE === $type) {
+            return $this->hasProperty($name);
+        }
+
+        return ($this->findBinding($type, $name) != null);
+    }
+
+    /**
+     * checks whether property with given name is available
+     *
+     * @param   string  $name
+     * @return  bool
+     * @since   3.4.0
+     */
+    private function hasProperty($name)
+    {
+        if (!isset($this->index[PropertyBinding::TYPE])) {
+            return false;
+        }
+
+        return $this->index[PropertyBinding::TYPE]->hasProperty($name);
     }
 
     /**
@@ -65,7 +107,20 @@ class Injector
      */
     public function hasExplicitBinding($type, $name = null)
     {
-        return $this->bindingIndex->hasExplicitBinding($type, $this->getBindingName($name));
+        if (PropertyBinding::TYPE === $type) {
+            return $this->hasProperty($name);
+        }
+
+        $bindingName = $this->getBindingName($name);
+        if (null !== $bindingName && isset($this->index[$type . '#' . $bindingName])) {
+            return true;
+        }
+
+        if (isset($this->index[$type])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -78,8 +133,95 @@ class Injector
      */
     public function getInstance($type, $name = null)
     {
-        return $this->bindingIndex->getBinding($type, $this->getBindingName($name))
-                                  ->getInstance($this, $name);
+        if (__CLASS__ === $type) {
+            return $this;
+        }
+
+        array_push($this->injectionStack, $type . '#' . $name);
+        $instance = $this->getBinding($type, $name)->getInstance($this, $name);
+        array_pop($this->injectionStack);
+        return $instance;
+    }
+
+    /**
+     * returns how deep in the object graph the current injection takes place
+     *
+     * @return  string[]
+     */
+    public function stack()
+    {
+        return $this->injectionStack;
+    }
+
+    /**
+     * check whether a constant is available
+     *
+     * @api
+     * @param   string  $name  name of constant to check for
+     * @return  bool
+     * @since   1.1.0
+     */
+    public function hasConstant($name)
+    {
+        return $this->hasBinding(ConstantBinding::TYPE, $name);
+    }
+
+    /**
+     * returns constanct value
+     *
+     * @api
+     * @param   string  $name  name of constant value to retrieve
+     * @return  scalar
+     * @since   1.1.0
+     */
+    public function getConstant($name)
+    {
+        return $this->getBinding(ConstantBinding::TYPE, $name)
+                    ->getInstance($this, $name);
+    }
+
+    /**
+     * gets a binding
+     *
+     * @param   string  $type
+     * @param   string  $name
+     * @return  \stubbles\ioc\binding\Binding
+     * @throws  \stubbles\ioc\binding\BindingException
+     */
+    private function getBinding($type, $name = null)
+    {
+        $binding = $this->findBinding($type, $name);
+        if (null === $binding) {
+            throw new BindingException('No binding for ' . $type . ' defined');
+        }
+
+        return $binding;
+    }
+
+    /**
+     * tries to find a binding
+     *
+     * @param   string  $type
+     * @param   string  $name
+     * @return  \stubbles\ioc\binding\Binding
+     */
+    private function findBinding($type, $name)
+    {
+        $bindingName = $this->getBindingName($name);
+        if (null !== $bindingName && isset($this->index[$type . '#' . $bindingName])) {
+            return $this->index[$type . '#' . $bindingName];
+        }
+
+        if (isset($this->index[$type])) {
+            return $this->index[$type];
+        }
+
+        if (!in_array($type, [PropertyBinding::TYPE, ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE])) {
+            $this->index[$type] = $this->getAnnotatedBinding(new ReflectionClass($type));
+            return $this->index[$type];
+        }
+
+        return null;
     }
 
     /**
@@ -98,252 +240,60 @@ class Injector
     }
 
     /**
-     * check whether a constant is available
+     * returns binding denoted by annotations on type to create
      *
-     * @api
-     * @param   string  $name  name of constant to check for
-     * @return  bool
-     * @since   1.1.0
-     */
-    public function hasConstant($name)
-    {
-        return $this->bindingIndex->hasConstant($name);
-    }
-
-    /**
-     * returns constanct value
+     * An annotated binding is when the type to create is annotated with
+     * @ImplementedBy oder @ProvidedBy.
      *
-     * @api
-     * @param   string  $name  name of constant value to retrieve
-     * @return  scalar
-     * @since   1.1.0
-     */
-    public function getConstant($name)
-    {
-        return $this->bindingIndex->getConstantBinding($name)
-                                  ->getInstance($this, $name);
-    }
-
-    /**
-     * checks whether list binding for given name exists
+     * If this is not the case it will fall back to the implicit binding.
      *
-     * @param   string  $name
-     * @return  bool
+     * @param   \stubbles\lang\reflect\ReflectionClass  $class
+     * @return  \stubbles\ioc\binding\Binding
      */
-    public function hasList($name)
+    private function getAnnotatedBinding(ReflectionClass $class)
     {
-        return $this->bindingIndex->hasList($name);
-    }
-
-    /**
-     * returns list for given name
-     *
-     * @param   string  $name
-     * @return  array
-     */
-    public function getList($name)
-    {
-        return $this->bindingIndex->getListBinding($name)
-                                  ->getInstance($this, $name);
-    }
-
-    /**
-     * checks whether map binding for given name exists
-     *
-     * @param   string  $name
-     * @return  bool
-     */
-    public function hasMap($name)
-    {
-        return $this->bindingIndex->hasMap($name);
-    }
-
-    /**
-     * returns map for given name
-     *
-     * @param   string  $name
-     * @return  array
-     */
-    public function getMap($name)
-    {
-        return $this->bindingIndex->getMapBinding($name)
-                                  ->getInstance($this, $name);
-    }
-
-    /**
-     * handle injections for given instance
-     *
-     * @param   object                                      $instance
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
-     */
-    public function handleInjections($instance, BaseReflectionClass $class = null)
-    {
-        if (null === $class) {
-            $class = new ReflectionObject($instance);
+        if ($class->isInterface() && $class->hasAnnotation('ImplementedBy')) {
+            return $this->bind($class->getName())
+                        ->to($class->annotation('ImplementedBy')
+                                   ->getDefaultImplementation()
+                          );
+        } elseif ($class->hasAnnotation('ProvidedBy')) {
+            return $this->bind($class->getName())
+                        ->toProviderClass($class->annotation('ProvidedBy')
+                                                ->getProviderClass()
+                          );
         }
 
-        foreach ($class->getMethods() as $method) {
-            /* @type  $method  ReflectionMethod */
-            if (!$method->isPublic()
-              || $method->getNumberOfParameters() === 0
-              || strncmp($method->getName(), '__', 2) === 0
-              || !$method->hasAnnotation('Inject')) {
-                continue;
-            }
-
-            $paramValues = $this->getInjectionValuesForMethod($method, $class);
-            if (false === $paramValues) {
-                continue;
-            }
-
-            $method->invokeArgs($instance, $paramValues);
-        }
+        return $this->getImplicitBinding($class);
     }
 
     /**
-     * returns a list of all injection values for given method
+     * returns implicit binding
      *
-     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
-     * @return  array
-     * @throws  \stubbles\ioc\binding\BindingException
-     */
-    public function getInjectionValuesForMethod(ReflectionMethod $method, BaseReflectionClass $class)
-    {
-        $paramValues = [];
-        $defaultName = $this->getMethodBindingName($method);
-        foreach ($method->getParameters() as $param) {
-            $type  = $this->getParamType($method, $param);
-            $name  = $this->detectBindingName($param, $defaultName);
-            if (!$this->hasExplicitBinding($type, $name) && $method->getAnnotation('Inject')->isOptional()) {
-                return false;
-            }
-
-            if (!$this->hasBinding($type, $name)) {
-                $typeMsg = $this->createTypeMessage($type, $name);
-                throw new BindingException('Can not inject into ' . $this->createCalledMethodMessage($class, $method, $param, $type)  . '. No binding for type ' . $typeMsg . ' specified.');
-            }
-
-            $paramValues[] = $this->getInstance($type, $name);
-        }
-
-        return $paramValues;
-    }
-
-    /**
-     * returns default binding name for all parameters on given method
+     * An implicit binding means that a type is requested which itself is a class
+     * and not an interface. Obviously, it makes sense to say that a class is
+     * always bound to itself if no other bindings were defined.
      *
-     * @param   \stubbles\lang\reflect\ReflectionMethod  $method
-     * @return  string
+     * @param   \stubbles\lang\reflect\ReflectionClass  $class
+     * @return  \stubbles\ioc\binding\Binding
      */
-    private function getMethodBindingName(ReflectionMethod $method)
+    private function getImplicitBinding(ReflectionClass $class)
     {
-        if ($method->hasAnnotation('List')) {
-            return $method->getAnnotation('List')->getValue();
-        }
-
-        if ($method->hasAnnotation('Map')) {
-            return $method->getAnnotation('Map')->getValue();
-        }
-
-        if ($method->hasAnnotation('Named')) {
-            return $method->getAnnotation('Named')->getName();
-        }
-
-        if ($method->hasAnnotation('Property')) {
-            return $method->getAnnotation('Property')->getValue();
+        if (!$class->isInterface()) {
+            return $this->bind($class->getName())->to($class);
         }
 
         return null;
     }
 
     /**
-     * returns type of param
+     * creates a class binding
      *
-     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
-     * @param   \stubbles\lang\reflect\ReflectionParameter  $param
-     * @return  string
+     * @param   string  $classname
+     * @return  \stubbles\ioc\binding\ClassBinding
      */
-    private function getParamType(ReflectionMethod $method, ReflectionParameter $param)
+    private function bind($classname)
     {
-        $paramClass = $param->getClass();
-        if (null !== $paramClass) {
-            return $paramClass->getName();
-        }
-
-        if ($method->hasAnnotation('List') || $param->hasAnnotation('List')) {
-            return BindingIndex::getListType();
-        }
-
-        if ($method->hasAnnotation('Map') || $param->hasAnnotation('Map')) {
-            return BindingIndex::getMapType();
-        }
-
-        if ($method->hasAnnotation('Property') || $param->hasAnnotation('Property')) {
-            return BindingIndex::getPropertyType();
-        }
-
-        return BindingIndex::getConstantType();
-    }
-
-    /**
-     * detects name for binding
-     *
-     * @param   \stubbles\lang\reflect\ReflectionParameter  $param
-     * @param   string               $default
-     * @return  string|\stubbles\lang\reflect\ReflectionClass
-     */
-    private function detectBindingName(ReflectionParameter $param, $default)
-    {
-        if ($param->hasAnnotation('List')) {
-            return $param->getAnnotation('List')->getValue();
-        }
-
-        if ($param->hasAnnotation('Map')) {
-            return $param->getAnnotation('Map')->getValue();
-        }
-
-        if ($param->hasAnnotation('Named')) {
-            return $param->getAnnotation('Named')->getName();
-        }
-
-        if ($param->hasAnnotation('Property')) {
-            return $param->getAnnotation('Property')->getValue();
-        }
-
-        return $default;
-    }
-
-    /**
-     * creates the complete type message
-     *
-     * @param   string  $type  type to create message for
-     * @param   string  $name  name of named parameter
-     * @return  string
-     */
-    private function createTypeMessage($type, $name)
-    {
-        return ((null !== $name) ? ($type . ' (named "' . $name . '")') : ($type));
-    }
-
-    /**
-     * creates the called method message
-     *
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $class
-     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
-     * @param   \stubbles\lang\reflect\ReflectionParameter  $parameter
-     * @param   string                                      $type
-     * @return  string
-     */
-    private function createCalledMethodMessage(BaseReflectionClass $class, ReflectionMethod $method, ReflectionParameter $parameter, $type)
-    {
-        $message = $class->getName() . '::' . $method->getName() . '(';
-        if ($this->bindingIndex->isObjectBinding($type)) {
-            $message .= $type . ' ';
-        } elseif ($parameter->isArray()) {
-            $message .= 'array ';
-        }
-
-        return $message . '$' . $parameter->getName() . ')';
+        return new ClassBinding($classname, $this->scopes);
     }
 }

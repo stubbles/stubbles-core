@@ -55,14 +55,14 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $constructor = \stubbles\lang\reflectConstructor($this->fileStreamFactory);
         $this->assertTrue($constructor->hasAnnotation('Inject'));
-        $this->assertTrue($constructor->getAnnotation('Inject')->isOptional());
+        $this->assertTrue($constructor->annotation('Inject')->isOptional());
         $this->assertTrue($constructor->hasAnnotation('Named'));
         $this->assertEquals('stubbles.filemode',
-                            $constructor->getAnnotation('Named')->getName()
+                            $constructor->annotation('Named')->getName()
         );
         $this->assertTrue($constructor->hasAnnotation('Property'));
         $this->assertEquals('stubbles.filemode',
-                            $constructor->getAnnotation('Property')->getName()
+                            $constructor->annotation('Property')->getName()
         );
     }
 

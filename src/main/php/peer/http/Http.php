@@ -58,18 +58,6 @@ class Http
      * @since  4.0.0
      */
     const OPTIONS                   = 'OPTIONS';
-    /**
-     * HTTP version: 1.0
-     *
-     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion::HTTP_1_0 instead, will be removed with 5.0.0
-     */
-    const VERSION_1_0               = 'HTTP/1.0';
-    /**
-     * HTTP version: 1.1
-     *
-     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion::HTTP_1_1 instead, will be removed with 5.0.0
-     */
-    const VERSION_1_1               = 'HTTP/1.1';
 
     /**
      * end-of-line marker
@@ -189,23 +177,6 @@ class Http
                                       ];
 
     /**
-     * checks if given http version is valid
-     *
-     * @api
-     * @param   string  $version
-     * @return  bool
-     * @deprecated  since 4.0.0, use stubbles\peer\http\HttpVersion instead, will be removed with 5.0.0
-     */
-    public static function isVersionValid($version)
-    {
-        if (self::VERSION_1_0 == $version || self::VERSION_1_1 == $version) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * returns status class for given status code
      *
      * Returns null if given status code is empty.
@@ -226,26 +197,6 @@ class Http
     }
 
     /**
-     * returns status class for given status code
-     *
-     * Returns null if given status code is empty.
-     *
-     * @api
-     * @param   int  $statusCode
-     * @return  string
-     * @deprecated  since 4.0.0, use statusClassFor() instead, will be removed with 5.0.0
-     */
-    public static function getStatusClass($statusCode)
-    {
-        $class = substr($statusCode, 0, 1);
-        if (isset(self::$statusClass[$class])) {
-            return self::$statusClass[$class];
-        }
-
-        return self::statusClassFor($statusCode);
-    }
-
-    /**
      * returns list of known status codes
      *
      * @api
@@ -258,18 +209,6 @@ class Http
     }
 
     /**
-     * returns list of known status codes
-     *
-     * @api
-     * @return  array
-     * @deprecated  since 4.0.0, use statusCodes() instead, will be removed with 5.0.0
-     */
-    public static function getStatusCodes()
-    {
-        return self::statusCodes();
-    }
-
-    /**
      * returns reason phrase for given status code
      *
      * @api
@@ -279,24 +218,6 @@ class Http
      * @since   4.0.0
      */
     public static function reasonPhraseFor($statusCode)
-    {
-        if (isset(self::$reasonPhrases[$statusCode])) {
-            return self::$reasonPhrases[$statusCode];
-        }
-
-        throw new IllegalArgumentException('Invalid or unknown HTTP status code ' . $statusCode);
-    }
-
-    /**
-     * returns reason phrase for given status code
-     *
-     * @api
-     * @param   int  $statusCode
-     * @return  string
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
-     * @deprecated  since 4.0.0, use reasonPhraseFor() instead, will be removed with 5.0.0
-     */
-    public static function getReasonPhrase($statusCode)
     {
         if (isset(self::$reasonPhrases[$statusCode])) {
             return self::$reasonPhrases[$statusCode];

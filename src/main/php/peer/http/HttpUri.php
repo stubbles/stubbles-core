@@ -51,15 +51,10 @@ abstract class HttpUri extends Uri
      * @param   string  $uriString  string to create instance from
      * @param   string  $rfc        optional  RFC to base validation on, defaults to Http::RFC_7230
      * @return  \stubbles\peer\http\HttpUri
-     * @throws  \stubbles\lang\exception\IllegalArgumentException  when passed RFC is unknown
      * @throws  \stubbles\lang\exception\MalformedUriException
      */
     public static function fromString($uriString, $rfc = Http::RFC_7230)
     {
-        if (!Http::isValidRfc($rfc)) {
-            throw new IllegalArgumentException('Unknown RFC ' . $rfc . ', please use one of ' . Http::RFC_2616 . ' or ' . Http::RFC_7230);
-        }
-
         if (strlen($uriString) === 0) {
             return null;
         }
@@ -173,18 +168,6 @@ abstract class HttpUri extends Uri
     }
 
     /**
-     * returns port of the uri
-     *
-     * @param   int  $defaultPort  parameter is ignored for http uris
-     * @return  int
-     * @deprecated  since 4.0.0, use port() instead, will be removed with 5.0.0
-     */
-    public function getPort($defaultPort = null)
-    {
-        return $this->port($defaultPort);
-    }
-
-    /**
      * checks whether current scheme is http
      *
      * @return  bool
@@ -209,31 +192,51 @@ abstract class HttpUri extends Uri
     /**
      * transposes uri to http
      *
+     * @param   int  $port  optional  new port to use, defaults to 80
      * @return  \stubbles\peer\http\HttpUri
      * @since   2.0.0
      */
-    public function toHttp()
+    public function toHttp($port = null)
     {
         if ($this->isHttp()) {
+            if ($this->parsedUri->hasPort() && null !== $port) {
+                return new ConstructedHttpUri($this->parsedUri->transpose(['port' => $port]));
+            }
+
             return $this;
         }
 
-        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME]));
+        $changes = ['scheme' => Http::SCHEME];
+        if ($this->parsedUri->hasPort()) {
+            $changes['port'] = $port;
+        }
+
+        return new ConstructedHttpUri($this->parsedUri->transpose($changes));
     }
 
     /**
      * transposes uri to https
      *
+     * @param   int  $port  optional  new port to use, defaults to 443
      * @return  \stubbles\peer\http\HttpUri
      * @since   2.0.0
      */
-    public function toHttps()
+    public function toHttps($port = null)
     {
         if ($this->isHttps()) {
+            if ($this->parsedUri->hasPort() && null !== $port) {
+                return new ConstructedHttpUri($this->parsedUri->transpose(['port' => $port]));
+            }
+
             return $this;
         }
 
-        return new ConstructedHttpUri($this->parsedUri->transpose(['scheme' => Http::SCHEME_SSL]));
+        $changes = ['scheme' => Http::SCHEME_SSL];
+        if ($this->parsedUri->hasPort()) {
+            $changes['port'] = $port;
+        }
+
+        return new ConstructedHttpUri($this->parsedUri->transpose($changes));
     }
 
     /**

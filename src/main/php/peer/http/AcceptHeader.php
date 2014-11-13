@@ -83,17 +83,6 @@ class AcceptHeader implements \Countable
     }
 
     /**
-     * returns current list of acceptables
-     *
-     * @return  array
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function getList()
-    {
-        return $this->acceptables;
-    }
-
-    /**
      * returns priority for given acceptable
      *
      * If returned priority is 0 the requested acceptable is not in the list. In

@@ -16,20 +16,26 @@ namespace stubbles\lang\reflect\annotation\parser\state;
 class AnnotationDocblockState extends AnnotationAbstractState implements AnnotationState
 {
     /**
+     * returns list of tokens that signal state change
+     *
+     * @return  string[]
+     */
+    public function signalTokens()
+    {
+        return ['@'];
+    }
+
+    /**
      * processes a token
      *
-     * @param   string  $token
+     * @param   string  $word          parsed word to be processed
+     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string  $nextToken     next token after current token
+     * @return  bool
      */
-    public function process($token)
+    public function process($word, $currentToken, $nextToken)
     {
-        if ('@' === $token) {
-            $this->parser->changeState(AnnotationState::ANNOTATION_NAME);
-            return;
-        }
-
-        // all character except * and space and line breaks
-        if (' ' !== $token && '*' !== $token && "\n" !== $token && "\t" !== $token) {
-            $this->parser->changeState(AnnotationState::TEXT);
-        }
+        $this->parser->changeState(AnnotationState::ANNOTATION_NAME);
+        return true;
     }
 }

@@ -78,10 +78,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $root = vfsStream::setup();
         $file = vfsStream::newFile('annotations.cache')
-                         ->withContent($this->createdCachedAnnotation())
+                         ->withContent(serialize($this->createdCachedAnnotation()))
                          ->at($root);
         persistAnnotationsInFile($file->url());
-        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, 'foo', 'bar'));
+        $this->assertTrue(AnnotationCache::has('foo', 'bar'));
     }
 
     /**
@@ -98,7 +98,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                            },
                            function($data) {}
         );
-        $this->assertTrue(AnnotationCache::has(Annotation::TARGET_CLASS, 'foo', 'bar'));
+        $this->assertTrue(AnnotationCache::has('foo', 'bar'));
     }
 
     /**
@@ -108,7 +108,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     private function createdCachedAnnotation()
     {
-        return serialize([Annotation::TARGET_CLASS => ['foo' => ['bar' => new Annotation('bar', 'someFunction()')]]]);
+        return ['foo' => ['bar' => new Annotation('bar', 'someFunction()')]];
     }
 
     /**
@@ -213,6 +213,42 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function reflectInvalidValueThrowsIllegalArgumentException($invalidValue)
     {
         reflect($invalidValue);
+    }
+
+    /**
+     * @test
+     * @since  4.1.4
+     */
+    public function reflectCallbackWithInstanceReturnsReflectionMethod()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\reflect\ReflectionMethod',
+                reflect([$this, __FUNCTION__])
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.1.4
+     */
+    public function reflectCallbackWithClassnameReturnsReflectionMethod()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\reflect\ReflectionMethod',
+                reflect([__CLASS__, __FUNCTION__])
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.1.4
+     */
+    public function reflectClosureReturnsReflectionObject()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\reflect\ReflectionObject',
+                reflect(function() { })
+        );
     }
 
     /**

@@ -8,11 +8,16 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
+use stubbles\lang\reflect\annotation\Annotation;
 /**
  * a function
  *
  * @param       mixed  $param
+ * @FunctionAnnotation
  * @ParamAnno{param}
+ * @AnotherAnnotation{param}
+ * @Foo{param}('bar')
+ * @Foo{param}('baz')
  */
 function test_function($param)
 {
@@ -39,7 +44,12 @@ class ParamTestHelper
      *
      * @param  mixed  $param
      * @param  int    $secondParam
+     * @MethodAnnotation
      * @ParamAnno{param}
+     * @AnotherAnnotation{param}
+     * @Foo{param}('bar')
+     * @Foo{param}('baz')
+     * @SecondParam{secondParam}
      */
     function paramTest($param, $secondParam)
     {
@@ -56,8 +66,9 @@ class ParamTestHelper2 extends ParamTestHelper
      *
      * @param  ParamTestHelper  $param2
      * @ParamAnno{param2}
+     * @SecondParam{secondParam}
      */
-    function paramTest2(ParamTestHelper $param2)
+    function paramTest2(ParamTestHelper $param2, $secondParam)
     {
         // nothing to do
     }
@@ -175,19 +186,51 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
     public function retrievedAnnotationsAreOfCorrectType()
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refParamFunction->getAnnotation('ParamAnno')
+                                $this->refParamFunction->annotation('ParamAnno')
         );
 
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refParamMethod1->getAnnotation('ParamAnno')
+                                $this->refParamMethod1->annotation('ParamAnno')
         );
 
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refParamMethod2->getAnnotation('ParamAnno')
+                                $this->refParamMethod2->annotation('ParamAnno')
         );
 
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refParamMethod3->getAnnotation('ParamAnno')
+                                $this->refParamMethod3->annotation('ParamAnno')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotationForFunctionParameter()
+    {
+        $this->assertEquals(
+                [new Annotation('ParamAnno', 'stubbles\lang\reflect\test_function()#param'),
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\test_function()#param'),
+                 new Annotation('Foo', 'stubbles\lang\reflect\test_function()#param', ['__value' => 'bar']),
+                 new Annotation('Foo', 'stubbles\lang\reflect\test_function()#param', ['__value' => 'baz'])
+                ],
+                $this->refParamFunction->annotations()->all()
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotationForMethodParameter()
+    {
+        $this->assertEquals(
+                [new Annotation('ParamAnno', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param'),
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param'),
+                 new Annotation('Foo', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param', ['__value' => 'bar']),
+                 new Annotation('Foo', 'stubbles\lang\reflect\ParamTestHelper::paramTest()#param', ['__value' => 'baz'])
+                ],
+                $this->refParamMethod1->annotations()->all()
         );
     }
 
@@ -197,7 +240,7 @@ class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
      */
     public function retrievedNonDeclaredAnnotationThrowsReflectionException()
     {
-        $this->refParamMethod4->getAnnotation('ParamAnno');
+        $this->refParamMethod4->annotation('ParamAnno');
     }
 
     /**

@@ -30,26 +30,6 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function hasGivenDomain()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SocketDomain::$AF_UNIX, $socket->getDomain());
-    }
-
-    /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function hasGivenHost()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
-        $this->assertEquals('example.com', $socket->getHost());
-    }
-
-    /**
-     * @test
      * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function throwsIllegalArgumentExceptionIfPortReqiredButNotGiven()
@@ -60,41 +40,11 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function hasGivenPort()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 21);
-        $this->assertEquals(21, $socket->getPort());
-    }
-
-    /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function portIsNullIfNotRequired()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertNull($socket->getPort());
-    }
-
-    /**
-     * @test
      */
     public function doesNotUseSecureConnection()
     {
         $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
         $this->assertFalse($socket->usesSsl());
-    }
-
-    /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function timeoutDefaultsTo5Seconds()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(5, $socket->timeout());
     }
 
     /**

@@ -18,15 +18,17 @@ use stubbles\lang\exception\RuntimeException;
 class AnnotationCache
 {
     /**
-     * Property to store annotations
+     * map of stored serialized annotations
      *
-     * @type  array
+     * @type  string[]
      */
-    private static $annotations  = [Annotation::TARGET_CLASS    => [],
-                                    Annotation::TARGET_FUNCTION => [],
-                                    Annotation::TARGET_METHOD   => [],
-                                    Annotation::TARGET_PROPERTY => []
-                                   ];
+    private static $annotations  = [];
+    /**
+     * map of stored annotations
+     *
+     * @type  \stubbles\lang\reflect\annotation\Annotations[]
+     */
+    private static $unserialized = [];
     /**
      * flag whether cache contents changed
      *
@@ -36,7 +38,7 @@ class AnnotationCache
     /**
      * closure which stores the current annotation cache
      *
-     * @type  Closure
+     * @type  callable
      */
     private static $storeCache;
 
@@ -58,39 +60,36 @@ class AnnotationCache
      *
      * A possible implementation for the file cache would look like this:
      * <code>
-     * AnnotationCache::start(function() use($cacheFile)
-     *                        {
-     *                            if (file_exists($cacheFile)) {
-     *                                return file_get_contents($cacheFile);
-     *                            }
+     * AnnotationCache::start(
+     *      function() use($cacheFile)
+     *      {
+     *          if (file_exists($cacheFile)) {
+     *              return unserialize(file_get_contents($cacheFile));
+     *          }
      *
-     *                            return null;
-     *                        },
-     *                        function($annotationData) use($cacheFile)
-     *                        {
-     *                            file_put_contents($cacheFile, $annotationData);
-     *                        }
+     *          return [];
+     *      },
+     *      function(array $annotationData) use($cacheFile)
+     *      {
+     *          file_put_contents($cacheFile, serialize($annotationData));
+     *      }
      * );
      * </code>
      *
-     * @param   \Closure  $readCache   function which can return cached annotation data
-     * @param   \Closure  $storeCache  function which takes cached annotation data and stores it
+     * @param   callable  $readCache   function which can return cached annotation data
+     * @param   callable  $storeCache  function which takes cached annotation data and stores it
      * @throws  \stubbles\lang\exception\RuntimeException
      * @since   3.0.0
      */
-    public static function start(\Closure $readCache, \Closure $storeCache)
+    public static function start(callable $readCache, callable $storeCache)
     {
-        $annotationData = $readCache();
-        if (null != $annotationData) {
-            self::$annotations  = @unserialize($annotationData);
-            if (!is_array(self::$annotations)) {
-                self::flush();
-                throw new RuntimeException('Cached annotation data is not an array');
-            }
-        } else {
+        self::$annotations = $readCache();
+        if (!is_array(self::$annotations)) {
             self::flush();
+            throw new RuntimeException('Cached annotation data is not an array');
         }
 
+        self::$unserialized = [];
         self::$cacheChanged = false;
         self::$storeCache   = $storeCache;
         register_shutdown_function([__CLASS__, '__shutdown']);
@@ -104,18 +103,19 @@ class AnnotationCache
      */
     public static function startFromFileCache($cacheFile)
     {
-        self::start(function() use($cacheFile)
-                    {
-                        if (file_exists($cacheFile)) {
-                            return file_get_contents($cacheFile);
-                        }
-
-                        return null;
-                    },
-                    function($annotationData) use($cacheFile)
-                    {
-                        file_put_contents($cacheFile, $annotationData);
+        self::start(
+                function() use($cacheFile)
+                {
+                    if (file_exists($cacheFile)) {
+                        return unserialize(file_get_contents($cacheFile));
                     }
+
+                    return [];
+                },
+                function(array $annotationData) use($cacheFile)
+                {
+                    file_put_contents($cacheFile, serialize($annotationData));
+                }
         );
     }
 
@@ -136,7 +136,7 @@ class AnnotationCache
     {
         if (self::$cacheChanged && null !== self::$storeCache) {
             $storeCache = self::$storeCache;
-            $storeCache(serialize(self::$annotations));
+            $storeCache(self::$annotations);
         }
     }
 
@@ -145,105 +145,50 @@ class AnnotationCache
      */
     public static function flush()
     {
-        self::$annotations  = [Annotation::TARGET_CLASS    => [],
-                               Annotation::TARGET_FUNCTION => [],
-                               Annotation::TARGET_METHOD   => [],
-                               Annotation::TARGET_PROPERTY => []
-                              ];
+        self::$annotations  = [];
+        self::$unserialized = [];
         self::$cacheChanged = true;
     }
 
     /**
-     * store an annotation in the cache
+     * store annotations in the cache
      *
-     * @param  int                                           $target          target of the annotation
-     * @param  string                                        $targetName      name of the target
-     * @param  string                                        $annotationName  name of the annotation
-     * @param  \stubbles\lang\reflect\annotation\Annotation  $annotation      the annotation to store
+     * @param  \stubbles\lang\reflect\annotation\Annotations  $annotations
      */
-    public static function put($target, $targetName, $annotationName, Annotation $annotation = null)
+    public static function put(Annotations $annotations)
     {
-        if (!isset(self::$annotations[$target])) {
-            self::$annotations[$target] = [];
-        }
-
-        if (!isset(self::$annotations[$target][$targetName])) {
-            self::$annotations[$target][$targetName] = [];
-        }
-
-        if (null !== $annotation) {
-            self::$annotations[$target][$targetName][$annotationName] = serialize($annotation);
-        } else {
-            self::$annotations[$target][$targetName][$annotationName] = '';
-        }
-
+        self::$annotations[$annotations->target()]  = serialize($annotations);
+        self::$unserialized[$annotations->target()] = $annotations;
         self::$cacheChanged = true;
     }
 
     /**
-     * check, whether an annotation is available in the cache
+     * check, whether annotations are available in the cache
      *
-     * @param   int     $target          target of the annotation
-     * @param   string  $targetName      name of the target
-     * @param   string  $annotationName  name of the annotation
+     * @param   string  $target  name of the target
      * @return  bool
      */
-    public static function has($target, $targetName, $annotationName)
+    public static function has($target)
     {
-        if (!isset(self::$annotations[$target])) {
-            return false;
-        }
-
-        if (!isset(self::$annotations[$target][$targetName])) {
-            return false;
-        }
-
-        if (!isset(self::$annotations[$target][$targetName][$annotationName])) {
-            return false;
-        }
-
-        return self::$annotations[$target][$targetName][$annotationName] !== '';
+        return isset(self::$annotations[$target]);
     }
 
     /**
-     * check, whether an annotation is available in the cache
+     * returns list of all annotations for given target
      *
-     * @param   int     $target          target of the annotation
-     * @param   string  $targetName      name of the target
-     * @param   string  $annotationName  name of the annotation
-     * @return  bool
+     * @param   string  $target
+     * @return  \stubbles\lang\reflect\annotation\Annotations
      */
-    public static function hasNot($target, $targetName, $annotationName)
+    public static function get($target)
     {
-        if (!isset(self::$annotations[$target])) {
-            return false;
+        if (!self::has($target)) {
+            return null;
         }
 
-        if (!isset(self::$annotations[$target][$targetName])) {
-            return false;
+        if (!isset(self::$unserialized[$target])) {
+            self::$unserialized[$target] = unserialize(self::$annotations[$target]);
         }
 
-        if (!isset(self::$annotations[$target][$targetName][$annotationName])) {
-            return false;
-        }
-
-        return self::$annotations[$target][$targetName][$annotationName] === '';
-    }
-
-    /**
-     * fetch an annotation from the cache
-     *
-     * @param   int         $target          target of the annotation
-     * @param   string      $targetName      name of the target
-     * @param   string      $annotationName  name of the annotation
-     * @return  \stubbles\lang\reflect\annotation\Annotation
-     */
-    public static function get($target, $targetName, $annotationName)
-    {
-        if (self::has($target, $targetName, $annotationName)) {
-            return unserialize(self::$annotations[$target][$targetName][$annotationName]);
-        }
-
-        return null;
+        return self::$unserialized[$target];
     }
 }

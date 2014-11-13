@@ -94,19 +94,6 @@ class HttpResponse
     }
 
     /**
-     * returns status line of response
-     *
-     * @api
-     * @return  string
-     * @since   2.0.0
-     * @deprecated since 4.0.0, use statusLine() instead, will be removed with 5.0.0
-     */
-    public function getStatusLine()
-    {
-        return $this->statusLine();
-    }
-
-    /**
      * returns http version of response
      *
      * @api
@@ -119,19 +106,6 @@ class HttpResponse
     }
 
     /**
-     * returns http version of response
-     *
-     * @api
-     * @return  \stubbles\peer\http\HttpVersion
-     * @since   2.0.0
-     * @deprecated since 4.0.0, use httpVersion() instead, will be removed with 5.0.0
-     */
-    public function getHttpVersion()
-    {
-        return $this->httpVersion();
-    }
-
-    /**
      * returns status code of response
      *
      * @api
@@ -141,19 +115,6 @@ class HttpResponse
     public function statusCode()
     {
         return $this->readHeader()->statusCode;
-    }
-
-    /**
-     * returns status code of response
-     *
-     * @api
-     * @return  int
-     * @since   2.0.0
-     * @deprecated since 4.0.0, use statusCode() instead, will be removed with 5.0.0
-     */
-    public function getStatusCode()
-    {
-        return $this->statusCode();
     }
 
     /**
@@ -174,19 +135,6 @@ class HttpResponse
     }
 
     /**
-     * return status code class of response
-     *
-     * @api
-     * @return  string
-     * @since   2.0.0
-     * @deprecated since 4.0.0, use statusCodeClass() instead, will be removed with 5.0.0
-     */
-    public function getStatusCodeClass()
-    {
-        return $this->statusCodeClass();
-    }
-
-    /**
      * returns reason phrase of response
      *
      * @api
@@ -196,19 +144,6 @@ class HttpResponse
     public function reasonPhrase()
     {
         return $this->readHeader()->reasonPhrase;
-    }
-
-    /**
-     * returns reason phrase of response
-     *
-     * @api
-     * @return  string
-     * @since   2.0.0
-     * @deprecated since 4.0.0, use reasonPhrase() instead, will be removed with 5.0.0
-     */
-    public function getReasonPhrase()
-    {
-        return $this->reasonPhrase();
     }
 
     /**
@@ -223,18 +158,6 @@ class HttpResponse
     }
 
     /**
-     * returns list of headers from response
-     *
-     * @api
-     * @return  \stubbles\peer\HeaderList
-     * @deprecated since 4.0.0, use headers() instead, will be removed with 5.0.0
-     */
-    public function getHeader()
-    {
-        return $this->headers();
-    }
-
-    /**
      * returns body of response
      *
      * @api
@@ -243,18 +166,6 @@ class HttpResponse
     public function body()
     {
         return $this->readHeader()->readBody()->body;
-    }
-
-    /**
-     * returns body of response
-     *
-     * @api
-     * @return  string
-     * @deprecated since 4.0.0, use body() instead, will be removed with 5.0.0
-     */
-    public function getBody()
-    {
-        return $this->body();
     }
 
     /**

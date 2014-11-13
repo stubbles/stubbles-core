@@ -8,8 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
-use stubbles\lang\reflect\annotation\Annotation;
-use stubbles\lang\reflect\annotation\AnnotationFactory;
+use stubbles\lang\reflect\annotation\Annotated;
 use stubbles\lang\reflect\matcher\MethodMatcher;
 use stubbles\lang\reflect\matcher\PropertyMatcher;
 /**
@@ -19,6 +18,8 @@ use stubbles\lang\reflect\matcher\PropertyMatcher;
  */
 class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
 {
+    use Annotated;
+
     /**
      * creates a new instance for given class name
      *
@@ -32,25 +33,14 @@ class ReflectionClass extends \ReflectionClass implements BaseReflectionClass
     }
 
     /**
-     * check whether the class has the given annotation or not
+     * target name of property annotations
      *
-     * @param   string  $annotationName
-     * @return  bool
+     * @return  string
+     * @see     \stubbles\lang\reflect\annotation\Annotated
      */
-    public function hasAnnotation($annotationName)
+    protected function annotationTarget()
     {
-        return AnnotationFactory::has($this->getDocComment(), $annotationName, Annotation::TARGET_CLASS, $this->getName());
-    }
-
-    /**
-     * return the specified annotation
-     *
-     * @param   string  $annotationName
-     * @return  \stubbles\lang\reflect\annotation\Annotation
-     */
-    public function getAnnotation($annotationName)
-    {
-        return AnnotationFactory::create($this->getDocComment(), $annotationName, Annotation::TARGET_CLASS, $this->getName());
+        return $this->getName();
     }
 
     /**

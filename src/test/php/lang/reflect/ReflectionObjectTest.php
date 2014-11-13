@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
+use stubbles\lang\reflect\annotation\Annotation;
 use stubbles\test\lang\reflect\TestWithMethodsAndProperties;
 use stubbles\test\lang\reflect\TestWithOutMethodsAndProperties;
 /**
@@ -389,7 +390,7 @@ class ReflectionObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function getAnnotationThrowsReflectionExceptionIfAnnotationNotSet()
     {
-        $this->refClass1->getAnnotation('SomeAnnotation');
+        $this->refClass1->annotation('SomeAnnotation');
     }
 
     /**
@@ -398,7 +399,23 @@ class ReflectionObjectTest extends \PHPUnit_Framework_TestCase
     public function getAnnotationReturnsInstanceOfAnnotationIfAnnotationSet()
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refClass2->getAnnotation('SomeAnnotation')
+                                $this->refClass2->annotation('SomeAnnotation')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotation()
+    {
+        $this->assertEquals(
+                [new Annotation('SomeAnnotation', $this->refClass2->getName()),
+                 new Annotation('AnotherAnnotation', $this->refClass2->getName()),
+                 new Annotation('Foo', $this->refClass2->getName(), ['__value' => 'bar']),
+                 new Annotation('Foo', $this->refClass2->getName(), ['__value' => 'baz'])
+                ],
+                $this->refClass2->annotations()->all()
         );
     }
 }

@@ -18,39 +18,39 @@ interface AnnotationState
     /**
      * parser is inside the standard docblock
      */
-    const DOCBLOCK        = 0;
-    /**
-     * parser is inside a text within the docblock
-     */
-    const TEXT            = 1;
+    const DOCBLOCK             = 0;
     /**
      * parser is inside an annotation
      */
-    const ANNOTATION      = 2;
+    const ANNOTATION           = 2;
     /**
      * parser is inside an annotation name
      */
-    const ANNOTATION_NAME = 3;
+    const ANNOTATION_NAME      = 3;
     /**
      * parser is inside an annotation type
      */
-    const ANNOTATION_TYPE = 4;
+    const ANNOTATION_TYPE      = 4;
     /**
      * parser is inside the annotation params
      */
-    const PARAMS          = 5;
+    const PARAMS               = 5;
     /**
      * parser is inside an annotation param name
      */
-    const PARAM_NAME      = 6;
+    const PARAM_NAME           = 6;
     /**
      * parser is inside an annotation param value
      */
-    const PARAM_VALUE     = 7;
+    const PARAM_VALUE          = 7;
     /**
      * parser is inside a argument declaration
      */
-    const ARGUMENT        = 8;
+    const ARGUMENT             = 8;
+    /**
+     * parser is inside an enclosed annotation param value
+     */
+    const PARAM_VALUE_ENCLOSED = 9;
 
     /**
      * mark this state as the currently used state
@@ -58,9 +58,19 @@ interface AnnotationState
     public function selected();
 
     /**
+     * returns list of tokens that signal state change
+     *
+     * @return  string[]
+     */
+    public function signalTokens();
+
+    /**
      * processes a token
      *
-     * @param   string  $token
+     * @param   string  $word          parsed word to be processed
+     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string  $nextToken     next token after current token
+     * @return  bool
      */
-    public function process($token);
+    public function process($word, $currentToken, $nextToken);
 }

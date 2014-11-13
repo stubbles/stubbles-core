@@ -93,6 +93,10 @@ namespace stubbles\lang {
      */
     function reflect($class, $methodName = null)
     {
+        if (is_array($class) && is_callable($class)) {
+            return reflect($class[0], $class[1]);
+        }
+
         if (null != $methodName) {
             return new ReflectionMethod($class, $methodName);
         }

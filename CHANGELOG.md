@@ -1,10 +1,165 @@
-4.1.1 (2014-??-??)
+5.2.0 (2014-??-??)
 ------------------
 
   * added `stubbles\streams\InputStreamIterator`,  `stubbles\streams\MappingInputStream` and `stubbles\streams\MappingOutputStream`
 
 
-4.0.0 (2014-06-??)
+5.1.2 (2014-10-13)
+------------------
+
+  * added `stubbles\peer\Uri::addParams()`
+
+
+5.1.1 (2014-10-03)
+------------------
+
+  * fixed bug: transposing a parsed uri forgot any parameters changed in query string
+
+
+5.1.0 (2014-09-29)
+------------------
+
+### BC breaks
+
+  * Setter injection is now discouraged and disabled by default, and will be removed with 6.0.0.
+    * Reenable the old behaviour with `stubbles\ioc\Binder::enableSetterInjection()`
+
+
+### Other changes
+
+  * IoC now supports default param values for non-optional injections:
+    If no binding present for a param but the param has a default value the
+    default value will be used for injection.
+  * implemented #117: injection stack on binding exceptions
+  * improved performance of annotation parsing
+  * improved annotation cache storage functions api
+  * properties from config.ini are also now available as instance of `stubbles\lang\Properties`, named `config.ini`
+
+
+5.0.1 (2014-09-01)
+------------------
+
+  * fixed issue #119: stubbles\peer\ParsedUri should catch IllegalArgumentException from stubbles\peer\QueryString
+
+
+5.0.0 (2014-08-17)
+------------------
+
+### BC breaks
+
+  * Removed `stubbles\ioc\App::createModeBindingModule($projectPath, $mode = null)`
+`   * project path and mode are now bound automatically if not explicitly specified
+    * to overrule or configure the defaults use `stubbles\ioc\App::runtime($mode = null)` instead
+  * A `__bindings()` method within an app doesn't receive the project path any more. If it is still required call `self::projectPath()`
+  * Deprecated `stubbles\ioc\App::bindCurrentWorkingDirectory()`, use `stubbles\ioc\App::currentWorkingDirectory()` instead, will be removed with 6.0.0
+  * Deprecated `stubbles\ioc\App::bindHostname()`, use `stubbles\ioc\App::hostname()` instead, will be removed with 6.0.0
+  * Removed possibility to change values on annotations, annotations should be read only.
+  * It is now possible to have more than one annotation of the same type. Retrieving only one annotation via one of the following methods will only return the first defined one:
+    * `stubbles\lang\reflect\ReflectionClass::annotation()`
+    * `stubbles\lang\reflect\ReflectionObject::annotation()`
+    * `stubbles\lang\reflect\ReflectionFunction::annotation()`
+    * `stubbles\lang\reflect\ReflectionMethod::annotation()`
+    * `stubbles\lang\reflect\ReflectionParameter::annotation()`
+    * `stubbles\lang\reflect\ReflectionProperty::annotation()`
+  * Deprecated `stubbles\lang\reflect\Reflection*::getAnnotation()`, use `stubbles\lang\reflect\Reflection*::annotation()` instead
+  * Retrieving a non-existing value from `stubbles\lang\reflect\annotation\Annotation` via method will throw a `BadMethodCallException` instead of `stubbles\lang\exception\MethodNotSupportedException`
+  * Parsing `null` with any of the `stubbles\lang\Parse` methods will now always return null.
+  * Removed all classes, methods and functions deprecated with 4.0.0 and 4.1.0
+  * The `stubbles\lang\exception\IllegalAccessException` is now also an instance of `LogicException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * The `stubbles\lang\exception\IllegalArgumentException` is now also an instance of `InvalidArgumentException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * The `stubbles\lang\exception\IllegalStateException` is now also an instance of `LogicException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * The `stubbles\lang\exception\MethodInvocationException` is now also an instance of `BadMethodCallException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * The `stubbles\lang\exception\MethodNotSupportedException` is now also an instance of `BadMethodCallException`. It is recommended to use the latter in catch statements, as this increases interoperability.
+  * Deprecated several exceptions where build-in exceptions in PHP exist, will be removed with 6.0.0:
+    * `stubbles\lang\exception\IllegalAccessException`, use `LogicException` instead
+    * `stubbles\lang\exception\IllegalArgumentException`, use `InvalidArgumentException` instead
+    * `stubbles\lang\exception\IllegalStateException`, use `LogicException` instead
+    * `stubbles\lang\exception\MethodInvocationException`, use `BadMethodCallException` instead
+    * `stubbles\lang\exception\MethodNotSupportedException`, use `BadMethodCallException` instead
+    * `stubbles\lang\exception\RuntimeException`, use native `RuntimeException` instead
+  * Deprecated `stubbles\lang\exception\Throwable`, will be removed with 6.0.0
+
+
+### Other changes
+
+  * Added possibility to retrieve all annotations for an element:
+    * `stubbles\lang\reflect\ReflectionClass::annotations()`
+    * `stubbles\lang\reflect\ReflectionObject::annotations()`
+    * `stubbles\lang\reflect\ReflectionFunction::annotations()`
+    * `stubbles\lang\reflect\ReflectionMethod::annotations()`
+    * `stubbles\lang\reflect\ReflectionParameter::annotations()`
+    * `stubbles\lang\reflect\ReflectionProperty::annotations()`
+  * Added non-static usage of `stubbles\lang\Parse`
+    * instance creation takes a string value
+    * all methods `to*()` are additionally available as non-static `as*()` methods except `toType()`
+  * Added `stubbles\lang\Properties::parse()` which returns an instance of `stubbles\lang\Parse`
+  * Added `stubbles\lang\reflect\annotation\Annotation::parse()` which returns an instance of `stubbles\lang\Parse`
+  * Added `stubbles\lang\iterator\RecursiveArrayIterator` to iterate recursively on leafs of arrays only
+  * Added `stubbles\lang\iterator\MappingIterator` to allow mapping of keys and values during iteration
+
+
+4.1.4 (2014-08-11)
+------------------
+
+  * added support to reflect array callbacks with `stubbles\lang\reflect()`
+
+
+4.1.3 (2014-08-10)
+------------------
+
+  * fixed bug that property bindings did not work together with type hints, e.g. for `stubbles\lang\SecureString`
+
+
+4.1.2 (2014-08-10)
+------------------
+
+  * fixed bug in `stubbles\lang\exception\Exception::__toString()` always reporting this class instead of the real exception class
+  * all properties in `stubbles\lang\Properties` where key ends with `password` are automatically stored as `stubbles\lang\SecureString`
+  * fixed bug that a `var_dump()` of a `stubbles\lang\SecureString` instance reveiled the length of the secured string
+
+
+4.1.1 (2014-08-09)
+------------------
+
+  * fixed bug with scheme transposing and default ports for http uris
+
+
+4.1.0 (2014-08-08)
+------------------
+
+### BC breaks
+
+  * `stubbles\lang\Properties::parseBool()` on property value `'1'` does not yield `true` any more, use one of `'true'`, `'yes'` or `'on'` instead
+
+
+### Other changes
+
+  * added `stubbles\lang\Parse`
+    * unified string to value parsing for properties and annotation values
+    * properties bound via `stubbles\ioc\Binder::bindProperties()` are now injected as parsed values instead of as string values only
+` * added `stubbles\lang\Properties::parseValue()`, deprecated other parsing methods, will be removed with 5.0.0
+    * `parseString()
+    * `parseInt()`
+    * `parseFloat()`
+    * `parseBool()`
+    * `parseArray()`
+    * `parseHash()`
+    * `parseRange()`
+
+
+4.0.2 (2014-08-06)
+------------------
+
+  * fixed bug: transposing `stubbles\peer\http\HttpUri` to another scheme must change the port
+
+
+4.0.1 (2014-08-05)
+------------------
+
+  * ensure `stubbles\predicate\IsExistingDirectory` and `stubbles\predicate\IsExistingFile` use current working directoy when no base path given
+
+
+4.0.0 (2014-07-31)
 ------------------
 
 ### BC breaks

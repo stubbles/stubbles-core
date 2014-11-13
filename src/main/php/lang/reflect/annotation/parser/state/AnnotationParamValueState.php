@@ -16,132 +16,35 @@ namespace stubbles\lang\reflect\annotation\parser\state;
 class AnnotationParamValueState extends AnnotationAbstractState implements AnnotationState
 {
     /**
-     * character in which the value is enclosed
+     * returns list of tokens that signal state change
      *
-     * @type  string
+     * @return  string[]
      */
-    private $enclosed   = null;
-    /**
-     * whether the value is a string or not
-     *
-     * @type  bool
-     */
-    private $isString   = false;
-    /**
-     * the extracted value
-     *
-     * @type  string
-     */
-    private $value      = '';
-    /**
-     * switch whether the next token is escaped or not
-     *
-     * @type  bool
-     */
-    private $escapeNext = false;
-
-    /**
-     * returns the value
-     *
-     * @return  string
-     */
-    public function getValue()
+    public function signalTokens()
     {
-        return $this->value;
-    }
-
-    /**
-     * checks whether the value is a string or not
-     *
-     * @return  bool
-     */
-    public function isString()
-    {
-        return $this->isString;
-    }
-
-    /**
-     * checks if the next token is escaped
-     *
-     * @return  bool
-     */
-    public function isNextCharacterEscaped()
-    {
-        return $this->escapeNext;
-    }
-
-    /**
-     * returns the character in which the value is enclosed
-     *
-     * @return  string
-     */
-    public function getEnclosed()
-    {
-        return $this->enclosed;
-    }
-
-    /**
-     * mark this state as the currently used state
-     */
-    public function selected()
-    {
-        parent::selected();
-        $this->value      = '';
-        $this->enclosed   = null;
-        $this->isString   = false;
-        $this->escapeNext = false;
+        return ["'", '"', ',', ')'];
     }
 
     /**
      * processes a token
      *
-     * @param  string  $token
+     * @param   string  $word          parsed word to be processed
+     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string  $nextToken     next token after current token
+     * @return  bool
      */
-    public function process($token)
+    public function process($word, $currentToken, $nextToken)
     {
-        if (true === $this->escapeNext) {
-            $this->value     .= $token;
-            $this->escapeNext = false;
-            return;
+        if (strlen($word) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
+            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken, $nextToken);
+        } elseif (',' === $currentToken) {
+            $this->parser->setAnnotationParamValue($word);
+            $this->parser->changeState(AnnotationState::PARAMS);
+        } elseif (')' === $currentToken) {
+            $this->parser->setAnnotationParamValue($word);
+            $this->parser->changeState(AnnotationState::DOCBLOCK);
         }
 
-        if (null === $this->enclosed) {
-            if ("'" === $token || '"' === $token) {
-                if (strlen($this->value) > 0) {
-                    $this->value .= $token;
-                } else {
-                    $this->enclosed = $token;
-                    $this->isString = true;
-                }
-
-                return;
-            }
-
-            if (',' === $token) {
-                $this->parser->setAnnotationParamValue($this->value, $this->isString);
-                $this->parser->changeState(AnnotationState::PARAMS);
-                return;
-            }
-
-            if (')' === $token) {
-                $this->parser->setAnnotationParamValue($this->value, $this->isString);
-                $this->parser->changeState(AnnotationState::DOCBLOCK);
-                return;
-            }
-        } else {
-            if ($this->enclosed === $token) {
-                $this->enclosed = null;
-                $this->parser->setAnnotationParamValue($this->value, $this->isString);
-                $this->parser->changeState(AnnotationState::PARAMS);
-                return;
-            }
-
-            if ('\\' === $token) {
-                $this->escapeNext = true;
-                return;
-            }
-        }
-
-        $this->value .= $token;
+        return true;
     }
 }

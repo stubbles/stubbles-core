@@ -13,9 +13,10 @@ use stubbles\lang\exception\RuntimeException;
  * Predicate to ensure a value complies to a given regular expression.
  *
  * The predicate uses preg_match() and checks if the value occurs exactly
- * one time. Please make sure that the supplied regular expresion contains
+ * one time. Please make sure that the supplied regular expression contains
  * correct delimiters, they will not be applied automatically. The test()
- * method throws a runtime exception in case the regular expression is invalid.
+ * method throws a stubbles\lang\exception\RuntimeException in case the regular
+ * expression is invalid.
  *
  * @api
  * @since  4.0.0

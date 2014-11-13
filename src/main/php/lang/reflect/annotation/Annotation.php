@@ -9,67 +9,51 @@
  */
 namespace stubbles\lang\reflect\annotation;
 use stubbles\lang;
-use stubbles\lang\exception\MethodNotSupportedException;
-use stubbles\lang\reflect\BaseReflectionClass;
-use stubbles\lang\reflect\ReflectionClass;
+use stubbles\lang\Parse;
 /**
- * Interface for an annotation.
+ * Represents an annotation on the code.
  */
 class Annotation
 {
-    /**
-     * annotation is applicable for classes
-     */
-    const TARGET_CLASS    = 1;
-    /**
-     * annotation is applicable for properties
-     */
-    const TARGET_PROPERTY = 2;
-    /**
-     * annotation is applicable for methods
-     */
-    const TARGET_METHOD   = 4;
-    /**
-     * annotation is applicable for functions
-     */
-    const TARGET_FUNCTION = 8;
-    /**
-     * annotation is applicable for parameters
-     */
-    const TARGET_PARAM    = 16;
-    /**
-     * annotation is applicable for classes, properties, methods and functions
-     */
-    const TARGET_ALL      = 31;
     /**
      * name of annotation
      *
      * @type  string
      */
-    protected $name;
+    private $name;
     /**
-     * properties of annotation
+     * values of annotation
      *
      * @type  array
      */
-    protected $properties = [];
+    private $values     = [];
     /**
-     * name of annotation target
+     * target from which annotation was retrieved
      *
      * @type  string
      */
-    private $targetName;
+    private $target;
+    /**
+     * original annotation type
+     *
+     * @type  string
+     */
+    private $type;
 
     /**
      * constructor
      *
-     * @param  string  $name
-     * @param  string  $targetName
+     * @param  string  $name    name of annotation, in case of casted annotations it the casted type
+     * @param  string  $target  optional  name of target where annotation is for, i.e. the class, method, function, property or parameter
+     * @param  array   $values  optional  map of all annotation values
+     * @param  string  $type    optional  type of annotation in case $name reflects a casted type
      */
-    public function __construct($name, $targetName)
+    public function __construct($name, $target = null, array $values = [], $type = null)
     {
-        $this->name       = $name;
-        $this->targetName = $targetName;
+        $this->name   = $name;
+        $this->target = $target;
+        $this->values = $values;
+        $this->type   = (null === $type) ? $name : $type;
     }
 
     /**
@@ -86,23 +70,26 @@ class Annotation
     /**
      * returns name of target where annotation is for, i.e. the class, method, function, property or parameter
      *
-     * @api
      * @return  string
      * @since   4.0.0
      */
-    public function targetName()
+    public function target()
     {
-        return $this->targetName;
+        return $this->target;
     }
 
     /**
-     * sets a single value
+     * annotation type
      *
-     * @param  mixed  $value
+     * Contains always the real annotation type, as the annotation name in case
+     * of casted annotations reflects the casted type.
+     *
+     * @return  string
+     * @since   5.0.0
      */
-    public function setValue($value)
+    public function type()
     {
-        $this->properties['__value'] = $value;
+        return $this->type;
     }
 
     /**
@@ -117,7 +104,7 @@ class Annotation
      */
     public function hasValueByName($name)
     {
-        return isset($this->properties[$name]);
+        return isset($this->values[$name]);
     }
 
     /**
@@ -127,27 +114,37 @@ class Annotation
      *
      * @api
      * @param   string  $name
+     * @param   mixed   $default  optional  value to return if value not set
      * @return  mixed
      * @since   1.7.0
      */
-    public function getValueByName($name)
+    public function getValueByName($name, $default = null)
     {
-        if (isset($this->properties[$name])) {
-            return $this->properties[$name];
+        if (isset($this->values[$name])) {
+            return $this->parseType($this->values[$name]);
         }
 
-        return null;
+        return $default;
     }
 
     /**
-     * sets value for given property
+     * returns a parser instance for the value
      *
-     * @param  string  $name
-     * @param  mixed   $value
+     * Actual call the parsing methods on the parser returns null if a value
+     * with given name does not exist or is not set.
+     *
+     * @api
+     * @param   string  $name
+     * @return  \stubbles\lang\Parse
+     * @since   5.0.0
      */
-    public function  __set($name, $value)
+    public function parse($name)
     {
-        $this->properties[$name] = $value;
+        if (isset($this->values[$name])) {
+            return new Parse($this->values[$name]);
+        }
+
+        return new Parse(null);
     }
 
     /**
@@ -156,12 +153,12 @@ class Annotation
      * @param   string  $name
      * @param   array   $arguments
      * @return  mixed
-     * @throws  MethodNotSupportedException
+     * @throws  \ReflectionException
      */
     public function  __call($name, $arguments)
     {
-        if (isset($this->properties[$name])) {
-            return $this->properties[$name];
+        if (isset($this->values[$name])) {
+            return $this->parseType($this->values[$name]);
         }
 
         if (substr($name, 0, 3) === 'get') {
@@ -178,7 +175,10 @@ class Annotation
             return $this->hasProperty(strtolower(substr($name, 3, 1)) . substr($name, 4));
         }
 
-        throw new MethodNotSupportedException('The method ' . $name . ' does not exit.');
+        $annotationName = $this->type . ($this->name !== $this->type ? ('[' . $this->name . ']') : '');
+        throw new \ReflectionException(
+                'The value with name "' . $name . '" for annotation @' . $annotationName . ' at ' . $this->target . ' does not exist'
+        );
     }
 
     /**
@@ -205,15 +205,30 @@ class Annotation
      */
     protected function getProperty($propertyName, $defaultValue)
     {
-        if (count($this->properties) === 1 && isset($this->properties['__value'])) {
-            return $this->properties['__value'];
+        if (count($this->values) === 1 && isset($this->values['__value'])) {
+            return $this->parseType($this->values['__value']);
         }
 
-        if (isset($this->properties[$propertyName])) {
-            return $this->properties[$propertyName];
+        if (isset($this->values[$propertyName])) {
+            return $this->parseType($this->values[$propertyName]);
         }
 
         return $defaultValue;
+    }
+
+    /**
+     * parses value to correct type
+     *
+     * @param   string  $value
+     * @return  mixed
+     */
+    private function parseType($value)
+    {
+        if ((substr($value, 0, 1) === '"' && substr($value, -1) === '"') || (substr($value, 0, 1) === "'" && substr($value, -1) === "'")) {
+            return substr($value, 1, strlen($value) - 2);
+        }
+
+        return Parse::toType($value);
     }
 
     /**
@@ -224,12 +239,12 @@ class Annotation
      */
     protected function getBooleanProperty($propertyName)
     {
-        if (count($this->properties) === 1 && isset($this->properties['__value'])) {
-            return $this->properties['__value'];
+        if (count($this->values) === 1 && isset($this->values['__value'])) {
+            return Parse::toBool($this->values['__value']);
         }
 
-        if (isset($this->properties[$propertyName])) {
-            return $this->properties[$propertyName];
+        if (isset($this->values[$propertyName])) {
+            return Parse::toBool($this->values[$propertyName]);
         }
 
         return false;
@@ -243,25 +258,13 @@ class Annotation
      */
     protected function hasProperty($propertyName)
     {
-        if (count($this->properties) === 1
-          && isset($this->properties['__value'])
+        if (count($this->values) === 1
+          && isset($this->values['__value'])
           && 'value' === $propertyName) {
-            return isset($this->properties['__value']);
+            return isset($this->values['__value']);
         }
 
-        return isset($this->properties[$propertyName]);
-    }
-
-    /**
-     * restore reflection instances
-     */
-    public function __wakeup()
-    {
-        foreach ($this->properties as $propertyName => $value) {
-            if ($value instanceof BaseReflectionClass) {
-                $this->properties[$propertyName] = new ReflectionClass($value->getName());
-            }
-        }
+        return isset($this->values[$propertyName]);
     }
 
     /**

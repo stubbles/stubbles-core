@@ -16,60 +16,51 @@ namespace stubbles\lang\reflect\annotation\parser\state;
 class AnnotationParamNameState extends AnnotationAbstractState implements AnnotationState
 {
     /**
-     * name of the param
+     * returns list of tokens that signal state change
      *
-     * @type  string
+     * @return  string[]
      */
-    private $name = '';
-
-    /**
-     * mark this state as the currently used state
-     */
-    public function selected()
+    public function signalTokens()
     {
-        parent::selected();
-        $this->name = '';
+        return ["'", '"', '=', ')'];
     }
 
     /**
      * processes a token
      *
-     * @param   string  $token
+     * @param   string  $word          parsed word to be processed
+     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string  $nextToken     next token after current token
+     * @return  bool
      * @throws  \ReflectionException
      */
-    public function process($token)
+    public function process($word, $currentToken, $nextToken)
     {
-        if ("'" === $token || '"' === $token) {
-            if (strlen($this->name) > 0) {
-                throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains ' . $token . '. Probably an equal sign is missing.');
+        $paramName = trim($word);
+        if ("'" === $currentToken || '"' === $currentToken) {
+            if (strlen($paramName) > 0) {
+                throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains ' . $currentToken . '. Probably an equal sign is missing: ' . $paramName);
             }
 
             $this->parser->registerAnnotationParam('__value');
-            $this->parser->changeState(AnnotationState::PARAM_VALUE, $token);
-            return;
-        }
-
-        if ('=' === $token) {
-            if (strlen($this->name) == 0) {
-                throw new \ReflectionException('Annotation parameter name has to start with a letter or underscore, but starts with =');
-            } elseif (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $this->name) == false) {
-                throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains an invalid character.');
+            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken, $nextToken);
+        } elseif ('=' === $currentToken) {
+            if (strlen($paramName) == 0) {
+                throw new \ReflectionException('Annotation parameter name has to start with a letter or underscore, but starts with =: ' . $paramName);
+            } elseif (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $paramName) == false) {
+                throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains an invalid character: ' . $paramName);
             }
 
-            $this->parser->registerAnnotationParam($this->name);
+            $this->parser->registerAnnotationParam($paramName);
             $this->parser->changeState(AnnotationState::PARAM_VALUE);
-            return;
-        }
-
-        if (')' === $token) {
-            if (strlen($this->name) > 0) {
-                $this->parser->registerSingleAnnotationParam($this->name, false);
+        } elseif (')' === $currentToken) {
+            if (strlen($paramName) > 0) {
+                $this->parser->registerSingleAnnotationParam($paramName);
             }
 
             $this->parser->changeState(AnnotationState::DOCBLOCK);
-            return;
         }
 
-        $this->name .= $token;
+        return true;
     }
 }

@@ -8,10 +8,14 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect;
+use stubbles\lang\reflect\annotation\Annotation;
 /**
  * does not return anything
  *
  * @FunctionTest()
+ * @AnotherAnnotation
+ * @Foo('bar')
+ * @Foo('baz')
  */
 function testWithOutParams()
 {
@@ -23,6 +27,7 @@ function testWithOutParams()
  * @param   string $param1
  * @param   mixed  $param2
  * @return  string
+ * @SomeParam{param1}
  */
 function testWithParams($param1, $param2)
 {
@@ -149,7 +154,35 @@ class ReflectionFunctionTest extends \PHPUnit_Framework_TestCase
     public function getAnnotationReturnsAnnotation()
     {
         $this->assertInstanceOf('stubbles\lang\\reflect\annotation\Annotation',
-                                $this->refFunction2->getAnnotation('FunctionTest')
+                                $this->refFunction2->annotation('FunctionTest')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsReturnsListOfAllAnnotation()
+    {
+        $this->assertEquals(
+                [new Annotation('FunctionTest', 'stubbles\lang\reflect\testWithOutParams()'),
+                 new Annotation('AnotherAnnotation', 'stubbles\lang\reflect\testWithOutParams()'),
+                 new Annotation('Foo', 'stubbles\lang\reflect\testWithOutParams()', ['__value' => 'bar']),
+                 new Annotation('Foo', 'stubbles\lang\reflect\testWithOutParams()', ['__value' => 'baz'])
+                ],
+                $this->refFunction2->annotations()->all()
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function annotationsDoesNotContainParameterAnnotations()
+    {
+        $this->assertEquals(
+                [],
+                $this->refFunction1->annotations()->all()
         );
     }
 

@@ -119,6 +119,23 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.1.2
+     */
+    public function varDumpNotRevealingLength()
+    {
+        ob_start();
+        var_dump(SecureString::create('payload'));
+        $output = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertNotContains(
+                'length',
+                $output
+        );
+    }
+
+    /**
+     * @test
      */
     public function stringCastNotRevealingPayload() {
         $this->assertNotContains(

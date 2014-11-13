@@ -152,7 +152,7 @@ class HttpVersion
 
         try {
             $other = self::castFrom($httpVersion);
-        } catch (IllegalArgumentException $iae) {
+        } catch (\InvalidArgumentException $iae) {
             return false;
         }
 

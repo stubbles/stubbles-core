@@ -10,8 +10,10 @@
 namespace stubbles\lang\exception;
 /**
  * Exception to be thrown in case an illegal argument was given.
+ *
+ * @deprecated  since 5.0.0, use InvalidArgumentException instead, will be removed with 6.0.0
  */
-class IllegalArgumentException extends Exception
+class IllegalArgumentException extends \InvalidArgumentException implements Throwable
 {
     /**
      * name of affected parameter
@@ -37,7 +39,7 @@ class IllegalArgumentException extends Exception
      */
     public function __construct($message, $paramName = null, $value = null, \Exception $cause = null, $code = 0)
     {
-        parent::__construct($message, $cause, $code);
+        parent::__construct($message, $code, $cause);
         $this->paramName = $paramName;
         $this->value     = $value;
     }
@@ -72,5 +74,36 @@ class IllegalArgumentException extends Exception
     public function getIllegalParamValue()
     {
         return $this->value;
+    }
+
+    /**
+     * returns a string representation of the class
+     *
+     * The result is a short but informative representation about the class and
+     * its values. Per default, this method returns:
+     * [fully-qualified-class-name] ' {' [members-and-value-list] '}'
+     * <code>
+     * example\MyException {
+     *     message(string): This is an exception.
+     *     file(string): foo.php
+     *     line(integer): 4
+     *     code(integer): 3
+     *     stacktrace(string): __STACKTRACE__
+     * }
+     * </code>
+     *
+     * @return  string
+     * @XmlIgnore
+     */
+    public function __toString()
+    {
+        $string  = get_class($this) . " {\n";
+        $string .= '    message(string): ' . $this->getMessage() . "\n";
+        $string .= '    file(string): ' . $this->getFile() . "\n";
+        $string .= '    line(integer): ' . $this->getLine() . "\n";
+        $string .= '    code(integer): ' . $this->getCode() . "\n";
+        $string .= '    stacktrace(string): ' . $this->getTraceAsString() . "\n";
+        $string .= "}\n";
+        return $string;
     }
 }

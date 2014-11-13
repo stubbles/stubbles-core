@@ -46,10 +46,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                                                      'boolValue10' => 'off',
                                                      'boolValue11' => 'other'
                                                     ],
-                                        'array'  => ['arrayValue1' => 'foo|bar|baz',
-                                                     'arrayValue2' => '',
-                                                     'hashValue1'  => 'foo:bar|baz',
-                                                     'hashValue2'  => ''
+                                        'array'  => ['arrayValue1' => '[foo|bar|baz]',
+                                                     'arrayValue2' => '[]',
+                                                     'hashValue1'  => '[foo:bar|baz]',
+                                                     'hashValue2'  => '[]'
                                                     ],
                                         'range'  => ['rangeValue1' => '1..5',
                                                      'rangeValue2' => 'a..e',
@@ -67,19 +67,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
      */
-    public function getSectionsReturnsListOfSectionKeys()
-    {
-        $this->assertEquals(['scalar', 'array', 'range', 'empty'],
-                            $this->properties->getSections()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function hasSectionReturnsTrueForExistingSections()
+    public function containSectionReturnsTrueForExistingSections()
     {
         $this->assertTrue($this->properties->containSection('scalar'));
         $this->assertTrue($this->properties->containSection('array'));
@@ -90,7 +79,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function hasSectionReturnsFalseForNonExistingSections()
+    public function containSectionReturnsFalseForNonExistingSections()
     {
         $this->assertFalse($this->properties->containSection('doesNotExist'));
     }
@@ -98,7 +87,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getSectionWithoutDefaultValueReturnsSectionValues()
+    public function sectionWithoutDefaultValueReturnsSectionValues()
     {
         $this->assertEquals(['stringValue' => 'This is a string',
                              'intValue1'   => '303',
@@ -119,10 +108,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                             ],
                             $this->properties->section('scalar')
         );
-        $this->assertEquals(['arrayValue1' => 'foo|bar|baz',
-                             'arrayValue2' => '',
-                             'hashValue1'  => 'foo:bar|baz',
-                             'hashValue2'  => ''
+        $this->assertEquals(['arrayValue1' => '[foo|bar|baz]',
+                             'arrayValue2' => '[]',
+                             'hashValue1'  => '[foo:bar|baz]',
+                             'hashValue2'  => '[]'
                             ],
                             $this->properties->section('array')
         );
@@ -145,7 +134,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getSectionWithoutDefaultValueReturnsEmptyArrayIfSectionDoesNotExist()
+    public function sectionWithoutDefaultValueReturnsEmptyArrayIfSectionDoesNotExist()
     {
         $this->assertEquals([],
                             $this->properties->section('doesNotExist')
@@ -155,7 +144,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getSectionWithDefaultValueReturnsSectionValues()
+    public function sectionWithDefaultValueReturnsSectionValues()
     {
         $this->assertEquals(['stringValue' => 'This is a string',
                              'intValue1'   => '303',
@@ -176,10 +165,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                             ],
                             $this->properties->section('scalar', ['foo' => 'bar'])
         );
-        $this->assertEquals(['arrayValue1' => 'foo|bar|baz',
-                             'arrayValue2' => '',
-                             'hashValue1'  => 'foo:bar|baz',
-                             'hashValue2'  => ''
+        $this->assertEquals(['arrayValue1' => '[foo|bar|baz]',
+                             'arrayValue2' => '[]',
+                             'hashValue1'  => '[foo:bar|baz]',
+                             'hashValue2'  => '[]'
                             ],
                             $this->properties->section('array', ['foo' => 'bar'])
         );
@@ -202,7 +191,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getSectionWithDefaultValueReturnsDefaultValueIfSectionDoesNotExist()
+    public function sectionWithDefaultValueReturnsDefaultValueIfSectionDoesNotExist()
     {
         $this->assertEquals(['foo' => 'bar'],
                             $this->properties->section('doesNotExist', ['foo' => 'bar'])
@@ -259,7 +248,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getSectionKeysReturnsDefaultListOfSectionDoesNotExist()
+    public function keysForSectionReturnsDefaultListOfSectionDoesNotExist()
     {
         $this->assertEquals(['foo', 'bar'],
                             $this->properties->keysForSection('doesNotExist', ['foo', 'bar'])
@@ -269,7 +258,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function hasValueReturnsTrueIfValueExist()
+    public function containValueReturnsTrueIfValueExist()
     {
         $this->assertTrue($this->properties->containValue('scalar', 'stringValue'));
         $this->assertTrue($this->properties->containValue('scalar', 'intValue1'));
@@ -306,7 +295,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function hasValueReturnsFalseIfValueDoesNotExist()
+    public function containValueReturnsFalseIfValueDoesNotExist()
     {
         $this->assertFalse($this->properties->containValue('scalar', 'boolValue12'));
         $this->assertFalse($this->properties->containValue('array', 'hashValue3'));
@@ -317,7 +306,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function hasValueReturnsFalseIfSectionDoesNotExist()
+    public function containValueReturnsFalseIfSectionDoesNotExist()
     {
         $this->assertFalse($this->properties->containValue('doesNotExist', 'any'));
     }
@@ -325,7 +314,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getValueWithoutDefaultValueReturnsValueIfExists()
+    public function valueWithoutDefaultValueReturnsValueIfExists()
     {
         $this->assertEquals('This is a string', $this->properties->value('scalar', 'stringValue'));
         $this->assertEquals('303', $this->properties->value('scalar', 'intValue1'));
@@ -344,10 +333,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('off', $this->properties->value('scalar', 'boolValue10'));
         $this->assertEquals('other', $this->properties->value('scalar', 'boolValue11'));
 
-        $this->assertEquals('foo|bar|baz', $this->properties->value('array', 'arrayValue1'));
-        $this->assertEquals('', $this->properties->value('array', 'arrayValue2'));
-        $this->assertEquals('foo:bar|baz', $this->properties->value('array', 'hashValue1'));
-        $this->assertEquals('', $this->properties->value('array', 'hashValue2'));
+        $this->assertEquals('[foo|bar|baz]', $this->properties->value('array', 'arrayValue1'));
+        $this->assertEquals('[]', $this->properties->value('array', 'arrayValue2'));
+        $this->assertEquals('[foo:bar|baz]', $this->properties->value('array', 'hashValue1'));
+        $this->assertEquals('[]', $this->properties->value('array', 'hashValue2'));
 
         $this->assertEquals('1..5', $this->properties->value('range', 'rangeValue1'));
         $this->assertEquals('a..e', $this->properties->value('range', 'rangeValue2'));
@@ -362,7 +351,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getValueWithoutDefaultValueReturnsNullIfValueDoesNotExist()
+    public function valueWithoutDefaultValueReturnsNullIfValueDoesNotExist()
     {
         $this->assertNull($this->properties->value('scalar', 'boolValue12'));
         $this->assertNull($this->properties->value('array', 'hashValue3'));
@@ -373,7 +362,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getValueWithoutDefaultValueReturnsNullIfSectionDoesNotExist()
+    public function valueWithoutDefaultValueReturnsNullIfSectionDoesNotExist()
     {
         $this->assertNull($this->properties->value('doesNotExist', 'any'));
     }
@@ -381,7 +370,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getValueWithDefaultValueReturnsValueIfExists()
+    public function valueWithDefaultValueReturnsValueIfExists()
     {
         $this->assertEquals('This is a string', $this->properties->value('scalar', 'stringValue', 'otherValue'));
         $this->assertEquals('303', $this->properties->value('scalar', 'intValue1', 'otherValue'));
@@ -401,10 +390,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('other', $this->properties->value('scalar', 'boolValue11', 'otherValue'));
         $this->assertEquals('otherValue', $this->properties->value('scalar', 'boolValue12', 'otherValue'));
 
-        $this->assertEquals('foo|bar|baz', $this->properties->value('array', 'arrayValue1', 'otherValue'));
-        $this->assertEquals('', $this->properties->value('array', 'arrayValue2', 'otherValue'));
-        $this->assertEquals('foo:bar|baz', $this->properties->value('array', 'hashValue1', 'otherValue'));
-        $this->assertEquals('', $this->properties->value('array', 'hashValue2', 'otherValue'));
+        $this->assertEquals('[foo|bar|baz]', $this->properties->value('array', 'arrayValue1', 'otherValue'));
+        $this->assertEquals('[]', $this->properties->value('array', 'arrayValue2', 'otherValue'));
+        $this->assertEquals('[foo:bar|baz]', $this->properties->value('array', 'hashValue1', 'otherValue'));
+        $this->assertEquals('[]', $this->properties->value('array', 'hashValue2', 'otherValue'));
         $this->assertEquals('otherValue', $this->properties->value('array', 'hashValue3', 'otherValue'));
 
         $this->assertEquals('1..5', $this->properties->value('range', 'rangeValue1', 'otherValue'));
@@ -424,7 +413,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getValueWithDefaultValueReturnsDefaultValueIfValueDoesNotExist()
+    public function valueWithDefaultValueReturnsDefaultValueIfValueDoesNotExist()
     {
         $this->assertEquals('otherValue', $this->properties->value('scalar', 'boolValue12', 'otherValue'));
         $this->assertEquals('otherValue', $this->properties->value('array', 'hashValue3', 'otherValue'));
@@ -435,639 +424,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getValueWithDefaultValueReturnsDefaultValueIfSectionDoesNotExist()
+    public function valueWithDefaultValueReturnsDefaultValueIfSectionDoesNotExist()
     {
         $this->assertEquals('otherValue', $this->properties->value('doesNotExist', 'any', 'otherValue'));
-    }
-
-    /**
-     * parseString() without default value
-     *
-     * @test
-     */
-    public function parseStringWithoutDefaultValue()
-    {
-        $this->assertEquals('This is a string', $this->properties->parseString('scalar', 'stringValue'));
-        $this->assertEquals('303', $this->properties->parseString('scalar', 'intValue1'));
-        $this->assertEquals('303', $this->properties->parseString('scalar', 'intValue2'));
-        $this->assertEquals('3.13', $this->properties->parseString('scalar', 'floatValue1'));
-        $this->assertEquals('3.13', $this->properties->parseString('scalar', 'floatValue2'));
-        $this->assertEquals('1', $this->properties->parseString('scalar', 'boolValue1'));
-        $this->assertEquals('1', $this->properties->parseString('scalar', 'boolValue2'));
-        $this->assertEquals('yes', $this->properties->parseString('scalar', 'boolValue3'));
-        $this->assertEquals('true', $this->properties->parseString('scalar', 'boolValue4'));
-        $this->assertEquals('on', $this->properties->parseString('scalar', 'boolValue5'));
-        $this->assertEquals('0', $this->properties->parseString('scalar', 'boolValue6'));
-        $this->assertEquals('0', $this->properties->parseString('scalar', 'boolValue7'));
-        $this->assertEquals('no', $this->properties->parseString('scalar', 'boolValue8'));
-        $this->assertEquals('false', $this->properties->parseString('scalar', 'boolValue9'));
-        $this->assertEquals('off', $this->properties->parseString('scalar', 'boolValue10'));
-        $this->assertEquals('other', $this->properties->parseString('scalar', 'boolValue11'));
-        $this->assertNull($this->properties->parseString('scalar', 'boolValue12'));
-
-        $this->assertEquals('foo|bar|baz', $this->properties->parseString('array', 'arrayValue1'));
-        $this->assertEquals('', $this->properties->parseString('array', 'arrayValue2'));
-        $this->assertEquals('foo:bar|baz', $this->properties->parseString('array', 'hashValue1'));
-        $this->assertEquals('', $this->properties->parseString('array', 'hashValue2'));
-        $this->assertNull($this->properties->parseString('array', 'hashValue3'));
-
-        $this->assertEquals('1..5', $this->properties->parseString('range', 'rangeValue1'));
-        $this->assertEquals('a..e', $this->properties->parseString('range', 'rangeValue2'));
-        $this->assertEquals('1..', $this->properties->parseString('range', 'rangeValue3'));
-        $this->assertEquals('a..', $this->properties->parseString('range', 'rangeValue4'));
-        $this->assertEquals('..5', $this->properties->parseString('range', 'rangeValue5'));
-        $this->assertEquals('..e', $this->properties->parseString('range', 'rangeValue6'));
-        $this->assertEquals('5..1', $this->properties->parseString('range', 'rangeValue7'));
-        $this->assertEquals('e..a', $this->properties->parseString('range', 'rangeValue8'));
-        $this->assertNull($this->properties->parseString('range', 'rangeValue9'));
-
-        $this->assertNull($this->properties->parseString('empty', 'any'));
-        $this->assertNull($this->properties->parseString('doesNotExist', 'any'));
-    }
-
-    /**
-     * parseString() with default value
-     *
-     * @test
-     */
-    public function parseStringWithDefaultValue()
-    {
-        $this->assertEquals('This is a string', $this->properties->parseString('scalar', 'stringValue', 'otherValue'));
-        $this->assertEquals('303', $this->properties->parseString('scalar', 'intValue1', 'otherValue'));
-        $this->assertEquals('303', $this->properties->parseString('scalar', 'intValue2', 'otherValue'));
-        $this->assertEquals('3.13', $this->properties->parseString('scalar', 'floatValue1', 'otherValue'));
-        $this->assertEquals('3.13', $this->properties->parseString('scalar', 'floatValue2', 'otherValue'));
-        $this->assertEquals('1', $this->properties->parseString('scalar', 'boolValue1', 'otherValue'));
-        $this->assertEquals('1', $this->properties->parseString('scalar', 'boolValue2', 'otherValue'));
-        $this->assertEquals('yes', $this->properties->parseString('scalar', 'boolValue3', 'otherValue'));
-        $this->assertEquals('true', $this->properties->parseString('scalar', 'boolValue4', 'otherValue'));
-        $this->assertEquals('on', $this->properties->parseString('scalar', 'boolValue5', 'otherValue'));
-        $this->assertEquals('0', $this->properties->parseString('scalar', 'boolValue6', 'otherValue'));
-        $this->assertEquals('0', $this->properties->parseString('scalar', 'boolValue7', 'otherValue'));
-        $this->assertEquals('no', $this->properties->parseString('scalar', 'boolValue8', 'otherValue'));
-        $this->assertEquals('false', $this->properties->parseString('scalar', 'boolValue9', 'otherValue'));
-        $this->assertEquals('off', $this->properties->parseString('scalar', 'boolValue10', 'otherValue'));
-        $this->assertEquals('other', $this->properties->parseString('scalar', 'boolValue11', 'otherValue'));
-        $this->assertEquals('otherValue', $this->properties->parseString('scalar', 'boolValue12', 'otherValue'));
-
-        $this->assertEquals('foo|bar|baz', $this->properties->parseString('array', 'arrayValue1', 'otherValue'));
-        $this->assertEquals('', $this->properties->parseString('array', 'arrayValue2', 'otherValue'));
-        $this->assertEquals('foo:bar|baz', $this->properties->parseString('array', 'hashValue1', 'otherValue'));
-        $this->assertEquals('', $this->properties->parseString('array', 'hashValue2', 'otherValue'));
-        $this->assertEquals('otherValue', $this->properties->parseString('array', 'hashValue3', 'otherValue'));
-
-        $this->assertEquals('1..5', $this->properties->parseString('range', 'rangeValue1', 'otherValue'));
-        $this->assertEquals('a..e', $this->properties->parseString('range', 'rangeValue2', 'otherValue'));
-        $this->assertEquals('1..', $this->properties->parseString('range', 'rangeValue3', 'otherValue'));
-        $this->assertEquals('a..', $this->properties->parseString('range', 'rangeValue4', 'otherValue'));
-        $this->assertEquals('..5', $this->properties->parseString('range', 'rangeValue5', 'otherValue'));
-        $this->assertEquals('..e', $this->properties->parseString('range', 'rangeValue6', 'otherValue'));
-        $this->assertEquals('5..1', $this->properties->parseString('range', 'rangeValue7', 'otherValue'));
-        $this->assertEquals('e..a', $this->properties->parseString('range', 'rangeValue8', 'otherValue'));
-        $this->assertEquals('otherValue', $this->properties->parseString('range', 'rangeValue9', 'otherValue'));
-
-        $this->assertEquals('otherValue', $this->properties->parseString('empty', 'any', 'otherValue'));
-        $this->assertEquals('otherValue', $this->properties->parseString('doesNotExist', 'any', 'otherValue'));
-    }
-
-    /**
-     * parseInt() without default value
-     *
-     * @test
-     */
-    public function parseIntWithoutDefaultValue()
-    {
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'stringValue'));
-        $this->assertEquals(303, $this->properties->parseInt('scalar', 'intValue1'));
-        $this->assertEquals(303, $this->properties->parseInt('scalar', 'intValue2'));
-        $this->assertEquals(3, $this->properties->parseInt('scalar', 'floatValue1'));
-        $this->assertEquals(3, $this->properties->parseInt('scalar', 'floatValue2'));
-        $this->assertEquals(1, $this->properties->parseInt('scalar', 'boolValue1'));
-        $this->assertEquals(1, $this->properties->parseInt('scalar', 'boolValue2'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue3'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue4'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue5'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue6'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue7'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue8'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue9'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue10'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue11'));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue12'));
-
-        $this->assertEquals(0, $this->properties->parseInt('array', 'arrayValue1'));
-        $this->assertEquals(0, $this->properties->parseInt('array', 'arrayValue2'));
-        $this->assertEquals(0, $this->properties->parseInt('array', 'hashValue1'));
-        $this->assertEquals(0, $this->properties->parseInt('array', 'hashValue2'));
-        $this->assertEquals(0, $this->properties->parseInt('array', 'hashValue3'));
-
-        $this->assertEquals(1, $this->properties->parseInt('range', 'rangeValue1'));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue2'));
-        $this->assertEquals(1, $this->properties->parseInt('range', 'rangeValue3'));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue4'));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue5'));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue6'));
-        $this->assertEquals(5, $this->properties->parseInt('range', 'rangeValue7'));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue8'));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue9'));
-
-        $this->assertEquals(0, $this->properties->parseInt('empty', 'any'));
-        $this->assertEquals(0, $this->properties->parseInt('doesNotExist', 'any'));
-    }
-
-    /**
-     * parseInt() with default value
-     *
-     * @test
-     */
-    public function parseIntWithDefaultValue()
-    {
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'stringValue', 404));
-        $this->assertEquals(303, $this->properties->parseInt('scalar', 'intValue1', 404));
-        $this->assertEquals(303, $this->properties->parseInt('scalar', 'intValue2', 404));
-        $this->assertEquals(3, $this->properties->parseInt('scalar', 'floatValue1', 404));
-        $this->assertEquals(3, $this->properties->parseInt('scalar', 'floatValue2', 404));
-        $this->assertEquals(1, $this->properties->parseInt('scalar', 'boolValue1', 404));
-        $this->assertEquals(1, $this->properties->parseInt('scalar', 'boolValue2', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue3', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue4', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue5', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue6', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue7', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue8', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue9', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue10', 404));
-        $this->assertEquals(0, $this->properties->parseInt('scalar', 'boolValue11', 404));
-        $this->assertEquals(404, $this->properties->parseInt('scalar', 'boolValue12', 404));
-
-        $this->assertEquals(0, $this->properties->parseInt('array', 'arrayValue1', 404));
-        $this->assertEquals(0, $this->properties->parseInt('array', 'arrayValue2', 404));
-        $this->assertEquals(0, $this->properties->parseInt('array', 'hashValue1', 404));
-        $this->assertEquals(0, $this->properties->parseInt('array', 'hashValue2', 404));
-        $this->assertEquals(404, $this->properties->parseInt('array', 'hashValue3', 404));
-
-        $this->assertEquals(1, $this->properties->parseInt('range', 'rangeValue1', 404));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue2', 404));
-        $this->assertEquals(1, $this->properties->parseInt('range', 'rangeValue3', 404));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue4', 404));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue5', 404));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue6', 404));
-        $this->assertEquals(5, $this->properties->parseInt('range', 'rangeValue7', 404));
-        $this->assertEquals(0, $this->properties->parseInt('range', 'rangeValue8', 404));
-        $this->assertEquals(404, $this->properties->parseInt('range', 'rangeValue9', 404));
-
-        $this->assertEquals(404, $this->properties->parseInt('empty', 'any', 404));
-        $this->assertEquals(404, $this->properties->parseInt('doesNotExist', 'any', 404));
-    }
-
-    /**
-     * parseFloat() without default value
-     *
-     * @test
-     */
-    public function parseFloatWithoutDefaultValue()
-    {
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'stringValue'));
-        $this->assertEquals(303.0, $this->properties->parseFloat('scalar', 'intValue1'));
-        $this->assertEquals(303.0, $this->properties->parseFloat('scalar', 'intValue2'));
-        $this->assertEquals(3.13, $this->properties->parseFloat('scalar', 'floatValue1'));
-        $this->assertEquals(3.13, $this->properties->parseFloat('scalar', 'floatValue2'));
-        $this->assertEquals(1.0, $this->properties->parseFloat('scalar', 'boolValue1'));
-        $this->assertEquals(1.0, $this->properties->parseFloat('scalar', 'boolValue2'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue3'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue4'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue5'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue6'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue7'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue8'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue9'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue10'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue11'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue12'));
-
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'arrayValue1'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'arrayValue2'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'hashValue1'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'hashValue2'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'hashValue3'));
-
-        $this->assertEquals(1.0, $this->properties->parseFloat('range', 'rangeValue1'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue2'));
-        $this->assertEquals(1.0, $this->properties->parseFloat('range', 'rangeValue3'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue4'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue5'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue6'));
-        $this->assertEquals(5.0, $this->properties->parseFloat('range', 'rangeValue7'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue8'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue9'));
-
-        $this->assertEquals(0.0, $this->properties->parseFloat('empty', 'any'));
-        $this->assertEquals(0.0, $this->properties->parseFloat('doesNotExist', 'any'));
-    }
-
-    /**
-     * parseFloat() with default value
-     *
-     * @test
-     */
-    public function parseFloatWithDefaultValue()
-    {
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'stringValue', 40.4));
-        $this->assertEquals(303.0, $this->properties->parseFloat('scalar', 'intValue1', 40.4));
-        $this->assertEquals(303.0, $this->properties->parseFloat('scalar', 'intValue2', 40.4));
-        $this->assertEquals(3.13, $this->properties->parseFloat('scalar', 'floatValue1', 40.4));
-        $this->assertEquals(3.13, $this->properties->parseFloat('scalar', 'floatValue2', 40.4));
-        $this->assertEquals(1.0, $this->properties->parseFloat('scalar', 'boolValue1', 40.4));
-        $this->assertEquals(1.0, $this->properties->parseFloat('scalar', 'boolValue2', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue3', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue4', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue5', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue6', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue7', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue8', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue9', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue10', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('scalar', 'boolValue11', 40.4));
-        $this->assertEquals(40.4, $this->properties->parseFloat('scalar', 'boolValue12', 40.4));
-
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'arrayValue1', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'arrayValue2', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'hashValue1', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('array', 'hashValue2', 40.4));
-        $this->assertEquals(40.4, $this->properties->parseFloat('array', 'hashValue3', 40.4));
-
-        $this->assertEquals(1.0, $this->properties->parseFloat('range', 'rangeValue1', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue2', 40.4));
-        $this->assertEquals(1.0, $this->properties->parseFloat('range', 'rangeValue3', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue4', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue5', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue6', 40.4));
-        $this->assertEquals(5.0, $this->properties->parseFloat('range', 'rangeValue7', 40.4));
-        $this->assertEquals(0.0, $this->properties->parseFloat('range', 'rangeValue8', 40.4));
-        $this->assertEquals(40.4, $this->properties->parseFloat('range', 'rangeValue9', 40.4));
-
-        $this->assertEquals(40.4, $this->properties->parseFloat('empty', 'any', 40.4));
-        $this->assertEquals(40.4, $this->properties->parseFloat('doesNotExist', 'any', 40.4));
-    }
-
-    /**
-     * parseBool() without default value
-     *
-     * @test
-     */
-    public function parseBoolWithoutDefaultValue()
-    {
-        $this->assertFalse($this->properties->parseBool('scalar', 'stringValue'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'intValue1'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'intValue2'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'floatValue1'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'floatValue2'));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue1'));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue2'));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue3'));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue4'));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue5'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue6'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue7'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue8'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue9'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue10'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue11'));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue12'));
-
-        $this->assertFalse($this->properties->parseBool('array', 'arrayValue1'));
-        $this->assertFalse($this->properties->parseBool('array', 'arrayValue2'));
-        $this->assertFalse($this->properties->parseBool('array', 'hashValue1'));
-        $this->assertFalse($this->properties->parseBool('array', 'hashValue2'));
-        $this->assertFalse($this->properties->parseBool('array', 'hashValue3'));
-
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue1'));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue2'));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue3'));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue4'));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue5'));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue6'));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue7'));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue8'));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue9'));
-
-        $this->assertFalse($this->properties->parseBool('empty', 'any'));
-        $this->assertFalse($this->properties->parseBool('doesNotExist', 'any'));
-    }
-
-    /**
-     * parseBool() with default value
-     *
-     * @test
-     */
-    public function parseBoolWithDefaultValue()
-    {
-        $this->assertFalse($this->properties->parseBool('scalar', 'stringValue', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'intValue1', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'intValue2', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'floatValue1', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'floatValue2', true));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue1', true));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue2', true));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue3', true));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue4', true));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue5', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue6', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue7', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue8', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue9', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue10', true));
-        $this->assertFalse($this->properties->parseBool('scalar', 'boolValue11', true));
-        $this->assertTrue($this->properties->parseBool('scalar', 'boolValue12', true));
-
-        $this->assertFalse($this->properties->parseBool('array', 'arrayValue1', true));
-        $this->assertFalse($this->properties->parseBool('array', 'arrayValue2', true));
-        $this->assertFalse($this->properties->parseBool('array', 'hashValue1', true));
-        $this->assertFalse($this->properties->parseBool('array', 'hashValue2', true));
-        $this->assertTrue($this->properties->parseBool('array', 'hashValue3', true));
-
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue1', true));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue2', true));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue3', true));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue4', true));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue5', true));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue6', true));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue7', true));
-        $this->assertFalse($this->properties->parseBool('range', 'rangeValue8', true));
-        $this->assertTrue($this->properties->parseBool('range', 'rangeValue9', true));
-
-        $this->assertTrue($this->properties->parseBool('empty', 'any', true));
-        $this->assertTrue($this->properties->parseBool('doesNotExist', 'any', true));
-    }
-
-    /**
-     * parseArray() without default value
-     *
-     * @test
-     */
-    public function parseArrayWithoutDefaultValue()
-    {
-        $this->assertEquals(['This is a string'], $this->properties->parseArray('scalar', 'stringValue'));
-        $this->assertEquals(['303'], $this->properties->parseArray('scalar', 'intValue1'));
-        $this->assertEquals([303], $this->properties->parseArray('scalar', 'intValue2'));
-        $this->assertEquals(['3.13'], $this->properties->parseArray('scalar', 'floatValue1'));
-        $this->assertEquals([3.13], $this->properties->parseArray('scalar', 'floatValue2'));
-        $this->assertEquals(['1'], $this->properties->parseArray('scalar', 'boolValue1'));
-        $this->assertEquals(['1'], $this->properties->parseArray('scalar', 'boolValue2'));
-        $this->assertEquals(['yes'], $this->properties->parseArray('scalar', 'boolValue3'));
-        $this->assertEquals(['true'], $this->properties->parseArray('scalar', 'boolValue4'));
-        $this->assertEquals(['on'], $this->properties->parseArray('scalar', 'boolValue5'));
-        $this->assertEquals([], $this->properties->parseArray('scalar', 'boolValue6'));
-        $this->assertEquals([], $this->properties->parseArray('scalar', 'boolValue7'));
-        $this->assertEquals(['no'], $this->properties->parseArray('scalar', 'boolValue8'));
-        $this->assertEquals(['false'], $this->properties->parseArray('scalar', 'boolValue9'));
-        $this->assertEquals(['off'], $this->properties->parseArray('scalar', 'boolValue10'));
-        $this->assertEquals(['other'], $this->properties->parseArray('scalar', 'boolValue11'));
-        $this->assertNull($this->properties->parseArray('scalar', 'boolValue12'));
-
-        $this->assertEquals(['foo', 'bar', 'baz'], $this->properties->parseArray('array', 'arrayValue1'));
-        $this->assertEquals([], $this->properties->parseArray('array', 'arrayValue2'));
-        $this->assertEquals(['foo:bar', 'baz'], $this->properties->parseArray('array', 'hashValue1'));
-        $this->assertEquals([], $this->properties->parseArray('array', 'hashValue2'));
-        $this->assertNull($this->properties->parseArray('array', 'hashValue3'));
-
-        $this->assertEquals(['1..5'], $this->properties->parseArray('range', 'rangeValue1'));
-        $this->assertEquals(['a..e'], $this->properties->parseArray('range', 'rangeValue2'));
-        $this->assertEquals(['1..'], $this->properties->parseArray('range', 'rangeValue3'));
-        $this->assertEquals(['a..'], $this->properties->parseArray('range', 'rangeValue4'));
-        $this->assertEquals(['..5'], $this->properties->parseArray('range', 'rangeValue5'));
-        $this->assertEquals(['..e'], $this->properties->parseArray('range', 'rangeValue6'));
-        $this->assertEquals(['5..1'], $this->properties->parseArray('range', 'rangeValue7'));
-        $this->assertEquals(['e..a'], $this->properties->parseArray('range', 'rangeValue8'));
-        $this->assertNull($this->properties->parseArray('range', 'rangeValue9'));
-
-        $this->assertNull($this->properties->parseArray('empty', 'any'));
-        $this->assertNull($this->properties->parseArray('doesNotExist', 'any'));
-    }
-
-    /**
-     * parseArray() with default value
-     *
-     * @test
-     */
-    public function parseArrayWithDefaultValue()
-    {
-        $this->assertEquals(['This is a string'], $this->properties->parseArray('scalar', 'stringValue', ['otherValue']));
-        $this->assertEquals(['303'], $this->properties->parseArray('scalar', 'intValue1', ['otherValue']));
-        $this->assertEquals([303], $this->properties->parseArray('scalar', 'intValue2', ['otherValue']));
-        $this->assertEquals(['3.13'], $this->properties->parseArray('scalar', 'floatValue1', ['otherValue']));
-        $this->assertEquals([3.13], $this->properties->parseArray('scalar', 'floatValue2', ['otherValue']));
-        $this->assertEquals(['1'], $this->properties->parseArray('scalar', 'boolValue1', ['otherValue']));
-        $this->assertEquals(['1'], $this->properties->parseArray('scalar', 'boolValue2', ['otherValue']));
-        $this->assertEquals(['yes'], $this->properties->parseArray('scalar', 'boolValue3', ['otherValue']));
-        $this->assertEquals(['true'], $this->properties->parseArray('scalar', 'boolValue4', ['otherValue']));
-        $this->assertEquals(['on'], $this->properties->parseArray('scalar', 'boolValue5', ['otherValue']));
-        $this->assertEquals([], $this->properties->parseArray('scalar', 'boolValue6', ['otherValue']));
-        $this->assertEquals([], $this->properties->parseArray('scalar', 'boolValue7', ['otherValue']));
-        $this->assertEquals(['no'], $this->properties->parseArray('scalar', 'boolValue8', ['otherValue']));
-        $this->assertEquals(['false'], $this->properties->parseArray('scalar', 'boolValue9', ['otherValue']));
-        $this->assertEquals(['off'], $this->properties->parseArray('scalar', 'boolValue10', ['otherValue']));
-        $this->assertEquals(['other'], $this->properties->parseArray('scalar', 'boolValue11', ['otherValue']));
-        $this->assertEquals(['otherValue'], $this->properties->parseArray('scalar', 'boolValue12', ['otherValue']));
-
-        $this->assertEquals(['foo', 'bar', 'baz'], $this->properties->parseArray('array', 'arrayValue1', ['otherValue']));
-        $this->assertEquals([], $this->properties->parseArray('array', 'arrayValue2', ['otherValue']));
-        $this->assertEquals(['foo:bar', 'baz'], $this->properties->parseArray('array', 'hashValue1', ['otherValue']));
-        $this->assertEquals([], $this->properties->parseArray('array', 'hashValue2', ['otherValue']));
-        $this->assertEquals(['otherValue'], $this->properties->parseArray('array', 'hashValue3', ['otherValue']));
-
-        $this->assertEquals(['1..5'], $this->properties->parseArray('range', 'rangeValue1', ['otherValue']));
-        $this->assertEquals(['a..e'], $this->properties->parseArray('range', 'rangeValue2', ['otherValue']));
-        $this->assertEquals(['1..'], $this->properties->parseArray('range', 'rangeValue3', ['otherValue']));
-        $this->assertEquals(['a..'], $this->properties->parseArray('range', 'rangeValue4', ['otherValue']));
-        $this->assertEquals(['..5'], $this->properties->parseArray('range', 'rangeValue5', ['otherValue']));
-        $this->assertEquals(['..e'], $this->properties->parseArray('range', 'rangeValue6', ['otherValue']));
-        $this->assertEquals(['5..1'], $this->properties->parseArray('range', 'rangeValue7', ['otherValue']));
-        $this->assertEquals(['e..a'], $this->properties->parseArray('range', 'rangeValue8', ['otherValue']));
-        $this->assertEquals(['otherValue'], $this->properties->parseArray('range', 'rangeValue9', ['otherValue']));
-
-        $this->assertEquals(['otherValue'], $this->properties->parseArray('empty', 'any', ['otherValue']));
-        $this->assertEquals(['otherValue'], $this->properties->parseArray('doesNotExist', 'any', ['otherValue']));
-    }
-
-    /**
-     * parseHash() without default value
-     *
-     * @test
-     */
-    public function parseHashWithoutDefaultValue()
-    {
-        $this->assertEquals(['This is a string'], $this->properties->parseHash('scalar', 'stringValue'));
-        $this->assertEquals(['303'], $this->properties->parseHash('scalar', 'intValue1'));
-        $this->assertEquals([303], $this->properties->parseHash('scalar', 'intValue2'));
-        $this->assertEquals(['3.13'], $this->properties->parseHash('scalar', 'floatValue1'));
-        $this->assertEquals([3.13], $this->properties->parseHash('scalar', 'floatValue2'));
-        $this->assertEquals(['1'], $this->properties->parseHash('scalar', 'boolValue1'));
-        $this->assertEquals(['1'], $this->properties->parseHash('scalar', 'boolValue2'));
-        $this->assertEquals(['yes'], $this->properties->parseHash('scalar', 'boolValue3'));
-        $this->assertEquals(['true'], $this->properties->parseHash('scalar', 'boolValue4'));
-        $this->assertEquals(['on'], $this->properties->parseHash('scalar', 'boolValue5'));
-        $this->assertEquals([], $this->properties->parseHash('scalar', 'boolValue6'));
-        $this->assertEquals([], $this->properties->parseHash('scalar', 'boolValue7'));
-        $this->assertEquals(['no'], $this->properties->parseHash('scalar', 'boolValue8'));
-        $this->assertEquals(['false'], $this->properties->parseHash('scalar', 'boolValue9'));
-        $this->assertEquals(['off'], $this->properties->parseHash('scalar', 'boolValue10'));
-        $this->assertEquals(['other'], $this->properties->parseHash('scalar', 'boolValue11'));
-        $this->assertNull($this->properties->parseHash('scalar', 'boolValue12'));
-
-        $this->assertEquals(['foo', 'bar', 'baz'], $this->properties->parseHash('array', 'arrayValue1'));
-        $this->assertEquals([], $this->properties->parseHash('array', 'arrayValue2'));
-        $this->assertEquals(['foo' => 'bar', 'baz'], $this->properties->parseHash('array', 'hashValue1'));
-        $this->assertEquals([], $this->properties->parseHash('array', 'hashValue2'));
-        $this->assertNull($this->properties->parseHash('array', 'hashValue3'));
-
-        $this->assertEquals(['1..5'], $this->properties->parseHash('range', 'rangeValue1'));
-        $this->assertEquals(['a..e'], $this->properties->parseHash('range', 'rangeValue2'));
-        $this->assertEquals(['1..'], $this->properties->parseHash('range', 'rangeValue3'));
-        $this->assertEquals(['a..'], $this->properties->parseHash('range', 'rangeValue4'));
-        $this->assertEquals(['..5'], $this->properties->parseHash('range', 'rangeValue5'));
-        $this->assertEquals(['..e'], $this->properties->parseHash('range', 'rangeValue6'));
-        $this->assertEquals(['5..1'], $this->properties->parseHash('range', 'rangeValue7'));
-        $this->assertEquals(['e..a'], $this->properties->parseHash('range', 'rangeValue8'));
-        $this->assertNull($this->properties->parseHash('range', 'rangeValue9'));
-
-        $this->assertNull($this->properties->parseHash('empty', 'any'));
-        $this->assertNull($this->properties->parseHash('doesNotExist', 'any'));
-    }
-
-    /**
-     * parseHash() with default value
-     *
-     * @test
-     */
-    public function parseHashWithDefaultValue()
-    {
-        $this->assertEquals(['This is a string'], $this->properties->parseHash('scalar', 'stringValue', ['other' => 'Value']));
-        $this->assertEquals(['303'], $this->properties->parseHash('scalar', 'intValue1', ['other' => 'Value']));
-        $this->assertEquals([303], $this->properties->parseHash('scalar', 'intValue2', ['other' => 'Value']));
-        $this->assertEquals(['3.13'], $this->properties->parseHash('scalar', 'floatValue1', ['other' => 'Value']));
-        $this->assertEquals([3.13], $this->properties->parseHash('scalar', 'floatValue2', ['other' => 'Value']));
-        $this->assertEquals(['1'], $this->properties->parseHash('scalar', 'boolValue1', ['other' => 'Value']));
-        $this->assertEquals(['1'], $this->properties->parseHash('scalar', 'boolValue2', ['other' => 'Value']));
-        $this->assertEquals(['yes'], $this->properties->parseHash('scalar', 'boolValue3', ['other' => 'Value']));
-        $this->assertEquals(['true'], $this->properties->parseHash('scalar', 'boolValue4', ['other' => 'Value']));
-        $this->assertEquals(['on'], $this->properties->parseHash('scalar', 'boolValue5', ['other' => 'Value']));
-        $this->assertEquals([], $this->properties->parseHash('scalar', 'boolValue6', ['other' => 'Value']));
-        $this->assertEquals([], $this->properties->parseHash('scalar', 'boolValue7', ['other' => 'Value']));
-        $this->assertEquals(['no'], $this->properties->parseHash('scalar', 'boolValue8', ['other' => 'Value']));
-        $this->assertEquals(['false'], $this->properties->parseHash('scalar', 'boolValue9', ['other' => 'Value']));
-        $this->assertEquals(['off'], $this->properties->parseHash('scalar', 'boolValue10', ['other' => 'Value']));
-        $this->assertEquals(['other'], $this->properties->parseHash('scalar', 'boolValue11', ['other' => 'Value']));
-        $this->assertEquals(['other' => 'Value'], $this->properties->parseHash('scalar', 'boolValue12', ['other' => 'Value']));
-
-        $this->assertEquals(['foo', 'bar', 'baz'], $this->properties->parseHash('array', 'arrayValue1', ['other' => 'Value']));
-        $this->assertEquals([], $this->properties->parseHash('array', 'arrayValue2', ['other' => 'Value']));
-        $this->assertEquals(['foo' => 'bar', 'baz'], $this->properties->parseHash('array', 'hashValue1', ['other' => 'Value']));
-        $this->assertEquals([], $this->properties->parseHash('array', 'hashValue2', ['other' => 'Value']));
-        $this->assertEquals(['other' => 'Value'], $this->properties->parseHash('array', 'hashValue3', ['other' => 'Value']));
-
-        $this->assertEquals(['1..5'], $this->properties->parseHash('range', 'rangeValue1', ['other' => 'Value']));
-        $this->assertEquals(['a..e'], $this->properties->parseHash('range', 'rangeValue2', ['other' => 'Value']));
-        $this->assertEquals(['1..'], $this->properties->parseHash('range', 'rangeValue3', ['other' => 'Value']));
-        $this->assertEquals(['a..'], $this->properties->parseHash('range', 'rangeValue4', ['other' => 'Value']));
-        $this->assertEquals(['..5'], $this->properties->parseHash('range', 'rangeValue5', ['other' => 'Value']));
-        $this->assertEquals(['..e'], $this->properties->parseHash('range', 'rangeValue6', ['other' => 'Value']));
-        $this->assertEquals(['5..1'], $this->properties->parseHash('range', 'rangeValue7', ['other' => 'Value']));
-        $this->assertEquals(['e..a'], $this->properties->parseHash('range', 'rangeValue8', ['other' => 'Value']));
-        $this->assertEquals(['other' => 'Value'], $this->properties->parseHash('range', 'rangeValue9', ['other' => 'Value']));
-
-        $this->assertEquals(['other' => 'Value'], $this->properties->parseHash('empty', 'any', ['other' => 'Value']));
-        $this->assertEquals(['other' => 'Value'], $this->properties->parseHash('doesNotExist', 'any', ['other' => 'Value']));
-    }
-
-    /**
-     * parseRange() without default value
-     *
-     * @test
-     */
-    public function parseRangeWithoutDefaultValue()
-    {
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'stringValue'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'intValue1'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'intValue2'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'floatValue1'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'floatValue2'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue1'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue2'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue3'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue4'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue5'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue6'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue7'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue8'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue9'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue10'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue11'));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue12'));
-
-        $this->assertEquals([], $this->properties->parseRange('array', 'arrayValue1'));
-        $this->assertEquals([], $this->properties->parseRange('array', 'arrayValue2'));
-        $this->assertEquals([], $this->properties->parseRange('array', 'hashValue1'));
-        $this->assertEquals([], $this->properties->parseRange('array', 'hashValue2'));
-        $this->assertEquals([], $this->properties->parseRange('array', 'hashValue3'));
-
-        $this->assertEquals([1, 2, 3, 4, 5], $this->properties->parseRange('range', 'rangeValue1'));
-        $this->assertEquals(['a', 'b', 'c', 'd', 'e'], $this->properties->parseRange('range', 'rangeValue2'));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue3'));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue4'));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue5'));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue6'));
-        $this->assertEquals([5, 4, 3, 2, 1], $this->properties->parseRange('range', 'rangeValue7'));
-        $this->assertEquals(['e', 'd', 'c', 'b', 'a'], $this->properties->parseRange('range', 'rangeValue8'));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue9'));
-
-        $this->assertEquals([], $this->properties->parseRange('empty', 'any'));
-        $this->assertEquals([], $this->properties->parseRange('doesNotExist', 'any'));
-    }
-
-    /**
-     * parseRange() with default value
-     *
-     * @test
-     */
-    public function parseRangeWithDefaultValue()
-    {
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'stringValue', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'intValue1', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'intValue2', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'floatValue1', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'floatValue2', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue1', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue2', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue3', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue4', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue5', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue6', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue7', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue8', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue9', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue10', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('scalar', 'boolValue11', [303, 313]));
-        $this->assertEquals([303, 313], $this->properties->parseRange('scalar', 'boolValue12', [303, 313]));
-
-        $this->assertEquals([], $this->properties->parseRange('array', 'arrayValue1', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('array', 'arrayValue2', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('array', 'hashValue1', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('array', 'hashValue2', [303, 313]));
-        $this->assertEquals([303, 313], $this->properties->parseRange('array', 'hashValue3', [303, 313]));
-
-        $this->assertEquals([1, 2, 3, 4, 5], $this->properties->parseRange('range', 'rangeValue1', [303, 313]));
-        $this->assertEquals(['a', 'b', 'c', 'd', 'e'], $this->properties->parseRange('range', 'rangeValue2', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue3', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue4', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue5', [303, 313]));
-        $this->assertEquals([], $this->properties->parseRange('range', 'rangeValue6', [303, 313]));
-        $this->assertEquals([5, 4, 3, 2, 1], $this->properties->parseRange('range', 'rangeValue7', [303, 313]));
-        $this->assertEquals(['e', 'd', 'c', 'b', 'a'], $this->properties->parseRange('range', 'rangeValue8', [303, 313]));
-        $this->assertEquals([303, 313], $this->properties->parseRange('range', 'rangeValue9', [303, 313]));
-
-        $this->assertEquals([303, 313], $this->properties->parseRange('empty', 'any', [303, 313]));
-        $this->assertEquals([303, 313], $this->properties->parseRange('doesNotExist', 'any', [303, 313]));
     }
 
     /**
@@ -1230,5 +589,181 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                 'stubbles\lang\SecureString',
                 properties(['foo' => ['password' => 'baz']])->value('foo', 'password')
         );
+    }
+
+    /**
+     * @test
+     * @group  secure_string
+     * @since  4.1.2
+     */
+    public function propertiesWhereKeyEndsWithPasswordBecomeInstancesOfSecureString()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\SecureString',
+                properties(['foo' => ['example.another.password' => 'baz']])->value('foo', 'example.another.password')
+        );
+    }
+
+    /**
+     * @test
+     * @group  secure_string
+     * @since  4.1.0
+     */
+    public function parseSecureStringValueReturnsSecureStringInstance()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\SecureString',
+                properties(['foo' => ['password' => 'baz']])->parseValue('foo', 'password')
+        );
+    }
+
+    /**
+     * @test
+     * @group  secure_string
+     * @since  5.0.0
+     * @expectedException   LogicException
+     */
+    public function parseSecureStringThrowsIllegalAccessException()
+    {
+        $this->assertInstanceOf(
+                'stubbles\lang\SecureString',
+                properties(['foo' => ['password' => 'baz']])->parse('foo', 'password')
+        );
+    }
+
+    /**
+     * @return  array
+     */
+    public function parseValueList()
+    {
+        return [
+            ['This is a string', 'scalar', 'stringValue'],
+            [303, 'scalar', 'intValue1'],
+            [303, 'scalar', 'intValue2'],
+            [3.13, 'scalar', 'floatValue1'],
+            [3.13, 'scalar', 'floatValue2'],
+            [1, 'scalar', 'boolValue1'],
+            [1, 'scalar', 'boolValue2'],
+            [true, 'scalar', 'boolValue3'],
+            [true, 'scalar', 'boolValue4'],
+            [true, 'scalar', 'boolValue5'],
+            [0, 'scalar', 'boolValue6'],
+            [0, 'scalar', 'boolValue7'],
+            [false, 'scalar', 'boolValue8'],
+            [false, 'scalar', 'boolValue9'],
+            [false, 'scalar', 'boolValue10'],
+            [['foo', 'bar', 'baz'], 'array', 'arrayValue1'],
+            [[], 'array', 'arrayValue2'],
+            [['foo' => 'bar', 'baz'], 'array', 'hashValue1'],
+            [[], 'array', 'hashValue2'],
+            [[1, 2, 3, 4, 5], 'range', 'rangeValue1'],
+            [['a', 'b', 'c', 'd', 'e'], 'range', 'rangeValue2'],
+            [[], 'range', 'rangeValue3'],
+            [[], 'range', 'rangeValue4'],
+            [[], 'range', 'rangeValue5'],
+            [[], 'range', 'rangeValue6'],
+            [[5, 4, 3, 2, 1], 'range', 'rangeValue7'],
+            [['e', 'd', 'c', 'b', 'a'], 'range', 'rangeValue8']
+        ];
+    }
+
+    /**
+     * @param  mixed   $expected
+     * @param  string  $section
+     * @param  string  $key
+     * @test
+     * @dataProvider  parseValueList
+     * @since  4.1.0
+     */
+    public function parseValueReturnsValueCastedToRecognizedType($expected, $section, $key)
+    {
+        $this->assertTrue($expected === $this->properties->parseValue($section, $key));
+    }
+
+    /**
+     * @test
+     * @since  4.1.0
+     */
+    public function parseValueWithNonExistingKeyReturnsDefault()
+    {
+        $this->assertEquals(6100, $this->properties->parseValue('empty', 'doesNotExist', 6100));
+    }
+
+    /**
+     * @test
+     * @since  4.1.0
+     */
+    public function parseValueFromNonExistingSectionReturnsDefault()
+    {
+        $this->assertEquals(6100, $this->properties->parseValue('doesNotExist', 'rangeValue8', 6100));
+    }
+
+    /**
+     * @return  array
+     * @since  5.0.0
+     */
+    public function parseList()
+    {
+        return [
+            ['This is a string', 'scalar', 'stringValue', 'asString'],
+            [303, 'scalar', 'intValue1', 'asInt'],
+            [303, 'scalar', 'intValue2', 'asInt'],
+            [3.13, 'scalar', 'floatValue1', 'asFloat'],
+            [3.13, 'scalar', 'floatValue2', 'asFloat'],
+            [false, 'scalar', 'boolValue1', 'asBool'],
+            [false, 'scalar', 'boolValue2', 'asBool'],
+            [true, 'scalar', 'boolValue3', 'asBool'],
+            [true, 'scalar', 'boolValue4', 'asBool'],
+            [true, 'scalar', 'boolValue5', 'asBool'],
+            [false, 'scalar', 'boolValue6', 'asBool'],
+            [false, 'scalar', 'boolValue7', 'asBool'],
+            [false, 'scalar', 'boolValue8', 'asBool'],
+            [false, 'scalar', 'boolValue9', 'asBool'],
+            [false, 'scalar', 'boolValue10', 'asBool'],
+            [['foo', 'bar', 'baz'], 'array', 'arrayValue1', 'asList'],
+            [[], 'array', 'arrayValue2', 'asList'],
+            [['foo' => 'bar', 'baz'], 'array', 'hashValue1', 'asMap'],
+            [[], 'array', 'hashValue2', 'asMap'],
+            [[1, 2, 3, 4, 5], 'range', 'rangeValue1', 'asRange'],
+            [['a', 'b', 'c', 'd', 'e'], 'range', 'rangeValue2', 'asRange'],
+            [[], 'range', 'rangeValue3', 'asRange'],
+            [[], 'range', 'rangeValue4', 'asRange'],
+            [[], 'range', 'rangeValue5', 'asRange'],
+            [[], 'range', 'rangeValue6', 'asRange'],
+            [[5, 4, 3, 2, 1], 'range', 'rangeValue7', 'asRange'],
+            [['e', 'd', 'c', 'b', 'a'], 'range', 'rangeValue8', 'asRange']
+        ];
+    }
+
+    /**
+     * @param  mixed   $expected
+     * @param  string  $section
+     * @param  string  $key
+     * @param  string  $type
+     * @test
+     * @dataProvider  parseList
+     * @since  5.0.0
+     */
+    public function parseReturnsValueCastedToRecognizedType($expected, $section, $key, $type)
+    {
+        $this->assertEquals($expected, $this->properties->parse($section, $key)->$type());
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function parseNonExistingReturnsNullInstance()
+    {
+        $this->assertEquals(new Parse(null), $this->properties->parse('empty', 'doesNotExist'));
+    }
+
+    /**
+     * @test
+     * @since  5.0.0
+     */
+    public function parseFromNonExistingSectionReturnsDefault()
+    {
+        $this->assertEquals(new Parse(null), $this->properties->parse('doesNotExist', 'rangeValue8'));
     }
 }

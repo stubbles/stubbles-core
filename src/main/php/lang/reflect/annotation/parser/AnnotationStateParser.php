@@ -8,12 +8,14 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation\parser;
-use stubbles\lang\reflect\ReflectionClass;
+use stubbles\lang\reflect\annotation\Annotation;
+use stubbles\lang\reflect\annotation\Annotations;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationAnnotationState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationArgumentState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationDocblockState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationNameState;
+use stubbles\lang\reflect\annotation\parser\state\AnnotationParamEnclosedValueState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationParamNameState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationParamsState;
 use stubbles\lang\reflect\annotation\parser\state\AnnotationParamValueState;
@@ -38,6 +40,8 @@ class AnnotationStateParser implements AnnotationParser
      * @type  \stubbles\lang\reflect\annotation\parser\state\AnnotationParserState
      */
     private $currentState       = null;
+
+    private $currentSignals     = [];
     /**
      * the name of the current annotation
      *
@@ -51,6 +55,12 @@ class AnnotationStateParser implements AnnotationParser
      */
     private $currentParam       = null;
     /**
+     * current target
+     *
+     * @var  string
+     */
+    private $currentTarget;
+    /**
      * all parsed annotations
      *
      * @type  array
@@ -62,59 +72,123 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function __construct()
     {
-        $this->states[AnnotationState::DOCBLOCK]        = new AnnotationDocblockState($this);
-        $this->states[AnnotationState::TEXT]            = new AnnotationTextState($this);
-        $this->states[AnnotationState::ANNOTATION]      = new AnnotationAnnotationState($this);
-        $this->states[AnnotationState::ANNOTATION_NAME] = new AnnotationNameState($this);
-        $this->states[AnnotationState::ANNOTATION_TYPE] = new AnnotationTypeState($this);
-        $this->states[AnnotationState::ARGUMENT]        = new AnnotationArgumentState($this);
-        $this->states[AnnotationState::PARAMS]          = new AnnotationParamsState($this);
-        $this->states[AnnotationState::PARAM_NAME]      = new AnnotationParamNameState($this);
-        $this->states[AnnotationState::PARAM_VALUE]     = new AnnotationParamValueState($this);
+        $this->states[AnnotationState::DOCBLOCK]             = new AnnotationDocblockState($this);
+        $this->states[AnnotationState::ANNOTATION]           = new AnnotationAnnotationState($this);
+        $this->states[AnnotationState::ANNOTATION_NAME]      = new AnnotationNameState($this);
+        $this->states[AnnotationState::ANNOTATION_TYPE]      = new AnnotationTypeState($this);
+        $this->states[AnnotationState::ARGUMENT]             = new AnnotationArgumentState($this);
+        $this->states[AnnotationState::PARAMS]               = new AnnotationParamsState($this);
+        $this->states[AnnotationState::PARAM_NAME]           = new AnnotationParamNameState($this);
+        $this->states[AnnotationState::PARAM_VALUE]          = new AnnotationParamValueState($this);
+        $this->states[AnnotationState::PARAM_VALUE_ENCLOSED] = new AnnotationParamEnclosedValueState($this);
     }
 
     /**
      * change the current state
      *
      * @param   int     $state
-     * @param   string  $token  token that should be processed by the state
+     * @param   string  $currentToken  optional  current token that should be processed
+     * @param   string  $nextToken     optional  next token that will be processed
      * @throws  \ReflectionException
      */
-    public function changeState($state, $token = null)
+    public function changeState($state, $currentToken = null, $nextToken = null)
     {
-        if (isset($this->states[$state]) == false) {
+        if (!isset($this->states[$state])) {
             throw new \ReflectionException('Unknown state ' . $state);
         }
 
         $this->currentState = $this->states[$state];
         $this->currentState->selected();
-        if (null != $token) {
-            $this->currentState->process($token);
+        $this->currentSignals = array_flip($this->currentState->signalTokens());
+        if (null != $currentToken) {
+            $this->currentState->process('', $currentToken, $nextToken);
         }
     }
 
     /**
      * parse a docblock and return all annotations found
      *
-     * @param   string  $docBlock
-     * @return  array
+     * @param   string  $docComment
+     * @param   string  $target
+     * @return  \stubbles\lang\reflect\annotation\Annotations[]
      * @throws  \ReflectionException
      */
-    public function parse($docBlock)
+    public static function parseFrom($docComment, $target)
     {
-        $this->annotations = null;
+        static $self = null;
+        if (null === $self) {
+            $self = new self();
+        }
+
+        return $self->parse($docComment, $target);
+    }
+
+    /**
+     * parse a docblock and return all annotations found
+     *
+     * @param   string  $docComment
+     * @param   string  $target
+     * @return  \stubbles\lang\reflect\annotation\Annotations[]
+     * @throws  \ReflectionException
+     */
+    public function parse($docComment, $target)
+    {
+        $this->currentTarget = $target;
+        $this->annotations   = [$target => new Annotations($target)];
         $this->changeState(AnnotationState::DOCBLOCK);
-        $len = strlen($docBlock);
-        for ($i = 0; $i < $len; $i++) {
-            $this->currentState->process($docBlock{$i});
+        $len  = strlen($docComment);
+        $word = '';
+        for ($i = 6; $i < $len; $i++) {
+            $currentToken = $docComment{$i};
+            if ($i + 1 < $len) {
+                $j = $i + 1;
+                $nextToken = $docComment{$j};
+            } else {
+                $nextToken = null;
+            }
+
+            if (isset($this->currentSignals[$currentToken])) {
+                if ($this->currentState->process($word, $currentToken, $nextToken)) {
+                    $word = '';
+                }
+            } else {
+                $word .= $docComment{$i};
+            }
         }
 
-        if (($this->currentState instanceof AnnotationDocblockState) == false
-          && ($this->currentState instanceof AnnotationTextState) == false) {
-            throw new \ReflectionException('Annotation parser finished in wrong state, last annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
+        if (!($this->currentState instanceof AnnotationDocblockState)
+          && !($this->currentState instanceof AnnotationTextState)) {
+            throw new \ReflectionException('Annotation parser finished in wrong state for annotation ' . $target . (isset($this->currentAnnotation['name']) ? '@' . $this->currentAnnotation['name'] : '') . ', annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
         }
 
+        $this->finalize();
         return $this->annotations;
+    }
+
+    /**
+     * finalizes the current annotation
+     */
+    private function finalize()
+    {
+        if (null === $this->currentAnnotation) {
+            return;
+        }
+
+        $target = isset($this->currentAnnotation['target']) ? $this->currentAnnotation['target'] : $this->currentTarget;
+        if (!isset($this->annotations[$target])) {
+            $this->annotations[$target] = new Annotations($target);
+        }
+
+        $this->annotations[$target]->add(
+                new Annotation(
+                        $this->currentAnnotation['type'],
+                        $target,
+                        $this->currentAnnotation['params'],
+                        $this->currentAnnotation['name']
+                )
+        );
+
+        $this->currentAnnotation = null;
     }
 
     /**
@@ -124,11 +198,11 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function registerAnnotation($name)
     {
-        $this->annotations[$name] = ['type'     => $name,
-                                     'params'   => [],
-                                     'argument' => null
-                                    ];
-        $this->currentAnnotation  = $name;
+        $this->finalize();
+        $this->currentAnnotation = ['name'   => $name,
+                                    'type'   => $name,
+                                    'params' => []
+                                   ];
     }
 
     /**
@@ -144,29 +218,26 @@ class AnnotationStateParser implements AnnotationParser
     /**
      * register single annotation param
      *
-     * @param   string  $value     the value of the param
-     * @param   bool    $asString  whether the value is a string or not
+     * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function registerSingleAnnotationParam($value, $asString = false)
+    public function registerSingleAnnotationParam($value)
     {
-        $value = $this->convertAnnotationValue($value, $asString);
-        if (count($this->annotations[$this->currentAnnotation]['params']) > 0) {
-            throw new \ReflectionException('Error parsing annotation ' . $this->currentAnnotation);
+        if (count($this->currentAnnotation['params']) > 0) {
+            throw new \ReflectionException('Error parsing annotation ' . $this->currentAnnotation['type']);
         }
 
-        $this->annotations[$this->currentAnnotation]['params']['__value'] = $value;
+        $this->currentAnnotation['params']['__value'] = $value;
     }
 
     /**
      * set the annoation param value for the current annotation
      *
-     * @param  string  $value     the value of the param
-     * @param  bool    $asString  whether the value is a string or not
+     * @param  string  $value  the value of the param
      */
-    public function setAnnotationParamValue($value, $asString = false)
+    public function setAnnotationParamValue($value)
     {
-        $this->annotations[$this->currentAnnotation]['params'][$this->currentParam] = $this->convertAnnotationValue($value, $asString);
+        $this->currentAnnotation['params'][$this->currentParam] = $value;
     }
 
     /**
@@ -176,71 +247,16 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function setAnnotationType($type)
     {
-        $this->annotations[$this->currentAnnotation]['type'] = $type;
+        $this->currentAnnotation['type'] = $type;
     }
 
     /**
      * sets the argument for which the annotation is declared
      *
-     * @param  string  $argument  name of the argument
+     * @param  string  $parameterName  name of the argument
      */
-    public function setAnnotationForArgument($argument)
+    public function markAsParameterAnnotation($parameterName)
     {
-        $this->annotations[$this->currentAnnotation . '#' . $argument] = $this->annotations[$this->currentAnnotation];
-        unset($this->annotations[$this->currentAnnotation]);
-        $this->currentAnnotation .= '#' . $argument;
-        $this->annotations[$this->currentAnnotation]['argument'] = $argument;
-    }
-
-    /**
-     * convert an annotation value
-     *
-     * @param   string   $value     the value to convert
-     * @param   boolean  $asString  whether value should be treated as string or not
-     * @return  mixed
-     */
-    protected function convertAnnotationValue($value, $asString)
-    {
-        if (true == $asString) {
-            return (string) $value;
-        }
-
-        if ('true' === $value) {
-            return true;
-        }
-
-        if ('false' === $value) {
-            return false;
-        }
-
-        if ('null' === strtolower($value)) {
-            return null;
-        }
-
-        if (preg_match('/^[+-]?[0-9]+$/', $value) != false) {
-            return (integer) $value;
-        }
-
-        if (preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $value) != false) {
-            return (double) $value;
-        }
-
-        $classnameMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $value, $classnameMatches) != false) {
-            return new ReflectionClass($classnameMatches[1]);
-        }
-
-        $enumMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)::\$([a-zA-Z_]{1}[a-zA-Z0-9_]*)/', $value, $enumMatches) != false) {
-            $enumClassName = $enumMatches[1];
-            $instanceName  = $enumMatches[2];
-            return $enumClassName::forName($instanceName);
-        }
-
-        if (defined($value) == true) {
-            return constant($value);
-        }
-
-        return (string) $value;
+        $this->currentAnnotation['target'] = $this->currentTarget . '#' . $parameterName;
     }
 }

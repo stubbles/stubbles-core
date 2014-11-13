@@ -18,33 +18,6 @@ namespace stubbles\peer\http;
 class HttpTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function httpVersion1_0IsValid()
-    {
-        $this->assertTrue(Http::isVersionValid('HTTP/1.0'));
-    }
-
-    /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function httpVersion1_1IsValid()
-    {
-        $this->assertTrue(Http::isVersionValid('HTTP/1.1'));
-    }
-
-    /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function otherHttpVersionsAreNotValid()
-    {
-        $this->assertFalse(Http::isVersionValid('HTTP/0.1'));
-    }
-
-    /**
      * @return  array
      */
     public function getStatusCodeClassTuples()

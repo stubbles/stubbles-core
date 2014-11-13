@@ -26,10 +26,11 @@ interface AnnotationParser
     /**
      * parse a docblock and return all annotations found
      *
-     * @param   string  $docBlock
-     * @return  array
+     * @param   string  $docComment
+     * @param   string  $target
+     * @return  \stubbles\lang\reflect\annotation\Annotations[]
      */
-    public function parse($docBlock);
+    public function parse($docComment, $target);
 
     /**
      * register a new annotation
@@ -48,20 +49,18 @@ interface AnnotationParser
     /**
      * register single annotation param
      *
-     * @param   string  $value     the value of the param
-     * @param   bool    $asString  whether the value is a string or not
+     * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function registerSingleAnnotationParam($value, $asString = false);
+    public function registerSingleAnnotationParam($value);
 
     /**
      * set the annoation param value for the current annotation
      *
-     * @param   string  $value     the value of the param
-     * @param   bool    $asString  whether the value is a string or not
+     * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function setAnnotationParamValue($value, $asString = false);
+    public function setAnnotationParamValue($value);
 
     /**
      * set the type of the current annotation
@@ -71,9 +70,9 @@ interface AnnotationParser
     public function setAnnotationType($type);
 
     /**
-     * sets the argument for which the annotation is declared
+     * marks the current annotation as being an annotation for a function/method parameter
      *
-     * @param  string  $argument  name of the argument
+     * @param  string  $parameterName  name of the parameter
      */
-    public function setAnnotationForArgument($argument);
+    public function markAsParameterAnnotation($parameterName);
 }

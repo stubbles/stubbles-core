@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use stubbles\peer\http\HttpUri;
 /**
  * Tests for stubbles\predicate\IsExistingHttpUri.
  *
@@ -56,12 +57,24 @@ class IsExistingHttpUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
+     * @return  array
      */
-    public function validHttpUrlWithDnsEntryEvaluatesToTrue()
+    public function validValues()
+    {
+        return [
+            ['http://localhost/'],
+            [HttpUri::fromString('http://localhost/')]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  validValues
+     */
+    public function validHttpUrlWithDnsEntryEvaluatesToTrue($value)
     {
         $this->assertTrue(
-                $this->isExistingHttpUri->test('http://localhost/')
+                $this->isExistingHttpUri->test($value)
         );
     }
 

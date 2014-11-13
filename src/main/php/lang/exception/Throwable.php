@@ -10,6 +10,8 @@
 namespace stubbles\lang\exception;
 /**
  * Base interface for all exception classes.
+ *
+ * @deprecated  since 5.0.0, will be removed with 6.0.0
  */
 interface Throwable
 {

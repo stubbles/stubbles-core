@@ -42,38 +42,6 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @since  3.1.2
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function returnsProjectResourceUriForExistingFile()
-    {
-        $this->assertEquals(ResourceLoader::getRootPath() . DIRECTORY_SEPARATOR
-                                    . 'src' . DIRECTORY_SEPARATOR
-                                    . 'main' . DIRECTORY_SEPARATOR
-                                    . 'resources' . DIRECTORY_SEPARATOR
-                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini',
-                            $this->resourceLoader->getProjectResourceUri('lang/stubbles.ini')
-        );
-    }
-
-    /**
-     * @test
-     * @since  3.1.2
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function returnsProjectResourceUriForNonExistingFile()
-    {
-        $this->assertEquals(ResourceLoader::getRootPath() . DIRECTORY_SEPARATOR
-                                    . 'src' . DIRECTORY_SEPARATOR
-                                    . 'main' . DIRECTORY_SEPARATOR
-                                    . 'resources' . DIRECTORY_SEPARATOR
-                                    . 'lang' . DIRECTORY_SEPARATOR . 'doesNotExist.ini',
-                            $this->resourceLoader->getProjectResourceUri('lang/doesNotExist.ini')
-        );
-    }
-
-    /**
-     * @test
      * @expectedException  stubbles\lang\exception\FileNotFoundException
      * @since  4.0.0
      */
@@ -234,19 +202,11 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfAllResourceUrisForExistingFile()
     {
-        $this->assertEquals([ResourceLoader::getRootPath() . DIRECTORY_SEPARATOR
+        $this->assertEquals([(new Rootpath()) . DIRECTORY_SEPARATOR
                                     . 'src' . DIRECTORY_SEPARATOR
                                     . 'main' . DIRECTORY_SEPARATOR
                                     . 'resources' . DIRECTORY_SEPARATOR
-                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini',
-                             ResourceLoader::getRootPath() . DIRECTORY_SEPARATOR
-                                    . 'vendor' . DIRECTORY_SEPARATOR
-                                    . 'stubbles' . DIRECTORY_SEPARATOR
-                                    . 'core-dev' . DIRECTORY_SEPARATOR
-                                    . 'src' . DIRECTORY_SEPARATOR
-                                    . 'main' . DIRECTORY_SEPARATOR
-                                    . 'resources' . DIRECTORY_SEPARATOR
-                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini',
+                                    . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini'
                             ],
                             $this->resourceLoader->availableResourceUris('lang/stubbles.ini')
         );
@@ -259,17 +219,6 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals([],
                             $this->resourceLoader->availableResourceUris('doesnot.exist')
-        );
-    }
-
-    /**
-     * @test
-     * @deprecated  since 4.0.0, will be removed with 5.0.0
-     */
-    public function returnsRootPathBothStaticAndNonStatic()
-    {
-        $this->assertEquals(ResourceLoader::getRootPath(),
-                            $this->resourceLoader->getRoot()
         );
     }
 }

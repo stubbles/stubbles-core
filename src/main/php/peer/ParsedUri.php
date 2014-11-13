@@ -32,10 +32,13 @@ class ParsedUri
     /**
      * constructor
      *
-     * @param   string  $uri
+     * Passing a query string will omit any query string already present in $uri.
+     *
+     * @param   string                      $uri          uri to parse
+     * @param   \stubbles\peer\QueryString  $queryString  optional  parameters when not in uri
      * @throws  \stubbles\peer\MalformedUriException
      */
-    public function __construct($uri)
+    public function __construct($uri, QueryString $queryString = null)
     {
         $this->uri = ((!is_array($uri)) ? (parse_url($uri)): ($uri));
         if (!is_array($this->uri)) {
@@ -46,7 +49,16 @@ class ParsedUri
             $this->uri['host'] = strtolower($this->uri['host']);
         }
 
-        $this->queryString = new QueryString((isset($this->uri['query'])) ? ($this->uri['query']) : (null));
+        if (null !== $queryString) {
+            $this->queryString = $queryString;
+        } else {
+            try {
+                $this->queryString = new QueryString((isset($this->uri['query'])) ? ($this->uri['query']) : (null));
+            } catch (\InvalidArgumentException $iae) {
+                throw new MalformedUriException($iae->getMessage(), $iae);
+            }
+        }
+
         // bugfix for a PHP issue: ftp://user:@auxiliary.kl-s.com/
         // will lead to an unset $this->uri['pass'] which is wrong
         // due to RFC1738 3.1, it has to be an empty string
@@ -70,7 +82,7 @@ class ParsedUri
      */
     public function transpose(array $changedUri)
     {
-        return new self(array_merge($this->uri, $changedUri));
+        return new self(array_merge($this->uri, $changedUri), $this->queryString);
     }
 
     /**
