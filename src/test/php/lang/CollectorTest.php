@@ -15,6 +15,9 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+/**
+ * Helper class for the test.
+ */
 class Employee
 {
     private $id;
@@ -65,7 +68,7 @@ class Employee
 /**
  * Tests for stubbles\lang\Collector.
  *
- * @since  4.0.0
+ * @since  5.2.0
  */
 class CollectorTest extends \PHPUnit_Framework_TestCase
 {
