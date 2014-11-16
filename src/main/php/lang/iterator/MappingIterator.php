@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\iterator;
+use stubbles\lang;
 /**
  * Maps values and optionally keys from an underlying iterator.
  *
@@ -38,8 +39,8 @@ class MappingIterator extends \IteratorIterator
     public function __construct(\Traversable $iterator, callable $valueMapper, callable $keyMapper = null)
     {
         parent::__construct($iterator);
-        $this->valueMapper = $valueMapper;
-        $this->keyMapper   = $keyMapper;
+        $this->valueMapper = lang\ensureCallable($valueMapper);
+        $this->keyMapper   = null !== $keyMapper ? lang\ensureCallable($keyMapper) : (null);
     }
 
     /**

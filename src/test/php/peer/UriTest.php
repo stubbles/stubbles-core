@@ -462,26 +462,6 @@ class UriTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function returnsFalseIfHostHasNoDnsRecord()
-    {
-        $this->assertFalse(
-                Uri::fromString('http://example.dev/')->hasDnsRecord()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function hasDnsRecordForExistingDomain()
-    {
-        $this->assertTrue(
-                Uri::fromString('http://stubbles.net/')->hasDnsRecord()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function hasDnsRecordForLocalhost()
     {
         $this->assertTrue(
