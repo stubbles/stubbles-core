@@ -80,15 +80,20 @@ class Collector
      * returns a collector for maps
      *
      * @api
+     * @param   callable  $keySelector    optional  function to select the key for the map entry
+     * @param   callable  $valueSelector  optional  function to select the value for the map entry
      * @return  \stubbles\lang\Collector
      */
-    public static function forMap(callable $selectKey = null, callable $selectValue = null)
+    public static function forMap(callable $keySelector = null, callable $valueSelector = null)
     {
-        $selectKey   = (null !== $selectKey) ? $selectKey : function($value, $key) { return $key; };
-        $selectValue = (null !== $selectValue) ? $selectValue : function($value) { return $value; };
+        $selectKey   = (null !== $keySelector) ? $keySelector : function($value, $key) { return $key; };
+        $selectValue = (null !== $valueSelector) ? $valueSelector : function($value) { return $value; };
         return new self(
                 function() { return []; },
-                function(&$map, $element, $key) use($selectKey, $selectValue) { $map[$selectKey($element, $key)] = $selectValue($element, $key); }
+                function(&$map, $element, $key) use($selectKey, $selectValue)
+                {
+                    $map[$selectKey($element, $key)] = $selectValue($element, $key);
+                }
         );
     }
 
@@ -97,7 +102,7 @@ class Collector
      *
      * @return  \stubbles\lang\Collector
      */
-    public function restart()
+    public function fork()
     {
         return new self($this->supplier, $this->accumulator, $this->finisher);
     }

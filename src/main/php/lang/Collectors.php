@@ -79,12 +79,12 @@ class Collectors
      */
     public function inPartitions(callable $predicate, Collector $base = null)
     {
-        $base = (null === $base) ? Collector::forList() : $base;
+        $collector = (null === $base) ? Collector::forList() : $base;
         return $this->with(
-                function() use($base)
+                function() use($collector)
                 {
-                    return [true  => $base->restart(),
-                            false => $base->restart()
+                    return [true  => $collector->fork(),
+                            false => $collector->fork()
                     ];
                 },
                 function(&$partitions, $element) use($predicate)
@@ -110,14 +110,14 @@ class Collectors
      */
     public function inGroups(callable $classifier, Collector $base = null)
     {
-        $base = (null === $base) ? Collector::forList() : $base;
+        $collector = (null === $base) ? Collector::forList() : $base;
         return $this->with(
                 function() { return []; },
-                function(&$groups, $element) use($classifier, $base)
+                function(&$groups, $element) use($classifier, $collector)
                 {
                     $key = $classifier($element);
                     if (!isset($groups[$key])) {
-                        $groups[$key] = $base->restart();
+                        $groups[$key] = $collector->fork();
                     }
 
                     $groups[$key]->accumulate($element, $key);
@@ -141,7 +141,7 @@ class Collectors
      * <code>
      * Sequence::of(['foo' => 303, 'bar' => 808, 'baz'=> 909])
      *         ->collect()
-     *         ->toString(); // results in '303, 808, 9090'
+     *         ->byJoining(); // results in '303, 808, 9090'
      *
      * Sequence::of(['foo' => 303, 'bar' => 808, 'baz'=> 909])
      *         ->collect()
