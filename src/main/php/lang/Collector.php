@@ -98,6 +98,35 @@ class Collector
     }
 
     /**
+     * returns a collector to sum up elements
+     *
+     * @api
+     * @param   callable  $num  callable which retrieves a number from a given element
+     * @return  \stubbles\lang\Collector
+     */
+    public static function forSum(callable $num) {
+        return new self(
+                function() { return 0; },
+                function(&$result, $element) use($num) { $result+= $num($element); }
+        );
+    }
+
+    /**
+     * returns a collector to calculate an average for all the given elements
+     *
+     * @api
+     * @param   callable  $num  callable which retrieves a number from a given element
+     * @return  \stubbles\lang\Collector
+     */
+    public static function forAverage(callable $num) {
+        return new self(
+                function() { return [0, 0]; },
+                function(&$result, $arg) use($num) { $result[0] += $num($arg); $result[1]++; },
+                function($result) { return $result[0] / $result[1]; }
+        );
+    }
+
+    /**
      * restarts collection with a fresh instance
      *
      * @return  \stubbles\lang\Collector

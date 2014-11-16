@@ -87,9 +87,9 @@ class Collectors
                             false => $collector->fork()
                     ];
                 },
-                function(&$partitions, $element) use($predicate)
+                function(&$partitions, $element, $key) use($predicate)
                 {
-                    $partitions[$predicate($element)]->accumulate($element);
+                    $partitions[$predicate($element)]->accumulate($element, $key);
                 },
                 function($partitions)
                 {
