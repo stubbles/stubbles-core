@@ -1,7 +1,8 @@
 5.2.0 (2014-11-??)
 ------------------
 
-  * added `stubbles\streams\InputStreamIterator`,  `stubbles\streams\linesOf()`
+  * added `stubbles\lang\Sequence`
+  * added `stubbles\streams\linesOf()`
 
 
 5.1.2 (2014-10-13)
