@@ -8,10 +8,19 @@
  * @package  stubbles
  */
 namespace stubbles\streams {
+    use stubbles\lang\Sequence;
     use stubbles\streams\file\FileInputStream;
 
+    /**
+     * returns a sequence of lines from given input source
+     *
+     * @api
+     * @param   \stubbles\streams\InputStream|string  $input
+     * @return  \stubbles\lang\Sequence
+     * @since   5.2.0
+     */
     function linesOf($input)
     {
-        return new InputStreamIterator(FileInputStream::castFrom($input));
+        return Sequence::of(new InputStreamIterator(FileInputStream::castFrom($input)));
     }
 }

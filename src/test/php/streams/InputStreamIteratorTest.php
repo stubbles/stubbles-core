@@ -13,7 +13,7 @@ use stubbles\streams\memory\MemoryInputStream;
  * Test for stubbles\streams\InputStreamIterator.
  *
  * @group  streams
- * @since  4.0.0
+ * @since  5.2.0
  */
 class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
 {

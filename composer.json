@@ -16,7 +16,8 @@
             "stubbles\\": "src/main/php"
         },
         "files": ["src/main/php/lang/functions.php",
-                  "src/main/php/peer/functions.php"
+                  "src/main/php/peer/functions.php",
+                  "src/main/php/streams/functions.php"
                  ]
     },
     "autoload-dev": {

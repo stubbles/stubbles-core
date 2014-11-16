@@ -13,7 +13,7 @@ use stubbles\lang\exception\IllegalArgumentException;
  * Iterator for input streams.
  *
  * @api
- * @since  4.0.0
+ * @since  5.2.0
  */
 class InputStreamIterator implements \Iterator
 {

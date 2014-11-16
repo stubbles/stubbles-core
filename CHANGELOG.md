@@ -1,7 +1,7 @@
-5.2.0 (2014-??-??)
+5.2.0 (2014-11-??)
 ------------------
 
-  * added `stubbles\streams\InputStreamIterator`,  `stubbles\streams\MappingInputStream` and `stubbles\streams\MappingOutputStream`
+  * added `stubbles\streams\InputStreamIterator`,  `stubbles\streams\linesOf()`
 
 
 5.1.2 (2014-10-13)
