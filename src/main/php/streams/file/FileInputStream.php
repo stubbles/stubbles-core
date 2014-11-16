@@ -68,7 +68,7 @@ class FileInputStream extends ResourceInputStream implements Seekable
      * @param   \stubbles\streams\InputStream|string  $value
      * @return  \stubbles\streams\InputStream
      * @throws  IllegalArgumentException
-     * @since   4.0.0
+     * @since   5.2.0
      */
     public static function castFrom($value)
     {
