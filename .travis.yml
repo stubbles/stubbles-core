@@ -5,14 +5,10 @@ php:
   - 5.5
   - 5.6
   - 7.0
-  - hhvm
-  - hhvm-nightly
 
 matrix:
-  - allow_failures:
+  allow_failures:
     - php: 7.0
-    - php: hhvm
-    - php: hhvm-nightly
 
 before_script:
   - "mkdir -p ~/.composer"
