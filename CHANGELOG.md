@@ -1,3 +1,9 @@
+5.2.1 (2015-??-??)
+------------------
+
+  * implemented #122: add support for ::class in value parser
+
+
 5.2.0 (2014-11-16)
 ------------------
 

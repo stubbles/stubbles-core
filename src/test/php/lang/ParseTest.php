@@ -438,6 +438,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function stringToClassConversions()
     {
         return [
+            [new ReflectionClass($this), __CLASS__ . '::class'],
             [new ReflectionClass($this), __CLASS__ . '.class'],
             [new ReflectionClass('stubbles\lang\Mode'), 'stubbles\lang\Mode.class'],
             [null, null],
@@ -489,33 +490,48 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
-     * @expectedException  ReflectionException
+     * @return  array
+     * @since   5.2.1
      */
-    public function toClassWithNonExistingClassThrowsReflectionException()
+    public function nonExistingClasses()
     {
-        Parse::toClass('does\not\Exist.class');
+        return [['does\not\Exist.class'], ['does\not\Exist::class']];
     }
 
     /**
+     * @param  string  $nonExistingClass
      * @test
      * @expectedException  ReflectionException
+     * @dataProvider  nonExistingClasses
+     */
+    public function toClassWithNonExistingClassThrowsReflectionException($nonExistingClass)
+    {
+        Parse::toClass($nonExistingClass);
+    }
+
+    /**
+     * @param  string  $nonExistingClass
+     * @test
+     * @expectedException  ReflectionException
+     * @dataProvider  nonExistingClasses
      * @since  5.0.0
      */
-    public function asClassWithNonExistingClassThrowsReflectionException()
+    public function asClassWithNonExistingClassThrowsReflectionException($nonExistingClass)
     {
-        $parse = new Parse('does\not\Exist.class');
+        $parse = new Parse($nonExistingClass);
         $parse->asClass();
     }
 
     /**
+     * @param  string  $nonExistingClass
      * @test
      * @expectedException  ReflectionException
+     * @dataProvider  nonExistingClasses
      * @since  5.0.0
      */
-    public function asClassWithNonExistingClassAndDefaultThrowsReflectionException()
+    public function asClassWithNonExistingClassAndDefaultThrowsReflectionException($nonExistingClass)
     {
-        $parse = new Parse('does\not\Exist.class');
+        $parse = new Parse($nonExistingClass);
         $parse->defaultingTo(__CLASS__ . '.class')->asClass();
     }
 

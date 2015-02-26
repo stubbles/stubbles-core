@@ -336,7 +336,9 @@ class Parse
         }
 
         $classnameMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $string, $classnameMatches) != false) {
+        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\::class/', $string, $classnameMatches) != false) {
+            return new ReflectionClass($classnameMatches[1]);
+        } elseif (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $string, $classnameMatches) != false) {
             return new ReflectionClass($classnameMatches[1]);
         }
 
