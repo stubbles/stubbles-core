@@ -1,6 +1,7 @@
-5.2.1 (2015-??-??)
+5.3.0 (2015-??-??)
 ------------------
 
+  * added `stubbles\predicate\ContainsAnyOf`
   * implemented #122: add support for ::class in value parser
 
 

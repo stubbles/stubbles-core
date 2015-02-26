@@ -491,7 +491,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @return  array
-     * @since   5.2.1
+     * @since   5.3.0
      */
     public function nonExistingClasses()
     {
