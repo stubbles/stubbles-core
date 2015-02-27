@@ -128,6 +128,7 @@ class Parse
      * string starting with [, ending with ]                => list  (i.e. array, see toList())
      * string containing ..                                 => range (i.e. array, see toRange())
      * string containing a valid HTTP uri                   => stubbles\peer\http\HttpUri
+     * <fully\qualified\Classname::class>                   => stubbles\lang\reflect\ReflectionClass
      * <fully\qualified\Classname.class>                    => stubbles\lang\reflect\ReflectionClass
      * <fully\qualified\Classname::$enumName>               => stubbles\lang\Enum
      * string containing name of a constant                 => value of the constant
@@ -323,8 +324,9 @@ class Parse
     /**
      * parses string to a reflection class
      *
-     * String must have the format <fully\qualified\Classname.class>. In case
-     * the string can not be parsed the return value is null.
+     * String must have the format <fully\qualified\Classname::class>, or
+     * <fully\qualified\Classname.class>. In case the string can not be parsed
+     * the return value is null.
      *
      * @param   string  $string
      * @return  \stubbles\lang\reflect\ReflectionClass
