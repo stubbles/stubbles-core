@@ -438,7 +438,6 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function stringToClassConversions()
     {
         return [
-            [new ReflectionClass($this), __CLASS__ . '::class'],
             [new ReflectionClass($this), __CLASS__ . '.class'],
             [new ReflectionClass('stubbles\lang\Mode'), 'stubbles\lang\Mode.class'],
             [null, null],
@@ -490,49 +489,110 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return  array
-     * @since   5.3.0
+     * @test
+     * @expectedException  ReflectionException
      */
-    public function nonExistingClasses()
+    public function toClassWithNonExistingClassThrowsReflectionException()
     {
-        return [['does\not\Exist.class'], ['does\not\Exist::class']];
+        Parse::toClass('does\not\Exist.class');
     }
 
     /**
-     * @param  string  $nonExistingClass
      * @test
      * @expectedException  ReflectionException
-     * @dataProvider  nonExistingClasses
-     */
-    public function toClassWithNonExistingClassThrowsReflectionException($nonExistingClass)
-    {
-        Parse::toClass($nonExistingClass);
-    }
-
-    /**
-     * @param  string  $nonExistingClass
-     * @test
-     * @expectedException  ReflectionException
-     * @dataProvider  nonExistingClasses
      * @since  5.0.0
      */
-    public function asClassWithNonExistingClassThrowsReflectionException($nonExistingClass)
+    public function asClassWithNonExistingClassThrowsReflectionException()
     {
-        $parse = new Parse($nonExistingClass);
+        $parse = new Parse('does\not\Exist.class');
         $parse->asClass();
     }
 
     /**
-     * @param  string  $nonExistingClass
      * @test
      * @expectedException  ReflectionException
-     * @dataProvider  nonExistingClasses
      * @since  5.0.0
      */
-    public function asClassWithNonExistingClassAndDefaultThrowsReflectionException($nonExistingClass)
+    public function asClassWithNonExistingClassAndDefaultThrowsReflectionException()
     {
-        $parse = new Parse($nonExistingClass);
+        $parse = new Parse('does\not\Exist.class');
         $parse->defaultingTo(__CLASS__ . '.class')->asClass();
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function toClassnameReturnsNullForNull()
+    {
+        $this->assertNull(Parse::toClassname(null));
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function toClassnameReturnsNullForEmptyString()
+    {
+        $this->assertNull(Parse::toClassname(''));
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function toClassnameReturnsNullForNonExistingClass()
+    {
+        $this->assertNull(Parse::toClassname('does\not\Exist::class'));
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function toClassnameReturnsClassnameOfExistingClass()
+    {
+        $this->assertEquals(__CLASS__, Parse::toClassname(__CLASS__ . '::class'));
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function asClassnameReturnsNullForNull()
+    {
+        $parse = new Parse(null);
+        $this->assertNull($parse->asClassname());
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function asClassnameReturnsNullForEmptyString()
+    {
+        $parse = new Parse('');
+        $this->assertNull($parse->asClassname());
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function asClassnameReturnsNullForNonExistingClass()
+    {
+        $parse = new Parse('does\not\Exist::class');
+        $this->assertNull($parse->asClassname());
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function asClassnameReturnsClassnameOfExistingClass()
+    {
+        $parse = new Parse(__CLASS__ . '::class');
+        $this->assertEquals(__CLASS__, $parse->asClassname());
     }
 
     /**

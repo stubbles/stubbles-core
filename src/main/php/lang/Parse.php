@@ -64,6 +64,7 @@ class Parse
                 },
                 'stubbles\peer\http\HttpUri'
         );
+        self::addRecognition(function($string) { $class = self::toClassname($string); if (null !== $class) { return $class; } }, 'string');
         self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'stubbles\lang\reflect\ReflectionClass');
         self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } }, 'stubbles\lang\Enum');
         self::addRecognition(function($string) { if (defined($string)) { return constant($string); } }, 'constant');
@@ -128,7 +129,7 @@ class Parse
      * string starting with [, ending with ]                => list  (i.e. array, see toList())
      * string containing ..                                 => range (i.e. array, see toRange())
      * string containing a valid HTTP uri                   => stubbles\peer\http\HttpUri
-     * <fully\qualified\Classname::class>                   => stubbles\lang\reflect\ReflectionClass
+     * <fully\qualified\Classname::class>                   => string representing an existing class name
      * <fully\qualified\Classname.class>                    => stubbles\lang\reflect\ReflectionClass
      * <fully\qualified\Classname::$enumName>               => stubbles\lang\Enum
      * string containing name of a constant                 => value of the constant
@@ -324,9 +325,8 @@ class Parse
     /**
      * parses string to a reflection class
      *
-     * String must have the format <fully\qualified\Classname::class>, or
-     * <fully\qualified\Classname.class>. In case the string can not be parsed
-     * the return value is null.
+     * String must have the format <fully\qualified\Classname.class>. In case
+     * the string can not be parsed the return value is null.
      *
      * @param   string  $string
      * @return  \stubbles\lang\reflect\ReflectionClass
@@ -338,10 +338,35 @@ class Parse
         }
 
         $classnameMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\::class/', $string, $classnameMatches) != false) {
+        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $string, $classnameMatches) != false) {
             return new ReflectionClass($classnameMatches[1]);
-        } elseif (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $string, $classnameMatches) != false) {
-            return new ReflectionClass($classnameMatches[1]);
+        }
+
+        return null;
+    }
+
+    /**
+     * parses string as class name
+     *
+     * String must have the format <fully\qualified\Classname::class>. In case
+     * the string can not be parsed or the class does not exist the return value
+     * is null.
+     *
+     * @param   string  $string
+     * @return  string
+     * @since   5.3.0
+     */
+    public static function toClassname($string)
+    {
+        if (empty($string)) {
+            return null;
+        }
+
+        $classnameMatches = [];
+        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\::class$/', $string, $classnameMatches) != false) {
+            if (class_exists($classnameMatches[1])) {
+                return $classnameMatches[1];
+            }
         }
 
         return null;
@@ -513,6 +538,17 @@ class Parse
     public function asClass()
     {
         return $this->parse('toClass');
+    }
+
+    /**
+     * parses initial value as class name
+     *
+     * @return  string
+     * @since   5.3.0
+     */
+    public function asClassname()
+    {
+        return $this->parse('toClassname');
     }
 
     /**
