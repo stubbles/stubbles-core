@@ -16,8 +16,6 @@ use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
 use stubbles\lang\reflect;
-use stubbles\lang\reflect\BaseReflectionClass;
-use stubbles\lang\reflect\ReflectionClass;
 /**
  * Injector for the IoC functionality.
  *
@@ -112,7 +110,7 @@ class Injector
             return $this->hasProperty($name);
         }
 
-        $bindingName = $this->getBindingName($name);
+        $bindingName = $this->bindingName($name);
         if (null !== $bindingName && isset($this->index[$type . '#' . $bindingName])) {
             return true;
         }
@@ -208,7 +206,7 @@ class Injector
      */
     private function findBinding($type, $name)
     {
-        $bindingName = $this->getBindingName($name);
+        $bindingName = $this->bindingName($name);
         if (null !== $bindingName && isset($this->index[$type . '#' . $bindingName])) {
             return $this->index[$type . '#' . $bindingName];
         }
@@ -218,7 +216,7 @@ class Injector
         }
 
         if (!in_array($type, [PropertyBinding::TYPE, ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE])) {
-            $this->index[$type] = $this->getAnnotatedBinding(new ReflectionClass($type));
+            $this->index[$type] = $this->getAnnotatedBinding(new \ReflectionClass($type));
             return $this->index[$type];
         }
 
@@ -228,12 +226,12 @@ class Injector
     /**
      * parses binding name from given name
      *
-     * @param   string|\stubbles\lang\reflect\BaseReflectionClass  $name
+     * @param   string|\ReflectionClass  $name
      * @return  string
      */
-    private function getBindingName($name)
+    private function bindingName($name)
     {
-        if ($name instanceof BaseReflectionClass) {
+        if ($name instanceof \ReflectionClass) {
             return $name->getName();
         }
 
@@ -248,10 +246,10 @@ class Injector
      *
      * If this is not the case it will fall back to the implicit binding.
      *
-     * @param   \stubbles\lang\reflect\ReflectionClass  $class
+     * @param   \ReflectionClass  $class
      * @return  \stubbles\ioc\binding\Binding
      */
-    private function getAnnotatedBinding(ReflectionClass $class)
+    private function getAnnotatedBinding(\ReflectionClass $class)
     {
         $annotations = reflect\annotationsOf($class);
         if ($class->isInterface() && $annotations->contain('ImplementedBy')) {
@@ -260,7 +258,7 @@ class Injector
                                 $annotations->named('ImplementedBy')[0]
                                             ->getDefaultImplementation()
                           );
-        } elseif ($class->hasAnnotation('ProvidedBy')) {
+        } elseif ($annotations->contain('ProvidedBy')) {
             return $this->bind($class->getName())
                         ->toProviderClass(
                                 $annotations->named('ProvidedBy')[0]
@@ -278,10 +276,10 @@ class Injector
      * and not an interface. Obviously, it makes sense to say that a class is
      * always bound to itself if no other bindings were defined.
      *
-     * @param   \stubbles\lang\reflect\ReflectionClass  $class
+     * @param   \ReflectionClass  $class
      * @return  \stubbles\ioc\binding\Binding
      */
-    private function getImplicitBinding(ReflectionClass $class)
+    private function getImplicitBinding(\ReflectionClass $class)
     {
         if (!$class->isInterface()) {
             return $this->bind($class->getName())->to($class);

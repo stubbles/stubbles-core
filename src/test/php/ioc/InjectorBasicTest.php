@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\lang\reflect\ReflectionClass;
 use stubbles\test\ioc\Goodyear;
 /**
  * Test for stubbles\ioc\Injector.
@@ -83,8 +82,10 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     public function setterInjectionWithClass()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Tire')->to(new ReflectionClass('stubbles\test\ioc\Goodyear'));
-        $binder->bind('stubbles\test\ioc\Vehicle')->to(new ReflectionClass('stubbles\test\ioc\Bike'));
+        $binder->bind('stubbles\test\ioc\Tire')
+               ->to(new \ReflectionClass('stubbles\test\ioc\Goodyear'));
+        $binder->bind('stubbles\test\ioc\Vehicle')
+               ->to(new \ReflectionClass('stubbles\test\ioc\Bike'));
 
         $injector = $binder->getInjector();
 

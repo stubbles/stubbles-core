@@ -14,9 +14,6 @@ use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
 use stubbles\lang\reflect;
-use stubbles\lang\reflect\BaseReflectionClass;
-use stubbles\lang\reflect\ReflectionMethod;
-use stubbles\lang\reflect\ReflectionParameter;
 /**
  * Default injection provider.
  *
@@ -35,17 +32,17 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * concrete implementation to use
      *
-     * @type  \stubbles\lang\reflect\BaseReflectionClass
+     * @type  \ReflectionClass
      */
     private $class;
 
     /**
      * constructor
      *
-     * @param  \stubbles\ioc\Injector                      $injector
-     * @param  \stubbles\lang\reflect\BaseReflectionClass  $impl
+     * @param  \stubbles\ioc\Injector  $injector
+     * @param  \ReflectionClass        $impl
      */
-    public function __construct(Injector $injector, BaseReflectionClass $impl)
+    public function __construct(Injector $injector, \ReflectionClass $impl)
     {
         $this->injector = $injector;
         $this->class    = $impl;
@@ -95,7 +92,7 @@ class DefaultInjectionProvider implements InjectionProvider
     private function injectIntoSetters($instance)
     {
         foreach ($this->class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            /* @type  $method  ReflectionMethod */
+            /* @type  $method  \ReflectionMethod */
             if ($method->isStatic()
               || $method->getNumberOfParameters() === 0
               || strncmp($method->getName(), '__', 2) === 0
@@ -115,11 +112,11 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * returns a list of all injection values for given method
      *
-     * @param   \stubbles\lang\reflect\ReflectionMethod  $method
+     * @param   \ReflectionMethod  $method
      * @return  array
      * @throws  \stubbles\ioc\binding\BindingException
      */
-    private function injectionValuesForMethod(ReflectionMethod $method)
+    private function injectionValuesForMethod(\ReflectionMethod $method)
     {
         $paramValues = [];
         $defaultName = $this->methodBindingName($method);
@@ -154,10 +151,10 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * returns default binding name for all parameters on given method
      *
-     * @param   \stubbles\lang\reflect\ReflectionMethod  $method
+     * @param   \ReflectionMethod  $method
      * @return  string
      */
-    private function methodBindingName(ReflectionMethod $method)
+    private function methodBindingName(\ReflectionMethod $method)
     {
         $annotations = reflect\annotationsOf($method);
         if ($annotations->contain('List')) {
@@ -182,11 +179,11 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * returns type of param
      *
-     * @param   \stubbles\lang\reflect\ReflectionMethod     $method
-     * @param   \stubbles\lang\reflect\ReflectionParameter  $param
+     * @param   \ReflectionMethod     $method
+     * @param   \ReflectionParameter  $param
      * @return  string
      */
-    private function paramType(ReflectionMethod $method, ReflectionParameter $param)
+    private function paramType(\ReflectionMethod $method, \ReflectionParameter $param)
     {
         $methodAnnotations = reflect\annotationsOf($method);
         $paramAnnotations  = reflect\annotationsOf($param);
@@ -217,11 +214,11 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * detects name for binding
      *
-     * @param   \stubbles\lang\reflect\ReflectionParameter  $param
-     * @param   string               $default
-     * @return  string|\stubbles\lang\reflect\ReflectionClass
+     * @param   \ReflectionParameter  $param
+     * @param   string                $default
+     * @return  string|\ReflectionClass
      */
-    private function detectBindingName(ReflectionParameter $param, $default)
+    private function detectBindingName(\ReflectionParameter $param, $default)
     {
         $annotations = reflect\annotationsOf($param);
         if ($annotations->contain('List')) {
@@ -258,11 +255,11 @@ class DefaultInjectionProvider implements InjectionProvider
     /**
      * creates the called method message
      *
-     * @param   \stubbles\lang\reflect\ReflectionParameter  $parameter
-     * @param   string                                      $type
+     * @param   \ReflectionParameter  $parameter
+     * @param   string                $type
      * @return  string
      */
-    private function createParamString(ReflectionParameter $parameter, $type)
+    private function createParamString(\ReflectionParameter $parameter, $type)
     {
         $message = '';
         if (!in_array($type, [PropertyBinding::TYPE, ConstantBinding::TYPE, ListBinding::TYPE, MapBinding::TYPE])) {

@@ -1,9 +1,16 @@
 5.3.0 (2015-??-??)
 ------------------
 
+### BC breaks
+
+  * all typehints in ˚\stubbles\ioc` classes which where against `stubbles\lang\reflect\Reflection*` classes now use PHP standard reflection classes
+
+
+### Other changes
+
+  * added `stubbles\lang\reflect\annotationsOf()` which allows to retrieve annotations without using one of the `stubbles\lang\reflect\Reflection*` classes
   * added `stubbles\predicate\ContainsAnyOf`
   * implemented #122: add support for ::class in value parser
-  * added `stubbles\lang\reflect\annotationsOf()` which allows to retrieve annotations without using one of the `stubbles\lang\reflect\Reflection*` classes
 
 
 5.2.0 (2014-11-16)

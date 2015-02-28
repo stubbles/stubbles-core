@@ -14,8 +14,6 @@ use stubbles\ioc\InjectionProvider;
 use stubbles\ioc\Injector;
 use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\reflect;
-use stubbles\lang\reflect\BaseReflectionClass;
-use stubbles\lang\reflect\ReflectionClass;
 /**
  * Binding to bind an interface to an implementation.
  *
@@ -38,7 +36,7 @@ class ClassBinding implements Binding
     /**
      * class that implements this binding
      *
-     * @type  \stubbles\lang\reflect\ReflectionClass
+     * @type  string|\ReflectionClass
      */
     private $impl;
     /**
@@ -95,14 +93,14 @@ class ClassBinding implements Binding
      * set the concrete implementation
      *
      * @api
-     * @param   \stubbles\lang\reflect\BaseReflectionClass|string  $impl
+     * @param   \ReflectionClass|string  $impl
      * @return  \stubbles\ioc\binding\ClassBinding
      * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function to($impl)
     {
-        if (!is_string($impl) && !($impl instanceof BaseReflectionClass)) {
-            throw new IllegalArgumentException('$impl must be a string or an instance of stubbles\lang\reflect\BaseReflectionClass');
+        if (!is_string($impl) && !($impl instanceof \ReflectionClass)) {
+            throw new IllegalArgumentException('$impl must be a string or an instance of \ReflectionClass');
         }
 
         $this->impl = $impl;
@@ -153,12 +151,12 @@ class ClassBinding implements Binding
      * 'toProvider()' method.
      *
      * @api
-     * @param   string|\stubbles\lang\reflect\BaseReflectionClass  $providerClass
+     * @param   string|\ReflectionClass  $providerClass
      * @return  \stubbles\ioc\binding\ClassBinding
      */
     public function toProviderClass($providerClass)
     {
-        $this->providerClass = (($providerClass instanceof BaseReflectionClass) ?
+        $this->providerClass = (($providerClass instanceof \ReflectionClass) ?
                                     ($providerClass->getName()) : ($providerClass));
         return $this;
     }
@@ -244,7 +242,7 @@ class ClassBinding implements Binding
         }
 
         if (is_string($this->impl)) {
-            $this->impl = new ReflectionClass($this->impl);
+            $this->impl = new \ReflectionClass($this->impl);
         }
 
         if (null === $this->scope) {

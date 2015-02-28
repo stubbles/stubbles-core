@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\lang\reflect\ReflectionClass;
 /**
  * Test for stubbles\ioc\Injector with provider binding.
  *
@@ -63,7 +62,8 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
     public function injectWithProviderClass()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Answer')->toProviderClass(new ReflectionClass('stubbles\test\ioc\MyProviderClass'));
+        $binder->bind('stubbles\test\ioc\Answer')
+               ->toProviderClass(new \ReflectionClass('stubbles\test\ioc\MyProviderClass'));
         $question = $binder->getInjector()->getInstance('stubbles\test\ioc\AnotherQuestion');
         $this->assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
         $this->assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());

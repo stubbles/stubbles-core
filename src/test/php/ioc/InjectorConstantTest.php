@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\lang\reflect\ReflectionClass;
 /**
  * Helper class for the test.
 /**
@@ -124,7 +123,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')
-               ->toProviderClass(new ReflectionClass('stubbles\test\ioc\AnswerConstantProvider'));
+               ->toProviderClass(new \ReflectionClass('stubbles\test\ioc\AnswerConstantProvider'));
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));
         $this->assertEquals(42, $injector->getConstant('answer'));

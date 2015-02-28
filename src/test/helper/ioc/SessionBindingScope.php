@@ -10,7 +10,6 @@
 namespace stubbles\test\ioc;
 use stubbles\ioc\InjectionProvider;
 use stubbles\ioc\binding\BindingScope;
-use stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Session binding scope for the purpose of this test.
  */
@@ -26,11 +25,11 @@ class SessionBindingScope implements BindingScope
     /**
      * returns the requested instance from the scope
      *
-     * @param   BaseReflectionClass  $impl      concrete implementation
-     * @param   InjectionProvider    $provider
+     * @param   \ReflectionClass   $impl      concrete implementation
+     * @param   InjectionProvider  $provider
      * @return  mixed
      */
-    public function getInstance(BaseReflectionClass $impl, InjectionProvider $provider)
+    public function getInstance(\ReflectionClass $impl, InjectionProvider $provider)
     {
         $key = $impl->getName();
         if (isset(self::$instances[$key])) {

@@ -9,7 +9,6 @@
  */
 namespace stubbles\ioc\binding;
 use stubbles\ioc\InjectionProvider;
-use stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Interface for all scopes.
  *
@@ -20,9 +19,9 @@ interface BindingScope
     /**
      * returns the requested instance from the scope
      *
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $impl      concrete implementation
-     * @param   \stubbles\ioc\InjectionProvider             $provider
+     * @param   \ReflectionClass                 $impl      concrete implementation
+     * @param   \stubbles\ioc\InjectionProvider  $provider
      * @return  object
      */
-    public function getInstance(BaseReflectionClass $impl, InjectionProvider $provider);
+    public function getInstance(\ReflectionClass $impl, InjectionProvider $provider);
 }

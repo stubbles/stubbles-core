@@ -11,7 +11,6 @@ namespace stubbles\ioc\binding;
 use stubbles\ioc\ClosureInjectionProvider;
 use stubbles\ioc\InjectionProvider;
 use stubbles\ioc\Injector;
-use stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Binding to bind a property to a constant value.
  */
@@ -93,13 +92,13 @@ class ConstantBinding implements Binding
      * 'toProvider()' method.
      *
      * @api
-     * @param   string|\stubbles\lang\reflect\BaseReflectionClass  $providerClass
+     * @param   string|\ReflectionClass  $providerClass
      * @return  \stubbles\ioc\binding\ConstantBinding
      * @since   1.6.0
      */
     public function toProviderClass($providerClass)
     {
-        $this->providerClass = (($providerClass instanceof BaseReflectionClass) ?
+        $this->providerClass = (($providerClass instanceof \ReflectionClass) ?
                                     ($providerClass->getName()) : ($providerClass));
         return $this;
     }

@@ -11,7 +11,6 @@ namespace stubbles\ioc\binding;
 use stubbles\ioc\Injector;
 use stubbles\ioc\InjectionProvider;
 use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\reflect\BaseReflectionClass;
 /**
  * Base class for multi bindings.
  *
@@ -132,13 +131,13 @@ abstract class MultiBinding implements Binding
      * an instance of the class defined with $type. In any other case there's no
      * type mismatch
      *
-     * @param   string|\stubbles\lang\reflect\BaseReflectionClass  $type
-     * @param   mixed                                              $value
+     * @param   string|\ReflectionClass  $type
+     * @param   mixed                    $value
      * @return  bool
      */
     private function isTypeMismatch($type, $value)
     {
-        if (!($type instanceof BaseReflectionClass)) {
+        if (!($type instanceof \ReflectionClass)) {
             return false;
         }
 
