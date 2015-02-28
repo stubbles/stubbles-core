@@ -160,4 +160,48 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         docComment(new \ReflectionExtension('date'));
     }
+
+    /**
+     * @test
+     */
+    public function methodsOfReturnsAllMethods()
+    {
+        methodsOf($this)->peek(
+                function($method)
+                {
+                    $this->assertInstanceOf('\ReflectionMethod', $method);
+                }
+                )->count();
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     */
+    public function methodsWithNonClassThrowsInvalidArgumentException()
+    {
+        methodsOf(404);
+    }
+
+    /**
+     * @test
+     */
+    public function propertiesOfReturnsAllMethods()
+    {
+        propertiesOf($this)->peek(
+                function($method)
+                {
+                    $this->assertInstanceOf('\ReflectionProperty', $method);
+                }
+                )->count();
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     */
+    public function propertiesOfWithNonClassThrowsInvalidArgumentException()
+    {
+        propertiesOf(404);
+    }
 }

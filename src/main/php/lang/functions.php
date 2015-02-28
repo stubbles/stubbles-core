@@ -355,6 +355,7 @@ namespace stubbles\lang\exception {
 }
 namespace stubbles\lang\reflect {
     use stubbles\lang;
+    use stubbles\lang\Sequence;
     use stubbles\lang\reflect\annotation\AnnotationCache;
     use stubbles\lang\reflect\annotation\Annotations;
     use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
@@ -460,5 +461,47 @@ namespace stubbles\lang\reflect {
         }
 
         throw new \ReflectionException('Can not retrieve doc comment for ' . get_class($reflector));
+    }
+
+    /**
+     * returns a sequence of all methods of given class
+     *
+     * @param   string|object|\ReflectionClass  $class   class to return methods for
+     * @param   int                             $filter  optional  filter the results to include only methods with certain attributes using any combination of ReflectionMethod::IS_ constants
+     * @return  \stubbles\lang\Sequence
+     * @throws  \InvalidArgumentException
+     * @since   5.3.0
+     */
+    function methodsOf($class, $filter = null)
+    {
+        if (!($class instanceof \ReflectionClass)) {
+            $class = lang\reflect($class);
+            if (!($class instanceof \ReflectionClass)) {
+                throw new \InvalidArgumentException('Given class must be a class name, a class instance or an instance of \ReflectionClass');
+            }
+        }
+
+        return Sequence::of($class->getMethods($filter));
+    }
+
+    /**
+     * returns a sequence of all properties of given class
+     *
+     * @param   string|object|\ReflectionClass  $class   class to return properties for
+     * @param   int                             $filter  optional  filter the results to include only properties with certain attributes using any combination of ReflectionProperty::IS_ constants
+     * @return  \stubbles\lang\Sequence
+     * @throws  \InvalidArgumentException
+     * @since   5.3.0
+     */
+    function propertiesOf($class, $filter = null)
+    {
+        if (!($class instanceof \ReflectionClass)) {
+            $class = lang\reflect($class);
+            if (!($class instanceof \ReflectionClass)) {
+                throw new \InvalidArgumentException('Given class must be a class name, a class instance or an instance of \ReflectionClass');
+            }
+        }
+
+        return Sequence::of($class->getProperties($filter));
     }
 }

@@ -25,6 +25,8 @@
 
 ### Other changes
 
+  * added `stubbles\lang\reflect\methodsOf()`
+  * added `stubbles\lang\reflect\propertiesOf()`
   * added `stubbles\predicate\ContainsAnyOf`
   * implemented #122: add support for ::class in value parser
 
