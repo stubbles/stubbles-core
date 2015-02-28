@@ -64,7 +64,7 @@ class Parse
                 },
                 'stubbles\peer\http\HttpUri'
         );
-        self::addRecognition(function($string) { $class = self::toClassname($string); if (null !== $class) { return $class; } }, 'string');
+        self::addRecognition(function($string) { $classname = self::toClassname($string); if (null !== $classname) { return $classname; } }, 'string');
         self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'stubbles\lang\reflect\ReflectionClass');
         self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } }, 'stubbles\lang\Enum');
         self::addRecognition(function($string) { if (defined($string)) { return constant($string); } }, 'constant');
