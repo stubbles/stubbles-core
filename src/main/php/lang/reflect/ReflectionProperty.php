@@ -18,6 +18,7 @@ use stubbles\lang\reflect\annotation\Annotated;
  * public, protected or private.
  *
  * @api
+ * @deprecated  use PHP's native reflection classes, will be removed with 6.0.0
  */
 class ReflectionProperty extends \ReflectionProperty implements Annotatable
 {

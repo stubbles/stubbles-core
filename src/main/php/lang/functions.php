@@ -122,6 +122,7 @@ namespace stubbles\lang {
      * @param   string  $typeName
      * @return  \stubbles\lang\reflect\ReflectionType
      * @since   3.1.1
+     * @deprecated  will be removed with 6.0.0
      */
     function typeFor($typeName)
     {

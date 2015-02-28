@@ -20,6 +20,7 @@ use stubbles\lang\reflect\matcher\PropertyMatcher;
  * the same argument when the argument is typehinted with this interface.
  *
  * @api
+ * @deprecated  use PHP's native reflection classes, will be removed with 6.0.0
  */
 interface BaseReflectionClass extends ReflectionType, Annotatable
 {

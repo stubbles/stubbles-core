@@ -14,6 +14,7 @@ use stubbles\lang\reflect\annotation\Annotated;
  * Extended Reflection class for parameters.
  *
  * @api
+ * @deprecated  use PHP's native reflection classes, will be removed with 6.0.0
  */
 class ReflectionParameter extends \ReflectionParameter implements Annotatable
 {

@@ -15,6 +15,7 @@ use stubbles\lang\reflect\matcher\PropertyMatcher;
  * Extended Reflection class for classes that allows usage of annotations.
  *
  * @api
+ * @deprecated  use PHP's native reflection classes, will be removed with 6.0.0
  */
 class ReflectionObject extends \ReflectionObject implements BaseReflectionClass
 {

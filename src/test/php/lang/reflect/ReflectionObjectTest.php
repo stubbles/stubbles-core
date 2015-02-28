@@ -16,6 +16,7 @@ use stubbles\test\lang\reflect\TestWithOutMethodsAndProperties;
  *
  * @group  lang
  * @group  lang_reflect
+ * @deprecated  will be removed with 6.0.0
  */
 class ReflectionObjectTest extends \PHPUnit_Framework_TestCase
 {

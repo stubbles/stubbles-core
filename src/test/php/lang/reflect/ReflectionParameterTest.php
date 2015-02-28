@@ -99,6 +99,7 @@ class ParamTestHelper2 extends ParamTestHelper
  *
  * @group  lang
  * @group  lang_reflect
+ * @deprecated  will be removed with 6.0.0
  */
 class ReflectionParameterTest extends \PHPUnit_Framework_TestCase
 {

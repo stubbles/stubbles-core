@@ -14,6 +14,7 @@ namespace stubbles\lang\reflect;
  * @since  3.1.1
  * @group  lang
  * @group  lang_reflect
+ * @deprecated  will be removed with 6.0.0
  */
 class MixedTypeTest extends \PHPUnit_Framework_TestCase
 {

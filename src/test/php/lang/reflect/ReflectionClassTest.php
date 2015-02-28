@@ -14,6 +14,7 @@ use stubbles\lang\reflect\annotation\Annotation;
  *
  * @group  lang
  * @group  lang_reflect
+ * @deprecated  will be removed with 6.0.0
  */
 class ReflectionClassTest extends \PHPUnit_Framework_TestCase
 {

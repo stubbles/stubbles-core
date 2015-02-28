@@ -13,6 +13,7 @@ use stubbles\lang\reflect\annotation\Annotated;
  * Extended Reflection class for functions that allows usage of annotations.
  *
  * @api
+ * @deprecated  use PHP's native reflection classes, will be removed with 6.0.0
  */
 class ReflectionFunction extends \ReflectionFunction implements ReflectionRoutine
 {

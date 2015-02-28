@@ -3,12 +3,28 @@
 
 ### BC breaks
 
+  * deprecated classes in `stubbles\lang\reflect`, use PHP's native reflection instead, will be removed with 6.0.0
+    * `stubbles\lang\reflect\BaseReflectionClass`
+    * `stubbles\lang\reflect\MixedType`
+    * `stubbles\lang\reflect\ReflectionClass`
+    * `stubbles\lang\reflect\ReflectionExtension`
+    * `stubbles\lang\reflect\ReflectionFunction`
+    * `stubbles\lang\reflect\ReflectionMethod`
+    * `stubbles\lang\reflect\ReflectionObject`
+    * `stubbles\lang\reflect\ReflectionParameter`
+    * `stubbles\lang\reflect\ReflectionPrimitive`
+    * `stubbles\lang\reflect\ReflectionProperty`
+    * `stubbles\lang\reflect\ReflectionRoutine`
+    * `stubbles\lang\reflect\ReflectionType`
+    * `stubbles\lang\reflect\matcher\MethodMatcher`
+    * `stubbles\lang\reflect\matcher\PropertyMatcher`
+  * added `stubbles\lang\reflect\annotationsOf()` which allows to retrieve annotations without using the `stubbles\lang\reflect\Reflection*` classes
   * all typehints in ˚\stubbles\ioc` classes which where against `stubbles\lang\reflect\Reflection*` classes now use PHP standard reflection classes
+  * deprecated `stubbles\lang\typeFor()`, will be removed with 6.0.0
 
 
 ### Other changes
 
-  * added `stubbles\lang\reflect\annotationsOf()` which allows to retrieve annotations without using one of the `stubbles\lang\reflect\Reflection*` classes
   * added `stubbles\predicate\ContainsAnyOf`
   * implemented #122: add support for ::class in value parser
 

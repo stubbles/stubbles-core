@@ -13,6 +13,7 @@ use stubbles\lang\reflect\ReflectionMethod;
  * Interface for matching methods.
  *
  * @api
+ * @deprecated  will be removed with 6.0.0
  */
 interface MethodMatcher
 {

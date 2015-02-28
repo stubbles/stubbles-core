@@ -11,6 +11,8 @@ namespace stubbles\lang\reflect;
 use stubbles\lang\Enum;
 /**
  * Type reference for primitives.
+ *
+ * @deprecated  will be removed with 6.0.0
  */
 class ReflectionPrimitive extends Enum implements ReflectionType
 {

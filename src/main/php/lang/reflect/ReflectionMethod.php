@@ -9,11 +9,11 @@
  */
 namespace stubbles\lang\reflect;
 use stubbles\lang\reflect\annotation\Annotated;
-use stubbles\lang\reflect\annotation\AnnotationFactory;
 /**
  * Extended Reflection class for class methods that allows usage of annotations.
  *
  * @api
+ * @deprecated  use PHP's native reflection classes, will be removed with 6.0.0
  */
 class ReflectionMethod extends \ReflectionMethod implements ReflectionRoutine
 {

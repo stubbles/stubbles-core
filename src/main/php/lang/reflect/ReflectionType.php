@@ -12,6 +12,7 @@ namespace stubbles\lang\reflect;
  * Basic interface for type references.
  *
  * @api
+ * @deprecated  will be removed with 6.0.0
  */
 interface ReflectionType
 {

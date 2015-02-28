@@ -13,6 +13,7 @@ use stubbles\lang\reflect\ReflectionProperty;
  * Interface for matching properties.
  *
  * @api
+ * @deprecated  will be removed with 6.0.0
  */
 interface PropertyMatcher
 {

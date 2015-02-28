@@ -13,6 +13,7 @@ use stubbles\lang\Enum;
  * Type reference for mixed types.
  *
  * @since   3.1.1
+ * @deprecated  will be removed with 6.0.0
  */
 class MixedType extends Enum implements ReflectionType
 {

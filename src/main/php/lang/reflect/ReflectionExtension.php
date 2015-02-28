@@ -12,6 +12,7 @@ namespace stubbles\lang\reflect;
  * Extended Reflection class for extensions.
  *
  * @api
+ * @deprecated  use PHP's native reflection classes, will be removed with 6.0.0
  */
 class ReflectionExtension extends \ReflectionExtension
 {

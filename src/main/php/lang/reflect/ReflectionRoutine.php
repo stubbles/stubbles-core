@@ -13,6 +13,7 @@ use stubbles\lang\reflect\annotation\Annotatable;
  * Common base interface for methods and functions.
  *
  * @api
+ * @deprecated  use PHP's native reflection classes, will be removed with 6.0.0
  */
 interface ReflectionRoutine extends Annotatable
 {
