@@ -3,6 +3,7 @@
 
   * added `stubbles\predicate\ContainsAnyOf`
   * implemented #122: add support for ::class in value parser
+  * added `stubbles\lang\reflect\annotationsOf()` which allows to retrieve annotations without using one of the `stubbles\lang\reflect\Reflection*` classes
 
 
 5.2.0 (2014-11-16)

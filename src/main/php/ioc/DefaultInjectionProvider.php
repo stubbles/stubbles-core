@@ -13,6 +13,7 @@ use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
+use stubbles\lang\reflect;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\lang\reflect\ReflectionMethod;
 use stubbles\lang\reflect\ReflectionParameter;
@@ -74,12 +75,12 @@ class DefaultInjectionProvider implements InjectionProvider
     private function createInstance()
     {
         $constructor = $this->class->getConstructor();
-        if (null === $constructor || $this->class->isInternal() || !$constructor->hasAnnotation('Inject')) {
+        if (null === $constructor || $this->class->isInternal() || !reflect\annotationsOf($constructor)->contain('Inject')) {
             return $this->class->newInstance();
         }
 
         $params = $this->injectionValuesForMethod($constructor);
-        if (false === $params && $constructor->annotation('Inject')->isOptional()) {
+        if (false === $params && reflect\annotationsOf($constructor)->named('Inject')[0]->isOptional()) {
             return $this->class->newInstance();
         }
 
@@ -98,7 +99,7 @@ class DefaultInjectionProvider implements InjectionProvider
             if ($method->isStatic()
               || $method->getNumberOfParameters() === 0
               || strncmp($method->getName(), '__', 2) === 0
-              || !$method->hasAnnotation('Inject')) {
+              || !reflect\annotationsOf($method)->contain('Inject')) {
                 continue;
             }
 
@@ -129,7 +130,7 @@ class DefaultInjectionProvider implements InjectionProvider
             if (!$hasExplicitBinding && $param->isDefaultValueAvailable()) {
                 $paramValues[] = $param->getDefaultValue();
                 continue;
-            } elseif (!$hasExplicitBinding && $method->annotation('Inject')->isOptional()) {
+            } elseif (!$hasExplicitBinding && reflect\annotationsOf($method)->named('Inject')[0]->isOptional()) {
                 return false;
             }
 
@@ -158,20 +159,21 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     private function methodBindingName(ReflectionMethod $method)
     {
-        if ($method->hasAnnotation('List')) {
-            return $method->annotation('List')->getValue();
+        $annotations = reflect\annotationsOf($method);
+        if ($annotations->contain('List')) {
+            return $annotations->named('List')[0]->getValue();
         }
 
-        if ($method->hasAnnotation('Map')) {
-            return $method->annotation('Map')->getValue();
+        if ($annotations->contain('Map')) {
+            return $annotations->named('Map')[0]->getValue();
         }
 
-        if ($method->hasAnnotation('Named')) {
-            return $method->annotation('Named')->getName();
+        if ($annotations->contain('Named')) {
+            return $annotations->named('Named')[0]->getName();
         }
 
-        if ($method->hasAnnotation('Property')) {
-            return $method->annotation('Property')->getValue();
+        if ($annotations->contain('Property')) {
+            return $annotations->named('Property')[0]->getValue();
         }
 
         return null;
@@ -186,24 +188,26 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     private function paramType(ReflectionMethod $method, ReflectionParameter $param)
     {
-        $paramClass = $param->getClass();
+        $methodAnnotations = reflect\annotationsOf($method);
+        $paramAnnotations  = reflect\annotationsOf($param);
+        $paramClass        = $param->getClass();
         if (null !== $paramClass) {
-            if ($method->hasAnnotation('Property') || $param->hasAnnotation('Property')) {
+            if ($methodAnnotations->contain('Property') || $paramAnnotations->contain('Property')) {
                 return PropertyBinding::TYPE;
             }
 
             return $paramClass->getName();
         }
 
-        if ($method->hasAnnotation('List') || $param->hasAnnotation('List')) {
+        if ($methodAnnotations->contain('List') || $paramAnnotations->contain('List')) {
             return ListBinding::TYPE;
         }
 
-        if ($method->hasAnnotation('Map') || $param->hasAnnotation('Map')) {
+        if ($methodAnnotations->contain('Map') || $paramAnnotations->contain('Map')) {
             return MapBinding::TYPE;
         }
 
-        if ($method->hasAnnotation('Property') || $param->hasAnnotation('Property')) {
+        if ($methodAnnotations->contain('Property') || $paramAnnotations->contain('Property')) {
             return PropertyBinding::TYPE;
         }
 
@@ -219,20 +223,21 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     private function detectBindingName(ReflectionParameter $param, $default)
     {
-        if ($param->hasAnnotation('List')) {
-            return $param->annotation('List')->getValue();
+        $annotations = reflect\annotationsOf($param);
+        if ($annotations->contain('List')) {
+            return $annotations->named('List')[0]->getValue();
         }
 
-        if ($param->hasAnnotation('Map')) {
-            return $param->annotation('Map')->getValue();
+        if ($annotations->contain('Map')) {
+            return $annotations->named('Map')[0]->getValue();
         }
 
-        if ($param->hasAnnotation('Named')) {
-            return $param->annotation('Named')->getName();
+        if ($annotations->contain('Named')) {
+            return $annotations->named('Named')[0]->getName();
         }
 
-        if ($param->hasAnnotation('Property')) {
-            return $param->annotation('Property')->getValue();
+        if ($annotations->contain('Property')) {
+            return $annotations->named('Property')[0]->getValue();
         }
 
         return $default;

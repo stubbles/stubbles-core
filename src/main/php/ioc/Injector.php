@@ -15,6 +15,7 @@ use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
+use stubbles\lang\reflect;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\lang\reflect\ReflectionClass;
 /**
@@ -252,15 +253,18 @@ class Injector
      */
     private function getAnnotatedBinding(ReflectionClass $class)
     {
-        if ($class->isInterface() && $class->hasAnnotation('ImplementedBy')) {
+        $annotations = reflect\annotationsOf($class);
+        if ($class->isInterface() && $annotations->contain('ImplementedBy')) {
             return $this->bind($class->getName())
-                        ->to($class->annotation('ImplementedBy')
-                                   ->getDefaultImplementation()
+                        ->to(
+                                $annotations->named('ImplementedBy')[0]
+                                            ->getDefaultImplementation()
                           );
         } elseif ($class->hasAnnotation('ProvidedBy')) {
             return $this->bind($class->getName())
-                        ->toProviderClass($class->annotation('ProvidedBy')
-                                                ->getProviderClass()
+                        ->toProviderClass(
+                                $annotations->named('ProvidedBy')[0]
+                                            ->getProviderClass()
                           );
         }
 

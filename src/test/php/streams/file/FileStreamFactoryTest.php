@@ -9,6 +9,7 @@
  */
 namespace stubbles\streams\file;
 use org\bovigo\vfs\vfsStream;
+use stubbles\lang\reflect;
 /**
  * Test for stubbles\streams\file\FileStreamFactory.
  *
@@ -53,16 +54,18 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresent()
     {
-        $constructor = \stubbles\lang\reflectConstructor($this->fileStreamFactory);
-        $this->assertTrue($constructor->hasAnnotation('Inject'));
-        $this->assertTrue($constructor->annotation('Inject')->isOptional());
-        $this->assertTrue($constructor->hasAnnotation('Named'));
-        $this->assertEquals('stubbles.filemode',
-                            $constructor->annotation('Named')->getName()
+        $annotations = reflect\constructorAnnotationsOf($this->fileStreamFactory);
+        $this->assertTrue($annotations->contain('Inject'));
+        $this->assertTrue($annotations->named('Inject')[0]->isOptional());
+        $this->assertTrue($annotations->contain('Named'));
+        $this->assertEquals(
+                'stubbles.filemode',
+                $annotations->named('Named')[0]->getName()
         );
-        $this->assertTrue($constructor->hasAnnotation('Property'));
-        $this->assertEquals('stubbles.filemode',
-                            $constructor->annotation('Property')->getName()
+        $this->assertTrue($annotations->contain('Property'));
+        $this->assertEquals(
+                'stubbles.filemode',
+                $annotations->named('Property')[0]->getName()
         );
     }
 

@@ -352,3 +352,112 @@ namespace stubbles\lang\exception {
         return $error['message'];
     }
 }
+namespace stubbles\lang\reflect {
+    use stubbles\lang;
+    use stubbles\lang\reflect\annotation\AnnotationCache;
+    use stubbles\lang\reflect\annotation\Annotations;
+    use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
+
+    /**
+     * returns annotations of constructor of given reflected
+     *
+     * @param   \ReflectionClass|string|object  $reflected   class name, class instance of or object instance to reflect constructor annotations of
+     * @return  \stubbles\lang\reflect\annotation\Annotations
+     * @since   5.3.0
+     */
+    function constructorAnnotationsOf($reflected)
+    {
+        return annotationsOf(
+                ($reflected instanceof \ReflectionClass) ? $reflected->getConstructor() : lang\reflectConstructor($reflected)
+        );
+    }
+
+    /**
+     * returns annotations for given reflected
+     *
+     * @param   \Reflector|string|object  $reflected   class name, function name of or object instance to reflect
+     * @param   string                    $methodName  optional  specific method to reflect
+     * @return  \stubbles\lang\reflect\annotation\Annotations
+     * @since   5.3.0
+     */
+    function annotationsOf($reflected, $methodName = null)
+    {
+        $reflector = ($reflected instanceof \Reflector) ? $reflected : lang\reflect($reflected, $methodName);
+        $target    = _annotationTarget($reflector);
+        if (AnnotationCache::has($target)) {
+            return AnnotationCache::get($target);
+        }
+
+        list($sourceTarget) = explode('#', $target);
+        $return = null;
+        foreach (AnnotationStateParser::parseFrom(docComment($reflector), $sourceTarget) as $annotations) {
+            AnnotationCache::put($annotations);
+            if ($annotations->target() === $target) {
+                $return = $annotations;
+            }
+        }
+
+        if (null === $return) {
+            $return = new Annotations($target);
+            AnnotationCache::put($return);
+        }
+
+        return $return;
+    }
+
+    /**
+     * returns annotation target for given reflector
+     *
+     * @param  \Reflector $reflector
+     * @return  string
+     * @throws  \ReflectionException
+     * @since   5.3.0
+     */
+    function _annotationTarget(\Reflector $reflector)
+    {
+        if ($reflector instanceof \ReflectionClass) {
+            return $reflector->getName();
+        }
+
+        if ($reflector instanceof \ReflectionMethod) {
+            return $reflector->class . '::' . $reflector->getName() . '()';
+        }
+
+        if ($reflector instanceof \ReflectionFunction) {
+            return $reflector->getName() . '()';
+        }
+
+        if ($reflector instanceof \ReflectionParameter) {
+            return _annotationTarget($reflector->getDeclaringFunction()) . '#' . $reflector->getName();
+        }
+
+        if ($reflector instanceof \ReflectionProperty) {
+            return $reflector->class . ($reflector->isStatic() ? '::$' : '->') . $reflector->getName();
+        }
+
+        throw new \ReflectionException('Can not retrieve target for ' . get_class($reflector));
+    }
+
+    /**
+     * returns doc comment for given reflector
+     *
+     * @param   \Reflector  $reflector
+     * @return  \stubbles\lang\reflect\annotation\Annotations[]
+     * @throws  \ReflectionException
+     * @since   5.3.0
+     */
+    function docComment(\Reflector $reflector)
+    {
+        if ($reflector instanceof \ReflectionClass
+                || $reflector instanceof \ReflectionFunctionAbstract
+                || $reflector instanceof \ReflectionProperty) {
+            return $reflector->getDocComment();
+        }
+
+        if ($reflector instanceof \ReflectionParameter) {
+            return $reflector->getDeclaringFunction()->getDocComment();
+        }
+
+        throw new \ReflectionException('Can not retrieve doc comment for ' . get_class($reflector));
+    }
+}

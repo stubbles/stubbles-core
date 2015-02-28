@@ -13,6 +13,7 @@ use stubbles\ioc\DefaultInjectionProvider;
 use stubbles\ioc\InjectionProvider;
 use stubbles\ioc\Injector;
 use stubbles\lang\exception\IllegalArgumentException;
+use stubbles\lang\reflect;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\lang\reflect\ReflectionClass;
 /**
@@ -247,7 +248,7 @@ class ClassBinding implements Binding
         }
 
         if (null === $this->scope) {
-            if ($this->impl->hasAnnotation('Singleton')) {
+            if (reflect\annotationsOf($this->impl)->contain('Singleton')) {
                 $this->scope = $this->scopes->getSingletonScope();
             }
         }

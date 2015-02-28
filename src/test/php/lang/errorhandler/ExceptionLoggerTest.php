@@ -9,7 +9,7 @@
  */
 namespace stubbles\lang\errorhandler;
 use org\bovigo\vfs\vfsStream;
-use stubbles\lang;
+use stubbles\lang\reflect;
 /**
  * Tests for stubbles\lang\errorhandler\ExceptionLogger.
  *
@@ -48,11 +48,12 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $constructor = lang\reflectConstructor($this->exceptionLogger);
-        $this->assertTrue($constructor->hasAnnotation('Inject'));
-        $this->assertTrue($constructor->hasAnnotation('Named'));
-        $this->assertEquals('stubbles.project.path',
-                            $constructor->annotation('Named')->getName()
+        $annotations = reflect\constructorAnnotationsOf($this->exceptionLogger);
+        $this->assertTrue($annotations->contain('Inject'));
+        $this->assertTrue($annotations->contain('Named'));
+        $this->assertEquals(
+                'stubbles.project.path',
+                $annotations->named('Named')[0]->getName()
         );
     }
 

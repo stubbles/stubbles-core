@@ -71,7 +71,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [],
-                $this->annotations->of('foo')
+                $this->annotations->named('foo')
         );
     }
 
@@ -87,7 +87,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
                 $this->annotations->add(new Annotation('foo'))
                                   ->add(new Annotation('bar'))
                                   ->add(new Annotation('foo'))
-                                  ->of('foo')
+                                  ->named('foo')
         );
     }
 

@@ -37,7 +37,9 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function isAnnotatedAsSingleton()
     {
-        $this->assertTrue(reflect($this->resourceLoader)->hasAnnotation('Singleton'));
+        $this->assertTrue(
+                reflect\annotationsOf($this->resourceLoader)->contain('Singleton')
+        );
     }
 
     /**
