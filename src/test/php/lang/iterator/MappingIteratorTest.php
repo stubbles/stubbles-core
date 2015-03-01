@@ -19,6 +19,16 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @expectedException  InvalidArgumentException
+     * @since  5.3.0
+     */
+    public function throwsInvalidArgumentExceptionWhenBothValueMapperAndKeyMapperAreNull()
+    {
+        new MappingIterator(new \ArrayIterator(['foo', 'bar', 'baz']));
+    }
+
+    /**
+     * @test
      */
     public function mapsValueOnIteration()
     {
@@ -47,6 +57,22 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  5.3.0
+     */
+    public function keyMapperCanOptionallyReceiveValue()
+    {
+        $mapping = new MappingIterator(
+                new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
+                null,
+                function($key, $value) { $this->assertEquals($value, $key); return 'mappedKey'; }
+        );
+        foreach ($mapping as $value) {
+            // intentionally empty
+        }
+    }
+
+    /**
+     * @test
      */
     public function valueMapperReceivesUnmappedKey()
     {
@@ -58,6 +84,41 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
         foreach ($mapping as $key => $value) {
             // intentionally empty
         }
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function keyMapperReceivesUnmappedValue()
+    {
+        $mapping = new MappingIterator(
+                new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
+                function($value) { return 'mappedValue'; },
+                function($key, $value) { $this->assertEquals($value, $key); return 'mappedKey'; }
+        );
+        foreach ($mapping as $key => $value) {
+            // intentionally empty
+        }
+    }
+
+    /**
+     * @test
+     * @since  5.3.0
+     */
+    public function doesNotMapValueWhenNoValueMapperProvided()
+    {
+        $mapping = new MappingIterator(
+                new \ArrayIterator(['foo' => 303, 'bar' => 808, 'baz' => '909']),
+                null,
+                function($value) { return 'mappedValue'; }
+        );
+        $values = [];
+        foreach ($mapping as $key => $value) {
+            $values[] = $value;
+        }
+
+        $this->assertEquals([303, 808, '909'], $values);
     }
 
     /**
