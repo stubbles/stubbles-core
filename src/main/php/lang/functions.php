@@ -328,12 +328,27 @@ namespace stubbles\lang {
             return $callable;
         }
 
-        $function = reflect($callable);
-        if ($function->isInternal()) {
-            return reflect($callable)->wrapInClosure();
+        static $wrappedFunctions = [];
+        if (isset($wrappedFunctions[$callable])) {
+            return $wrappedFunctions[$callable];
         }
 
-        return $callable;
+        $function = reflect($callable);
+        if (!$function->isInternal()) {
+            return $callable;
+        }
+
+        $signature = $arguments = '';
+        foreach ($function->getParameters() as $position => $param) {
+            $signature .= ', ' . ($param->isPassedByReference() ? '&' : '') . '$_' . $position . ($param->isOptional() ? '= null' : '');
+            $arguments .= ', $_' . $position;
+        }
+
+        $wrappedFunctions[$callable] = eval(
+                'return function(' . substr($signature, 2) . ') { return ' . $callable . '(' . substr($arguments, 2) . '); };'
+        );
+
+        return $wrappedFunctions[$callable];
     }
 }
 namespace stubbles\lang\exception {
