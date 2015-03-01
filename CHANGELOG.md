@@ -37,6 +37,7 @@
   * added `stubbles\lang\reflect\constructorParameter()`
   * added `stubbles\predicate\ContainsAnyOf`
   * implemented #122: add support for ::class in value parser
+  * added `stubbles\lang\Sequence::mapKeys()`
   * `stubbles\lang\iterator\MappingIterator` can now work with key mapping only
 
 

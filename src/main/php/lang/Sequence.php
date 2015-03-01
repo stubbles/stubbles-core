@@ -72,8 +72,8 @@ class Sequence implements \IteratorAggregate, \Countable
     /**
      * creates sequence of given data
      *
-     * @param   Sequence|\Traversable|array  $elements
-     * @return  Sequence
+     * @param   \stubbles\lang\Sequence|\Traversable|array  $elements
+     * @return  \stubbles\lang\Sequence
      */
     public static function of($elements)
     {
@@ -98,8 +98,9 @@ class Sequence implements \IteratorAggregate, \Countable
      * iteration when required.
      *
      *
-     * @param  $seed     $seed       initial value
-     * @param  callable  $operation  operation which takes a value and generates a new one
+     * @param   $seed     $seed       initial value
+     * @param   callable  $operation  operation which takes a value and generates a new one
+     * @return  \stubbles\lang\Sequence
      */
     public static function infinite($seed, callable $operation)
     {
@@ -127,7 +128,7 @@ class Sequence implements \IteratorAggregate, \Countable
      * @param   $seed     $seed       initial value
      * @param   callable  $operation  operation which takes a value and generates a new one
      * @param   callable  $validator  function which decides whether a value is valid
-     * @return  Sequence
+     * @return  \stubbles\lang\Sequence
      */
     public static function generate($seed, callable $operation, callable $validator)
     {
@@ -140,7 +141,7 @@ class Sequence implements \IteratorAggregate, \Countable
      * This is an intermediate operation.
      *
      * @param   int  $n
-     * @return  Sequence
+     * @return  \stubbles\lang\Sequence
      */
     public function limit($n)
     {
@@ -153,7 +154,7 @@ class Sequence implements \IteratorAggregate, \Countable
      * This is an intermediate operation.
      *
      * @param   int  $n
-     * @return  Sequence
+     * @return  \stubbles\lang\Sequence
      */
     public function skip($n)
     {
@@ -169,7 +170,7 @@ class Sequence implements \IteratorAggregate, \Countable
      * value or false to reject the value.
      *
      * @param   callable  $predicate
-     * @return  Sequence
+     * @return  \stubbles\lang\Sequence
      */
     public function filter(callable $predicate)
     {
@@ -183,7 +184,7 @@ class Sequence implements \IteratorAggregate, \Countable
      *
      * @param   callable  $valueMapper  function to map values with
      * @param   callable  $keyMapper    function to map keys with
-     * @return  Sequence
+     * @return  \stubbles\lang\Sequence
      */
     public function map(callable $valueMapper, callable $keyMapper = null)
     {
@@ -191,12 +192,26 @@ class Sequence implements \IteratorAggregate, \Countable
     }
 
     /**
+     * returns a new sequence which maps each key using the given mapper
+     *
+     * This is an intermediate operation.
+     *
+     * @param   callable  $keyMapper    function to map keys with
+     * @return  \stubbles\lang\Sequence
+     * @since   5.3.0
+     */
+    public function mapKeys(callable $keyMapper)
+    {
+        return new self(new MappingIterator($this->getIterator(), null, $keyMapper));
+    }
+
+    /**
      * appends another sequence, creating a new combined sequence
      *
      * This is an intermediate operation.
      *
-     * @param   Sequence  $other
-     * @return  Sequence
+     * @param   \stubbles\lang\Sequence  $other
+     * @return  \stubbles\lang\Sequence
      */
     public function append(self $other)
     {
@@ -213,7 +228,7 @@ class Sequence implements \IteratorAggregate, \Countable
      *
      * @param   callable  $valueConsumer  consumer which is invoked with each element
      * @param   callable  $keyConsumer    optional  consumer which is invoked with each key
-     * @return  Sequence
+     * @return  \stubbles\lang\Sequence
      */
     public function peek(callable $valueConsumer, callable $keyConsumer = null)
     {

@@ -123,6 +123,18 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  5.3.0
+     */
+    public function mapKeys()
+    {
+        $this->assertEquals(
+                [0 => 1, 2 => 2, 4 => 3, 6 => 4],
+                Sequence::of([1, 2, 3, 4])->mapKeys(function($e) { return $e * 2; })->data()
+        );
+    }
+
+    /**
      * @return  array
      */
     public function countData()
