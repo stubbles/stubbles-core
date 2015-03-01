@@ -255,14 +255,14 @@ class Injector
         if ($class->isInterface() && $annotations->contain('ImplementedBy')) {
             return $this->bind($class->getName())
                         ->to(
-                                $annotations->named('ImplementedBy')[0]
-                                            ->getDefaultImplementation()
+                            $annotations->firstNamed('ImplementedBy')
+                                        ->getDefaultImplementation()
                           );
         } elseif ($annotations->contain('ProvidedBy')) {
             return $this->bind($class->getName())
                         ->toProviderClass(
-                                $annotations->named('ProvidedBy')[0]
-                                            ->getProviderClass()
+                            $annotations->firstNamed('ProvidedBy')
+                                        ->getProviderClass()
                           );
         }
 

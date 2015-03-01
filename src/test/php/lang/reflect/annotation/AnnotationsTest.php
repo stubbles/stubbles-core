@@ -66,6 +66,31 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  5.3.0
+     */
+    public function firstNamedReturnsFirstAddedAnnotationWithThisName()
+    {
+        $first = new Annotation('foo');
+        $this->assertSame(
+                $first,
+                $this->annotations->add($first)
+                                  ->add(new Annotation('foo'))
+                                  ->firstNamed('foo')
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException  ReflectionException
+     * @since  5.3.0
+     */
+    public function firstNamedThrowsReflectionExceptionIfNoSuchAnnotationExists()
+    {
+        $this->annotations->firstNamed('foo');
+    }
+
+    /**
+     * @test
      */
     public function returnsEmptyListIfNoneOfThisTypeAdded()
     {

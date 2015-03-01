@@ -77,7 +77,7 @@ class DefaultInjectionProvider implements InjectionProvider
         }
 
         $params = $this->injectionValuesForMethod($constructor);
-        if (false === $params && reflect\annotationsOf($constructor)->named('Inject')[0]->isOptional()) {
+        if (false === $params && reflect\annotationsOf($constructor)->firstNamed('Inject')->isOptional()) {
             return $this->class->newInstance();
         }
 
@@ -127,7 +127,7 @@ class DefaultInjectionProvider implements InjectionProvider
             if (!$hasExplicitBinding && $param->isDefaultValueAvailable()) {
                 $paramValues[] = $param->getDefaultValue();
                 continue;
-            } elseif (!$hasExplicitBinding && reflect\annotationsOf($method)->named('Inject')[0]->isOptional()) {
+            } elseif (!$hasExplicitBinding && reflect\annotationsOf($method)->firstNamed('Inject')->isOptional()) {
                 return false;
             }
 
@@ -158,19 +158,19 @@ class DefaultInjectionProvider implements InjectionProvider
     {
         $annotations = reflect\annotationsOf($method);
         if ($annotations->contain('List')) {
-            return $annotations->named('List')[0]->getValue();
+            return $annotations->firstNamed('List')->getValue();
         }
 
         if ($annotations->contain('Map')) {
-            return $annotations->named('Map')[0]->getValue();
+            return $annotations->firstNamed('Map')->getValue();
         }
 
         if ($annotations->contain('Named')) {
-            return $annotations->named('Named')[0]->getName();
+            return $annotations->firstNamed('Named')->getName();
         }
 
         if ($annotations->contain('Property')) {
-            return $annotations->named('Property')[0]->getValue();
+            return $annotations->firstNamed('Property')->getValue();
         }
 
         return null;
@@ -222,19 +222,19 @@ class DefaultInjectionProvider implements InjectionProvider
     {
         $annotations = reflect\annotationsOf($param);
         if ($annotations->contain('List')) {
-            return $annotations->named('List')[0]->getValue();
+            return $annotations->firstNamed('List')->getValue();
         }
 
         if ($annotations->contain('Map')) {
-            return $annotations->named('Map')[0]->getValue();
+            return $annotations->firstNamed('Map')->getValue();
         }
 
         if ($annotations->contain('Named')) {
-            return $annotations->named('Named')[0]->getName();
+            return $annotations->firstNamed('Named')->getName();
         }
 
         if ($annotations->contain('Property')) {
-            return $annotations->named('Property')[0]->getValue();
+            return $annotations->firstNamed('Property')->getValue();
         }
 
         return $default;

@@ -21,10 +21,12 @@
   * added `stubbles\lang\reflect\annotationsOf()` which allows to retrieve annotations without using the `stubbles\lang\reflect\Reflection*` classes
   * all typehints in ˚\stubbles\ioc` classes which where against `stubbles\lang\reflect\Reflection*` classes now use PHP standard reflection classes
   * deprecated `stubbles\lang\typeFor()`, will be removed with 6.0.0
+  * deprecated `stubbles\lang\reflect\annotation\Annotations::of()`, use `stubbles\lang\reflect\annotation\Annotations::named()` instead, will be removed with 6.0.0
 
 
 ### Other changes
 
+  * added `stubbles\lang\reflect\annotation\Annotations::firstNamed()`
   * added `stubbles\lang\reflect\methodsOf()`
   * added `stubbles\lang\reflect\propertiesOf()`
   * added `stubbles\predicate\ContainsAnyOf`

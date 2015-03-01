@@ -80,6 +80,25 @@ class Annotations implements \IteratorAggregate
     }
 
     /**
+     * returns first annotation with given type name
+     *
+     * If no such annotation exists a ReflectionException is thrown.
+     *
+     * @param   string  $type
+     * @return  \stubbles\lang\reflect\annotation\Annotation
+     * @throws  \ReflectionException
+     * @since   5.3.0
+     */
+    public function firstNamed($type)
+    {
+        if ($this->contain($type)) {
+            return $this->types[$type][0];
+        }
+
+        throw new \ReflectionException('Can not find annotation ' . $type . ' for ' . $this->target);
+    }
+
+    /**
      * returns a list of all annotations of this type
      *
      * @api
