@@ -113,6 +113,28 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function annotationsOfParameterWithClassInstanceReturnsParameterAnnotations()
+    {
+        $this->assertEquals(
+                __CLASS__ . '::example()#refParam',
+                annotationsOfParameter('refParam', $this, 'example')->target()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function annotationsOfParameterWithClassNameReturnsParameterAnnotations()
+    {
+        $this->assertEquals(
+                __CLASS__ . '::example()#refParam',
+                annotationsOfParameter('refParam', __CLASS__, 'example')->target()
+        );
+    }
+
+    /**
      * @type  null
      */
     private $someProperty;
@@ -166,12 +188,16 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function methodsOfReturnsAllMethods()
     {
-        methodsOf($this)->peek(
-                function($method)
-                {
-                    $this->assertInstanceOf('\ReflectionMethod', $method);
-                }
-                )->count();
+        $this->assertGreaterThan(
+                0,
+                methodsOf($this)
+                    ->peek(
+                        function($method)
+                        {
+                            $this->assertInstanceOf('\ReflectionMethod', $method);
+                        }
+                    )->count()
+        );
     }
 
     /**
@@ -188,12 +214,16 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function propertiesOfReturnsAllMethods()
     {
-        propertiesOf($this)->peek(
-                function($method)
-                {
-                    $this->assertInstanceOf('\ReflectionProperty', $method);
-                }
-                )->count();
+        $this->assertGreaterThan(
+                0,
+                propertiesOf($this)
+                    ->peek(
+                        function($method)
+                        {
+                            $this->assertInstanceOf('\ReflectionProperty', $method);
+                        }
+                    )->count()
+        );
     }
 
     /**
@@ -203,5 +233,59 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function propertiesOfWithNonClassThrowsInvalidArgumentException()
     {
         propertiesOf(404);
+    }
+
+    /**
+     * @test
+     */
+    public function parametersOfReturnsAllParameters()
+    {
+        $this->assertEquals(
+                1,
+                parametersOf($this, 'example')
+                    ->peek(
+                        function($parameter)
+                        {
+                            $this->assertInstanceOf('\ReflectionParameter', $parameter);
+                        }
+                    )->count()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function parametersOfWithReflectionMethodReturnsAllParameters()
+    {
+        $this->assertEquals(
+                1,
+                parametersOf(new \ReflectionMethod($this, 'example'))
+                    ->peek(
+                        function($parameter)
+                        {
+                            $this->assertInstanceOf('\ReflectionParameter', $parameter);
+                        }
+                    )->count()
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     */
+    public function parametersOfWithNonParametersReferenceThrowsInvalidArgumentException()
+    {
+        parametersOf(404);
+    }
+
+    /**
+     * @test
+     */
+    public function parameterReturnsExactReflectionParameter()
+    {
+        $this->assertEquals(
+                'refParam',
+                parameter('refParam', $this, 'example')->getName()
+        );
     }
 }

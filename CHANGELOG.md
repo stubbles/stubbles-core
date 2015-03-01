@@ -19,6 +19,8 @@
     * `stubbles\lang\reflect\matcher\MethodMatcher`
     * `stubbles\lang\reflect\matcher\PropertyMatcher`
   * added `stubbles\lang\reflect\annotationsOf()` which allows to retrieve annotations without using the `stubbles\lang\reflect\Reflection*` classes
+  * added `stubbles\lang\reflect\annotationsOfParameter()` as shortcut
+  * added `stubbles\lang\reflect\annotationsOfConstructorParameter()` as shortcut
   * all typehints in ˚\stubbles\ioc` classes which where against `stubbles\lang\reflect\Reflection*` classes now use PHP standard reflection classes
   * deprecated `stubbles\lang\typeFor()`, will be removed with 6.0.0
   * deprecated `stubbles\lang\reflect\annotation\Annotations::of()`, use `stubbles\lang\reflect\annotation\Annotations::named()` instead, will be removed with 6.0.0
@@ -29,6 +31,10 @@
   * added `stubbles\lang\reflect\annotation\Annotations::firstNamed()`
   * added `stubbles\lang\reflect\methodsOf()`
   * added `stubbles\lang\reflect\propertiesOf()`
+  * added `stubbles\lang\reflect\parametersOf()`
+  * added `stubbles\lang\reflect\constructorParametersOf()`
+  * added `stubbles\lang\reflect\parameter()`
+  * added `stubbles\lang\reflect\constructorParameter()`
   * added `stubbles\predicate\ContainsAnyOf`
   * implemented #122: add support for ::class in value parser
 
