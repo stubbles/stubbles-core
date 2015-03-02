@@ -15,20 +15,6 @@ namespace stubbles\lang\reflect {
     use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
 
     /**
-     * returns annotations of constructor of given reflected
-     *
-     * @param   \ReflectionClass|string|object  $reflected   class name, class instance of or object instance to reflect constructor annotations of
-     * @return  \stubbles\lang\reflect\annotation\Annotations
-     * @since   5.3.0
-     */
-    function constructorAnnotationsOf($reflected)
-    {
-        return annotationsOf(
-                ($reflected instanceof \ReflectionClass) ? $reflected->getConstructor() : lang\reflectConstructor($reflected)
-        );
-    }
-
-    /**
      * returns annotations for given reflected
      *
      * @param   \Reflector|string|object  $reflected   class name, function name of or object instance to reflect
@@ -59,6 +45,20 @@ namespace stubbles\lang\reflect {
         }
 
         return $return;
+    }
+
+    /**
+     * returns annotations of constructor of given reflected
+     *
+     * @param   \ReflectionClass|string|object  $reflected   class name, class instance of or object instance to reflect constructor annotations of
+     * @return  \stubbles\lang\reflect\annotation\Annotations
+     * @since   5.3.0
+     */
+    function annotationsOfConstructor($reflected)
+    {
+        return annotationsOf(
+                ($reflected instanceof \ReflectionClass) ? $reflected->getConstructor() : lang\reflectConstructor($reflected)
+        );
     }
 
     /**
@@ -217,7 +217,7 @@ namespace stubbles\lang\reflect {
      * @return  \stubbles\lang\Sequence
      * @since   5.3.0
      */
-    function constructorParametersOf($class)
+    function parametersOfConstructor($class)
     {
         return parametersOf($class, '__construct');
     }

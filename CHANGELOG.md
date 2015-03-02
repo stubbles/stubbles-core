@@ -19,6 +19,7 @@
     * `stubbles\lang\reflect\matcher\MethodMatcher`
     * `stubbles\lang\reflect\matcher\PropertyMatcher`
   * added `stubbles\lang\reflect\annotationsOf()` which allows to retrieve annotations without using the `stubbles\lang\reflect\Reflection*` classes
+  * added `stubbles\lang\reflect\annotationsOfConstructor()` as shortcut
   * added `stubbles\lang\reflect\annotationsOfParameter()` as shortcut
   * added `stubbles\lang\reflect\annotationsOfConstructorParameter()` as shortcut
   * all typehints in ˚\stubbles\ioc` classes which where against `stubbles\lang\reflect\Reflection*` classes now use PHP standard reflection classes
@@ -32,7 +33,7 @@
   * added `stubbles\lang\reflect\methodsOf()`
   * added `stubbles\lang\reflect\propertiesOf()`
   * added `stubbles\lang\reflect\parametersOf()`
-  * added `stubbles\lang\reflect\constructorParametersOf()`
+  * added `stubbles\lang\reflect\parametersOfConstructor()`
   * added `stubbles\lang\reflect\parameter()`
   * added `stubbles\lang\reflect\constructorParameter()`
   * added `stubbles\predicate\ContainsAnyOf`

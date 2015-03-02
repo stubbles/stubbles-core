@@ -46,7 +46,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 'PHPUnit_Framework_TestCase::__construct()',
-                constructorAnnotationsOf(__CLASS__)->target()
+                annotationsOfConstructor(__CLASS__)->target()
         );
     }
 
@@ -68,7 +68,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 'PHPUnit_Framework_TestCase::__construct()',
-                constructorAnnotationsOf($this)->target()
+                annotationsOfConstructor($this)->target()
         );
     }
 
