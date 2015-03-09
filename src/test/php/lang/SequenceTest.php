@@ -496,4 +496,16 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                         ->contain('XmlIgnore')
         );
     }
+
+    /**
+     * @test
+     * @since  5.3.2
+     */
+    public function canBeSerializedToJson()
+    {
+        $this->assertEquals(
+                '{"one":1,"0":2,"three":3,"1":4}',
+                json_encode(Sequence::of(['one' => 1, 2, 'three' => 3, 4]))
+        );
+    }
 }

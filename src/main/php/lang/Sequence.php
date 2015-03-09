@@ -50,7 +50,7 @@ use stubbles\lang\iterator\Peek;
  * @api
  * @since  5.2.0
  */
-class Sequence implements \IteratorAggregate, \Countable
+class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
 {
     /**
      * actual data in sequence
@@ -420,4 +420,16 @@ class Sequence implements \IteratorAggregate, \Countable
 
         return new \ArrayIterator($this->elements);
     }
+
+    /**
+     * returns serializable representation for JSON
+     *
+     * @return  array
+     * @since   5.3.2
+     */
+    public function jsonSerialize()
+    {
+        return $this->data();
+    }
+
 }

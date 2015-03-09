@@ -2,6 +2,7 @@
 ------------------
 
   * ensured `stubbles\lang\Sequence` is serialized to XML in a proper way with older versions of stubbles/xml
+  * ensured `stubbles\lang\Sequence` can be serialized as JSON
 
 
 5.3.1 (2015-03-09)
