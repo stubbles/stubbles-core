@@ -468,4 +468,32 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                 Sequence::of(new \ArrayIterator(['foo' => 'bar', 'baz' => 303]))->data()
         );
     }
+
+    /**
+     * @return  array
+     * @since   5.3.2
+     */
+    public function xmlIgnoreMethods()
+    {
+        return [
+                ['first'],
+                ['count'],
+                ['values'],
+                ['getIterator']
+        ];
+    }
+
+    /**
+     * @param  string  $method  method to test for presence of annotation
+     * @test
+     * @since  5.3.2
+     * @dataProvider  xmlIgnoreMethods
+     */
+    public function methodsAnnotatedWithXmlIgnore($method)
+    {
+        $this->assertTrue(
+                reflect\annotationsOf('stubbles\lang\Sequence', $method)
+                        ->contain('XmlIgnore')
+        );
+    }
 }

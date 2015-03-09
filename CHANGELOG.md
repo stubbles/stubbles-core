@@ -1,3 +1,9 @@
+5.3.2 (2015-03-09)
+------------------
+
+  * ensured `stubbles\lang\Sequence` is serialized to XML in a proper way with older versions of stubbles/xml
+
+
 5.3.1 (2015-03-09)
 ------------------
 

@@ -295,6 +295,7 @@ class Sequence implements \IteratorAggregate, \Countable
      * This is a terminal operation.
      *
      * @return  mixed
+     * @XmlIgnore
      */
     public function first()
     {
@@ -363,6 +364,7 @@ class Sequence implements \IteratorAggregate, \Countable
      * This is a terminal operation.
      *
      * @return  int
+     * @XmlIgnore
      */
     public function count()
     {
@@ -381,6 +383,7 @@ class Sequence implements \IteratorAggregate, \Countable
      * This is a terminal operation.
      *
      * @return  array
+     * @XmlIgnore
      */
     public function values()
     {
@@ -403,6 +406,7 @@ class Sequence implements \IteratorAggregate, \Countable
      * returns an iterator on this sequence
      *
      * @return  \Iterator
+     * @XmlIgnore
      */
     public function getIterator()
     {
