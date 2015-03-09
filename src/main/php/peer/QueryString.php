@@ -111,7 +111,7 @@ class QueryString
         if (is_array($value)) {
             foreach ($value as $k => $v) {
                 if (is_int($k)) {
-                    $query .= $this->buildQuery(null, $v, $postfix . $name.'[]');
+                    $query .= $this->buildQuery(null, $v, $postfix . $name .'[]');
                 } else {
                     $query .= $this->buildQuery(null, $v, $postfix . $name . '[' . $k . ']');
                 }
@@ -150,7 +150,11 @@ class QueryString
     public function addParam($name, $value)
     {
         if (!is_array($value) && !is_scalar($value) && null !== $value) {
-            throw new IllegalArgumentException('Argument 2 passed to ' . __METHOD__ . '() must be an instance of string, array or any other scalar value.');
+            if (is_object($value) && method_exists($value, '__toString')) {
+                $value = (string) $value;
+            } else {
+                throw new IllegalArgumentException('Argument 2 passed to ' . __METHOD__ . '() must be an a string, array, object with __toString() method or any other scalar value.');
+            }
         }
 
         $this->parameters[$name] = $value;

@@ -1,3 +1,9 @@
+5.3.1 (2015-03-09)
+------------------
+
+  * `stubbles\peer\Uri::addParam()` now accepts objects with `__toString()` method
+
+
 5.3.0 (2015-03-05)
 ------------------
 

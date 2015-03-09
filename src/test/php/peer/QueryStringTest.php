@@ -34,7 +34,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->emptyQueryString     = new QueryString();
-        $this->prefilledQueryString = new QueryString('foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=&set');
+        $this->prefilledQueryString = new QueryString(
+                'foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=&set'
+        );
     }
 
     /**
@@ -60,14 +62,17 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
     public function prefilledHasParametersFromInitialQueryString()
     {
         $this->assertTrue($this->prefilledQueryString->hasParams());
-        $this->assertEquals('bar',
-                            $this->prefilledQueryString->param('foo.hm')
+        $this->assertEquals(
+                'bar',
+                $this->prefilledQueryString->param('foo.hm')
         );
-        $this->assertEquals(['dummy' => 'blubb', 'more'],
-                            $this->prefilledQueryString->param('baz')
+        $this->assertEquals(
+                ['dummy' => 'blubb', 'more'],
+                $this->prefilledQueryString->param('baz')
         );
-        $this->assertEquals('',
-                            $this->prefilledQueryString->param('empty')
+        $this->assertEquals(
+                '',
+                $this->prefilledQueryString->param('empty')
         );
         $this->assertNull($this->prefilledQueryString->param('set'));
     }
@@ -77,9 +82,7 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function buildEmptQueryStringReturnsEmptyString()
     {
-        $this->assertEquals('',
-                            $this->emptyQueryString->build()
-        );
+        $this->assertEquals('', $this->emptyQueryString->build());
     }
 
     /**
@@ -87,8 +90,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function buildNonEmptQueryStringReturnsString()
     {
-        $this->assertEquals('foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=&set',
-                            $this->prefilledQueryString->build()
+        $this->assertEquals(
+                'foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=&set',
+                $this->prefilledQueryString->build()
         );
     }
 
@@ -137,8 +141,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function getNonExistingParamReturnsDefaultValue()
     {
-        $this->assertEquals('example',
-                            $this->emptyQueryString->param('doesNotExist', 'example')
+        $this->assertEquals(
+                'example',
+                $this->emptyQueryString->param('doesNotExist', 'example')
         );
     }
 
@@ -147,8 +152,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function getExistingParamReturnsValue()
     {
-        $this->assertEquals('bar',
-                            $this->prefilledQueryString->param('foo.hm')
+        $this->assertEquals(
+                'bar',
+                $this->prefilledQueryString->param('foo.hm')
         );
     }
 
@@ -157,9 +163,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function removeNonExistingParamDoesNothing()
     {
-        $this->assertEquals('foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=&set',
-                            $this->prefilledQueryString->removeParam('doesNotExist')
-                                                       ->build()
+        $this->assertEquals(
+                'foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=&set',
+                $this->prefilledQueryString->removeParam('doesNotExist')->build()
         );
     }
 
@@ -168,9 +174,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function removeExistingEmptyParam()
     {
-        $this->assertEquals('foo.hm=bar&baz[dummy]=blubb&baz[]=more&set',
-                            $this->prefilledQueryString->removeParam('empty')
-                                                       ->build()
+        $this->assertEquals(
+                'foo.hm=bar&baz[dummy]=blubb&baz[]=more&set',
+                $this->prefilledQueryString->removeParam('empty')->build()
         );
     }
 
@@ -179,9 +185,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function removeExistingNullValueParam()
     {
-        $this->assertEquals('foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=',
-                            $this->prefilledQueryString->removeParam('set')
-                                                       ->build()
+        $this->assertEquals(
+                'foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=',
+                $this->prefilledQueryString->removeParam('set')->build()
         );
     }
 
@@ -190,9 +196,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function removeExistingArrayParam()
     {
-        $this->assertEquals('foo.hm=bar&empty=&set',
-                            $this->prefilledQueryString->removeParam('baz')
-                                                       ->build()
+        $this->assertEquals(
+                'foo.hm=bar&empty=&set',
+                $this->prefilledQueryString->removeParam('baz')->build()
         );
     }
 
@@ -207,12 +213,27 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  5.3.1
+     */
+    public function allowsToAddObjectWithToStringMethodAsParam()
+    {
+        $this->assertEquals(
+                'some=127.0.0.1',
+                $this->emptyQueryString->addParam(
+                        'some',
+                        new IpAddress('127.0.0.1')
+                )->build()
+        );
+    }
+
+    /**
+     * @test
      */
     public function addNullValueAddsParamNameOnly()
     {
-        $this->assertEquals('some',
-                            $this->emptyQueryString->addParam('some', null)
-                                                   ->build()
+        $this->assertEquals(
+                'some',
+                $this->emptyQueryString->addParam('some', null)->build()
         );
     }
 
@@ -221,9 +242,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function addEmptyValueAddsParamNameAndEqualsign()
     {
-        $this->assertEquals('some=',
-                            $this->emptyQueryString->addParam('some', '')
-                                                   ->build()
+        $this->assertEquals(
+                'some=',
+                $this->emptyQueryString->addParam('some', '')->build()
         );
     }
 
@@ -232,9 +253,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function addValueAddsParamNameWithValue()
     {
-        $this->assertEquals('some=bar',
-                            $this->emptyQueryString->addParam('some', 'bar')
-                                                   ->build()
+        $this->assertEquals(
+                'some=bar',
+                $this->emptyQueryString->addParam('some', 'bar')->build()
         );
     }
 
@@ -243,9 +264,11 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function addArrayAddsParam()
     {
-        $this->assertEquals('some[foo]=bar&some[]=baz',
-                            $this->emptyQueryString->addParam('some', ['foo' => 'bar', 'baz'])
-                                                   ->build()
+        $this->assertEquals(
+                'some[foo]=bar&some[]=baz',
+                $this->emptyQueryString->addParam(
+                        'some', ['foo' => 'bar', 'baz']
+                )->build()
         );
     }
 
@@ -254,9 +277,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function addFalseValueTranslatesFalseTo0()
     {
-        $this->assertEquals('some=0',
-                            $this->emptyQueryString->addParam('some', false)
-                                                   ->build()
+        $this->assertEquals(
+                'some=0',
+                $this->emptyQueryString->addParam('some', false)->build()
         );
     }
 
@@ -265,9 +288,9 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function addTrueValueTranslatesFalseTo1()
     {
-        $this->assertEquals('some=1',
-                            $this->emptyQueryString->addParam('some', true)
-                                                   ->build()
+        $this->assertEquals(
+                'some=1',
+                $this->emptyQueryString->addParam('some', true)->build()
         );
     }
 
