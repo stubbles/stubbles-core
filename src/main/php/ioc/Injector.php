@@ -15,6 +15,7 @@ use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
+use stubbles\ioc\binding\Session;
 use stubbles\lang\reflect;
 /**
  * Injector for the IoC functionality.
@@ -58,6 +59,19 @@ class Injector
         foreach ($bindings as $binding) {
             $this->index[$binding->getKey()] = $binding;
         }
+    }
+
+    /**
+     * sets the session for the session scope in case it is the built-in implementation
+     *
+     * @param   \stubbles\ioc\binding\Session  $session
+     * @return  \stubbles\ioc\Injector
+     * @since   5.4.0
+     */
+    public function setSession(Session $session)
+    {
+        $this->scopes->setSession($session);
+        return $this;
     }
 
     /**

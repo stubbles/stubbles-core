@@ -107,10 +107,25 @@ class Binder
      *
      * @param   \stubbles\ioc\binding\BindingScope  $sessionScope
      * @return  \stubbles\ioc\Binder
+     * @deprecated  since 5.4.0, use built-in session scope with session interface instead, will be removed with 6.0.0
      */
     public function setSessionScope(BindingScope $sessionScope)
     {
         $this->scopes->setSessionScope($sessionScope);
+        return $this;
+    }
+
+    /**
+     * sets the session for the session scope in case it is the built-in implementation
+     *
+     * @param   \stubbles\ioc\binding\Session  $session
+     * @return  \stubbles\ioc\Injector
+     * @since   5.4.0
+     * @deprecated  since 5.4.0, only for compatibility of built-in scope and setting in binding module, will be removed with 6.0.0
+     */
+    public function setSession(Session $session)
+    {
+        $this->scopes->setSession($session);
         return $this;
     }
 

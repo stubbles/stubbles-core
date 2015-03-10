@@ -1,3 +1,14 @@
+5.4.0 (2015-03-??)
+------------------
+
+### BC breaks
+
+  * Enabled session scoped bindings even when no session exists. However, retrieving a session scoped instance without setting a session will throw a `\RuntimeException`
+  * deprecated `stubbles\ioc\Binder::setSessionScope()`, use built-in session scope with session interface instead, will be removed with 6.0.0
+  * added `stubbles\ioc\binding\Session` as simple session interface for the built-in session scope
+
+
+
 5.3.2 (2015-03-09)
 ------------------
 

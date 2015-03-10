@@ -11,6 +11,7 @@ namespace stubbles\ioc\binding;
 /**
  * Basic interface for sessions for session-scoped bindings.
  *
+ * @api
  * @since  5.4.0
  */
 interface Session

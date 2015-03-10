@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
-use stubbles\lang\exception\RuntimeException;
 /**
  * All built-in scopes.
  *
@@ -39,9 +38,7 @@ class BindingScopes
     public function  __construct(BindingScope $singletonScope = null, BindingScope $sessionScope = null)
     {
         $this->singletonScope = ((null === $singletonScope) ? (new SingletonBindingScope()) : ($singletonScope));
-        if (null !== $sessionScope) {
-            $this->sessionScope = $sessionScope;
-        }
+        $this->sessionScope   = ((null === $sessionScope) ? (new SessionBindingScope()) : ($sessionScope));
     }
 
     /**
@@ -56,10 +53,29 @@ class BindingScopes
     }
 
     /**
+     * sets the session for the session scope in case it is the built-in implementation
+     *
+     * @param   \stubbles\ioc\binding\Session  $session
+     * @return  \stubbles\ioc\binding\BindingScopes
+     * @throws  \RuntimeException  in case the session scope has been replaced with another implementation
+     * @since   5.4.0
+     */
+    public function setSession(Session $session)
+    {
+        if ($this->sessionScope instanceof SessionBindingScope) {
+            $this->sessionScope->setSession($session);
+            return $this;
+        }
+
+        throw new \RuntimeException('Can not set session for session scope implementation ' . get_class($this->sessionScope));
+    }
+
+    /**
      * sets session binding scope
      *
      * @param   \stubbles\ioc\binding\BindingScope  $sessionScope
      * @return  \stubbles\ioc\binding\BindingScopes
+     * @deprecated  since 5.4.0, use built-in session scope with session interface instead
      */
     public function setSessionScope(BindingScope $sessionScope)
     {
@@ -70,18 +86,11 @@ class BindingScopes
     /**
      * returns scope for session resources
      *
-     * If no session scope is known a RuntimeException will be thrown.
-     *
      * @return  \stubbles\ioc\binding\BindingScope
-     * @throws  \stubbles\lang\exception\RuntimeException
      * @since   1.5.0
      */
     public function session()
     {
-        if (null === $this->sessionScope) {
-            throw new RuntimeException('No explicit session binding scope set.');
-        }
-
         return $this->sessionScope;
     }
 }

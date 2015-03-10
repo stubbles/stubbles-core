@@ -30,14 +30,16 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->binder = new Binder();
-        $this->binder->setSessionScope(new SessionBindingScope());
+        
     }
 
     /**
      * @test
+     * @deprecated  since 5.4.0, will be removed with 6.0.0
      */
     public function storesCreatedInstanceInSession()
     {
+        $this->binder->setSessionScope(new SessionBindingScope());
         $this->binder->bind('stubbles\test\ioc\Person2')
                      ->to('stubbles\test\ioc\Mikey')
                      ->inSession();
@@ -53,9 +55,11 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 5.4.0, will be removed with 6.0.0
      */
     public function usesInstanceFromSessionIfAvailable()
     {
+        $this->binder->setSessionScope(new SessionBindingScope());
         $this->binder->bind('stubbles\test\ioc\Person2')
                      ->to('stubbles\test\ioc\Mikey')
                      ->inSession();
@@ -64,5 +68,54 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
         SessionBindingScope::$instances['stubbles\test\ioc\Mikey'] = $text;
         $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Person2'));
         $this->assertSame($text, $injector->getInstance('stubbles\test\ioc\Person2'));
+    }
+
+    /**
+     * @test
+     * @since  5.4.0
+     */
+    public function canBindToSessionScopeWithoutSession()
+    {
+        $this->binder->bind('stubbles\test\ioc\Person2')
+                     ->to('stubbles\test\ioc\Mikey')
+                     ->inSession();
+        $this->assertTrue(
+                $this->binder->getInjector()
+                        ->hasBinding('stubbles\test\ioc\Person2')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.4.0
+     * @expectedException  RuntimeException
+     */
+    public function requestSessionScopedWithoutSessionThrowsRuntimeException()
+    {
+        $this->binder->bind('stubbles\test\ioc\Person2')
+                     ->to('stubbles\test\ioc\Mikey')
+                     ->inSession();
+        $this->binder->getInjector()->getInstance('stubbles\test\ioc\Person2');
+    }
+
+    /**
+     * @test
+     * @since  5.4.0
+     */
+    public function requestSessionScopedWithSessionReturnsInstance()
+    {
+        $this->binder->bind('stubbles\test\ioc\Person2')
+                     ->to('stubbles\test\ioc\Mikey')
+                     ->inSession();
+        $injector    = $this->binder->getInjector();
+        $mockSession = $this->getMock('stubbles\ioc\binding\Session');
+        $mockSession->expects($this->once())
+                    ->method('hasValue')
+                    ->will($this->returnValue(false));
+        $injector->setSession($mockSession);
+        $this->assertInstanceOf(
+                'stubbles\test\ioc\Mikey',
+                $injector->getInstance('stubbles\test\ioc\Person2')
+        );
     }
 }
