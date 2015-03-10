@@ -50,7 +50,7 @@ class BindingScopes
      * @return  \stubbles\ioc\binding\BindingScope
      * @since   1.5.0
      */
-    public function getSingletonScope()
+    public function singleton()
     {
         return $this->singletonScope;
     }
@@ -76,7 +76,7 @@ class BindingScopes
      * @throws  \stubbles\lang\exception\RuntimeException
      * @since   1.5.0
      */
-    public function getSessionScope()
+    public function session()
     {
         if (null === $this->sessionScope) {
             throw new RuntimeException('No explicit session binding scope set.');

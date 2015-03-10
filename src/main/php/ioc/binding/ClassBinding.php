@@ -184,7 +184,7 @@ class ClassBinding implements Binding
      */
     public function asSingleton()
     {
-        $this->scope = $this->scopes->getSingletonScope();
+        $this->scope = $this->scopes->singleton();
         return $this;
     }
 
@@ -197,7 +197,7 @@ class ClassBinding implements Binding
      */
     public function inSession()
     {
-        $this->scope = $this->scopes->getSessionScope();
+        $this->scope = $this->scopes->session();
         return $this;
     }
 
@@ -247,7 +247,7 @@ class ClassBinding implements Binding
 
         if (null === $this->scope) {
             if (reflect\annotationsOf($this->impl)->contain('Singleton')) {
-                $this->scope = $this->scopes->getSingletonScope();
+                $this->scope = $this->scopes->singleton();
             }
         }
 

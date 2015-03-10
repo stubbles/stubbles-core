@@ -22,7 +22,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
     {
         $bindingScopes = new binding\BindingScopes();
         $this->assertInstanceOf('stubbles\ioc\binding\SingletonBindingScope',
-                                $bindingScopes->getSingletonScope()
+                                $bindingScopes->singleton()
         );
     }
 
@@ -34,7 +34,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
         $mockSingletonScope = $this->getMock('stubbles\ioc\binding\BindingScope');
         $bindingScopes = new binding\BindingScopes($mockSingletonScope);
         $this->assertSame($mockSingletonScope,
-                          $bindingScopes->getSingletonScope()
+                          $bindingScopes->singleton()
         );
     }
 
@@ -45,7 +45,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
     public function retrievingSessionScopeWithoutPriorSettingThrowsRuntimeException()
     {
         $bindingScopes = new binding\BindingScopes();
-        $bindingScopes->getSessionScope();
+        $bindingScopes->session();
     }
 
     /**
@@ -56,7 +56,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
         $mockSessionScope = $this->getMock('stubbles\ioc\binding\BindingScope');
         $bindingScopes = new binding\BindingScopes(null, $mockSessionScope);
         $this->assertSame($mockSessionScope,
-                          $bindingScopes->getSessionScope()
+                          $bindingScopes->session()
         );
     }
 
@@ -69,7 +69,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
         $bindingScopes = new binding\BindingScopes(null);
         $this->assertSame($mockSessionScope,
                           $bindingScopes->setSessionScope($mockSessionScope)
-                                        ->getSessionScope()
+                                        ->session()
         );
     }
 }
