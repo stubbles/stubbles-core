@@ -21,13 +21,13 @@ class BindingScopes
      *
      * @type  \stubbles\ioc\binding\BindingScope
      */
-    protected $singletonScope;
+    private $singletonScope;
     /**
      * scope for session resources
      *
      * @type  \stubbles\ioc\binding\BindingScope
      */
-    protected $sessionScope;
+    private $sessionScope;
 
     /**
      * constructor
