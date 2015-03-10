@@ -16,6 +16,7 @@ use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
+use stubbles\ioc\binding\Session;
 use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 /**
