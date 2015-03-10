@@ -34,6 +34,7 @@ interface Session
 
     /**
      * stores given value under given key
+     *
      * @param  string  $key
      * @param  mixed   $value
      */
