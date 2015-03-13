@@ -8,6 +8,10 @@
   * added `stubbles\ioc\binding\Session` as simple session interface for the built-in session scope
 
 
+### Other changes
+
+  * added `stubbles\streams\StandardOutputStream`
+
 
 5.3.2 (2015-03-09)
 ------------------
