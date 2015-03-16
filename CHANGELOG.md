@@ -10,6 +10,7 @@
 
 ### Other changes
 
+  * added `stubbles\streams\StandardInputStream`
   * added `stubbles\streams\StandardOutputStream`
 
 

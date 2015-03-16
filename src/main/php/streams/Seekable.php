@@ -31,8 +31,9 @@ interface Seekable
     /**
      * seek to given offset
      *
-     * @param  int  $offset
-     * @param  int  $whence  one of Seekable::SET, Seekable::CURRENT or Seekable::END
+     * @param   int  $offset  offset to seek to
+     * @param   int  $whence  optional  one of Seekable::SET, Seekable::CURRENT or Seekable::END
+     * @throws  \LogicException  in case the stream was already closed
      */
     public function seek($offset, $whence = Seekable::SET);
 
@@ -40,6 +41,7 @@ interface Seekable
      * return current position
      *
      * @return  int
+     * @throws  \LogicException  in case the stream was already closed
      */
     public function tell();
 }
