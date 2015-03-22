@@ -64,13 +64,21 @@ class Injector
     /**
      * sets the session for the session scope in case it is the built-in implementation
      *
+     * Additionally, it binds the given session interface name to the session
+     * instance. If no interface is given it uses the session instances class
+     * name.
+     *
      * @param   \stubbles\ioc\binding\Session  $session
+     * @param   string                         $sessionInterface  optional
      * @return  \stubbles\ioc\Injector
      * @since   5.4.0
      */
-    public function setSession(Session $session)
+    public function setSession(Session $session, $sessionInterface = null)
     {
         $this->scopes->setSession($session);
+        $binding = $this->bind(null !== $sessionInterface ? $sessionInterface : get_class($session))
+                ->toInstance($session);
+        $this->index[$binding->getKey()] = $binding;
         return $this;
     }
 

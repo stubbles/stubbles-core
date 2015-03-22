@@ -30,7 +30,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->binder = new Binder();
-        
+
     }
 
     /**
@@ -116,6 +116,35 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
                 'stubbles\test\ioc\Mikey',
                 $injector->getInstance('stubbles\test\ioc\Person2')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.4.0
+     */
+    public function setSessionAddsBindingForSession()
+    {
+        $injector    = $this->binder->getInjector();
+        $mockSession = $this->getMock('stubbles\ioc\binding\Session');
+        $injector->setSession($mockSession, 'stubbles\ioc\binding\Session');
+        $this->assertTrue(
+                $injector->hasExplicitBinding('stubbles\ioc\binding\Session')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.4.0
+     */
+    public function setSessionAddsBindingForSessionAsSingleton()
+    {
+        $injector    = $this->binder->getInjector();
+        $mockSession = $this->getMock('stubbles\ioc\binding\Session');
+        $injector->setSession($mockSession, 'stubbles\ioc\binding\Session');
+        $this->assertSame(
+                $mockSession,
+                $injector->getInstance('stubbles\ioc\binding\Session')
         );
     }
 }

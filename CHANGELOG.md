@@ -6,6 +6,7 @@
   * Enabled session scoped bindings even when no session exists. However, retrieving a session scoped instance without setting a session will throw a `\RuntimeException`
   * deprecated `stubbles\ioc\Binder::setSessionScope()`, use built-in session scope with session interface instead, will be removed with 6.0.0
   * added `stubbles\ioc\binding\Session` as simple session interface for the built-in session scope
+  * added `stubbles\ioc\Injector::setSession()` to provide session instance for session binding scope, will also bind session interface to this instance so it is available for injection
 
 
 ### Other changes
