@@ -13,6 +13,7 @@
 
   * added `stubbles\streams\StandardInputStream`
   * added `stubbles\streams\StandardOutputStream`
+  * annotated `stubbles\lang\errorhandler\ExceptionLogger` with `@Singleton`
 
 
 5.3.2 (2015-03-09)

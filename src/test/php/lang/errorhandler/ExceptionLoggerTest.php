@@ -44,6 +44,18 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  5.4.0
+     */
+    public function annotationsPresentOnClass()
+    {
+        $this->assertTrue(
+                reflect\annotationsOf($this->exceptionLogger)
+                        ->contain('Singleton')
+        );
+    }
+
+    /**
+     * @test
      * @since  3.3.1
      */
     public function annotationsPresentOnConstructor()

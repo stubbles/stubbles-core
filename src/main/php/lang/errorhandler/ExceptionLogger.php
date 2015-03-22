@@ -12,6 +12,7 @@ namespace stubbles\lang\errorhandler;
  * Abstract base implementation for exception handlers, containing logging of exceptions.
  *
  * @since  3.3.0
+ * @Singleton
  */
 class ExceptionLogger
 {
@@ -37,7 +38,15 @@ class ExceptionLogger
      */
     public function __construct($projectPath)
     {
-        $this->logDir = $projectPath . DIRECTORY_SEPARATOR . 'log' . DIRECTORY_SEPARATOR . 'errors' . DIRECTORY_SEPARATOR . '{Y}' . DIRECTORY_SEPARATOR . '{M}';
+        $this->logDir = $projectPath
+                . DIRECTORY_SEPARATOR
+                . 'log'
+                . DIRECTORY_SEPARATOR
+                . 'errors'
+                . DIRECTORY_SEPARATOR
+                . '{Y}'
+                . DIRECTORY_SEPARATOR
+                . '{M}';
     }
 
     /**
@@ -60,9 +69,13 @@ class ExceptionLogger
     public function log(\Exception $exception)
     {
         $logData  = date('Y-m-d H:i:s');
-        $logData .= $this->getExceptionFields($exception);
-        $logData .= $this->getFieldsForPrevious($exception->getPrevious());
-        error_log($logData . "\n", 3, $this->getLogDir() . DIRECTORY_SEPARATOR . 'exceptions-' . date('Y-m-d') . '.log');
+        $logData .= $this->exceptionFields($exception);
+        $logData .= $this->fieldsForPrevious($exception->getPrevious());
+        error_log(
+                $logData . "\n",
+                3,
+                $this->getLogDir() . DIRECTORY_SEPARATOR . 'exceptions-' . date('Y-m-d') . '.log'
+        );
     }
 
     /**
@@ -71,7 +84,7 @@ class ExceptionLogger
      * @param   \Exception  $exception
      * @return  string
      */
-    private function getExceptionFields(\Exception $exception)
+    private function exceptionFields(\Exception $exception)
     {
         return '|' . get_class($exception)
              . '|' . $exception->getMessage()
@@ -85,13 +98,13 @@ class ExceptionLogger
      * @param   \Exception  $exception
      * @return  string
      */
-    private function getFieldsForPrevious(\Exception $exception = null)
+    private function fieldsForPrevious(\Exception $exception = null)
     {
         if (null === $exception) {
             return '||||';
         }
 
-        return $this->getExceptionFields($exception);
+        return $this->exceptionFields($exception);
     }
 
     /**
@@ -101,7 +114,11 @@ class ExceptionLogger
      */
     private function getLogDir()
     {
-        $logDir = str_replace('{Y}', date('Y'), str_replace('{M}', date('m'), $this->logDir));
+        $logDir = str_replace(
+                '{Y}',
+                date('Y'),
+                str_replace('{M}', date('m'), $this->logDir)
+        );
         if (!file_exists($logDir)) {
             mkdir($logDir, $this->filemode, true);
         }
