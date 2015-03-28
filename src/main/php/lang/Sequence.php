@@ -74,6 +74,7 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
      *
      * @param   \stubbles\lang\Sequence|\Traversable|array  $elements
      * @return  \stubbles\lang\Sequence
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public static function of($elements)
     {
@@ -210,14 +211,30 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
      *
      * This is an intermediate operation.
      *
-     * @param   \stubbles\lang\Sequence  $other
+     * @param   \stubbles\lang\Sequence|\Traversable|array  $other
      * @return  \stubbles\lang\Sequence
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
-    public function append(self $other)
+    public function append($other)
     {
         $appendIterator = new \AppendIterator();
         $appendIterator->append($this->getIterator());
-        $appendIterator->append($other->getIterator());
+        if ($other instanceof self) {
+            $otherIterator = $other->getIterator();
+        } elseif ($other instanceof \Iterator) {
+            $otherIterator = $other;
+        } elseif ($other instanceof \Traversable) {
+            $otherIterator = new \IteratorIterator($other);
+        } elseif (is_array($other)) {
+            $otherIterator = new \ArrayIterator($other);
+        } else {
+            throw new IllegalArgumentException(
+                    'Given data must either be a ' . __CLASS__
+                    . ', an instance of \Traversable or an array but is '
+                    . getType($other));
+        }
+
+        $appendIterator->append($otherIterator);
         return new self($appendIterator);
     }
 

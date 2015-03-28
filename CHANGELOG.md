@@ -15,6 +15,7 @@
   * added `stubbles\streams\StandardOutputStream`
   * annotated `stubbles\lang\errorhandler\ExceptionLogger` with `@Singleton`
   * added `stubbles\lang\castToArray()`
+  * `stubbles\lang\Sequence::append()` now accepts anything that is iterable
 
 
 5.3.2 (2015-03-09)
