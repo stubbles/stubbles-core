@@ -207,18 +207,18 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
     }
 
     /**
-     * appends another sequence, creating a new combined sequence
+     * appends any value, creating a new combined sequence
+     *
+     * In case given $other is not something iterable it is simply appended as
+     * last element to a new sequence.
      *
      * This is an intermediate operation.
      *
-     * @param   \stubbles\lang\Sequence|\Traversable|array  $other
+     * @param   mixed  $other
      * @return  \stubbles\lang\Sequence
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function append($other)
     {
-        $appendIterator = new \AppendIterator();
-        $appendIterator->append($this->getIterator());
         if ($other instanceof self) {
             $otherIterator = $other->getIterator();
         } elseif ($other instanceof \Iterator) {
@@ -227,13 +227,16 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
             $otherIterator = new \IteratorIterator($other);
         } elseif (is_array($other)) {
             $otherIterator = new \ArrayIterator($other);
+        } elseif (is_array($this->elements)) {
+            $all = $this->elements;
+            $all[] = $other;
+            return new self($all);
         } else {
-            throw new IllegalArgumentException(
-                    'Given data must either be a ' . __CLASS__
-                    . ', an instance of \Traversable or an array but is '
-                    . getType($other));
+            $otherIterator = new \ArrayIterator([$other]);
         }
 
+        $appendIterator = new \AppendIterator();
+        $appendIterator->append($this->getIterator());
         $appendIterator->append($otherIterator);
         return new self($appendIterator);
     }

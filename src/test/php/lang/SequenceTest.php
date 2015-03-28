@@ -542,13 +542,25 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return  array
+     * @since   5.4.0
+     */
+    public function initialSequence()
+    {
+        return [[[1, 2]], [new \ArrayIterator([1, 2])]];
+    }
+    /**
+     * @param  iterable  $initial
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @dataProvider  initialSequence
      * @since  5.4.0
      */
-    public function appendThrowsIllegalArgumentExceptionWhenGivenNotIterable()
+    public function appendCreatesNewCombinedSequenceWithGivenElement($initial)
     {
-        Sequence::of([1, 2])->append(new \stdClass());
+        $this->assertSequence(
+                [1, 2, 3],
+                Sequence::of($initial)->append(3)
+        );
     }
 
    #[@test, @values([
