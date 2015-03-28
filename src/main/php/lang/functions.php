@@ -187,6 +187,40 @@ namespace stubbles\lang {
     }
 
     /**
+     * cast given value into an array
+     *
+     * The following casts are applied:
+     * - array: returned as is
+     * - instance of \Traversable: return value from iterator_to_array()
+     * - object with asArray() method: returns value from call to this method
+     * - object with toArray() method: returns value from call to this method
+     * - object: returns map of properties using stubbles\lang\extractObjectProperties()
+     * - any other: returns array with value as single entry
+     *
+     * @param   mixed  $value
+     * @return  array
+     * @since   5.4.0
+     */
+    function castToArray($value)
+    {
+        if ($value instanceof \Traversable) {
+            return iterator_to_array($value);
+        } elseif (is_array($value)) {
+            return $value;
+        } elseif (is_object($value)) {
+            if (method_exists($value, 'asArray')) {
+                return $value->asArray();
+            } elseif (method_exists($value, 'toArray')) {
+                return $value->toArray();
+            }
+
+            return extractObjectProperties($value);
+        }
+
+        return [$value];
+    }
+
+    /**
      * method to extract all properties regardless of their visibility
      *
      * This is a workaround for the problem that as of PHP 5.2.4 get_object_vars()
