@@ -20,7 +20,7 @@ class StandardOutputStream extends ResourceOutputStream
      */
     public function __construct()
     {
-        $this->setHandle(fopen('php://output', 'w'));
+        $this->setHandle(fopen('php://output', 'wb'));
     }
 
     /**
