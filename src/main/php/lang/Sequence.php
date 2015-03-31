@@ -74,6 +74,7 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
      *
      * @param   \stubbles\lang\Sequence|\Traversable|array  $elements
      * @return  \stubbles\lang\Sequence
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public static function of($elements)
     {
@@ -206,18 +207,37 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
     }
 
     /**
-     * appends another sequence, creating a new combined sequence
+     * appends any value, creating a new combined sequence
+     *
+     * In case given $other is not something iterable it is simply appended as
+     * last element to a new sequence.
      *
      * This is an intermediate operation.
      *
-     * @param   \stubbles\lang\Sequence  $other
+     * @param   mixed  $other
      * @return  \stubbles\lang\Sequence
      */
-    public function append(self $other)
+    public function append($other)
     {
+        if ($other instanceof self) {
+            $otherIterator = $other->getIterator();
+        } elseif ($other instanceof \Iterator) {
+            $otherIterator = $other;
+        } elseif ($other instanceof \Traversable) {
+            $otherIterator = new \IteratorIterator($other);
+        } elseif (is_array($other)) {
+            $otherIterator = new \ArrayIterator($other);
+        } elseif (is_array($this->elements)) {
+            $all = $this->elements;
+            $all[] = $other;
+            return new self($all);
+        } else {
+            $otherIterator = new \ArrayIterator([$other]);
+        }
+
         $appendIterator = new \AppendIterator();
         $appendIterator->append($this->getIterator());
-        $appendIterator->append($other->getIterator());
+        $appendIterator->append($otherIterator);
         return new self($appendIterator);
     }
 

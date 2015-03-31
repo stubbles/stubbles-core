@@ -95,7 +95,11 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function filterRemovesElements()
     {
-        $this->assertSequence([2, 4], Sequence::of([1, 2, 3, 4])->filter(function($e) { return 0 === $e % 2; }));
+        $this->assertSequence(
+                [2, 4],
+                Sequence::of([1, 2, 3, 4])
+                        ->filter(function($e) { return 0 === $e % 2; })
+        );
     }
 
     /**
@@ -103,7 +107,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function filterWithNativeFunction()
     {
-        $this->assertSequence(['Hello', 'World'], Sequence::of(['Hello', 1337, 'World'])->filter('is_string'));
+        $this->assertSequence(
+                ['Hello', 'World'],
+                Sequence::of(['Hello', 1337, 'World'])->filter('is_string')
+        );
     }
 
     /**
@@ -111,7 +118,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function map()
     {
-        $this->assertSequence([2, 4, 6, 8], Sequence::of([1, 2, 3, 4])->map(function($e) { return $e * 2; }));
+        $this->assertSequence(
+                [2, 4, 6, 8],
+                Sequence::of([1, 2, 3, 4])->map(function($e) { return $e * 2; })
+        );
     }
 
     /**
@@ -119,7 +129,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function mapWithNativeFunction()
     {
-        $this->assertSequence([1.0, 2.0, 3.0], Sequence::of([1.9, 2.5, 3.1])->map('floor'));
+        $this->assertSequence(
+                [1.0, 2.0, 3.0],
+                Sequence::of([1.9, 2.5, 3.1])->map('floor')
+        );
     }
 
     /**
@@ -130,7 +143,9 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 [0 => 1, 2 => 2, 4 => 3, 6 => 4],
-                Sequence::of([1, 2, 3, 4])->mapKeys(function($e) { return $e * 2; })->data()
+                Sequence::of([1, 2, 3, 4])
+                        ->mapKeys(function($e) { return $e * 2; })
+                        ->data()
         );
     }
 
@@ -177,7 +192,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function sum($expectedResult, $elements)
     {
-        $this->assertEquals($expectedResult, Sequence::of($elements)->reduce()->toSum());
+        $this->assertEquals(
+                $expectedResult,
+                Sequence::of($elements)->reduce()->toSum()
+        );
     }
 
     /**
@@ -200,7 +218,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function min($expectedResult, $elements)
     {
-        $this->assertEquals($expectedResult, Sequence::of($elements)->reduce()->toMin());
+        $this->assertEquals(
+                $expectedResult,
+                Sequence::of($elements)->reduce()->toMin()
+        );
     }
 
     /**
@@ -223,7 +244,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function max($expectedResult, $elements)
     {
-        $this->assertEquals($expectedResult, Sequence::of($elements)->reduce()->toMax());
+        $this->assertEquals(
+                $expectedResult,
+                Sequence::of($elements)->reduce()->toMax()
+        );
     }
 
     /**
@@ -231,7 +255,15 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceReturnsNullForEmptyInputWhenNoIdentityGiven()
     {
-        $this->assertNull(Sequence::of([])->reduce(function($a, $b) { $this->fail('Should not be called'); }));
+        $this->assertNull(
+                Sequence::of([])
+                        ->reduce(
+                                function($a, $b)
+                                {
+                                    $this->fail('Should not be called');
+                                }
+                        )
+        );
     }
 
     /**
@@ -241,7 +273,14 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 -1,
-                Sequence::of([])->reduce(function($a, $b) { $this->fail('Should not be called'); }, -1)
+                Sequence::of([])
+                        ->reduce(
+                                function($a, $b)
+                                {
+                                    $this->fail('Should not be called');
+                                },
+                                -1
+                        )
         );
     }
 
@@ -252,7 +291,8 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 10,
-                Sequence::of([1, 2, 3, 4])->reduce(function($a, $b) { return $a + $b; })
+                Sequence::of([1, 2, 3, 4])
+                        ->reduce(function($a, $b) { return $a + $b; })
         );
     }
 
@@ -271,7 +311,8 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 'Hello World',
-                Sequence::of(['Hello', ' ', 'World'])->reduce(function($a, $b) { return $a . $b; })
+                Sequence::of(['Hello', ' ', 'World'])
+                        ->reduce(function($a, $b) { return $a . $b; })
         );
     }
 
@@ -325,7 +366,11 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function eachOnEmptyInput()
     {
-        $this->assertEquals(0, Sequence::of([])->each(function() { $this->fail('Should not be called'); }));
+        $this->assertEquals(
+                0,
+                Sequence::of([])
+                        ->each(function() { $this->fail('Should not be called'); })
+        );
     }
 
     /**
@@ -334,7 +379,11 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function eachAppliesGivenCallableForAllElements()
     {
         $collect = [];
-        $this->assertEquals(4, Sequence::of(['a', 'b', 'c', 'd'])->each(function($e) use(&$collect) { $collect[] = $e; }));
+        $this->assertEquals(
+                4,
+                Sequence::of(['a', 'b', 'c', 'd'])
+                        ->each(function($e) use(&$collect) { $collect[] = $e; })
+        );
         $this->assertEquals(['a', 'b', 'c', 'd'], $collect);
     }
 
@@ -344,7 +393,11 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function eachStopsWhenCallableReturnsFalse()
     {
         $collect = [];
-        $this->assertEquals(2, Sequence::of(['a', 'b', 'c', 'd'])->each(function($e) use(&$collect) { $collect[] = $e; if ('b' === $e) { return false; }}));
+        $this->assertEquals(
+                2,
+                Sequence::of(['a', 'b', 'c', 'd'])
+                        ->each(function($e) use(&$collect) { $collect[] = $e; if ('b' === $e) { return false; }})
+        );
         $this->assertEquals(['a', 'b'], $collect);
     }
 
@@ -376,7 +429,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function peekWithVarExportAndKeys()
     {
         ob_start();
-        Sequence::of(['a', 'b', 'c', 'd'])->peek('var_export', 'var_export')->reduce()->toSum();
+        Sequence::of(['a', 'b', 'c', 'd'])
+                ->peek('var_export', 'var_export')
+                ->reduce()
+                ->toSum();
         $bytes = ob_get_contents();
         ob_end_clean();
         $this->assertEquals("'a'0'b'1'c'2'd'3", $bytes);
@@ -395,7 +451,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function limitStopsAtNthInfiniteElement()
     {
-        $this->assertSequence([1, 2], Sequence::infinite(1, function($i) { return ++$i; })->limit(2));
+        $this->assertSequence(
+                [1, 2],
+                Sequence::infinite(1, function($i) { return ++$i; })->limit(2)
+        );
     }
 
     /**
@@ -403,7 +462,14 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function limitStopsAtNthGeneratorElement()
     {
-        $this->assertSequence([1, 2], Sequence::generate(1, function($i) { return $i + 1; }, function($i) { return $i < 10; })->limit(2));
+        $this->assertSequence(
+                [1, 2],
+                Sequence::generate(
+                        1,
+                        function($i) { return $i + 1; },
+                        function($i) { return $i < 10; }
+                        )->limit(2)
+        );
     }
 
     /**
@@ -419,7 +485,12 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function skipIgnoresNumberOfInfiniteElements()
     {
-        $this->assertSequence([3, 4, 5], Sequence::infinite(1, function($i) { return ++$i; })->skip(2)->limit(3));
+        $this->assertSequence(
+                [3, 4, 5],
+                Sequence::infinite(1, function($i) { return ++$i; })
+                        ->skip(2)
+                        ->limit(3)
+        );
     }
 
     /**
@@ -427,15 +498,69 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function skipIgnoresNumberOfGeneratorElements()
     {
-        $this->assertSequence([3, 4, 5], Sequence::generate(1, function($i) { return $i + 1; }, function($i) { return $i < 10; })->skip(2)->limit(3));
+        $this->assertSequence(
+                [3, 4, 5],
+                Sequence::generate(
+                        1,
+                        function($i) { return $i + 1; },
+                        function($i) { return $i < 10; }
+                        )->skip(2)
+                        ->limit(3)
+        );
     }
 
     /**
      * @test
      */
-    public function appendCreatesNewCombinedSequence()
+    public function appendCreatesNewCombinedSequenceWithGivenSequence()
     {
-        $this->assertSequence([1, 2, 3, 4], Sequence::of([1, 2])->append(Sequence::of([3, 4])));
+        $this->assertSequence(
+                [1, 2, 3, 4],
+                Sequence::of([1, 2])->append(Sequence::of([3, 4]))
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.4.0
+     */
+    public function appendCreatesNewCombinedSequenceWithGivenArray()
+    {
+        $this->assertSequence([1, 2, 3, 4], Sequence::of([1, 2])->append([3, 4]));
+    }
+
+    /**
+     * @test
+     * @since  5.4.0
+     */
+    public function appendCreatesNewCombinedSequenceWithGivenIterator()
+    {
+        $this->assertSequence(
+                [1, 2, 3, 4],
+                Sequence::of([1, 2])->append(new \ArrayIterator([3, 4]))
+        );
+    }
+
+    /**
+     * @return  array
+     * @since   5.4.0
+     */
+    public function initialSequence()
+    {
+        return [[[1, 2]], [new \ArrayIterator([1, 2])]];
+    }
+    /**
+     * @param  iterable  $initial
+     * @test
+     * @dataProvider  initialSequence
+     * @since  5.4.0
+     */
+    public function appendCreatesNewCombinedSequenceWithGivenElement($initial)
+    {
+        $this->assertSequence(
+                [1, 2, 3],
+                Sequence::of($initial)->append(3)
+        );
     }
 
    #[@test, @values([
