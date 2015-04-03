@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang;;;
+namespace stubbles\lang;
 /**
  * Base class for enums.
  */
