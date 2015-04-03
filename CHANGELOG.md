@@ -3,6 +3,7 @@
 
 ### BC breaks
 
+  * `stubbles\ioc` does not support setter injection any more, deprecated since 5.1.0
   * removed `stubbles\ioc\Binder::setSessionScope()`, deprecated since 5.4.0
   * removed old reflection, deprecated since 5.3.0:
     * `stubbles\lang\reflect\BaseReflectionClass`

@@ -16,65 +16,6 @@ namespace stubbles\ioc;
 class InjectorNamedTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * clean up test environment
-     */
-    public function tearDown()
-    {
-        Binder::disableSetterInjection();
-    }
-
-    /**
-     * name based setter injection with single param
-     *
-     * @test
-     */
-    public function namedSetterInjectionWithSingleParam()
-    {
-        $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Employee')->named('schst')->to('stubbles\test\ioc\Boss');
-        $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
-
-        $injector = $binder->getInjector();
-
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
-
-        $group = $injector->getInstance('stubbles\\test\\ioc\\Developers');
-
-        $this->assertInstanceOf('stubbles\\test\\ioc\\Developers', $group);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\TeamMember', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        $this->assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
-    }
-
-    /**
-     * name based setter injection with multiple params and one of them is name based
-     *
-     * @test
-     */
-    public function namedSetterInjectionWithMultipleParamAndOneNamedParam()
-    {
-        Binder::enableSetterInjection();
-        $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Employee')->named('schst')->to('stubbles\test\ioc\Boss');
-        $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
-
-        $injector = $binder->getInjector();
-
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
-
-        $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleSetterMethodParams');
-
-        $this->assertInstanceOf('stubbles\test\ioc\DevelopersMultipleSetterMethodParams', $group);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\TeamMember', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        $this->assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
-    }
-
-    /**
      * name based constructor injection with multiple params and one of them is name based
      *
      * @test
@@ -100,31 +41,6 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * name based setter injection with multiple params and one of them is a named constant
-     *
-     * @test
-     */
-    public function namedSetterInjectionWithMultipleParamAndOneNamedConstantParam()
-    {
-        Binder::enableSetterInjection();
-        $binder = new Binder();
-        $binder->bindConstant('boss')->to('role:boss');
-        $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
-
-        $injector = $binder->getInjector();
-
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
-
-        $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleSetterMethodParamsWithConstant');
-
-        $this->assertInstanceOf('stubbles\test\ioc\DevelopersMultipleSetterMethodParamsWithConstant', $group);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        $this->assertInstanceOf('stubbles\test\ioc\TeamMember', $group->schst);
-        $this->assertEquals('role:boss', $group->role);
-    }
-
-    /**
      * name based constructor injection with multiple params and one of them is a named constant
      *
      * @test
@@ -146,32 +62,6 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
         $this->assertInstanceOf('stubbles\test\ioc\TeamMember', $group->schst);
         $this->assertEquals('role:boss', $group->role);
-    }
-
-    /**
-     * name based setter injection with multiple params and both are named
-     *
-     * @test
-     */
-    public function namedSetterInjectionWithMultipleParamAndNamedParamGroup()
-    {
-        Binder::enableSetterInjection();
-        $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Employee')->named('schst')->to('stubbles\test\ioc\Boss');
-        $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
-
-        $injector = $binder->getInjector();
-
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
-
-        $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleSetterMethodParamsGroupedName');
-
-        $this->assertInstanceOf('stubbles\test\ioc\DevelopersMultipleSetterMethodParamsGroupedName', $group);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\Boss', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        $this->assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
     }
 
     /**

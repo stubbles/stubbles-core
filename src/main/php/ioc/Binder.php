@@ -9,14 +9,12 @@
  */
 namespace stubbles\ioc;
 use stubbles\ioc\binding\Binding;
-use stubbles\ioc\binding\BindingScope;
 use stubbles\ioc\binding\BindingScopes;
 use stubbles\ioc\binding\ClassBinding;
 use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
-use stubbles\ioc\binding\Session;
 use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 /**
@@ -26,48 +24,6 @@ use stubbles\lang\Properties;
  */
 class Binder
 {
-    /**
-     * switch whether setter injection is enabled
-     *
-     * @type  bool
-     * @since  5.1.0
-     * @deprecated  since 5.1.0, don't use setter injection, will be removed with 6.0.0
-     */
-    private static $setterInjectionEnabled = false;
-
-    /**
-     * enable setter injection
-     *
-     * @since  5.1.0
-     * @deprecated  since 5.1.0, don't use setter injection, will be removed with 6.0.0
-     */
-    public static function enableSetterInjection()
-    {
-        self::$setterInjectionEnabled = true;
-    }
-
-    /**
-     * disable setter injection
-     *
-     * @since  5.1.0
-     * @deprecated  since 5.1.0, will be removed with 6.0.0
-     */
-    public static function disableSetterInjection()
-    {
-        self::$setterInjectionEnabled = false;
-    }
-    /**
-     * checks whether setter injection is enabled
-     *
-     * @return  bool
-     * @since  5.1.0
-     * @deprecated  since 5.1.0, don't use setter injection, will be removed with 6.0.0
-     */
-    public static function isSetterInjectionEnabled()
-    {
-        return self::$setterInjectionEnabled;
-    }
-
     /**
      * list of available binding scopes
      *

@@ -56,21 +56,6 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     public function get($name = null)
     {
-        $instance = $this->createInstance();
-        if (!$this->class->isInternal() && Binder::isSetterInjectionEnabled()) {
-            $this->injectIntoSetters($instance);
-        }
-
-        return $instance;
-    }
-
-    /**
-     * creates instance
-     *
-     * @return  mixed
-     */
-    private function createInstance()
-    {
         $constructor = $this->class->getConstructor();
         if (null === $constructor || $this->class->isInternal() || !reflect\annotationsOf($constructor)->contain('Inject')) {
             return $this->class->newInstance();
