@@ -116,19 +116,6 @@ class Annotations implements \IteratorAggregate
     }
 
     /**
-     * returns a list of all annotations of this type
-     *
-     * @api
-     * @param   string  $type
-     * @return  \stubbles\lang\reflect\annotation\Annotation[]
-     * @deprecated  use named() instead, will be removed with 6.0.0
-     */
-    public function of($type)
-    {
-        return $this->named($type);
-    }
-
-    /**
      * returns a list of all annotations
      *
      * @api

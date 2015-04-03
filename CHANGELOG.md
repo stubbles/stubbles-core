@@ -4,6 +4,26 @@
 ### BC breaks
 
   * removed `stubbles\ioc\Binder::setSessionScope()`, deprecated since 5.4.0
+  * removed old reflection, deprecated since 5.3.0:
+    * `stubbles\lang\reflect\BaseReflectionClass`
+    * `stubbles\lang\reflect\MixedType`
+    * `stubbles\lang\reflect\ReflectionClass`
+    * `stubbles\lang\reflect\ReflectionExtension`
+    * `stubbles\lang\reflect\ReflectionFunction`
+    * `stubbles\lang\reflect\ReflectionMethod`
+    * `stubbles\lang\reflect\ReflectionObject`
+    * `stubbles\lang\reflect\ReflectionParameter`
+    * `stubbles\lang\reflect\ReflectionPrimitive`
+    * `stubbles\lang\reflect\ReflectionProperty`
+    * `stubbles\lang\reflect\ReflectionRoutine`
+    * `stubbles\lang\reflect\ReflectionType`
+    * `stubbles\lang\reflect\matcher\MethodMatcher`
+    * `stubbles\lang\reflect\matcher\PropertyMatcher`
+    * `stubbles\lang\typeFor()`
+    * `stubbles\lang\reflect\annotation\Annotatable`
+    * `stubbles\lang\reflect\annotation\Annotations::of()`
+    * `stubbles\lang\reflect()` now returns PHP's internal reflection classes
+    * `Parse::toClass()` now returns `\ReflectionClass`
 
 
 5.4.0 (2015-04-01)

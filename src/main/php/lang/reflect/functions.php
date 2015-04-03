@@ -163,7 +163,9 @@ namespace stubbles\lang\reflect {
             }
         }
 
-        return Sequence::of($class->getMethods($filter));
+        return Sequence::of(
+                null === $filter ? $class->getMethods() : $class->getMethods($filter)
+        );
     }
 
     /**
@@ -184,7 +186,9 @@ namespace stubbles\lang\reflect {
             }
         }
 
-        return Sequence::of($class->getProperties($filter));
+        return Sequence::of(
+                null === $filter ? $class->getProperties() : $class->getProperties($filter)
+        );
     }
 
     /**

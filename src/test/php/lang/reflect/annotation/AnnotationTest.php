@@ -9,7 +9,6 @@
  */
 namespace stubbles\lang\reflect\annotation;
 use stubbles\lang\Enum;
-use stubbles\lang\reflect\ReflectionClass;
 /**
  * Helper class for the test.
  */
@@ -297,7 +296,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
             [-13, '-13'],
             [2.34, '2.34'],
             [-5.67, '-5.67'],
-            [new ReflectionClass(__CLASS__), __CLASS__ . '.class'],
+            [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
             ['true', "'true'"],
             ['null', '"null"'],
             [MyTestClass::TEST_CONSTANT, 'stubbles\lang\reflect\annotation\MyTestClass::TEST_CONSTANT'],

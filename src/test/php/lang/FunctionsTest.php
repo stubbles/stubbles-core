@@ -8,9 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\reflect\MixedType;
-use stubbles\lang\reflect\ReflectionType;
-use stubbles\lang\reflect\ReflectionPrimitive;
 use stubbles\lang\reflect\annotation\Annotation;
 use stubbles\lang\reflect\annotation\AnnotationCache;
 use org\bovigo\vfs\vfsStream;
@@ -23,52 +20,6 @@ use org\bovigo\vfs\vfsStream;
  */
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * return list of type definitions to test
-     *
-     * @return  array
-     */
-    public static function getTypeDefinitions()
-    {
-        return [['string', ReflectionPrimitive::$STRING],
-                ['int', ReflectionPrimitive::$INT],
-                ['integer', ReflectionPrimitive::$INTEGER],
-                ['float', ReflectionPrimitive::$FLOAT],
-                ['double', ReflectionPrimitive::$DOUBLE],
-                ['bool', ReflectionPrimitive::$BOOL],
-                ['boolean', ReflectionPrimitive::$BOOLEAN],
-                ['array', ReflectionPrimitive::$ARRAY],
-                ['mixed', MixedType::$MIXED],
-                ['object', MixedType::$OBJECT]
-        ];
-    }
-
-    /**
-     * @since  3.1.1
-     * @param  string          $typeName
-     * @param  ReflectionType  $expected
-     * @dataProvider  getTypeDefinitions
-     * @test
-     */
-    public function typeForDeliversCorrectReflectionTypeForNonClasses($typeName, ReflectionType $expected)
-    {
-        $this->assertSame($expected, typeFor($typeName));
-    }
-
-    /**
-     * @since  3.1.1
-     * @test
-     */
-    public function typeForDeliversCorrectReflectionClass()
-    {
-        $className = get_class($this);
-        $refClass  = typeFor($className);
-        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionClass',
-                                $refClass
-        );
-        $this->assertEquals($className, $refClass->getName());
-    }
-
     /**
      * @since  3.0.0
      * @group  issue_58
@@ -147,7 +98,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectWithMethodNameReturnsReflectionMethod()
     {
-        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionMethod', reflect(__CLASS__, __FUNCTION__));
+        $this->assertInstanceOf(
+                'ReflectionMethod',
+                reflect(__CLASS__, __FUNCTION__)
+        );
     }
 
     /**
@@ -156,7 +110,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectWithClassNameReturnsReflectionClass()
     {
-        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionClass', reflect(__CLASS__));
+        $this->assertInstanceOf(
+                'ReflectionClass',
+                reflect(__CLASS__)
+        );
     }
 
     /**
@@ -165,7 +122,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectWithClassInstanceReturnsReflectionObject()
     {
-        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionObject', reflect($this));
+        $this->assertInstanceOf(
+                'ReflectionObject',
+                reflect($this)
+        );
     }
 
     /**
@@ -174,7 +134,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectWithFunctionNameReturnsReflectionFunction()
     {
-        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionFunction', reflect('stubbles\lang\reflect'));
+        $this->assertInstanceOf(
+                'ReflectionFunction',
+                reflect('stubbles\lang\reflect')
+        );
     }
 
     /**
@@ -193,7 +156,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectInterface()
     {
-        $this->assertInstanceOf('stubbles\lang\reflect\ReflectionClass', reflect('stubbles\lang\reflect\BaseReflectionClass'));
+        $this->assertInstanceOf(
+                'ReflectionClass',
+                reflect('stubbles\lang\Mode')
+        );
     }
 
     /**
@@ -222,7 +188,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function reflectCallbackWithInstanceReturnsReflectionMethod()
     {
         $this->assertInstanceOf(
-                'stubbles\lang\reflect\ReflectionMethod',
+                'ReflectionMethod',
                 reflect([$this, __FUNCTION__])
         );
     }
@@ -234,7 +200,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function reflectCallbackWithClassnameReturnsReflectionMethod()
     {
         $this->assertInstanceOf(
-                'stubbles\lang\reflect\ReflectionMethod',
+                'ReflectionMethod',
                 reflect([__CLASS__, __FUNCTION__])
         );
     }
@@ -246,7 +212,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function reflectClosureReturnsReflectionObject()
     {
         $this->assertInstanceOf(
-                'stubbles\lang\reflect\ReflectionObject',
+                'ReflectionObject',
                 reflect(function() { })
         );
     }
@@ -287,7 +253,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function ensureCallableDoesNotWrapUserlandFunction()
     {
-        $this->assertSame('stubbles\lang\ensureCallable', ensureCallable('stubbles\lang\ensureCallable'));
+        $this->assertSame(
+                'stubbles\lang\ensureCallable',
+                ensureCallable('stubbles\lang\ensureCallable')
+        );
     }
 
     /**

@@ -10,12 +10,6 @@
 namespace stubbles\lang {
     use stubbles\lang\exception\IllegalArgumentException;
     use stubbles\lang\Properties;
-    use stubbles\lang\reflect\MixedType;
-    use stubbles\lang\reflect\ReflectionClass;
-    use stubbles\lang\reflect\ReflectionFunction;
-    use stubbles\lang\reflect\ReflectionMethod;
-    use stubbles\lang\reflect\ReflectionObject;
-    use stubbles\lang\reflect\ReflectionPrimitive;
     use stubbles\lang\reflect\annotation\AnnotationCache;
 
     /**
@@ -61,7 +55,7 @@ namespace stubbles\lang {
      * shortcut for reflect($class, '__construct')
      *
      * @param   string|object  $class  class name of or object instance to reflect constructor of
-     * @return  \stubbles\lang\reflect\ReflectionMethod
+     * @return  \ReflectionMethod
      * @since   3.1.0
      * @api
      */
@@ -75,18 +69,18 @@ namespace stubbles\lang {
      *
      * If no method name is provided it will check whether $class denotes a
      * class name or is an object instance. If yes it returns an instance of
-     * stubbles\lang\reflect\BaseReflectionClass which allows reflection on the
+     * \ReflectionClass or \ReflectionObject which allows reflection on the
      * provided class.
      * In case $class is a function name it will return a
-     * stubbles\lang\reflect\ReflectionFunction which allows reflection on the
+     * \ReflectionFunction which allows reflection on the
      * function.
      * In case a method name is provided it will return an instance of
-     * stubbles\lang\reflect\ReflectionMethod which allows reflection on the
+     * \ReflectionMethod which allows reflection on the
      * specific method.
      *
      * @param   string|object  $class       class name, function name of or object instance to reflect
      * @param   string         $methodName  optional  specific method to reflect
-     * @return  \stubbles\lang\reflect\BaseReflectionClass|\stubbles\lang\reflect\ReflectionMethod|\stubbles\lang\reflect\ReflectionFunction
+     * @return  \ReflectionClass|\ReflectionMethod|\ReflectionFunction
      * @throws  \stubbles\lang\exception\IllegalArgumentException
      * @since   3.1.0
      * @api
@@ -98,41 +92,22 @@ namespace stubbles\lang {
         }
 
         if (null != $methodName) {
-            return new ReflectionMethod($class, $methodName);
+            return new \ReflectionMethod($class, $methodName);
         }
 
         if (is_string($class)) {
             if (class_exists($class) || interface_exists($class)) {
-                return ReflectionClass::fromName($class);
+                return new \ReflectionClass($class);
             }
 
-            return new ReflectionFunction($class);
+            return new \ReflectionFunction($class);
         }
 
         if (is_object($class)) {
-            return ReflectionObject::fromInstance($class);
+            return new \ReflectionObject($class);
         }
 
         throw new IllegalArgumentException('Given class must either be a function name, class name or class instance, ' . gettype($class) . ' given');
-    }
-
-    /**
-     * returns a type instance for given type name
-     *
-     * @param   string  $typeName
-     * @return  \stubbles\lang\reflect\ReflectionType
-     * @since   3.1.1
-     * @deprecated  will be removed with 6.0.0
-     */
-    function typeFor($typeName)
-    {
-        if (ReflectionPrimitive::isKnown($typeName)) {
-            return ReflectionPrimitive::forName($typeName);
-        } elseif (MixedType::isKnown($typeName)) {
-            return MixedType::forName($typeName);
-        }
-
-        return new ReflectionClass($typeName);
     }
 
     /**

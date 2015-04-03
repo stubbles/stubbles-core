@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\reflect\ReflectionClass;
 use stubbles\peer\http\HttpUri;
 /**
  * Helper class for the test.
@@ -301,7 +300,10 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asList($stringToParse));
+        $this->assertEquals(
+                $expectedResult,
+                $parse->defaultingTo('foo')->asList($stringToParse)
+        );
     }
 
     /**
@@ -367,7 +369,10 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asMap($stringToParse));
+        $this->assertEquals(
+                $expectedResult,
+                $parse->defaultingTo('foo')->asMap($stringToParse)
+        );
     }
 
     /**
@@ -429,7 +434,10 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        $this->assertEquals($expectedResult, $parse->defaultingTo('foo')->asRange($stringToParse));
+        $this->assertEquals(
+                $expectedResult,
+                $parse->defaultingTo('foo')->asRange($stringToParse)
+        );
     }
 
     /**
@@ -438,8 +446,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function stringToClassConversions()
     {
         return [
-            [new ReflectionClass($this), __CLASS__ . '.class'],
-            [new ReflectionClass('stubbles\lang\Mode'), 'stubbles\lang\Mode.class'],
+            [new \ReflectionClass($this), __CLASS__ . '.class'],
+            [new \ReflectionClass('stubbles\lang\Mode'), 'stubbles\lang\Mode.class'],
             [null, null],
             [null, ''],
             [null, 'other']
@@ -448,8 +456,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  \stubbles\lang\reflect\ReflectionClass  $expectedResult
-     * @param  string                                  $stringToParse
+     * @param  \ReflectionClass  $expectedResult
+     * @param  string            $stringToParse
      * @test
      * @dataProvider  stringToClassConversions
      */
@@ -459,8 +467,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  \stubbles\lang\reflect\ReflectionClass  $expectedResult
-     * @param  string                                  $stringToParse
+     * @param  \ReflectionClass  $expectedResult
+     * @param  string            $stringToParse
      * @test
      * @dataProvider  stringToClassConversions
      * @since  5.0.0
@@ -472,8 +480,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  \stubbles\lang\reflect\ReflectionClass  $expectedResult
-     * @param  string                                  $stringToParse
+     * @param  \ReflectionClass  $expectedResult
+     * @param  string            $stringToParse
      * @test
      * @dataProvider  stringToClassConversions
      * @since  5.0.0
@@ -708,7 +716,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [[1, 2, 3, 4, 5], '1..5'],
             [['a', 'b', 'c', 'd', 'e'], 'a..e'],
             [HttpUri::fromString('http://example.net/'), 'http://example.net/'],
-            [new ReflectionClass($this), __CLASS__ . '.class'],
+            [new \ReflectionClass($this), __CLASS__ . '.class'],
             [MyEnum::$FOO, 'stubbles\lang\MyEnum::$FOO'],
             [MyEnum::TEST_CONSTANT, 'stubbles\lang\MyEnum::TEST_CONSTANT'],
             ['just a string', 'just a string']

@@ -97,7 +97,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         return $this->annotationStateParser->parse(
                 $clazz->getDocComment(),
                 'stubbles\lang\reflect\annotation\parser\MyTestClass'
-        )['stubbles\lang\reflect\annotation\parser\MyTestClass']->of($type);
+        )['stubbles\lang\reflect\annotation\parser\MyTestClass']->named($type);
     }
 
     /**
@@ -273,7 +273,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         return $this->annotationStateParser->parse(
                 $method->getDocComment(),
                 'stubbles\lang\\reflect\annotation\parser\MyTestClass2::foo()'
-        )['stubbles\lang\reflect\annotation\parser\MyTestClass2::foo()#bar']->of($type);
+        )['stubbles\lang\reflect\annotation\parser\MyTestClass2::foo()#bar']->named($type);
     }
 
     /**

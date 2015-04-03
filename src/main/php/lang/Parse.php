@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\reflect\ReflectionClass;
 use stubbles\peer\http\HttpUri;
 use stubbles\peer\MalformedUriException;
 /**
@@ -65,7 +64,7 @@ class Parse
                 'stubbles\peer\http\HttpUri'
         );
         self::addRecognition(function($string) { $classname = self::toClassname($string); if (null !== $classname) { return $classname; } }, 'string');
-        self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'stubbles\lang\reflect\ReflectionClass');
+        self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'ReflectionClass');
         self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } }, 'stubbles\lang\Enum');
         self::addRecognition(function($string) { if (defined($string)) { return constant($string); } }, 'constant');
     }
@@ -130,7 +129,7 @@ class Parse
      * string containing ..                                 => range (i.e. array, see toRange())
      * string containing a valid HTTP uri                   => stubbles\peer\http\HttpUri
      * <fully\qualified\Classname::class>                   => string representing an existing class name
-     * <fully\qualified\Classname.class>                    => stubbles\lang\reflect\ReflectionClass
+     * <fully\qualified\Classname.class>                    => \ReflectionClass
      * <fully\qualified\Classname::$enumName>               => stubbles\lang\Enum
      * string containing name of a constant                 => value of the constant
      * recognition added via Parse::addRecognition()        => return type of the callable
@@ -329,7 +328,7 @@ class Parse
      * the string can not be parsed the return value is null.
      *
      * @param   string  $string
-     * @return  \stubbles\lang\reflect\ReflectionClass
+     * @return  \ReflectionClass
      */
     public static function toClass($string)
     {
@@ -339,7 +338,7 @@ class Parse
 
         $classnameMatches = [];
         if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $string, $classnameMatches) != false) {
-            return new ReflectionClass($classnameMatches[1]);
+            return new \ReflectionClass($classnameMatches[1]);
         }
 
         return null;
@@ -532,7 +531,7 @@ class Parse
     /**
      * parses initial value as reflection class
      *
-     * @return  \stubbles\lang\reflect\ReflectionClass
+     * @return  \ReflectionClass
      * @since   5.0.0
      */
     public function asClass()
