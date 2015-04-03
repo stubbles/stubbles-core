@@ -76,21 +76,30 @@ class SocketDomain extends Enum
      */
     public static function __static()
     {
-        self::$AF_INET  = new self('AF_INET',
-                                   AF_INET,
-                                   function($fp, $host, $port) { return socket_connect($fp, gethostbyname($host), $port); },
-                                   self::PORT_REQUIRED
-                          );
-        self::$AF_INET6 = new self('AF_INET6',
-                                   AF_INET6,
-                                   function($fp, $host, $port) { return socket_connect($fp, $host, $port); },
-                                   self::PORT_REQUIRED
-                          );
-        self::$AF_UNIX  = new self('AF_UNIX',
-                                   AF_UNIX,
-                                   function($fp, $host) { return socket_connect($fp, $host); },
-                                   self::PORT_NOT_REQUIRED
-                          );
+        self::$AF_INET  = new self(
+                'AF_INET',
+                AF_INET,
+                function($fp, $host, $port)
+                {
+                    return socket_connect($fp, gethostbyname($host), $port);
+                },
+                self::PORT_REQUIRED
+        );
+        self::$AF_INET6 = new self(
+                'AF_INET6',
+                AF_INET6,
+                function($fp, $host, $port)
+                {
+                    return socket_connect($fp, $host, $port);
+                },
+                self::PORT_REQUIRED
+        );
+        self::$AF_UNIX  = new self(
+                'AF_UNIX',
+                AF_UNIX,
+                function($fp, $host) { return socket_connect($fp, $host); },
+                self::PORT_NOT_REQUIRED
+        );
     }
 
     /**
@@ -124,7 +133,10 @@ class SocketDomain extends Enum
         $connect = $this->connect;
         if (!$connect($fp, $host, $port)) {
             $e = socket_last_error($fp);
-            throw new ConnectionException('Connect to ' . $host . ':' .$port . ' failed: ' . $e . ': ' . socket_strerror($e));
+            throw new ConnectionException(
+                    'Connect to ' . $host . ':' .$port . ' failed: ' . $e
+                    . ': ' . socket_strerror($e)
+            );
         }
 
         return $fp;
