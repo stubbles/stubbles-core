@@ -128,18 +128,6 @@ abstract class App
     }
 
     /**
-     * create a binding module which binds current working directory
-     *
-     * @api
-     * @return  \Closure
-     * @deprecated  since 5.0.0, use currentWorkingDirectory() instead, will be removed with 6.0.0
-     */
-    protected static function bindCurrentWorkingDirectory()
-    {
-        return self::currentWorkingDirectory();
-    }
-
-    /**
      * create a binding module which binds current hostnames
      *
      * @api
@@ -163,17 +151,5 @@ abstract class App
             $binder->bindConstant('stubbles.hostname.fq')
                    ->to($fq);
         };
-    }
-
-    /**
-     * create a binding module which binds current hostnames
-     *
-     * @api
-     * @return  \Closure
-     * @deprecated  since 5.0.0, use hostname() instead, will be removed with 6.0.0
-     */
-    protected static function bindHostname()
-    {
-        return self::hostname();
     }
 }

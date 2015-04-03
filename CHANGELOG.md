@@ -25,6 +25,8 @@
     * `stubbles\lang\reflect\annotation\Annotations::of()`
     * `stubbles\lang\reflect()` now returns PHP's internal reflection classes
     * `Parse::toClass()` now returns `\ReflectionClass`
+  * removed `stubbles\ioc\App::bindCurrentWorkingDirectory()`, use `stubbles\ioc\App::currentWorkingDirectory()` instead, deprecated since 5.0.0
+  * removed `stubbles\ioc\App::bindHostname()`, use `stubbles\ioc\App::hostname()` instead, deprecated since 5.0.0
 
 
 5.4.0 (2015-04-01)
