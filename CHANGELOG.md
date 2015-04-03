@@ -1,7 +1,9 @@
 6.0.0 (2015-??-??)
 ------------------
 
+### BC breaks
 
+  * removed `stubbles\ioc\Binder::setSessionScope()`, deprecated since 5.4.0
 
 
 5.4.0 (2015-04-01)

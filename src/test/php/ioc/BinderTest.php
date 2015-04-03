@@ -33,23 +33,6 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
-     */
-    public function passesSessionScopeToScopes()
-    {
-        $mockScopes = $this->getMock('stubbles\ioc\binding\BindingScopes');
-        $mockSessionScope = $this->getMock('stubbles\ioc\binding\BindingScope');
-        $mockScopes->expects($this->once())
-                   ->method('setSessionScope')
-                   ->with($this->equalTo($mockSessionScope));
-        $binder = new Binder($mockScopes);
-        $this->assertSame(
-                $binder,
-                $binder->setSessionScope($mockSessionScope)
-        );
-    }
-
-    /**
      * @since  2.0.0
      * @test
      */

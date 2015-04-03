@@ -32,44 +32,6 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
         $this->binder = new Binder();
 
     }
-
-    /**
-     * @test
-     * @deprecated  since 5.4.0, will be removed with 6.0.0
-     */
-    public function storesCreatedInstanceInSession()
-    {
-        $this->binder->setSessionScope(new SessionBindingScope());
-        $this->binder->bind('stubbles\test\ioc\Person2')
-                     ->to('stubbles\test\ioc\Mikey')
-                     ->inSession();
-        $injector = $this->binder->getInjector();
-
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Person2'));
-
-        $text = $injector->getInstance('stubbles\test\ioc\Person2');
-        $this->assertInstanceOf('stubbles\test\ioc\Person2', $text);
-        $this->assertInstanceOf('stubbles\test\ioc\Mikey', $text);
-        $this->assertSame($text, $injector->getInstance('stubbles\test\ioc\Person2'));
-    }
-
-    /**
-     * @test
-     * @deprecated  since 5.4.0, will be removed with 6.0.0
-     */
-    public function usesInstanceFromSessionIfAvailable()
-    {
-        $this->binder->setSessionScope(new SessionBindingScope());
-        $this->binder->bind('stubbles\test\ioc\Person2')
-                     ->to('stubbles\test\ioc\Mikey')
-                     ->inSession();
-        $injector = $this->binder->getInjector();
-        $text     = new Mikey();
-        SessionBindingScope::$instances['stubbles\test\ioc\Mikey'] = $text;
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Person2'));
-        $this->assertSame($text, $injector->getInstance('stubbles\test\ioc\Person2'));
-    }
-
     /**
      * @test
      * @since  5.4.0
