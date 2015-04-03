@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Error handler for illegal arguments.
  *
@@ -66,10 +65,12 @@ class IllegalArgumentErrorHandler implements ErrorHandler
      * @param   int     $line     line number the error was raised at
      * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error message should populate $php_errormsg, else false
-     * @throws  stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function handle($level, $message, $file = null, $line = null, array $context = [])
     {
-        throw new IllegalArgumentException($message . ' @ ' . $file . ' on line ' . $line);
+        throw new \InvalidArgumentException(
+                $message . ' @ ' . $file . ' on line ' . $line
+        );
     }
 }

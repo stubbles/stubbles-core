@@ -236,7 +236,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @since  2.0.0
      * @group  bug213
      */

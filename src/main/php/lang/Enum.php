@@ -7,9 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\RuntimeException;
+namespace stubbles\lang;;;
 /**
  * Base class for enums.
  */
@@ -43,11 +41,11 @@ abstract class Enum
     /**
      * forbid cloning of enums
      *
-     * @throws  \stubbles\lang\exception\RuntimeException
+     * @throws  \RuntimeException
      */
     public final function __clone()
     {
-        throw new RuntimeException('Cloning of enums is not allowed.');
+        throw new \RuntimeException('Cloning of enums is not allowed.');
     }
 
     /**
@@ -78,7 +76,7 @@ abstract class Enum
      * @api
      * @param   string  $name
      * @return  \stubbles\lang\Enum
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public static function forName($name)
     {
@@ -86,7 +84,7 @@ abstract class Enum
         try {
             return $enum->getStaticPropertyValue($name);
         } catch (\ReflectionException $re) {
-            throw new IllegalArgumentException($re->getMessage());
+            throw new \InvalidArgumentException($re->getMessage());
         }
     }
 
@@ -96,7 +94,7 @@ abstract class Enum
      * @api
      * @param   string  $value
      * @return  \stubbles\lang\Enum
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public static function forValue($value)
     {
@@ -107,7 +105,10 @@ abstract class Enum
             }
         }
 
-        throw new IllegalArgumentException('Enum ' . $enumClass->getName() . ' for value ' . $value . ' does not exist.');
+        throw new \InvalidArgumentException(
+                'Enum ' . $enumClass->getName() . ' for value ' . $value
+                . ' does not exist.'
+        );
     }
 
     /**

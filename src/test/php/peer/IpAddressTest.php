@@ -27,7 +27,7 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider  invalidValues
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function constructWithInvalidValueThrowsIllegalArgumentException($invalidValue)
     {

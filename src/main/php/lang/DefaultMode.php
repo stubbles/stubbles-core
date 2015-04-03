@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Handlings for different runtime modes of Stubbles.
  *
@@ -194,12 +193,14 @@ class DefaultMode implements Mode
      * @param   string|object  $class       name or instance of exception handler class
      * @param   string         $methodName  name of exception handler method
      * @return  \stubbles\lang\Mode
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function setExceptionHandler($class, $methodName = 'handleException')
     {
         if (!is_string($class) && !is_object($class)) {
-            throw new IllegalArgumentException('Given class must be a class name or a class instance.');
+            throw new \InvalidArgumentException(
+                    'Given class must be a class name or a class instance.'
+            );
         }
 
         $this->exceptionHandler = ['class'  => $class,
@@ -240,12 +241,14 @@ class DefaultMode implements Mode
      * @param   string|object  $class       name or instance of error handler class
      * @param   string         $methodName  name of error handler method
      * @return  \stubbles\lang\Mode
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function setErrorHandler($class, $methodName = 'handle')
     {
         if (!is_string($class) && !is_object($class)) {
-            throw new IllegalArgumentException('Given class must be a class name or a class instance.');
+            throw new \InvalidArgumentException(
+                    'Given class must be a class name or a class instance.'
+            );
         }
 
         $this->errorHandler = ['class'  => $class,

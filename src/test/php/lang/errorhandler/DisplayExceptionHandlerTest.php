@@ -19,14 +19,15 @@ class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * creates instance to test
      *
-     * @return  stubbles\lang\errorhandler\DisplayExceptionHandler
+     * @return  \stubbles\lang\errorhandler\DisplayExceptionHandler
      */
     public function createExceptionHandler($sapi)
     {
-        $displayExceptionHandler = $this->getMock('stubbles\lang\errorhandler\DisplayExceptionHandler',
-                                                  ['header', 'writeBody'],
-                                                  ['/tmp', $sapi]
-                                   );
+        $displayExceptionHandler = $this->getMock(
+                'stubbles\lang\errorhandler\DisplayExceptionHandler',
+                ['header', 'writeBody'],
+                ['/tmp', $sapi]
+        );
         return $displayExceptionHandler->disableLogging();
     }
 
@@ -38,29 +39,11 @@ class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $exception = new \Exception('message');
         $displayExceptionHandler = $this->createExceptionHandler('cgi');
         $displayExceptionHandler->expects($this->once())
-                                ->method('header')
-                                ->with($this->equalTo('Status: 500 Internal Server Error'));
+                ->method('header')
+                ->with($this->equalTo('Status: 500 Internal Server Error'));
         $displayExceptionHandler->expects($this->once())
-                                ->method('writeBody')
-                                ->with($this->equalTo("message\nTrace:\n" . $exception->getTraceAsString()));
-        $displayExceptionHandler->handleException($exception);
-    }
-
-    /**
-     * assure that stubbles exceptions are handled
-     *
-     * @test
-     */
-    public function writesStringRepresentationAndTractForThrowable()
-    {
-        $exception = new \stubbles\lang\exception\Exception('message');
-        $displayExceptionHandler = $this->createExceptionHandler('apache');
-        $displayExceptionHandler->expects($this->once())
-                                ->method('header')
-                                ->with($this->equalTo('HTTP/1.1 500 Internal Server Error'));
-        $displayExceptionHandler->expects($this->once())
-                                ->method('writeBody')
-                                ->with($this->equalTo((string) $exception . "\nTrace:\n" . $exception->getTraceAsString()));
+                ->method('writeBody')
+                ->with($this->equalTo("message\nTrace:\n" . $exception->getTraceAsString()));
         $displayExceptionHandler->handleException($exception);
     }
 }

@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\predicate\IsIpAddress;
 /**
  * Represents an ip address and possible operations on an ip address.
@@ -34,7 +33,7 @@ class IpAddress
      * the predicate returns false an IllegalArgumentException will be thrown.
      *
      * @param   int|string  $ip
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($ip)
     {
@@ -45,7 +44,10 @@ class IpAddress
         }
 
         if (!IsIpAddress::instance()->test($this->ip)) {
-            throw new IllegalArgumentException('Given ip address ' . $this->ip . ' does not denote a valid IP address');
+            throw new \InvalidArgumentException(
+                    'Given ip address ' . $this->ip
+                    . ' does not denote a valid IP address'
+            );
         }
     }
 

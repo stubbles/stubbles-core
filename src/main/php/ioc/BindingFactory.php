@@ -9,7 +9,6 @@
  */
 namespace stubbles\ioc;
 use stubbles\ioc\module\BindingModule;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for starting the application by configuring the IoC container.
  *
@@ -41,7 +40,7 @@ class BindingFactory
      *
      * @param   \stubbles\ioc\module\BindingModule[]  $bindingModules
      * @return  \stubbles\ioc\Binder
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @since   1.3.0
      */
     public static function createBinder(array $bindingModules)
@@ -57,7 +56,10 @@ class BindingFactory
             } elseif ($bindingModule instanceof \Closure) {
                 $bindingModule($binder);
             } else {
-                throw new IllegalArgumentException('Given module class ' . get_class($bindingModule) . ' is not an instance of stubbles\ioc\module\BindingModule');
+                throw new \InvalidArgumentException(
+                        'Given module class ' . get_class($bindingModule)
+                        . ' is not an instance of stubbles\ioc\module\BindingModule'
+                );
             }
         }
 

@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Iterator for input streams.
  *
@@ -40,12 +39,15 @@ class InputStreamIterator implements \Iterator
      * constructor
      *
      * @param   \stubbles\streams\InputStream  $inputStream
-     * @throws  IllegalArgumentException  in case input stream is not seekable
+     * @throws  \InvalidArgumentException  in case input stream is not seekable
      */
     public function __construct(InputStream $inputStream)
     {
         if (!($inputStream instanceof Seekable)) {
-            throw new IllegalArgumentException('Can not rewind non-seekable input stream ' . get_class($inputStream));
+            throw new \InvalidArgumentException(
+                    'Can not rewind non-seekable input stream '
+                    . get_class($inputStream)
+            );
         }
 
         $this->inputStream = $inputStream;

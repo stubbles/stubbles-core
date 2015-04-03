@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams\file;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\exception\IOException;
 use stubbles\streams\ResourceOutputStream;
 /**
@@ -41,7 +40,7 @@ class FileOutputStream extends ResourceOutputStream
      * @param   string|resource  $file
      * @param   string           $mode     opening mode if $file is a filename
      * @param   bool             $delayed
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($file, $mode = 'wb', $delayed = false)
     {
@@ -55,7 +54,10 @@ class FileOutputStream extends ResourceOutputStream
         } elseif (is_resource($file) && get_resource_type($file) === 'stream') {
             $this->setHandle($file);
         } else {
-            throw new IllegalArgumentException('File must either be a filename or an already opened file/stream resource.');
+            throw new \InvalidArgumentException(
+                    'File must either be a filename'
+                    . ' or an already opened file/stream resource.'
+            );
         }
     }
 

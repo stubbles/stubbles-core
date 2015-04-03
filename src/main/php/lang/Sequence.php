@@ -15,7 +15,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\iterator\Generator;
 use stubbles\lang\iterator\MappingIterator;
 use stubbles\lang\iterator\Peek;
@@ -74,7 +73,7 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
      *
      * @param   \stubbles\lang\Sequence|\Traversable|array  $elements
      * @return  \stubbles\lang\Sequence
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public static function of($elements)
     {
@@ -86,7 +85,11 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
             return new self($elements);
         }
 
-        throw new IllegalArgumentException('Given data must either be a ' . __CLASS__ . ', an instance of \Traversable or an array but is ' . getType($elements));
+        throw new \InvalidArgumentException(
+                'Given data must either be a ' . __CLASS__
+                . ', an instance of \Traversable or an array but is '
+                . getType($elements)
+        );
     }
 
     /**

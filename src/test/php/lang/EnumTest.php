@@ -161,7 +161,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\RuntimeException
+     * @expectedException  RuntimeException
      */
     public function cloningEnumsIsNotAllowed()
     {
@@ -181,7 +181,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      * assure that forName() works as expected
      *
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function forNameWithNonExistingNameThrowsIllegalArgumentException()
     {
@@ -212,7 +212,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function forValueWithNonExistingValueWithoutValuesThrowsIllegalArgumentException()
     {
@@ -221,7 +221,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function forValueWithNonExistingValueWithValuesThrowsIllegalArgumentException()
     {

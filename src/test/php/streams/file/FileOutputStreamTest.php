@@ -84,7 +84,7 @@ class FileOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function constructWithIllegalResource()
     {
@@ -97,7 +97,7 @@ class FileOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function constructWithIllegalArgument()
     {

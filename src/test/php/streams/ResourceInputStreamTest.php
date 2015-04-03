@@ -62,7 +62,7 @@ jjj')
      * try to create an instance with an invalid handle
      *
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function invalidHandleThrowsIllegalArgumentException()
     {
@@ -138,7 +138,7 @@ jjj')
      * trying to read fails after resource was closed
      *
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function readAfterCloseFails()
     {
@@ -150,7 +150,7 @@ jjj')
      * trying to read fails after resource was closed
      *
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function readLineAfterCloseFails()
     {
@@ -162,7 +162,7 @@ jjj')
      * trying to ask for left bytes to read fails after resource was closed
      *
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function bytesLeftAfterCloseFails()
     {
@@ -198,7 +198,7 @@ jjj')
      * trying to ask for left bytes to read fails after resource was closed
      *
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function bytesLeftAfterCloseFromOutsite()
     {

@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Evaluates if a given value fulfills a criteria.
  *
@@ -22,7 +21,7 @@ abstract class Predicate
      *
      * @param   \stubbles\predicate\Predicate|callable  $predicate
      * @return  \stubbles\predicate\Predicate
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public static function castFrom($predicate)
     {
@@ -32,7 +31,9 @@ abstract class Predicate
             return new CallablePredicate($predicate);
         }
 
-        throw new IllegalArgumentException('Given predicate is neither a callable nor an instance of ' . __CLASS__);
+        throw new \InvalidArgumentException(
+                'Given predicate is neither a callable nor an instance of ' . __CLASS__
+        );
     }
 
     /**

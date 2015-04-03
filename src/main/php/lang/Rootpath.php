@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Represents the root path within a project.
  *
@@ -39,12 +38,14 @@ class Rootpath
      *   go up one above to vendor/..
      *
      * @param   string  $rootpath  optional  path to root
-     * @throws  \stubbles\lang\exception\IllegalArgumentException  in case a root path is given but does not exist
+     * @throws  \InvalidArgumentException  in case a root path is given but does not exist
      */
     public function __construct($rootpath = null)
     {
         if (null !== $rootpath && !file_exists($rootpath)) {
-            throw new IllegalArgumentException('Given rootpath "' . $rootpath . '" does not exist');
+            throw new \InvalidArgumentException(
+                    'Given rootpath "' . $rootpath . '" does not exist'
+            );
         }
 
         $this->rootpath = (null === $rootpath) ? ($this->detectRootPath()) : ($this->realpath($rootpath));

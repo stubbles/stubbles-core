@@ -172,7 +172,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @dataProvider  invalidValues
      * @since  4.0.0
      */

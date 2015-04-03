@@ -15,10 +15,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\exception\IllegalAccessException;
-use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\IllegalStateException;
-use stubbles\lang\exception\RuntimeException;
 /**
  * SecureString provides a reasonable secure storage for security-sensitive
  * lists of characters, such as passwords.
@@ -95,13 +91,13 @@ final class SecureString
      * select en-/decryption mechanism
      *
      * @param   string  $type
-     * @throws  \stubbles\lang\exception\IllegalArgumentException  when given backing is unknown
-     * @throws  \stubbles\lang\exception\IllegalStateException     when trying to change the backing while there are still secure strings in the store
+     * @throws  \InvalidArgumentException  when given backing is unknown
+     * @throws  \LogicException  when trying to change the backing while there are still secure strings in the store
      */
     public static function switchBacking($type)
     {
         if (count(self::$store) > 0) {
-            throw new IllegalStateException('Can not switch backing while secured strings are stored');
+            throw new \LogicException('Can not switch backing while secured strings are stored');
         }
 
         switch ($type) {
@@ -123,7 +119,7 @@ final class SecureString
                 break;
 
             default:
-                throw new IllegalArgumentException('Unknown backing ' . $type);
+                throw new \InvalidArgumentException('Unknown backing ' . $type);
         }
 
         return true;
@@ -132,12 +128,14 @@ final class SecureString
     /**
      * switches backing to mcrypt
      *
-     * @throws  \stubbles\lang\exception\RuntimeException  when mcrypt extension not available
+     * @throws  \RuntimeException  when mcrypt extension not available
      */
     private static function useMcryptBacking()
     {
         if (!extension_loaded('mcrypt')) {
-            throw new RuntimeException('Can not use mcrypt backing, extension mcrypt not available');
+            throw new \RuntimeException(
+                    'Can not use mcrypt backing, extension mcrypt not available'
+            );
         }
 
         $engine   = mcrypt_module_open(MCRYPT_DES, '', 'ecb', '');
@@ -151,12 +149,14 @@ final class SecureString
     /**
      * switches backing to openssl
      *
-     * @throws  \stubbles\lang\exception\RuntimeException  when openssl extension not available
+     * @throws  \RuntimeException  when openssl extension not available
      */
     private static function useOpenSslBacking()
     {
         if (!extension_loaded('openssl')) {
-            throw new RuntimeException('Can not use openssl backing, extension openssl not available');
+            throw new \RuntimeException(
+                    'Can not use openssl backing, extension openssl not available'
+            );
         }
 
         $key = md5(uniqid());
@@ -193,6 +193,7 @@ final class SecureString
      *
      * @param   string|\stubbles\lang\SecureString  $string  characters to secure
      * @return  \stubbles\lang\SecureString
+     * @throws  \InvalidArgumentException
      */
     public static function create($string)
     {
@@ -201,7 +202,11 @@ final class SecureString
         }
 
         if (empty($string)) {
-            throw new IllegalArgumentException('Given string was null or empty, if you explicitly want to create a SecureString with value null use SecureString::forNull()');
+            throw new \InvalidArgumentException(
+                    'Given string was null or empty, if you explicitly want to'
+                    . ' create a SecureString with value null use'
+                    . ' SecureString::forNull()'
+            );
         }
 
         $self = new self();
@@ -270,12 +275,12 @@ final class SecureString
      * revealing of the value to be intended stored secure.
      *
      * @return  string
-     * @throws  \stubbles\lang\exception\IllegalStateException  in case the secure string can not be found
+     * @throws  \LogicException  in case the secure string can not be found
      */
     public function unveil()
     {
         if (!$this->isContained()) {
-           throw new IllegalStateException('An error occurred during string encryption.');
+           throw new \LogicException('An error occurred during string encryption.');
         }
 
         if ($this->isNull()) {
@@ -292,7 +297,7 @@ final class SecureString
      * @param   int  $start
      * @param   int  $length  optional
      * @return  \stubbles\lang\SecureString
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @link    http://php.net/manual/en/function.substr.php
      */
     public function substring($start, $length = null)
@@ -303,7 +308,7 @@ final class SecureString
 
         $substring = substr($this->unveil(), $start, $length);
         if (false === $substring) {
-            throw new IllegalArgumentException('Given start offset is out of range');
+            throw new \InvalidArgumentException('Given start offset is out of range');
         }
 
         return self::create($substring);
@@ -322,11 +327,11 @@ final class SecureString
     /**
      * prevent serialization
      *
-     * @throws  \stubbles\lang\exception\IllegalAccessException
+     * @throws  \LogicException
      */
     public function __sleep()
     {
-        throw new IllegalAccessException('Cannot serialize instances of ' . get_class($this));
+        throw new \LogicException('Cannot serialize instances of ' . get_class($this));
     }
 
     /**

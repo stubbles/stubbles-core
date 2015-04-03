@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\IllegalStateException;
 /**
  * Class for operations on bsd-style sockets.
  *
@@ -68,12 +66,14 @@ class BsdSocket extends Socket
      * @param   \stubbles\peer\SocketDomain  $domain   one of SocketDomain::$AF_INET, SocketDomain::$AF_INET6 or SocketDomain::$AF_UNIX
      * @param   string                       $host     host to connect socket to
      * @param   int                          $port     optional  port to connect socket to, defaults to 80
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct(SocketDomain $domain, $host, $port = null)
     {
         if ($domain->requiresPort() && empty($port)) {
-            throw new IllegalArgumentException('Domain ' . $domain->name() . ' requires a port');
+            throw new \InvalidArgumentException(
+                    'Domain ' . $domain->name() . ' requires a port'
+            );
         }
 
         parent::__construct($host, $port);
@@ -86,17 +86,22 @@ class BsdSocket extends Socket
      *
      * @param   int  $type  one of SOCK_STREAM, SOCK_DGRAM, SOCK_RAW, SOCK_SEQPACKET or SOCK_RDM
      * @return  \stubbles\peer\BsdSocket
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \InvalidArgumentException
+     * @throws  \LogicException
      */
     public function setType($type)
     {
         if (!in_array($type, array_keys(self::$types))) {
-            throw new IllegalArgumentException('Type must be one of SOCK_STREAM, SOCK_DGRAM, SOCK_RAW, SOCK_SEQPACKET or SOCK_RDM.');
+            throw new \InvalidArgumentException(
+                    'Type must be one of SOCK_STREAM, SOCK_DGRAM, SOCK_RAW,'
+                    . ' SOCK_SEQPACKET or SOCK_RDM.'
+            );
         }
 
         if ($this->isConnected()) {
-            throw new IllegalStateException('Can not change type on already connected socket.');
+            throw new \LogicException(
+                    'Can not change type on already connected socket.'
+            );
         }
 
         $this->type = $type;
@@ -117,12 +122,14 @@ class BsdSocket extends Socket
      * enables tcp protocol
      *
      * @return  \stubbles\peer\BsdSocket
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function useTcp()
     {
         if ($this->isConnected()) {
-            throw new IllegalStateException('Can not change protocol on already connected socket.');
+            throw new \LogicException(
+                    'Can not change protocol on already connected socket.'
+            );
         }
 
         $this->protocol = SOL_TCP;
@@ -143,12 +150,14 @@ class BsdSocket extends Socket
      * enables udp protocol
      *
      * @return  \stubbles\peer\BsdSocket
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function useUdp()
     {
         if ($this->isConnected()) {
-            throw new IllegalStateException('Can not change protocol on already connected socket.');
+            throw new \LogicException(
+                    'Can not change protocol on already connected socket.'
+            );
         }
 
         $this->protocol = SOL_UDP;
@@ -251,12 +260,12 @@ class BsdSocket extends Socket
      *
      * @param   int  $length  length of data to read
      * @return  string
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function read($length = 4096)
     {
         if ($this->isConnected() == false) {
-            throw new IllegalStateException('Can not read on unconnected socket.');
+            throw new \LogicException('Can not read on unconnected socket.');
         }
 
         return $this->doRead($length, PHP_NORMAL_READ);
@@ -278,12 +287,12 @@ class BsdSocket extends Socket
      *
      * @param   int  $length  length of data to read
      * @return  string
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function readBinary($length = 1024)
     {
         if ($this->isConnected() == false) {
-            throw new IllegalStateException('Can not read on unconnected socket.');
+            throw new \LogicException('Can not read on unconnected socket.');
         }
 
         return $this->doRead($length, PHP_BINARY_READ);
@@ -295,12 +304,12 @@ class BsdSocket extends Socket
      * @param   string  $data  data to write
      * @return  int
      * @throws  \stubbles\peer\ConnectionException
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function write($data)
     {
         if ($this->isConnected() == false) {
-            throw new IllegalStateException('Can not write on unconnected socket.');
+            throw new \LogicException('Can not write on unconnected socket.');
         }
 
         $length = socket_write($this->fp, $data, strlen($data));

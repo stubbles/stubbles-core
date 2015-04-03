@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Container for http constants.
  *
@@ -214,7 +213,7 @@ class Http
      * @api
      * @param   int  $statusCode
      * @return  string
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @since   4.0.0
      */
     public static function reasonPhraseFor($statusCode)
@@ -223,7 +222,9 @@ class Http
             return self::$reasonPhrases[$statusCode];
         }
 
-        throw new IllegalArgumentException('Invalid or unknown HTTP status code ' . $statusCode);
+        throw new \InvalidArgumentException(
+                'Invalid or unknown HTTP status code ' . $statusCode
+        );
     }
 
     /**

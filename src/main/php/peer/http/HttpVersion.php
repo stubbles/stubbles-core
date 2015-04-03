@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Represents a HTTP version.
  *
@@ -43,18 +42,20 @@ class HttpVersion
      *
      * @param   string  $httpVersion  a http version string like "HTTP/1.1"
      * @return  Version
-     * @throws  \stubbles\lang\exception\IllegalArgumentException  in case string can not be parsed successfully
+     * @throws  \InvalidArgumentException  in case string can not be parsed successfully
      */
     public static function fromString($httpVersion)
     {
         if (empty($httpVersion)) {
-            throw new IllegalArgumentException('Given HTTP version is empty');
+            throw new \InvalidArgumentException('Given HTTP version is empty');
         }
 
         $major = null;
         $minor = null;
         if (2 != sscanf($httpVersion, 'HTTP/%d.%d', $major, $minor)) {
-            throw new IllegalArgumentException('Given HTTP version "' . $httpVersion . '" can not be parsed');
+            throw new \InvalidArgumentException(
+                    'Given HTTP version "' . $httpVersion . '" can not be parsed'
+            );
         }
 
         return new self($major, $minor);
@@ -65,12 +66,12 @@ class HttpVersion
      *
      * @param   string|\stubbles\peer\http\HttpVersion  $httpVersion  value to cast from
      * @return  \stubbles\peer\http\HttpVersion
-     * @throws  \stubbles\lang\exception\IllegalArgumentException  in case neither $httpVersion nor $default represent a valid HTTP version
+     * @throws  \InvalidArgumentException  in case neither $httpVersion nor $default represent a valid HTTP version
      */
     public static function castFrom($httpVersion)
     {
         if (empty($httpVersion)) {
-            throw new IllegalArgumentException('Given HTTP version is empty');
+            throw new \InvalidArgumentException('Given HTTP version is empty');
         }
 
         if ($httpVersion instanceof self) {
@@ -102,17 +103,21 @@ class HttpVersion
      * @param   int|string  $number
      * @param   int|string  $type
      * @return  int
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     private function castInt($number, $type)
     {
         $result = (int) $number;
         if (strlen($result) !== strlen($number)) {
-            throw new IllegalArgumentException('Given ' . $type . ' version "' . $number . '" is not an integer');
+            throw new \InvalidArgumentException(
+                    'Given ' . $type . ' version "' . $number . '" is not an integer'
+            );
         }
 
         if (0 > $result) {
-            throw new IllegalArgumentException(ucfirst($type) . ' version can not be negative');
+            throw new \InvalidArgumentException(
+                    ucfirst($type) . ' version can not be negative'
+            );
         }
 
         return $result;

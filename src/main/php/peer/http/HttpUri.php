@@ -9,7 +9,6 @@
  */
 namespace stubbles\peer\http;
 use stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\peer\HeaderList;
 use stubbles\peer\MalformedUriException;
 use stubbles\peer\ParsedUri;
@@ -77,7 +76,7 @@ abstract class HttpUri extends Uri
      * @param   string|\stubbles\peer\http\HttpUri  $value  value to cast to HttpUri
      * @param   string                              $name   optional  name of parameter to cast from
      * @return  \stubbles\peer\http\HttpUri
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @since   4.0.0
      */
     public static function castFrom($value, $name = 'Uri')
@@ -90,7 +89,10 @@ abstract class HttpUri extends Uri
             return self::fromString($value);
         }
 
-        throw new IllegalArgumentException($name . ' must be a string containing a HTTP URI or an instance of ' . get_class() . ', but was ' . lang\getType($value));
+        throw new \InvalidArgumentException(
+                $name . ' must be a string containing a HTTP URI or an instance of '
+                . get_class() . ', but was ' . lang\getType($value)
+        );
     }
 
     /**

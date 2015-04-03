@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Predicate to test that something is contained.
  *
@@ -28,12 +27,12 @@ class Contains extends Predicate
      * constructor
      *
      * @param   scalar|null  $contained
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($contained)
     {
         if (!is_scalar($contained)) {
-            throw new IllegalArgumentException('Can only check scalar values.');
+            throw new \InvalidArgumentException('Can only check scalar values.');
         }
 
         $this->contained = $contained;

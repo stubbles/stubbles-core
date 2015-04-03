@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\IllegalStateException;
 /**
  * Class for operations on sockets.
  *
@@ -68,12 +66,12 @@ class Socket
      * @param   int     $port     port to use for opening the socket
      * @param   string  $prefix   prefix for host, e.g. ssl://
      * @param   int     $timeout  connection timeout
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($host, $port = 80, $prefix = null, $timeout = 5)
     {
         if (empty($host)) {
-            throw new IllegalArgumentException('Host can not be empty');
+            throw new \InvalidArgumentException('Host can not be empty');
         }
 
         $this->host    = $host;
@@ -172,12 +170,12 @@ class Socket
      * @param   int  $length  length of data to read
      * @return  string  data read from socket
      * @throws  \stubbles\peer\ConnectionException
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function read($length = 4096)
     {
         if (!$this->isConnected()) {
-            throw new IllegalStateException('Can not read on unconnected socket.');
+            throw new \LogicException('Can not read on unconnected socket.');
         }
 
         $data = fgets($this->fp, $length);
@@ -211,12 +209,12 @@ class Socket
      * @param   int  $length  length of data to read
      * @return  string  data read from socket
      * @throws  \stubbles\peer\ConnectionException
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function readBinary($length = 1024)
     {
         if (!$this->isConnected()) {
-            throw new IllegalStateException('Can not read on unconnected socket.');
+            throw new \LogicException('Can not read on unconnected socket.');
         }
 
         $data = fread($this->fp, $length);
@@ -233,12 +231,12 @@ class Socket
      * @param   string  $data  data to write
      * @return  int  amount of bytes written to socket
      * @throws  \stubbles\peer\ConnectionException
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function write($data)
     {
         if (!$this->isConnected()) {
-            throw new IllegalStateException('Can not write on unconnected socket.');
+            throw new \LogicException('Can not write on unconnected socket.');
         }
 
         $length = fputs($this->fp, $data, strlen($data));

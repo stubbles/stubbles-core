@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\IllegalStateException;
 use stubbles\lang\exception\IOException;
 /**
  * Class for resource based input streams.
@@ -29,12 +27,14 @@ abstract class ResourceInputStream implements InputStream
      * sets the resource to be used
      *
      * @param   resource  $handle
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     protected function setHandle($handle)
     {
         if (!is_resource($handle)) {
-            throw new IllegalArgumentException('Handle needs to be a stream resource.');
+            throw new \InvalidArgumentException(
+                    'Handle needs to be a stream resource.'
+            );
         }
 
         $this->handle = $handle;
@@ -45,13 +45,13 @@ abstract class ResourceInputStream implements InputStream
      *
      * @param   int  $length  max amount of bytes to read
      * @return  string
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      * @throws  \stubbles\lang\exception\IOException
      */
     public function read($length = 8192)
     {
         if (null === $this->handle) {
-            throw new IllegalStateException('Can not read from closed input stream.');
+            throw new \LogicException('Can not read from closed input stream.');
         }
 
         $data = @fread($this->handle, $length);
@@ -71,13 +71,13 @@ abstract class ResourceInputStream implements InputStream
      *
      * @param   int  $length  max amount of bytes to read
      * @return  string
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      * @throws  \stubbles\lang\exception\IOException
      */
     public function readLine($length = 8192)
     {
         if (null === $this->handle) {
-            throw new IllegalStateException('Can not read from closed input stream.');
+            throw new \LogicException('Can not read from closed input stream.');
         }
 
         $data = @fgets($this->handle, $length);
@@ -96,12 +96,12 @@ abstract class ResourceInputStream implements InputStream
      * returns the amount of bytes left to be read
      *
      * @return  int
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function bytesLeft()
     {
         if (null === $this->handle || !is_resource($this->handle)) {
-            throw new IllegalStateException('Can not read from closed input stream.');
+            throw new \LogicException('Can not read from closed input stream.');
         }
 
         $bytesRead = ftell($this->handle);

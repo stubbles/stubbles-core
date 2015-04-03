@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
-use stubbles\lang\exception\RuntimeException;
 /**
  * Static cache for annotations
  *
@@ -78,7 +77,7 @@ class AnnotationCache
      *
      * @param   callable  $readCache   function which can return cached annotation data
      * @param   callable  $storeCache  function which takes cached annotation data and stores it
-     * @throws  \stubbles\lang\exception\RuntimeException
+     * @throws  \RuntimeException
      * @since   3.0.0
      */
     public static function start(callable $readCache, callable $storeCache)
@@ -86,7 +85,7 @@ class AnnotationCache
         self::$annotations = $readCache();
         if (!is_array(self::$annotations)) {
             self::flush();
-            throw new RuntimeException('Cached annotation data is not an array');
+            throw new \RuntimeException('Cached annotation data is not an array');
         }
 
         self::$unserialized = [];

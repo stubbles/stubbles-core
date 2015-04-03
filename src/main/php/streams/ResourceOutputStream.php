@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\IllegalStateException;
 use stubbles\lang\exception\IOException;
 /**
  * Class for resource based output streams.
@@ -29,12 +27,14 @@ abstract class ResourceOutputStream implements OutputStream
      * sets the resource to be used
      *
      * @param   resource  $handle
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     protected function setHandle($handle)
     {
         if (!is_resource($handle)) {
-            throw new IllegalArgumentException('Handle needs to be a stream resource.');
+            throw new \InvalidArgumentException(
+                    'Handle needs to be a stream resource.'
+            );
         }
 
         $this->handle = $handle;
@@ -45,13 +45,13 @@ abstract class ResourceOutputStream implements OutputStream
      *
      * @param   string  $bytes
      * @return  int     amount of written bytes
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      * @throws  \stubbles\lang\exception\IOException
      */
     public function write($bytes)
     {
         if (null === $this->handle) {
-            throw new IllegalStateException('Can not write to closed output stream.');
+            throw new \LogicException('Can not write to closed output stream.');
         }
 
         $length = @fwrite($this->handle, $bytes);

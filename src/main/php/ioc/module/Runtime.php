@@ -10,7 +10,6 @@
 namespace stubbles\ioc\module;
 use stubbles\ioc\Binder;
 use stubbles\lang\Mode;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Binding module to configure the binder with a runtime mode.
  */
@@ -68,7 +67,7 @@ class Runtime implements BindingModule
      *
      * @param   string                        $projectPath  path to project files
      * @param   \stubbles\lang\Mode|callable  $mode         optional  runtime mode
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($projectPath, $mode = null)
     {
@@ -79,7 +78,11 @@ class Runtime implements BindingModule
             } elseif ($mode instanceof Mode) {
                 $this->mode = $mode;
             } else {
-                throw new IllegalArgumentException('Invalid mode, must either be an instance of stubbles\lang\Mode or a callable returning such an instance');
+                throw new \InvalidArgumentException(
+                        'Invalid mode, must either be an instance of'
+                        . ' stubbles\lang\Mode or a callable returning such an'
+                        . ' instance'
+                );
             }
         } else {
             $this->mode = $this->getFallbackMode();

@@ -9,7 +9,6 @@
  */
 namespace stubbles\lang;
 use stubbles\lang\exception\FileNotFoundException;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\streams\file\FileInputStream;
 /**
  * Class to load resources from arbitrary locations.
@@ -94,7 +93,7 @@ class ResourceLoader
      * @param   string  $resource
      * @return  string
      * @throws  \stubbles\lang\exception\FileNotFoundException
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     private function checkedPathFor($resource)
     {
@@ -104,7 +103,11 @@ class ResourceLoader
         }
 
         if (!$this->rootpath->contains($completePath)) {
-            throw new IllegalArgumentException('Given resource "' . $resource . '" located at "' . $completePath . '" is not inside root path ' . $this->rootpath);
+            throw new \InvalidArgumentException(
+                    'Given resource "' . $resource
+                    . '" located at "' . $completePath
+                    . '" is not inside root path ' . $this->rootpath
+            );
         }
 
         return $completePath;

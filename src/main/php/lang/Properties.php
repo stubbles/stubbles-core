@@ -9,7 +9,6 @@
  */
 namespace stubbles\lang;
 use stubbles\lang\exception\FileNotFoundException;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\exception\IOException;
 /**
  * Class to read and parse properties.
@@ -55,14 +54,16 @@ class Properties implements \Iterator
      * @api
      * @param   string  $propertyString
      * @return  \stubbles\lang\Properties
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @since   2.0.0
      */
     public static function fromString($propertyString)
     {
         $propertyData = @parse_ini_string($propertyString, true);
         if (false === $propertyData) {
-            throw new IllegalArgumentException('Property string contains errors and can not be parsed.');
+            throw new \InvalidArgumentException(
+                    'Property string contains errors and can not be parsed.'
+            );
         }
 
         return new static($propertyData);

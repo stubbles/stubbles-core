@@ -9,7 +9,6 @@
  */
 namespace stubbles\peer;
 use stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Query string handling.
  *
@@ -31,7 +30,7 @@ class QueryString
      * spaces.
      *
      * @param   string  $queryString
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($queryString = null)
     {
@@ -45,7 +44,7 @@ class QueryString
 
                 $name = urldecode($name);
                 if (substr_count($name, '[') !== substr_count($name, ']')) {
-                    throw new IllegalArgumentException('Unbalanced [] in query string');
+                    throw new \InvalidArgumentException('Unbalanced [] in query string');
                 }
 
                 if ($start = strpos($name, '[')) {
@@ -145,7 +144,7 @@ class QueryString
      * @param   string  $name   name of parameter
      * @param   mixed   $value  value of parameter
      * @return  \stubbles\peer\QueryString
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function addParam($name, $value)
     {
@@ -153,7 +152,11 @@ class QueryString
             if (is_object($value) && method_exists($value, '__toString')) {
                 $value = (string) $value;
             } else {
-                throw new IllegalArgumentException('Argument 2 passed to ' . __METHOD__ . '() must be an a string, array, object with __toString() method or any other scalar value.');
+                throw new \InvalidArgumentException(
+                        'Argument 2 passed to ' . __METHOD__ . '() must be'
+                        . ' a string, array, object with __toString() method'
+                        . ' or any other scalar value.'
+                );
             }
         }
 

@@ -27,7 +27,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Given HTTP version is empty
      * @dataProvider  emptyVersions
      */
@@ -38,7 +38,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Given HTTP version "invalid" can not be parsed
      */
     public function parseFromStringThrowsIllegalArgumentExceptionWhenParsingFails()
@@ -64,7 +64,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Given major version "foo" is not an integer
      */
     public function constructWithInvalidMajorArgumentThrowsIllegalArgumentException()
@@ -74,7 +74,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Given minor version "foo" is not an integer
      */
     public function constructWithInvalidMinorArgumentThrowsIllegalArgumentException()
@@ -84,7 +84,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Major version can not be negative
      */
     public function constructWithNegativeMajorVersionThrowsIllegalArgumentException()
@@ -94,7 +94,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Major version can not be negative
      */
     public function parseFromStringWithNegativeMajorNumberThrowsIllegalArgumentExceptionWhenParsingFails()
@@ -104,7 +104,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Minor version can not be negative
      */
     public function constructWithNegativeMinorVersionThrowsIllegalArgumentException()
@@ -114,7 +114,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Minor version can not be negative
      */
     public function parseFromStringWithNegativeMinorNumberThrowsIllegalArgumentExceptionWhenParsingFails()
@@ -136,7 +136,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Given HTTP version is empty
      * @dataProvider  emptyVersions
      */

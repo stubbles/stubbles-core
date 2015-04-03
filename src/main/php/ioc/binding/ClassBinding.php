@@ -12,7 +12,6 @@ use stubbles\ioc\ClosureInjectionProvider;
 use stubbles\ioc\DefaultInjectionProvider;
 use stubbles\ioc\InjectionProvider;
 use stubbles\ioc\Injector;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\reflect;
 /**
  * Binding to bind an interface to an implementation.
@@ -95,12 +94,14 @@ class ClassBinding implements Binding
      * @api
      * @param   \ReflectionClass|string  $impl
      * @return  \stubbles\ioc\binding\ClassBinding
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function to($impl)
     {
         if (!is_string($impl) && !($impl instanceof \ReflectionClass)) {
-            throw new IllegalArgumentException('$impl must be a string or an instance of \ReflectionClass');
+            throw new \InvalidArgumentException(
+                    '$impl must be a string or an instance of \ReflectionClass'
+            );
         }
 
         $this->impl = $impl;
@@ -116,12 +117,15 @@ class ClassBinding implements Binding
      * @api
      * @param   object  $instance
      * @return  \stubbles\ioc\binding\ClassBinding
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function toInstance($instance)
     {
         if (!($instance instanceof $this->type)) {
-            throw new IllegalArgumentException('Instance of ' . $this->type . ' expectected, ' . get_class($instance) . ' given.');
+            throw new \InvalidArgumentException(
+                    'Instance of ' . $this->type . ' expectected, '
+                    . get_class($instance) . ' given.'
+            );
         }
 
         $this->instance = $instance;

@@ -55,7 +55,7 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function constructWithIllegalResource()
     {
@@ -68,7 +68,7 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function constructWithIllegalArgument()
     {
@@ -114,7 +114,7 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function seekOnClosedStreamFailsThrowsIllegalStateException()
     {
@@ -125,7 +125,7 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function tellOnClosedStreamThrowsIllegalStateException()
     {

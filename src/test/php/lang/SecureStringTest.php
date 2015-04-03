@@ -73,7 +73,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider  emptyValues
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Given string was null or empty, if you explicitly want to create a SecureString with value null use SecureString::forNull()
      */
     public function createWithEmptyValueThrowsIllegalArgumentException($value)
@@ -83,7 +83,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalAccessException
+     * @expectedException  LogicException
      */
     public function notSerializable()
     {
@@ -208,7 +208,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function substringWithStartOutOfRangeThrowsIllegalArgumentException()
     {
@@ -256,7 +256,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function unveilThrowsIllegalStateExceptionWhenCreationHasFailed()
     {
@@ -272,7 +272,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function switchToInvalidBackingTypeThrowsIllegalArgumentException()
     {
@@ -281,7 +281,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function switchBackingWhenSecureStringInstancesExistThrowsIllegalStateException()
     {

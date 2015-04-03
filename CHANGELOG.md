@@ -27,6 +27,14 @@
     * `Parse::toClass()` now returns `\ReflectionClass`
   * removed `stubbles\ioc\App::bindCurrentWorkingDirectory()`, use `stubbles\ioc\App::currentWorkingDirectory()` instead, deprecated since 5.0.0
   * removed `stubbles\ioc\App::bindHostname()`, use `stubbles\ioc\App::hostname()` instead, deprecated since 5.0.0
+  * removed several exceptions where build-in exceptions in PHP exist, deprecated since 5.0.0:
+    * `stubbles\lang\exception\IllegalAccessException`, use `LogicException` instead
+    * `stubbles\lang\exception\IllegalArgumentException`, use `InvalidArgumentException` instead
+    * `stubbles\lang\exception\IllegalStateException`, use `LogicException` instead
+    * `stubbles\lang\exception\MethodInvocationException`, use `BadMethodCallException` instead
+    * `stubbles\lang\exception\MethodNotSupportedException`, use `BadMethodCallException` instead
+    * `stubbles\lang\exception\RuntimeException`, use native `RuntimeException` instead
+  * removed `stubbles\lang\exception\Throwable`, deprecated since 5.0.0
 
 
 5.4.0 (2015-04-01)

@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Predicate to test that something is equal.
  *
@@ -32,12 +31,14 @@ class Equals extends Predicate
      * constructor
      *
      * @param   scalar|null  $expected
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($expected)
     {
         if (!is_scalar($expected) && null != $expected) {
-            throw new IllegalArgumentException('Can only compare scalar values and null.');
+            throw new \InvalidArgumentException(
+                    'Can only compare scalar values and null.'
+            );
         }
 
         $this->expected = $expected;

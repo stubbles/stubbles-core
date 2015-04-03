@@ -19,7 +19,7 @@ class BindingFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function invalidBindingModuleClassThrowsIllegalArgumentException()
     {
@@ -28,7 +28,7 @@ class BindingFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function invalidBindingModuleInstanceThrowsIllegalArgumentException()
     {

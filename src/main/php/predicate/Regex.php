@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
-use stubbles\lang\exception\RuntimeException;
 /**
  * Predicate to ensure a value complies to a given regular expression.
  *
@@ -45,13 +44,14 @@ class Regex extends Predicate
      *
      * @param   mixed  $value
      * @return  bool
-     * @throws  \stubbles\lang\exception\RuntimeException  in case the used regular expresion is invalid
+     * @throws  \RuntimeException  in case the used regular expresion is invalid
      */
     public function test($value)
     {
         $check = @preg_match($this->regex, $value);
         if (false === $check) {
-            throw new RuntimeException('Invalid regular expression ' . $this->regex);
+            // TODO make use of preg_last_error()
+            throw new \RuntimeException('Invalid regular expression ' . $this->regex);
         }
 
         return ((1 != $check) ? (false) : (true));

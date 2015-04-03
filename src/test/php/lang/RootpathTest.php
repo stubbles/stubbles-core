@@ -31,7 +31,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function constructWithNonExistingPathThrowsIllegalArgumentException()
     {
@@ -97,7 +97,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function castFromWithNonExistingPathThrowsIllegalArgumentException()
     {

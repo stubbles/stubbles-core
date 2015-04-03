@@ -10,7 +10,6 @@
 namespace stubbles\ioc\binding;
 use stubbles\ioc\Injector;
 use stubbles\ioc\InjectionProvider;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Base class for multi bindings.
  *
@@ -62,7 +61,7 @@ abstract class MultiBinding implements Binding
      *
      * @param   string|\stubbles\ioc\InjectionProvider  $provider
      * @return  \Closure
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     protected function getProviderCreator($provider)
     {
@@ -81,7 +80,11 @@ abstract class MultiBinding implements Binding
             return function() use($provider) { return $provider->get(); };
         }
 
-        throw new IllegalArgumentException('Given provider must either be a instance of stubbles\ioc\InjectionProvider or a class name representing such a provider instance.');
+        throw new \InvalidArgumentException(
+                'Given provider must either be a instance of'
+                . ' stubbles\ioc\InjectionProvider or a class name representing'
+                . ' such a provider instance.'
+        );
     }
 
     /**

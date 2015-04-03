@@ -30,7 +30,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function throwsIllegalArgumentExceptionIfPortReqiredButNotGiven()
     {
@@ -123,7 +123,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      * trying to set an invalid type throws an illegal argument exception
      *
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function invalidTypeThrowsIllegalArgumentException()
     {
@@ -135,7 +135,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      * trying to set the type when connected throws an illegal state exception
      *
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function setTypeWhenConnectedThrowsIllegalStateConnection()
     {
@@ -176,7 +176,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function useTcpWhenConnectedThrowsIllegalStateConnection()
     {
@@ -187,7 +187,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function useUdpWhenConnectedThrowsIllegalStateConnection()
     {
@@ -235,7 +235,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function readOnUnconnectedThrowsIllegalStateException()
     {
@@ -259,7 +259,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function readLineOnUnconnectedThrowsIllegalStateException()
     {
@@ -283,7 +283,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function readBinaryOnUnconnectedThrowsIllegalStateException()
     {
@@ -293,7 +293,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function writeOnUnconnectedThrowsIllegalStateException()
     {

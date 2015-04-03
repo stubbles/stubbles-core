@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Container for list of headers.
  *
@@ -71,7 +70,7 @@ class HeaderList implements \IteratorAggregate
      *
      * @param   string|array|\stubbles\peer\HeaderList  $headers
      * @return  \stubbles\peer\HeaderList
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @since   2.0.0
      */
     public function append($headers)
@@ -83,7 +82,10 @@ class HeaderList implements \IteratorAggregate
         } elseif ($headers instanceof self) {
             $append = $headers->headers;
         } else {
-            throw new IllegalArgumentException('Given headers must be a string, a list of headers or another instance of ' . __CLASS__);
+            throw new \InvalidArgumentException(
+                    'Given headers must be a string, a list of headers'
+                    . ' or another instance of ' . __CLASS__
+            );
         }
 
         $this->headers = array_merge($this->headers, $append);
@@ -96,16 +98,22 @@ class HeaderList implements \IteratorAggregate
      * @param   string  $key    name of header
      * @param   string  $value  value of header
      * @return  \stubbles\peer\HeaderList
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function put($key, $value)
     {
         if (!is_string($key)) {
-            throw new IllegalArgumentException('Argument 1 passed to ' . __METHOD__ . ' must be an instance of string.');
+            throw new \InvalidArgumentException(
+                    'Argument 1 passed to ' . __METHOD__
+                    . ' must be an instance of string.'
+            );
         }
 
         if (!is_scalar($value)) {
-            throw new IllegalArgumentException('Argument 2 passed to ' . __METHOD__ . ' must be an instance of a scalar value.');
+            throw new \InvalidArgumentException(
+                    'Argument 2 passed to ' . __METHOD__
+                    . ' must be an instance of a scalar value.'
+            );
         }
 
         $this->headers[$key] = (string) $value;

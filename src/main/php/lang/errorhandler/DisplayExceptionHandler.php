@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use stubbles\lang\exception\Throwable;
 /**
  * Exception handler that displays the exception message nicely formated in the response.
  *
@@ -26,13 +25,7 @@ class DisplayExceptionHandler extends AbstractExceptionHandler
      */
     protected function createResponseBody(\Exception $exception)
     {
-        $body = '';
-        if ($exception instanceof Throwable) {
-            $body .= (string) $exception;
-        } else {
-            $body .= $exception->getMessage();
-        }
-
-        return $body . "\nTrace:\n" . $exception->getTraceAsString();
+        return $exception->getMessage()
+                . "\nTrace:\n" . $exception->getTraceAsString();
     }
 }

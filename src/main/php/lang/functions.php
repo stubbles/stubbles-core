@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang {
-    use stubbles\lang\exception\IllegalArgumentException;
     use stubbles\lang\Properties;
     use stubbles\lang\reflect\annotation\AnnotationCache;
 
@@ -81,7 +80,7 @@ namespace stubbles\lang {
      * @param   string|object  $class       class name, function name of or object instance to reflect
      * @param   string         $methodName  optional  specific method to reflect
      * @return  \ReflectionClass|\ReflectionMethod|\ReflectionFunction
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @since   3.1.0
      * @api
      */
@@ -107,7 +106,10 @@ namespace stubbles\lang {
             return new \ReflectionObject($class);
         }
 
-        throw new IllegalArgumentException('Given class must either be a function name, class name or class instance, ' . gettype($class) . ' given');
+        throw new \InvalidArgumentException(
+                'Given class must either be a function name,'
+                . ' class name or class instance, ' . gettype($class) . ' given'
+        );
     }
 
     /**

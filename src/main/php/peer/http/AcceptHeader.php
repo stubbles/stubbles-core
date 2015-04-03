@@ -9,7 +9,6 @@
  */
 namespace stubbles\peer\http;
 use stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class to work with all kinds of Accept* headers.
  *
@@ -70,12 +69,14 @@ class AcceptHeader implements \Countable
      * @param   string  $acceptable
      * @param   float   $priority    defaults to 1.0
      * @return  \stubbles\peer\http\AcceptHeader
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function addAcceptable($acceptable, $priority = 1.0)
     {
         if (0 > $priority || 1.0 < $priority) {
-            throw new IllegalArgumentException('Invalid priority, must be between 0 and 1.0');
+            throw new \InvalidArgumentException(
+                    'Invalid priority, must be between 0 and 1.0'
+            );
         }
 
         $this->acceptables[$acceptable] = $priority;

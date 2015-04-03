@@ -478,7 +478,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Uri must be a string containing a HTTP URI or an instance of stubbles\peer\http\HttpUri, but was stdClass
      * @since  4.0.0
      */

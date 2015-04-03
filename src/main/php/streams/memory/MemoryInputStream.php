@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams\memory;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\streams\InputStream;
 use stubbles\streams\Seekable;
 /**
@@ -108,7 +107,7 @@ class MemoryInputStream implements InputStream, Seekable
      *
      * @param   int  $offset  new position or amount of bytes to seek
      * @param   int  $whence  one of Seekable::SET, Seekable::CURRENT or Seekable::END
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function seek($offset, $whence = Seekable::SET)
     {
@@ -126,7 +125,10 @@ class MemoryInputStream implements InputStream, Seekable
                 break;
 
             default:
-                throw new IllegalArgumentException('Wrong value for $whence, must be one of Seekable::SET, Seekable::CURRENT or Seekable::END.');
+                throw new \InvalidArgumentException(
+                        'Wrong value for $whence, must be one of Seekable::SET,'
+                        . ' Seekable::CURRENT or Seekable::END.'
+                );
         }
     }
 

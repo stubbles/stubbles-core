@@ -137,7 +137,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function getWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
@@ -210,7 +210,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function headWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
@@ -354,7 +354,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function postWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
@@ -433,7 +433,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @since   2.0.0
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function putWithInvalidHttpVersionThrowsIllegalArgumentException()
     {
@@ -506,7 +506,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @since   2.0.0
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function deleteWithInvalidHttpVersionThrowsIllegalArgumentException()
     {

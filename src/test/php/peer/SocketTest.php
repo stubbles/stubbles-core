@@ -17,7 +17,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function createWithEmptyHostThrowsIllegalArgumentException()
     {
@@ -89,7 +89,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function readOnUnconnectedThrowsIllegalStateException()
     {
@@ -99,7 +99,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function readLineOnUnconnectedThrowsIllegalStateException()
     {
@@ -109,7 +109,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function readBinaryOnUnconnectedThrowsIllegalStateException()
     {
@@ -119,7 +119,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function writeOnUnconnectedThrowsIllegalStateException()
     {

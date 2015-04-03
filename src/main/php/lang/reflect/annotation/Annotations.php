@@ -44,7 +44,6 @@ class Annotations implements \IteratorAggregate
      *
      * @internal  only to be called by the parser
      * @param   \stubbles\lang\reflect\annotation\Annotation  $annotation
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function add(Annotation $annotation)
     {

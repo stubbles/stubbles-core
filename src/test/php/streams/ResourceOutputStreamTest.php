@@ -62,7 +62,7 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function invalidHandleThrowsIllegalArgumentException()
     {
@@ -71,7 +71,7 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function writeToClosedStreamThrowsIllegalStateException()
     {
@@ -81,7 +81,7 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalStateException
+     * @expectedException  LogicException
      */
     public function writeLineToClosedStreamThrowsIllegalStateException()
     {

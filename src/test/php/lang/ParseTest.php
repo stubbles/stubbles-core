@@ -660,7 +660,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function toEnumWithNonExistingEnumThrowsIllegalArgumentException()
     {
@@ -669,7 +669,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @since  5.0.0
      */
     public function asEnumWithNonExistingEnumThrowsIllegalArgumentException()
@@ -680,7 +680,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      * @expectedExceptionMessage  Class stubbles\lang\MyEnum does not have a property named BAR
      * @since  5.0.0
      */

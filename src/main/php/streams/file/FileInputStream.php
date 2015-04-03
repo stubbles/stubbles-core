@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams\file;
-use stubbles\lang\exception\IllegalArgumentException;
-use stubbles\lang\exception\IllegalStateException;
 use stubbles\lang\exception\IOException;
 use stubbles\streams\InputStream;
 use stubbles\streams\ResourceInputStream;
@@ -34,7 +32,7 @@ class FileInputStream extends ResourceInputStream implements Seekable
      * @param   string|resource  $file
      * @param   string           $mode  opening mode if $file is a filename
      * @throws  \stubbles\lang\exception\IOException
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function __construct($file, $mode = 'rb')
     {
@@ -48,7 +46,10 @@ class FileInputStream extends ResourceInputStream implements Seekable
         } elseif (is_resource($file) && get_resource_type($file) === 'stream') {
             $fp = $file;
         } else {
-            throw new IllegalArgumentException('File must either be a filename or an already opened file/stream resource.');
+            throw new \InvalidArgumentException(
+                    'File must either be a filename'
+                    . ' or an already opened file/stream resource.'
+            );
         }
 
         $this->setHandle($fp);
@@ -67,7 +68,7 @@ class FileInputStream extends ResourceInputStream implements Seekable
      *
      * @param   \stubbles\streams\InputStream|string  $value
      * @return  \stubbles\streams\InputStream
-     * @throws  IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @since   5.2.0
      */
     public static function castFrom($value)
@@ -80,7 +81,10 @@ class FileInputStream extends ResourceInputStream implements Seekable
             return new self($value);
         }
 
-        throw new IllegalArgumentException('Given value is neither an instance of stubbles\streams\InputStream nor a string denoting a file');
+        throw new \InvalidArgumentException(
+                'Given value is neither an instance of'
+                . ' stubbles\streams\InputStream nor a string denoting a file'
+        );
     }
 
     /**
@@ -106,12 +110,12 @@ class FileInputStream extends ResourceInputStream implements Seekable
      *
      * @param   int  $offset
      * @param   int  $whence  one of Seekable::SET, Seekable::CURRENT or Seekable::END
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      */
     public function seek($offset, $whence = Seekable::SET)
     {
         if (null === $this->handle) {
-            throw new IllegalStateException('Can not read from closed input stream.');
+            throw new \LogicException('Can not read from closed input stream.');
         }
 
         fseek($this->handle, $offset, $whence);
@@ -121,13 +125,13 @@ class FileInputStream extends ResourceInputStream implements Seekable
      * return current position
      *
      * @return  int
-     * @throws  \stubbles\lang\exception\IllegalStateException
+     * @throws  \LogicException
      * @throws  \stubbles\lang\exception\IOException
      */
     public function tell()
     {
         if (null === $this->handle) {
-            throw new IllegalStateException('Can not read from closed input stream.');
+            throw new \LogicException('Can not read from closed input stream.');
         }
 
         $position = ftell($this->handle);

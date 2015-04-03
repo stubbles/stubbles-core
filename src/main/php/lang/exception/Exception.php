@@ -11,7 +11,7 @@ namespace stubbles\lang\exception;
 /**
  * Base exception class for all stubbles exceptions.
  */
-class Exception extends \Exception implements Throwable
+class Exception extends \Exception
 {
     /**
      * constructor

@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\peer\HeaderList;
 use stubbles\streams\OutputStream;
 /**
@@ -169,13 +168,16 @@ class HttpRequest
      * @param   \stubbles\streams\OutputStream          $out      output stream to write request to
      * @param   string                                  $method   http method
      * @param   string|\stubbles\peer\http\HttpVersion  $version  http version
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     private function processHeader(OutputStream $out, $method, $version)
     {
         $version = HttpVersion::castFrom($version);
         if (!$version->equals(HttpVersion::HTTP_1_0) && !$version->equals(HttpVersion::HTTP_1_1)) {
-            throw new IllegalArgumentException("Invalid HTTP version " . $version . ', please use either ' . HttpVersion::HTTP_1_0 . ' or ' . HttpVersion::HTTP_1_1);
+            throw new \InvalidArgumentException(
+                    'Invalid HTTP version ' . $version . ', please use either '
+                    . HttpVersion::HTTP_1_0 . ' or ' . HttpVersion::HTTP_1_1
+            );
         }
 
         $path = $this->httpUri->path();

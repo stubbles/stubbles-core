@@ -84,7 +84,7 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      * @since  3.0.0
      * @group  issue_58
      * @test
-     * @expectedException  \stubbles\lang\exception\RuntimeException
+     * @expectedException  RuntimeException
      */
     public function startAnnotationCacheWithInvalidCacheDataThrowsRuntimeException()
     {
@@ -95,7 +95,7 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      * @since  3.0.0
      * @group  issue_58
      * @test
-     * @expectedException  \stubbles\lang\exception\RuntimeException
+     * @expectedException  RuntimeException
      */
     public function startAnnotationCacheWithNonSerializedCacheDataThrowsRuntimeException()
     {

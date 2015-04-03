@@ -145,7 +145,7 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
     /**
      * @since  2.0.0
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function appendingInvalidHeaderStructureThrowsIllegalArgumentException()
     {
@@ -196,7 +196,7 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function putArrayThrowsIllegalArgumentException()
     {
@@ -205,7 +205,7 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function putObjectThrowsIllegalArgumentException()
     {
@@ -214,7 +214,7 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  InvalidArgumentException
      */
     public function putUnusualKeyThrowsIllegalArgumentException()
     {
