@@ -53,19 +53,4 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
                 $bindingScopes->session()
         );
     }
-
-    /**
-     * @test
-     * @deprecated  since 5.4.0, will be removed with 6.0.0
-     */
-    public function usesLaterSetSessionScope()
-    {
-        $mockSessionScope = $this->getMock('stubbles\ioc\binding\BindingScope');
-        $bindingScopes = new BindingScopes(null);
-        $this->assertSame(
-                $mockSessionScope,
-                $bindingScopes->setSessionScope($mockSessionScope)
-                              ->session()
-        );
-    }
 }

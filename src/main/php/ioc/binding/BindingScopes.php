@@ -71,19 +71,6 @@ class BindingScopes
     }
 
     /**
-     * sets session binding scope
-     *
-     * @param   \stubbles\ioc\binding\BindingScope  $sessionScope
-     * @return  \stubbles\ioc\binding\BindingScopes
-     * @deprecated  since 5.4.0, use built-in session scope with session interface instead
-     */
-    public function setSessionScope(BindingScope $sessionScope)
-    {
-        $this->sessionScope = $sessionScope;
-        return $this;
-    }
-
-    /**
      * returns scope for session resources
      *
      * @return  \stubbles\ioc\binding\BindingScope
