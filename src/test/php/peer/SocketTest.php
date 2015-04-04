@@ -26,6 +26,15 @@ class SocketTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException  InvalidArgumentException
+     */
+    public function createWithNegativePortThrowsIllegalArgumentException()
+    {
+        createSocket('localhost', -1);
+    }
+
+    /**
+     * @test
      */
     public function isNotSecureByDefault()
     {
@@ -34,155 +43,42 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
+     * @return  array
      */
-    public function timeoutDefaultsTo5Seconds()
+    public function securePrefixes()
     {
-        $socket = createSocket('example.com');
-        $this->assertEquals(5, $socket->timeout());
+        return [['ssl://'], ['tls://']];
     }
 
     /**
      * @test
+     * @dataProvider  securePrefixes
      */
-    public function timeoutCanBeChanged()
+    public function isSecureWhenCorrectPrefixGiven($securePrefix)
     {
-        $socket = createSocket('example.com');
-        $this->assertEquals(60, $socket->setTimeout(60)->timeout());
-    }
-
-    /**
-     * @test
-     */
-    public function isNotConnectedAfterCreation()
-    {
-        $socket = createSocket('example.com');
-        $this->assertFalse($socket->isConnected());
-    }
-
-    /**
-     * @test
-     */
-    public function isAtEndOfSocketAfterCreation()
-    {
-        $socket = createSocket('example.com');
-        $this->assertTrue($socket->eof());
-    }
-
-    /**
-     * @test
-     */
-    public function isSecureWhenPrefixForSslGiven()
-    {
-        $socket = createSocket('example.com', 443, 'ssl://', 30);
+        $socket = createSocket('example.com', 443, $securePrefix);
         $this->assertTrue($socket->usesSsl());
     }
 
     /**
      * @test
+     * @since  6.0.0
      */
-    public function hasGivenTimeout()
+    public function connectReturnsStream()
     {
-        $socket = createSocket('example.com', 443, 'ssl://', 30);
-        $this->assertEquals(30, $socket->timeout());
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function readOnUnconnectedThrowsIllegalStateException()
-    {
-        $socket = createSocket('example.com');
-        $socket->read();
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function readLineOnUnconnectedThrowsIllegalStateException()
-    {
-        $socket = createSocket('example.com');
-        $socket->readLine();
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function readBinaryOnUnconnectedThrowsIllegalStateException()
-    {
-        $socket = createSocket('example.com');
-        $socket->readBinary();
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function writeOnUnconnectedThrowsIllegalStateException()
-    {
-        $socket = createSocket('example.com');
-         $socket->write('data');
-    }
-
-    /**
-     * @test
-     */
-    public function disconnectReturnsInstance()
-    {
-        $socket = createSocket('example.com');
-        $this->assertSame($socket, $socket->disconnect());
-    }
-
-    /**
-     * @since  2.0.0
-     * @test
-     */
-    public function canBeUsedAsInputStream()
-    {
-        $this->assertInstanceOf('stubbles\streams\InputStream',
-                                $this->getMock('stubbles\peer\Socket',
-                                               ['connect'],
-                                               ['localhost']
-                                       )
-                                     ->in()
+        $this->assertInstanceOf(
+                'stubbles\peer\Stream',
+                createSocket('localhost', 445)->connect()
         );
     }
 
     /**
-     * @since  4.0.0
      * @test
+     * @expectedException  stubbles\peer\ConnectionException
+     * @since  6.0.0
      */
-    public function alwaysReturnsSameInputStream()
+    public function connectThrowsConnectionExceptionOnFailure()
     {
-        $socket = $this->getMock('stubbles\peer\Socket', ['connect'], ['localhost']);
-        $this->assertSame($socket->in(), $socket->in());
-    }
-
-    /**
-     * @since  2.0.0
-     * @test
-     */
-    public function canBeUsedAsOutputStream()
-    {
-        $this->assertInstanceOf('stubbles\streams\OutputStream',
-                                $this->getMock('stubbles\peer\Socket',
-                                               ['connect'],
-                                               ['localhost']
-                                       )
-                                     ->out()
-        );
-    }
-
-    /**
-     * @since  4.0.0
-     * @test
-     */
-    public function alwaysReturnsSameOutputStream()
-    {
-        $socket = $this->getMock('stubbles\peer\Socket', ['connect'], ['localhost']);
-        $this->assertSame($socket->out(), $socket->out());
+        createSocket('localhost', 0)->connect();
     }
 }

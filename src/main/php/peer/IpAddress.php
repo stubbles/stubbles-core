@@ -157,12 +157,37 @@ class IpAddress
      * opens socket to this ip address
      *
      * @param   int  $port     port to connect to
-     * @param   int  $timeout  connection timeout
      * @return  \stubbles\peer\Socket
+     * @since   6.0
+     */
+    public function createSocket($port)
+    {
+        return new Socket($this->ip, $port, null);
+    }
+
+    /**
+     * opens socket to this ip address
+     *
+     * @param   int  $port     port to connect to
+     * @param   int  $timeout  connection timeout
+     * @return  \stubbles\peer\Stream
      */
     public function openSocket($port, $timeout = 5)
     {
-        return new Socket($this->ip, $port, null, $timeout);
+        $socket = new Socket($this->ip, $port, null);
+        return $socket->connect()->setTimeout($timeout);
+    }
+
+    /**
+     * opens secure socket using ssl to this ip address
+     *
+     * @param   int  $port     port to connect to
+     * @return  \stubbles\peer\Socket
+     * @since   6.0
+     */
+    public function createSecureSocket($port)
+    {
+        return new Socket($this->ip, $port, 'ssl://');
     }
 
     /**
@@ -170,10 +195,11 @@ class IpAddress
      *
      * @param   int  $port     port to connect to
      * @param   int  $timeout  connection timeout
-     * @return  \stubbles\peer\Socket
+     * @return  \stubbles\peer\Stream
      */
     public function openSecureSocket($port, $timeout = 5)
     {
-        return new Socket($this->ip, $port, 'ssl://', $timeout);
+        $socket = new Socket($this->ip, $port, 'ssl://');
+        return $socket->connect()->setTimeout($timeout);
     }
 }

@@ -264,15 +264,16 @@ abstract class HttpUri extends Uri
      * opens socket to this uri
      *
      * @param   int  $timeout  connection timeout
-     * @return  \stubbles\peer\Socket
+     * @return  \stubbles\peer\Stream
      * @since   2.0.0
      */
     public function openSocket($timeout = 5)
     {
-        return new Socket($this->hostname(),
-                          $this->port(),
-                          (($this->isHttps()) ? ('ssl://') : (null)),
-                          $timeout
+        $socket = new Socket(
+                $this->hostname(),
+                $this->port(),
+                (($this->isHttps()) ? ('ssl://') : (null))
         );
+        return $socket->connect()->setTimeout($timeout);
     }
 }

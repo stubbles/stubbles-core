@@ -73,48 +73,31 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function asLongReturnsLongValueForIpAddress()
     {
-        $this->assertEquals(2130706433, IpAddress::castFrom('127.0.0.1')->asLong());
+        $this->assertEquals(
+                2130706433,
+                IpAddress::castFrom('127.0.0.1')->asLong()
+        );
     }
 
     /**
      * @test
      */
-    public function openSocketReturnsSocketInstance()
+    public function createSocketReturnsSocketInstance()
     {
         $this->assertInstanceOf(
                 'stubbles\peer\Socket',
-                IpAddress::castFrom('127.0.0.1')->openSocket(80)
+                IpAddress::castFrom('127.0.0.1')->createSocket(80)
         );
     }
 
     /**
      * @test
      */
-    public function openSocketIsNotConnected()
-    {
-        $this->assertFalse(
-                IpAddress::castFrom('127.0.0.1')->openSocket(80)->isConnected()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function openSecureSocketReturnsSocketInstance()
+    public function createSecureSocketReturnsSocketInstance()
     {
         $this->assertInstanceOf(
                 'stubbles\peer\Socket',
-                IpAddress::castFrom('127.0.0.1')->openSecureSocket(443)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function openSecureSocketIsNotConnected()
-    {
-        $this->assertFalse(
-                IpAddress::castFrom('127.0.0.1')->openSecureSocket(443)->isConnected()
+                IpAddress::castFrom('127.0.0.1')->createSecureSocket(443)
         );
     }
 
@@ -124,7 +107,9 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
     public function openSecureSocketUsesSsl()
     {
         $this->assertTrue(
-                IpAddress::castFrom('127.0.0.1')->openSecureSocket(443)->usesSsl()
+                IpAddress::castFrom('127.0.0.1')
+                        ->createSecureSocket(443)
+                        ->usesSsl()
         );
     }
 
@@ -156,7 +141,9 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function isInCidrRangeReturnsTrueIfIpIsInRange($ip, $cidrIpShort, $cidrMask)
     {
-        $this->assertTrue(IpAddress::castFrom($ip)->isInCidrRange($cidrIpShort, $cidrMask));
+        $this->assertTrue(
+                IpAddress::castFrom($ip)->isInCidrRange($cidrIpShort, $cidrMask)
+        );
     }
 
     /**
@@ -183,6 +170,8 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function isInCidrRangeReturnsFalseIfIpIsNotInRange($ip, $cidrIpShort, $cidrMask)
     {
-        $this->assertFalse(IpAddress::castFrom($ip)->isInCidrRange($cidrIpShort, $cidrMask));
+        $this->assertFalse(
+                IpAddress::castFrom($ip)->isInCidrRange($cidrIpShort, $cidrMask)
+        );
     }
 }

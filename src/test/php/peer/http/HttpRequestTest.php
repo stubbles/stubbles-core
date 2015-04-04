@@ -41,22 +41,25 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     private function createHttpRequest($queryString = null)
     {
-        $mockHttpUri              = $this->getMock('stubbles\peer\http\HttpUri');
-        $mockSocket               = $this->getMockBuilder('stubbles\peer\Socket')
-                                         ->disableOriginalConstructor()
-                                         ->getMock();
-        $mockSocket->expects($this->any())
-                   ->method('in')
-                   ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
-        $mockSocket->expects(($this->any()))
-                   ->method('out')
-                   ->will($this->returnValue($this->memoryOutputStream));
+        $mockHttpUri = $this->getMock('stubbles\peer\http\HttpUri');
+        $mockStream  = $this->getMockBuilder('stubbles\peer\Stream')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $mockStream->expects($this->any())
+                ->method('setTimeout')
+                ->will($this->returnSelf());
+        $mockStream->expects($this->any())
+                ->method('in')
+                ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
+        $mockStream->expects(($this->any()))
+                ->method('out')
+                ->will($this->returnValue($this->memoryOutputStream));
         $mockHttpUri->expects($this->any())
-                    ->method('openSocket')
-                    ->will($this->returnValue($mockSocket));
+                ->method('openSocket')
+                ->will($this->returnValue($mockStream));
         $mockHttpUri->expects($this->any())
-                    ->method('path')
-                    ->will($this->returnValue('/foo/resource'));
+                ->method('path')
+                ->will($this->returnValue('/foo/resource'));
         if (null !== $queryString) {
             $mockHttpUri->expects($this->any())
                     ->method('hasQueryString')
@@ -67,10 +70,11 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         }
 
         $mockHttpUri->expects($this->any())
-                    ->method('hostname')
-                    ->will($this->returnValue('example.com'));
-        return HttpRequest::create($mockHttpUri,
-                                   new HeaderList(['X-Binford' => 6100])
+                ->method('hostname')
+                ->will($this->returnValue('example.com'));
+        return HttpRequest::create(
+                $mockHttpUri,
+                new HeaderList(['X-Binford' => 6100])
         );
     }
 
@@ -79,8 +83,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function getWritesCorrectRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->get()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->get()
         );
         $this->assertEquals(
                 Http::lines(
@@ -100,8 +105,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function getWritesCorrectRequestWithQueryString()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest('foo=bar&baz=1')->get()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest('foo=bar&baz=1')->get()
         );
         $this->assertEquals(
                 Http::lines(
@@ -120,8 +126,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function getWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->get(5, HttpVersion::HTTP_1_0)
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->get(5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(
                 Http::lines(
@@ -149,8 +156,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function headWritesCorrectRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->head()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->head()
         );
         $this->assertEquals(
                 Http::lines(
@@ -171,8 +179,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function headWritesCorrectRequestWithQueryString()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest('foo=bar&baz=1')->head()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest('foo=bar&baz=1')->head()
         );
         $this->assertEquals(
                 Http::lines(
@@ -192,8 +201,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function headWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->head(5, HttpVersion::HTTP_1_0)
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->head(5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(
                 Http::lines(
@@ -222,8 +232,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post('foobar')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->post('foobar')
         );
         $this->assertEquals(
                 Http::lines(
@@ -245,8 +256,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postIgnoresQueryString()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest('foo=bar&baz=1')->post('foobar')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest('foo=bar&baz=1')->post('foobar')
         );
         $this->assertEquals(
                 Http::lines(
@@ -267,8 +279,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post('foobar', 5, HttpVersion::HTTP_1_0)
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->post('foobar', 5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(
                 Http::lines(
@@ -289,8 +302,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingEmptyPostValues()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post([])
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->post([])
         );
         $this->assertEquals(
                 Http::lines(
@@ -311,8 +325,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingPostValues()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'])
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'])
         );
         $this->assertEquals(
                 Http::lines(
@@ -334,8 +349,13 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingPostValuesWithVersion()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'], 5, HttpVersion::HTTP_1_0)
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->post(
+                        ['foo' => 'bar', 'ba z' => 'dum my'],
+                        5,
+                        HttpVersion::HTTP_1_0
+                )
         );
         $this->assertEquals(
                 Http::lines(
@@ -367,8 +387,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function putWritesCorrectRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->put('foobar')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->put('foobar')
         );
         $this->assertEquals(
                 Http::lines(
@@ -390,8 +411,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function putIgnoresQueryString()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest('foo=bar&baz=1')->put('foobar')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest('foo=bar&baz=1')->put('foobar')
         );
         $this->assertEquals(
                 Http::lines(
@@ -413,8 +435,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function putWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->put('foobar', 5, HttpVersion::HTTP_1_0)
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->put('foobar', 5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(
                 Http::lines(
@@ -446,8 +469,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function deleteWritesCorrectRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->delete()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->delete()
         );
         $this->assertEquals(
                 Http::lines(
@@ -467,8 +491,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function deleteIgnoresQueryString()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest('foo=bar&baz=1')->delete()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest('foo=bar&baz=1')->delete()
         );
         $this->assertEquals(
                 Http::lines(
@@ -488,8 +513,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function deleteWritesCorrectRequestWithVersion()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->createHttpRequest()->delete(5, HttpVersion::HTTP_1_0)
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->createHttpRequest()->delete(5, HttpVersion::HTTP_1_0)
         );
         $this->assertEquals(
                 Http::lines(

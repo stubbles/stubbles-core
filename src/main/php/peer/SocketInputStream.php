@@ -19,19 +19,18 @@ class SocketInputStream implements InputStream
     /**
      * socket to read from
      *
-     * @type  \stubbles\peer\Socket
+     * @type  \stubbles\peer\SocketConnection
      */
-    protected $socket;
+    private $socket;
 
     /**
      * constructor
      *
-     * @param  \stubbles\peer\Socket  $socket
+     * @param  \stubbles\peer\Stream  $socket
      */
-    public function __construct(Socket $socket)
+    public function __construct(Stream $socket)
     {
         $this->socket = $socket;
-        $this->socket->connect();
     }
 
     /**
@@ -39,9 +38,14 @@ class SocketInputStream implements InputStream
      *
      * @param   int  $length  max amount of bytes to read
      * @return  string
+     * @throws  \LogicException
      */
     public function read($length = 8192)
     {
+        if (null === $this->socket) {
+            throw new \LogicException('Can not read from closed socket');
+        }
+
         return $this->socket->readBinary($length);
     }
 
@@ -50,23 +54,30 @@ class SocketInputStream implements InputStream
      *
      * @param   int  $length  max amount of bytes to read
      * @return  string
+     * @throws  \LogicException
      */
     public function readLine($length = 8192)
     {
+        if (null === $this->socket) {
+            throw new \LogicException('Can not read from closed socket');
+        }
+
         return $this->socket->readLine($length);
     }
 
     /**
-     * returns the amount of byted left to be read
+     * returns the amount of bytes left to be read
      *
      * @return  int
      */
     public function bytesLeft()
     {
-        if ($this->socket->eof()) {
+        if ($this->eof()) {
             return -1;
         }
 
+        // we never know how much bytes are left, so we simply say it's at
+        // least one byte
         return 1;
     }
 
@@ -77,6 +88,10 @@ class SocketInputStream implements InputStream
      */
     public function eof()
     {
+        if (null === $this->socket) {
+            return true;
+        }
+
         return $this->socket->eof();
     }
 
@@ -85,6 +100,6 @@ class SocketInputStream implements InputStream
      */
     public function close()
     {
-        $this->socket->disconnect();
+        $this->socket = null;
     }
 }

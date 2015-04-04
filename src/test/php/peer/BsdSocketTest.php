@@ -16,62 +16,12 @@ namespace stubbles\peer;
 class BsdSocketTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * creates partial mock of BsdSocket
-     *
-     * @return  \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function createBsdSocketMock()
-    {
-        return $this->getMock('stubbles\peer\BsdSocket',
-                              ['isConnected', 'disconnect', 'doRead'],
-                              [SocketDomain::$AF_INET, 'example.com', 80]
-               );
-    }
-
-    /**
      * @test
      * @expectedException  InvalidArgumentException
      */
     public function throwsIllegalArgumentExceptionIfPortReqiredButNotGiven()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_INET, 'example.com');
-        $this->assertNull($socket->getPort());
-    }
-
-    /**
-     * @test
-     */
-    public function doesNotUseSecureConnection()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertFalse($socket->usesSsl());
-    }
-
-    /**
-     * @test
-     */
-    public function timeoutCanBeChanged()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(60, $socket->setTimeout(60)->timeout());
-    }
-
-    /**
-     * @test
-     */
-    public function isNotConnectedAfterCreation()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertFalse($socket->isConnected());
-    }
-
-    /**
-     * @test
-     */
-    public function isAtEndOfSocketAfterCreation()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertTrue($socket->eof());
+        createBsdSocket(SocketDomain::$AF_INET, 'example.com');
     }
 
     /**
@@ -79,8 +29,8 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function typeDefaultsToSOCK_STREAM()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_STREAM, $socket->type());
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals(SOCK_STREAM, $bsdSocket->type());
     }
 
     /**
@@ -88,8 +38,8 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function typeCanBeSetToSOCK_DGRAM()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_DGRAM, $socket->setType(SOCK_DGRAM)->type());
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals(SOCK_DGRAM, $bsdSocket->setType(SOCK_DGRAM)->type());
     }
 
     /**
@@ -97,8 +47,8 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function typeCanBeSetToSOCK_RAW()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_RAW, $socket->setType(SOCK_RAW)->type());
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals(SOCK_RAW, $bsdSocket->setType(SOCK_RAW)->type());
     }
 
     /**
@@ -106,8 +56,11 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function typeCanBeSetToSOCK_SEQPACKET()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_SEQPACKET, $socket->setType(SOCK_SEQPACKET)->type());
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals(
+                SOCK_SEQPACKET,
+                $bsdSocket->setType(SOCK_SEQPACKET)->type()
+        );
     }
 
     /**
@@ -115,8 +68,8 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function typeCanBeSetToSOCK_RDM()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_RDM, $socket->setType(SOCK_RDM)->type());
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals(SOCK_RDM, $bsdSocket->setType(SOCK_RDM)->type());
     }
 
     /**
@@ -127,21 +80,8 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidTypeThrowsIllegalArgumentException()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $socket->setType('invalid');
-    }
-
-    /**
-     * trying to set the type when connected throws an illegal state exception
-     *
-     * @test
-     * @expectedException  LogicException
-     */
-    public function setTypeWhenConnectedThrowsIllegalStateConnection()
-    {
-        $socket = $this->createBsdSocketMock();
-        $socket->expects($this->any())->method('isConnected')->will($this->returnValue(true));
-        $socket->setType(SOCK_SEQPACKET);
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $bsdSocket->setType('invalid');
     }
 
     /**
@@ -149,9 +89,9 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function protocolDefaultsToTcp()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
-        $this->assertTrue($socket->isTcp());
-        $this->assertFalse($socket->isUdp());
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
+        $this->assertTrue($bsdSocket->isTcp());
+        $this->assertFalse($bsdSocket->isUdp());
     }
 
     /**
@@ -159,9 +99,9 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function protocolCanBeSetToTcp()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
-        $this->assertTrue($socket->useTcp()->isTcp());
-        $this->assertFalse($socket->isUdp());
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
+        $this->assertTrue($bsdSocket->useTcp()->isTcp());
+        $this->assertFalse($bsdSocket->isUdp());
     }
 
     /**
@@ -169,31 +109,9 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function protocolCanBeSetToUdp()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
-        $this->assertTrue($socket->useUdp()->isUdp());
-        $this->assertFalse($socket->isTcp());
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function useTcpWhenConnectedThrowsIllegalStateConnection()
-    {
-        $socket = $this->createBsdSocketMock();
-        $socket->expects($this->any())->method('isConnected')->will($this->returnValue(true));
-        $socket->useTcp();
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function useUdpWhenConnectedThrowsIllegalStateConnection()
-    {
-        $socket = $this->createBsdSocketMock();
-        $socket->expects($this->any())->method('isConnected')->will($this->returnValue(true));
-        $socket->useUdp();
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
+        $this->assertTrue($bsdSocket->useUdp()->isUdp());
+        $this->assertFalse($bsdSocket->isTcp());
     }
 
     /**
@@ -201,9 +119,10 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsDefaultForOptionNotSet()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals('default',
-                            $socket->option('bar', 'baz', 'default')
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals(
+                'default',
+                $bsdSocket->option('bar', 'baz', 'default')
         );
     }
 
@@ -212,101 +131,11 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsValueFromOptionAlreadySet()
     {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals('foo',
-                            $socket->setOption('bar', 'baz', 'foo')
-                                   ->option('bar', 'baz', 'default')
+        $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
+        $this->assertEquals(
+                'foo',
+                $bsdSocket->setOption('bar', 'baz', 'foo')
+                        ->option('bar', 'baz', 'default')
         );
-    }
-
-    /**
-     * @test
-     */
-    public function readOnConnectedReturnsData()
-    {
-        $socket = $this->createBsdSocketMock();
-        $socket->expects($this->any())->method('isConnected')->will($this->returnValue(true));
-        $socket->expects($this->once())
-               ->method('doRead')
-               ->with($this->equalTo(4096), $this->equalTo(PHP_NORMAL_READ))
-               ->will($this->returnValue("foo\n"));
-        $this->assertEquals("foo\n", $socket->read());
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function readOnUnconnectedThrowsIllegalStateException()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $socket->read();
-    }
-
-    /**
-     * @test
-     */
-    public function readLineOnConnectedReturnsDataWithoutLinebreak()
-    {
-        $socket = $this->createBsdSocketMock();
-        $socket->expects($this->any())->method('isConnected')->will($this->returnValue(true));
-        $socket->expects($this->once())
-               ->method('doRead')
-               ->with($this->equalTo(4096), $this->equalTo(PHP_NORMAL_READ))
-               ->will($this->returnValue("foo\n"));
-        $this->assertEquals('foo', $socket->readLine());
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function readLineOnUnconnectedThrowsIllegalStateException()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $socket->readLine();
-    }
-
-    /**
-     * @test
-     */
-    public function readBinaryOnConnectedReturnsData()
-    {
-        $socket = $this->createBsdSocketMock();
-        $socket->expects($this->any())->method('isConnected')->will($this->returnValue(true));
-        $socket->expects($this->once())
-               ->method('doRead')
-               ->with($this->equalTo(1024), $this->equalTo(PHP_BINARY_READ))
-               ->will($this->returnValue("foo\n"));
-        $this->assertEquals("foo\n", $socket->readBinary());
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function readBinaryOnUnconnectedThrowsIllegalStateException()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $socket->readBinary();
-    }
-
-    /**
-     * @test
-     * @expectedException  LogicException
-     */
-    public function writeOnUnconnectedThrowsIllegalStateException()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $socket->write('data');
-    }
-
-    /**
-     * @test
-     */
-    public function disconnectReturnsInstance()
-    {
-        $socket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertSame($socket, $socket->disconnect());
     }
 }

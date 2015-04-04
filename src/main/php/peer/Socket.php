@@ -9,7 +9,7 @@
  */
 namespace stubbles\peer;
 /**
- * Class for operations on sockets.
+ * Represents a socket to which a connection can be established.
  *
  * @api
  */
@@ -20,231 +20,71 @@ class Socket
      *
      * @type  string
      */
-    protected $host;
+    private $host;
     /**
      * port to use for opening the socket
      *
      * @type  int
      */
-    protected $port;
+    private $port;
     /**
      * prefix for host, e.g. ssl://
      *
      * @type  string
      */
-    protected $prefix;
-    /**
-     * timeout
-     *
-     * @type  int
-     */
-    protected $timeout;
-    /**
-     * internal resource pointer
-     *
-     * @type  resource
-     */
-    protected $fp;
-    /**
-     * input stream to read data from socket with
-     *
-     * @type  \stubbles\streams\InputStream
-     */
-    private $inputStream;
-    /**
-     * output stream to read data from socket with
-     *
-     * @type  \stubbles\streams\OutputStream
-     */
-    private $outputStream;
-
+    private $prefix;
 
     /**
      * constructor
      *
-     * @param   string  $host     host to open socket to
-     * @param   int     $port     port to use for opening the socket
-     * @param   string  $prefix   prefix for host, e.g. ssl://
-     * @param   int     $timeout  connection timeout
+     * @param   string  $host    host to open socket to
+     * @param   int     $port    port to use for opening the socket
+     * @param   string  $prefix  prefix for host, e.g. ssl://
      * @throws  \InvalidArgumentException
      */
-    public function __construct($host, $port = 80, $prefix = null, $timeout = 5)
+    public function __construct($host, $port = 80, $prefix = null)
     {
         if (empty($host)) {
             throw new \InvalidArgumentException('Host can not be empty');
         }
 
-        $this->host    = $host;
-        $this->port    = $port;
-        $this->prefix  = $prefix;
-        $this->timeout = $timeout;
-    }
+        if (0 > $port) {
+            throw new \InvalidArgumentException('Port can not be negative');
+        }
 
-    /**
-     * destructor
-     */
-    public function __destruct()
-    {
-        $this->disconnect();
+        $this->host   = $host;
+        $this->port   = $port;
+        $this->prefix = $prefix;
     }
 
     /**
      * opens a connection to host
      *
-     * @param   int  $connectTimeout  timeout for establishing the connection
-     * @return  bool  true if connect was successful
+     * @param   float  $connectTimeout  optional timeout for establishing the connection, defaults to 1 second
+     * @return  \stubbles\peer\Stream
      * @throws  \stubbles\peer\ConnectionException
      */
-    public function connect($connectTimeout = 2)
+    public function connect($connectTimeout = 1.0)
     {
-        if ($this->isConnected()) {
-            return true;
+        $errno  = 0;
+        $errstr = '';
+        $resource = @fsockopen(
+                $this->prefix . $this->host,
+                $this->port,
+                $errno,
+                $errstr,
+                $connectTimeout
+        );
+        if (false === $resource) {
+            throw new ConnectionException(
+                    'Connect to ' . $this->prefix . $this->host . ':'. $this->port
+                    . ' within ' . $connectTimeout . ' second'
+                    . (1 == $connectTimeout ? '' : 's') . ' failed: '
+                    . $errstr . ' (' . $errno . ').'
+            );
         }
 
-        $errno    = 0;
-        $errstr   = '';
-        $this->fp = @fsockopen($this->prefix . $this->host, $this->port, $errno, $errstr, $connectTimeout);
-        if (false === $this->fp) {
-            $this->fp = null;
-            throw new ConnectionException('Connecting to ' . $this->prefix . $this->host . ':' . $this->port . ' within ' . $connectTimeout . ' seconds failed: ' . $errstr . ' (' . $errno . ').');
-        }
-
-        socket_set_timeout($this->fp, $this->timeout);
-        return true;
-    }
-
-    /**
-     * checks if we already have a connection
-     *
-     * @return  bool
-     */
-    public function isConnected()
-    {
-        return is_resource($this->fp);
-    }
-
-    /**
-     * closes a connection
-     *
-     * @return  \stubbles\peer\Socket
-     */
-    public function disconnect()
-    {
-        if ($this->isConnected()) {
-            fclose($this->fp);
-            $this->fp = null;
-        }
-
-        return $this;
-    }
-
-    /**
-     * set timeout for connections
-     *
-     * @param   int  $timeout  timeout for connection in seconds
-     * @return  \stubbles\peer\Socket
-     */
-    public function setTimeout($timeout)
-    {
-        $this->timeout = $timeout;
-        if ($this->isConnected()) {
-            socket_set_timeout($this->fp, $this->timeout);
-        }
-
-        return $this;
-    }
-
-    /**
-     * returns timeout for connections
-     *
-     * @return  int
-     */
-    public function timeout()
-    {
-        return $this->timeout;
-    }
-
-    /**
-     * read from socket
-     *
-     * @param   int  $length  length of data to read
-     * @return  string  data read from socket
-     * @throws  \stubbles\peer\ConnectionException
-     * @throws  \LogicException
-     */
-    public function read($length = 4096)
-    {
-        if (!$this->isConnected()) {
-            throw new \LogicException('Can not read on unconnected socket.');
-        }
-
-        $data = fgets($this->fp, $length);
-        if (false === $data) {
-            // fgets returns false on eof while feof() returned false before
-            // but will now return true
-            if ($this->eof()) {
-                return null;
-            }
-
-            throw new ConnectionException('Reading of ' . $length . ' bytes failed.');
-        }
-
-        return $data;
-    }
-
-    /**
-     * read a whole line from socket
-     *
-     * @param   int  $length  length of data to read
-     * @return  string  data read from socket
-     */
-    public function readLine($length = 4096)
-    {
-        return rtrim($this->read($length));
-    }
-
-    /**
-     * read binary data from socket
-     *
-     * @param   int  $length  length of data to read
-     * @return  string  data read from socket
-     * @throws  \stubbles\peer\ConnectionException
-     * @throws  \LogicException
-     */
-    public function readBinary($length = 1024)
-    {
-        if (!$this->isConnected()) {
-            throw new \LogicException('Can not read on unconnected socket.');
-        }
-
-        $data = fread($this->fp, $length);
-        if (false === $data) {
-            throw new ConnectionException('Reading of ' . $length . ' bytes failed.');
-        }
-
-        return $data;
-    }
-
-    /**
-     * write data to socket
-     *
-     * @param   string  $data  data to write
-     * @return  int  amount of bytes written to socket
-     * @throws  \stubbles\peer\ConnectionException
-     * @throws  \LogicException
-     */
-    public function write($data)
-    {
-        if (!$this->isConnected()) {
-            throw new \LogicException('Can not write on unconnected socket.');
-        }
-
-        $length = fputs($this->fp, $data, strlen($data));
-        if (false === $length) {
-            throw new ConnectionException('"Writing of ' . strlen($data) . ' bytes failed.');
-        }
-
-        return $length;
+        return new Stream($resource);
     }
 
     /**
@@ -255,50 +95,6 @@ class Socket
      */
     public function usesSsl()
     {
-        return 'ssl://' === $this->prefix;
-    }
-
-    /**
-     * check if we reached end of data
-     *
-     * @return  bool
-     */
-    public function eof()
-    {
-        if ($this->isConnected()) {
-            return feof($this->fp);
-        }
-
-        return true;
-    }
-
-    /**
-     * returns input stream to read from socket
-     *
-     * @return  \stubbles\streams\InputStream
-     * @since   2.0.0
-     */
-    public function in()
-    {
-        if (null === $this->inputStream) {
-            $this->inputStream = new SocketInputStream($this);
-        }
-
-        return $this->inputStream;
-    }
-
-    /**
-     * returns output stream to write to socket
-     *
-     * @return  \stubbles\streams\OutputStream
-     * @since   2.0.0
-     */
-    public function out()
-    {
-        if (null === $this->outputStream) {
-            $this->outputStream = new SocketOutputStream($this);
-        }
-
-        return $this->outputStream;
+        return 'ssl://' === $this->prefix || 'tls://' === $this->prefix;
     }
 }

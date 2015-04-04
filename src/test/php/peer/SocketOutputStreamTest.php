@@ -18,9 +18,9 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  SocketOutputStream
+     * @type  \stubbles\peer\SocketOutputStream
      */
-    protected $socketInputStream;
+    protected $socketOutputStream;
     /**
      * mocked socket instance
      *
@@ -33,9 +33,9 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->mockSocket        = $this->getMock('stubbles\peer\Socket', [], ['example.com']);
-        $this->mockSocket->expects($this->once())
-                         ->method('connect');
+        $this->mockSocket = $this->getMockBuilder('stubbles\peer\Stream')
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->socketOutputStream = new SocketOutputStream($this->mockSocket);
     }
 
@@ -81,11 +81,34 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException  LogicException
+     * @since  6.0.0
      */
-    public function closingTheStreamDisconnectsTheSocket()
+    public function writeOnClosedStreamThrowsLogicException()
     {
-        $this->mockSocket->expects($this->atLeastOnce())
-                         ->method('disconnect');
         $this->socketOutputStream->close();
+        $this->socketOutputStream->write('foo');
+    }
+
+    /**
+     * @test
+     * @expectedException  LogicException
+     * @since  6.0.0
+     */
+    public function writeLinesOnClosedStreamThrowsLogicException()
+    {
+        $this->socketOutputStream->close();
+        $this->socketOutputStream->writeLine('foo');
+    }
+
+    /**
+     * @test
+     * @expectedException  LogicException
+     * @since  6.0.0
+     */
+    public function writeLineOnClosedStreamThrowsLogicException()
+    {
+        $this->socketOutputStream->close();
+        $this->socketOutputStream->writeLines(['foo', 'bar']);
     }
 }

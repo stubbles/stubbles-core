@@ -35,6 +35,20 @@
     * `stubbles\lang\exception\MethodNotSupportedException`, use `BadMethodCallException` instead
     * `stubbles\lang\exception\RuntimeException`, use native `RuntimeException` instead
   * removed `stubbles\lang\exception\Throwable`, deprecated since 5.0.0
+  * split `stubbles\peer\Socket` into two classes
+    * `stubbles\peer\Socket::connect()` now returns an instance of `stubbles\peer\Stream`
+    * all functionallity to read and write on a socket is now in `stubbles\peer\Stream`
+  * split `stubbles\peer\BsdSocket` into two classes
+    * `stubbles\peer\Socket::Bsdconnect()` now returns an instance of `stubbles\peer\BsdSocketConnection`
+    * all functionallity to read and write on a socket is now in `stubbles\peer\BsdSocketConnection`
+  * `stubbles\peer\BsdSocket` is not an instance of `stubbles\peer\Socket` any more
+  * `stubbles\peer\IpAddress::openSocket()` and `stubbles\peer\IpAddress::openSecureSocket()` now return `stubbles\peer\Stream`
+
+
+### Other changes
+
+  * added `stubbles\peer\IpAddress::createSocket()` and `stubbles\peer\IpAddress::createSecureSocket()`
+
 
 
 5.4.0 (2015-04-01)

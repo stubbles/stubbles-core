@@ -37,23 +37,28 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->memoryOutputStream = new MemoryOutputStream();
         $this->mockHttpUri        = $this->getMock('stubbles\peer\http\HttpUri');
-        $mockSocket               = $this->getMock('stubbles\peer\Socket', [], ['example.com']);
-        $mockSocket->expects($this->any())
-                   ->method('in')
-                   ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
-        $mockSocket->expects(($this->any()))
-                   ->method('out')
-                   ->will($this->returnValue($this->memoryOutputStream));
+        $mockStream               = $this->getMockBuilder('stubbles\peer\Stream')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $mockStream->expects($this->any())
+                ->method('setTimeout')
+                ->will($this->returnSelf());
+        $mockStream->expects($this->any())
+                ->method('in')
+                ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
+        $mockStream->expects(($this->any()))
+                ->method('out')
+                ->will($this->returnValue($this->memoryOutputStream));
         $this->mockHttpUri->expects($this->any())
-                          ->method('openSocket')
-                          ->with($this->equalTo(2))
-                          ->will($this->returnValue($mockSocket));
+                ->method('openSocket')
+                ->with($this->equalTo(2))
+                ->will($this->returnValue($mockStream));
         $this->mockHttpUri->expects($this->any())
-                          ->method('path')
-                          ->will($this->returnValue('/foo/resource'));
+                ->method('path')
+                ->will($this->returnValue('/foo/resource'));
         $this->mockHttpUri->expects($this->any())
-                          ->method('hostname')
-                          ->will($this->returnValue('example.com'));
+                ->method('hostname')
+                ->will($this->returnValue('example.com'));
         $this->httpConnection = new HttpConnection($this->mockHttpUri);
     }
 

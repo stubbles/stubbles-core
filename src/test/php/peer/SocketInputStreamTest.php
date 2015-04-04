@@ -18,7 +18,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  SocketInputStream
+     * @type  \stubbles\peer\SocketInputStream
      */
     protected $socketInputStream;
     /**
@@ -33,9 +33,9 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->mockSocket        = $this->getMock('stubbles\peer\Socket', [], ['example.com']);
-        $this->mockSocket->expects($this->once())
-                         ->method('connect');
+        $this->mockSocket = $this->getMockBuilder('stubbles\peer\Stream')
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->socketInputStream = new SocketInputStream($this->mockSocket);
     }
 
@@ -113,11 +113,33 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException  LogicException
+     * @since  6.0.0
      */
-    public function closingTheStreamDisconnectsTheSocket()
+    public function readOnClosedStreamThrowsLogicException()
     {
-        $this->mockSocket->expects($this->atLeastOnce())
-                         ->method('disconnect');
         $this->socketInputStream->close();
+        $this->socketInputStream->read();
+    }
+
+    /**
+     * @test
+     * @expectedException  LogicException
+     * @since  6.0.0
+     */
+    public function readLineOnClosedStreamThrowsLogicException()
+    {
+        $this->socketInputStream->close();
+        $this->socketInputStream->readLine();
+    }
+
+    /**
+     * @test
+     * @since  6.0.0
+     */
+    public function eofOnClosedSocketIsAlwaysTrue()
+    {
+        $this->socketInputStream->close();
+        $this->assertTrue($this->socketInputStream->eof());
     }
 }

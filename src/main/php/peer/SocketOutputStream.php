@@ -17,21 +17,20 @@ use stubbles\streams\OutputStream;
 class SocketOutputStream implements OutputStream
 {
     /**
-     * socket to read from
+     * socket to write to
      *
-     * @type  \stubbles\peer\Socket
+     * @type  \stubbles\peer\SocketConnection
      */
-    protected $socket;
+    private $socket;
 
     /**
      * constructor
      *
-     * @param  \stubbles\peer\Socket  $socket
+     * @param  \stubbles\peer\Stream  $socket
      */
-    public function __construct(Socket $socket)
+    public function __construct(Stream $socket)
     {
         $this->socket = $socket;
-        $this->socket->connect();
     }
 
     /**
@@ -39,9 +38,14 @@ class SocketOutputStream implements OutputStream
      *
      * @param   string  $bytes
      * @return  int     amount of written bytes
+     * @throws  \LogicException
      */
     public function write($bytes)
     {
+        if (null === $this->socket) {
+            throw new \LogicException('Can not write to closed socket');
+        }
+
         return $this->socket->write($bytes);
     }
 
@@ -50,9 +54,14 @@ class SocketOutputStream implements OutputStream
      *
      * @param   string  $bytes
      * @return  int     amount of written bytes
+     * @throws  \LogicException
      */
     public function writeLine($bytes)
     {
+        if (null === $this->socket) {
+            throw new \LogicException('Can not write to closed socket');
+        }
+
         return $this->socket->write($bytes . "\r\n");
     }
 
@@ -78,6 +87,6 @@ class SocketOutputStream implements OutputStream
      */
     public function close()
     {
-        $this->socket->disconnect();
+        $this->socket = null;
     }
 }

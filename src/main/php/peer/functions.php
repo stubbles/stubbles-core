@@ -55,17 +55,16 @@ namespace stubbles\peer {
     /**
      * creates a new socket
      *
-     * @param   string  $host     host to open socket to
-     * @param   int     $port     port to use for opening the socket
-     * @param   string  $prefix   prefix for host, e.g. ssl://
-     * @param   int     $timeout  connection timeout
+     * @param   string  $host    host to open socket to
+     * @param   int     $port    port to use for opening the socket
+     * @param   string  $prefix  prefix for host, e.g. ssl://
      * @return  \stubbles\peer\Socket
      * @since   3.1.0
      * @api
      */
-    function createSocket($host, $port = 80, $prefix = null, $timeout = 5)
+    function createSocket($host, $port = 80, $prefix = null)
     {
-        return new \stubbles\peer\Socket($host, $port, $prefix, $timeout);
+        return new \stubbles\peer\Socket($host, $port, $prefix);
     }
 
     /**
