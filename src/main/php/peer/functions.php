@@ -84,6 +84,40 @@ namespace stubbles\peer {
     {
         return new \stubbles\peer\BsdSocket($domain, $host, $port);
     }
+
+    /**
+     * mock PHP's own fsockopen()
+     *
+     * @param   string  $hostname
+     * @param   int     $port      port number to connect to
+     * @param   int     $errno     holds the system level error number that occurred in the system-level connect() call
+     * @param   string  $errstr    error message as a string.
+     * @param   float   $timeout   connection timeout, in seconds
+     * @return  bool|resource
+     * @since   6.0.0
+     */
+    function fsockopen($hostname, $port = -1, &$errno = null, &$errstr = null, $timeout = null)
+    {
+        if (FsockopenResult::$return !== null) {
+            return FsockopenResult::$return;
+        }
+
+        if (null === $timeout) {
+            $timeout = ini_get('default_socket_timeout');
+        }
+
+        return @\fsockopen($hostname, $port, $errno, $errstr, $timeout);
+    }
+
+    /**
+     * helper class for tests
+     *
+     * @since  6.0.0
+     */
+    class FsockopenResult
+    {
+        public static $return = null;
+    }
 }
 /**
  * Functions in namespace stubbles\peer\http.

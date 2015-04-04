@@ -16,6 +16,14 @@ namespace stubbles\peer;
 class SocketTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * clean up test environment
+     */
+    public function tearDown()
+    {
+        FsockopenResult::$return = null;
+    }
+
+    /**
      * @test
      * @expectedException  InvalidArgumentException
      */
@@ -66,9 +74,10 @@ class SocketTest extends \PHPUnit_Framework_TestCase
      */
     public function connectReturnsStream()
     {
+        FsockopenResult::$return = fopen(__FILE__, 'rb');
         $this->assertInstanceOf(
                 'stubbles\peer\Stream',
-                createSocket('localhost', 445)->connect()
+                createSocket('localhost', 80)->connect()
         );
     }
 
@@ -79,6 +88,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
      */
     public function connectThrowsConnectionExceptionOnFailure()
     {
-        createSocket('localhost', 0)->connect();
+        FsockopenResult::$return = false;
+        createSocket('localhost', 80)->connect();
     }
 }

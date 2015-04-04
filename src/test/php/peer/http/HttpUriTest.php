@@ -373,6 +373,31 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      * @since  2.0.0
      * @test
      */
+    public function createSocketForHttpDoesNotYieldSocketWithSecureConnection()
+    {
+        $this->assertFalse(
+                HttpUri::fromString('http://example.net/')
+                       ->createSocket()
+                       ->usesSsl()
+        );
+    }
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function createSocketForHttpsDoesYieldSocketWithSecureConnection()
+    {
+        $this->assertTrue(
+                HttpUri::fromString('https://example.net/')
+                       ->createSocket()
+                       ->usesSsl()
+        );
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
     public function openSocketUsesDefaultTimeout()
     {
         $this->assertEquals(

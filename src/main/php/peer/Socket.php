@@ -68,7 +68,7 @@ class Socket
     {
         $errno  = 0;
         $errstr = '';
-        $resource = @fsockopen(
+        $resource = fsockopen(
                 $this->prefix . $this->host,
                 $this->port,
                 $errno,

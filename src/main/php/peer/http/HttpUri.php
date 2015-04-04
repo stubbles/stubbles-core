@@ -261,6 +261,21 @@ abstract class HttpUri extends Uri
     }
 
     /**
+     * creates a socket to this uri
+     *
+     * @return  \stubbles\peer\Socket
+     * @since   6.0.0
+     */
+    public function createSocket()
+    {
+        return new Socket(
+                $this->hostname(),
+                $this->port(),
+                (($this->isHttps()) ? ('ssl://') : (null))
+        );
+    }
+
+    /**
      * opens socket to this uri
      *
      * @param   int  $timeout  connection timeout
@@ -269,11 +284,6 @@ abstract class HttpUri extends Uri
      */
     public function openSocket($timeout = 5)
     {
-        $socket = new Socket(
-                $this->hostname(),
-                $this->port(),
-                (($this->isHttps()) ? ('ssl://') : (null))
-        );
-        return $socket->connect()->setTimeout($timeout);
+        return $this->createSocket()->connect()->setTimeout($timeout);
     }
 }
