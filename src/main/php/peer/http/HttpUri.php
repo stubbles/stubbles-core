@@ -130,6 +130,26 @@ abstract class HttpUri extends Uri
     }
 
     /**
+     * checks whether host of uri is listed in dns
+     *
+     * @return  bool
+     */
+    public function hasDnsRecord()
+    {
+        if (!$this->parsedUri->hasHostname()) {
+            return false;
+        }
+
+        if ($this->parsedUri->isLocalHost()
+          || checkdnsrr($this->parsedUri->hostname(), 'A')
+          || checkdnsrr($this->parsedUri->hostname(), 'AAAA')
+          || checkdnsrr($this->parsedUri->hostname(), 'CNAME')) {
+            return true;
+        }
+
+        return false;
+    }
+    /**
      * checks whether the uri uses a default port or not
      *
      * Default ports are 80 for http and 443 for https
