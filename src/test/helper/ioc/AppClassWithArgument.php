@@ -25,7 +25,6 @@ class AppClassWithArgument extends App
      * returns set project path
      *
      * @return  string
-     * @Inject
      * @Named('argv.0')
      */
     public function setArgument($arg)

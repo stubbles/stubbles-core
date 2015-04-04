@@ -26,7 +26,6 @@ class BikeWithOptionalTire implements Vehicle
      * sets the tire
      *
      * @param  Tire  $tire
-     * @Inject
      */
     public function __construct(Tire $tire = null)
     {

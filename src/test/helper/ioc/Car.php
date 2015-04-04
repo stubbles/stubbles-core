@@ -24,7 +24,6 @@ class Car implements Vehicle
      * Create a new car
      *
      * @param  Tire  $tire
-     * @Inject
      */
     public function __construct(Tire $tire)
     {

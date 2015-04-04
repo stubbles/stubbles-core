@@ -31,7 +31,6 @@ class SlotMachine
      *
      * @param  Number  $number1
      * @param  Number  $number2
-     * @Inject
      */
     public function __construct(Number $number1, Number $number2)
     {

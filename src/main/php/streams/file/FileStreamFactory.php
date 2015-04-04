@@ -25,7 +25,6 @@ class FileStreamFactory implements StreamFactory
      * constructor
      *
      * @param  int  $fileMode  default file mode if directory for output stream should be created
-     * @Inject(optional=true)
      * @Named('stubbles.filemode')
      * @Property('stubbles.filemode')
      */

@@ -22,7 +22,6 @@ class AnotherQuestion
 
     /**
      * @param  Answer  $answer
-     * @Inject
      * @Named('answer')
      */
     public function __construct(Answer $answer)

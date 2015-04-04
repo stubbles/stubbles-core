@@ -24,7 +24,6 @@ class Question
      * sets the answer
      *
      * @param  mixed  $answer
-     * @Inject
      * @Named('answer')
      */
     public function __construct($answer)

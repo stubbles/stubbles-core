@@ -19,7 +19,6 @@ class MissingArrayInjection
      * constructor
      *
      * @param  array  $data
-     * @Inject
      * @Named('foo')
      */
     public function __construct(array $data)

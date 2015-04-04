@@ -24,7 +24,6 @@ class ImplicitDependency
      * constructor
      *
      * @param  Goodyear  $goodyear
-     * @Inject
      */
     public function __construct(Goodyear $goodyear)
     {

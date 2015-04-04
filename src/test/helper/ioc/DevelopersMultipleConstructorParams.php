@@ -21,7 +21,6 @@ class DevelopersMultipleConstructorParams
      *
      * @param  Employee  $boss
      * @param  Employee  $employee
-     * @Inject
      * @Named{boss}('schst')
      */
     public function __construct(Employee $boss, Employee $employee)

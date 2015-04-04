@@ -33,7 +33,6 @@ class ExceptionLogger
      * constructor
      *
      * @param  string  $projectPath  path to project
-     * @Inject
      * @Named('stubbles.project.path')
      */
     public function __construct($projectPath)

@@ -24,7 +24,6 @@ class Bike implements Vehicle
      * constructor
      *
      * @param  Tire  $tire
-     * @Inject
      */
     public function __construct(Tire $tire)
     {

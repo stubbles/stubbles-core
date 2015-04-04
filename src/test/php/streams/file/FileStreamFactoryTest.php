@@ -55,8 +55,6 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
     public function annotationsPresent()
     {
         $annotations = reflect\annotationsOfConstructor($this->fileStreamFactory);
-        $this->assertTrue($annotations->contain('Inject'));
-        $this->assertTrue($annotations->named('Inject')[0]->isOptional());
         $this->assertTrue($annotations->contain('Named'));
         $this->assertEquals(
                 'stubbles.filemode',

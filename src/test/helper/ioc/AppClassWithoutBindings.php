@@ -20,7 +20,6 @@ class AppClassWithoutBindings extends App
     /**
      *
      * @param  string  $projectPath
-     * @Inject
      * @Named('stubbles.project.path')
      */
     public function __construct($projectPath)

@@ -20,7 +20,6 @@ class PropertyReceiver
     /**
      *
      * @param  string  $foo
-     * @Inject
      * @Property{foo}('example.foo')
      * @Property{bar}('example.bar')
      */

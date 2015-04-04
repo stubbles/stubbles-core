@@ -24,7 +24,6 @@ class Example
      * constructor
      *
      * @param  \stubbles\lang\SecureString  $password
-     * @Inject
      * @Property('example.password')
      */
     public function __construct(SecureString $password)

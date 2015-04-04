@@ -49,7 +49,6 @@ class PluginHandler
      *
      * @param  scalar[]  $list1  list of config values
      * @param  scalar[]  $map1   map of config values
-     * @Inject
      * @List{list1}('listConfig')
      * @Map{map1}('mapConfig')
      * @List{list2}(stubbles\test\ioc\Plugin.class)

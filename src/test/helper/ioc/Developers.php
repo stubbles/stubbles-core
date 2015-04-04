@@ -21,7 +21,6 @@ class Developers
      *
      * @param  Employee  $schst
      * @param  Employee  $mikey
-     * @Inject
      * @Named{schst}('schst')
      */
     public function __construct(Employee $schst, Employee $mikey)

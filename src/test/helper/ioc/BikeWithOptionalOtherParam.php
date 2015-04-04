@@ -30,7 +30,6 @@ class BikeWithOptionalOtherParam implements Vehicle
      * sets the tire
      *
      * @param  Tire  $tire
-     * @Inject
      */
     public function __construct(Tire $tire, $other = 'foo')
     {

@@ -19,9 +19,8 @@ class DevelopersMultipleConstructorParamsGroupedName
     /**
      * constructor method with Named() annotation on a specific param
      *
-     * @param  Employee  $schst
+     * @param  Employee  $boss
      * @param  Employee  $employee
-     * @Inject
      * @Named('schst')
      */
     public function __construct(Employee $boss, Employee $employee)

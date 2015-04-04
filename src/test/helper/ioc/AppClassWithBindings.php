@@ -44,7 +44,6 @@ class AppClassWithBindings extends App
     /**
      *
      * @param  string  $projectPath
-     * @Inject
      * @Named{projectPath}('stubbles.project.path')
      * @Named{boundBy}('boundBy')
      */

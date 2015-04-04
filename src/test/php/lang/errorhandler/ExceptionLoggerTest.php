@@ -61,7 +61,6 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
     public function annotationsPresentOnConstructor()
     {
         $annotations = reflect\annotationsOfConstructor($this->exceptionLogger);
-        $this->assertTrue($annotations->contain('Inject'));
         $this->assertTrue($annotations->contain('Named'));
         $this->assertEquals(
                 'stubbles.project.path',
