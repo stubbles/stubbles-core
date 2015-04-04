@@ -24,7 +24,7 @@ class ImplicitOptionalDependency
      * constructor
      *
      * @param  Goodyear  $goodyear
-     * @Inject(optional=true)
+     * @Inject
      */
     public function __construct(Goodyear $goodyear = null)
     {

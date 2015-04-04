@@ -57,41 +57,16 @@ class DefaultInjectionProvider implements InjectionProvider
     public function get($name = null)
     {
         $constructor = $this->class->getConstructor();
-        if (null === $constructor || $this->class->isInternal() || !reflect\annotationsOf($constructor)->contain('Inject')) {
+        if (null === $constructor || $this->class->isInternal()) {
             return $this->class->newInstance();
         }
 
         $params = $this->injectionValuesForMethod($constructor);
-        if (false === $params && reflect\annotationsOf($constructor)->firstNamed('Inject')->isOptional()) {
+        if (count($params) === 0) {
             return $this->class->newInstance();
         }
 
         return $this->class->newInstanceArgs($params);
-    }
-
-    /**
-     * handle injections for given instance
-     *
-     * @param  object  $instance
-     */
-    private function injectIntoSetters($instance)
-    {
-        foreach ($this->class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            /* @type  $method  \ReflectionMethod */
-            if ($method->isStatic()
-              || $method->getNumberOfParameters() === 0
-              || strncmp($method->getName(), '__', 2) === 0
-              || !reflect\annotationsOf($method)->contain('Inject')) {
-                continue;
-            }
-
-            $paramValues = $this->injectionValuesForMethod($method);
-            if (false === $paramValues) {
-                continue;
-            }
-
-            $method->invokeArgs($instance, $paramValues);
-        }
     }
 
     /**
@@ -112,15 +87,14 @@ class DefaultInjectionProvider implements InjectionProvider
             if (!$hasExplicitBinding && $param->isDefaultValueAvailable()) {
                 $paramValues[] = $param->getDefaultValue();
                 continue;
-            } elseif (!$hasExplicitBinding && reflect\annotationsOf($method)->firstNamed('Inject')->isOptional()) {
-                return false;
             }
 
             if (!$this->injector->hasBinding($type, $name)) {
                 $typeMsg = $this->createTypeMessage($type, $name);
                 throw new BindingException(
-                        'Can not inject into ' . $this->class->getName() . '::' . $method->getName() . '('
-                        . $this->createParamString($param, $type)
+                        'Can not inject into '
+                        . $this->class->getName() . '::' . $method->getName()
+                        . '(' . $this->createParamString($param, $type)
                         . '). No binding for type ' . $typeMsg
                         . ' specified. Injection stack: ' . "\n"
                         . join("\n", $this->injector->stack())
