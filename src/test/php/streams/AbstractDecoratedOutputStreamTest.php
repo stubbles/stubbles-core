@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use stubbles\streams\memory\MemoryOutputStream;
 /**
  * Helper class for the test to make abstract class instantiable.
  */
@@ -25,23 +26,23 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  AbstractDecoratedOutputStream
+     * @type  \stubbles\streams\AbstractDecoratedOutputStream
      */
-    protected $abstractDecoratedOutputStream;
+    private $abstractDecoratedOutputStream;
     /**
      * mocked input stream
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\streams\memory\MemoryOutputStream
      */
-    protected $mockOutputStream;
+    private $memory;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockOutputStream              = $this->getMock('stubbles\streams\OutputStream');
-        $this->abstractDecoratedOutputStream = new TestAbstractDecoratedOutputStream($this->mockOutputStream);
+        $this->memory = new MemoryOutputStream();
+        $this->abstractDecoratedOutputStream = new TestAbstractDecoratedOutputStream($this->memory);
     }
 
     /**
@@ -49,14 +50,11 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCallsDecoratedStream()
     {
-        $this->mockOutputStream->expects(once())
-                ->method('write')
-                ->with(equalTo('foo'))
-                ->will(returnValue(3));
         $this->assertEquals(
                 3,
                 $this->abstractDecoratedOutputStream->write('foo')
         );
+        $this->assertEquals('foo', $this->memory->buffer());
     }
 
     /**
@@ -64,14 +62,11 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineCallsDecoratedStream()
     {
-        $this->mockOutputStream->expects(once())
-                ->method('writeLine')
-                ->with(equalTo('foo'))
-                ->will(returnValue(4));
         $this->assertEquals(
                 4,
                 $this->abstractDecoratedOutputStream->writeLine('foo')
         );
+        $this->assertEquals("foo\n", $this->memory->buffer());
     }
 
     /**
@@ -80,22 +75,23 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesCallsDecoratedStream()
     {
-        $this->mockOutputStream->expects(once())
-                ->method('writeLines')
-                ->with(equalTo(['foo', 'bar']))
-                ->will(returnValue(8));
         $this->assertEquals(
                 8,
                 $this->abstractDecoratedOutputStream->writeLines(['foo', 'bar'])
         );
+        $this->assertEquals("foo\nbar\n", $this->memory->buffer());
     }
 
     /**
      * @test
      */
-    public function closeCallsDecoratedStream()
+    public function closeClosesDecoratedStream()
     {
-        $this->mockOutputStream->expects(once())->method('close');
-        $this->abstractDecoratedOutputStream->close();
+        $mockOutputStream = $this->getMock('stubbles\streams\OutputStream');
+        $mockOutputStream->expects(once())->method('close');
+        $abstractDecoratedOutputStream = new TestAbstractDecoratedOutputStream(
+                $mockOutputStream
+        );
+        $abstractDecoratedOutputStream->close();
     }
 }

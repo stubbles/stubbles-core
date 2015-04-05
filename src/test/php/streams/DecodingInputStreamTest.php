@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use stubbles\streams\memory\MemoryInputStream;
 /**
  * Test for stubbles\streams\DecodingInputStream.
  *
@@ -18,24 +19,24 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  DecodingInputStream
+     * @type  \stubbles\streams\DecodingInputStream
      */
-    protected $decodingInputStream;
+    private $decodingInputStream;
     /**
      * mocked input stream
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\streams\memory\MemoryInputStream
      */
-    protected $mockInputStream;
+    private $memory;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockInputStream     = $this->getMock('stubbles\streams\InputStream');
+        $this->memory = new MemoryInputStream(utf8_decode("hällö\n"));
         $this->decodingInputStream = new DecodingInputStream(
-                $this->mockInputStream,
+                $this->memory,
                 'iso-8859-1'
         );
     }
@@ -45,7 +46,10 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function knowsGivenCharset()
     {
-        $this->assertEquals('iso-8859-1', $this->decodingInputStream->getCharset());
+        $this->assertEquals(
+                'iso-8859-1',
+                $this->decodingInputStream->getCharset()
+        );
     }
 
     /**
@@ -53,10 +57,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readReturnsDecodedDataFromDecoratedStream()
     {
-        $this->mockInputStream->method('read')
-                ->with(equalTo(8192))
-                ->will(returnValue(utf8_decode('hällö')));
-        $this->assertEquals('hällö', $this->decodingInputStream->read());
+        $this->assertEquals("hällö\n", $this->decodingInputStream->read());
     }
 
     /**
@@ -64,9 +65,6 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineReturnsDecodedLineFromDecoratedStream()
     {
-        $this->mockInputStream->method('readLine')
-                ->with(equalTo(8192))
-                ->will(returnValue(utf8_decode('hällö')));
         $this->assertEquals('hällö', $this->decodingInputStream->readLine());
     }
 
@@ -75,8 +73,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bytesLeftReturnsBytesLeftFromDecoratedStream()
     {
-        $this->mockInputStream->method('bytesLeft')->will(returnValue(5));
-        $this->assertEquals(5, $this->decodingInputStream->bytesLeft());
+        $this->assertEquals(6, $this->decodingInputStream->bytesLeft());
     }
 
     /**
@@ -84,7 +81,6 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function eofReturnsEofFromDecoratedStream()
     {
-        $this->mockInputStream->method('eof')->will(returnValue(false));
         $this->assertFalse($this->decodingInputStream->eof());
     }
 
@@ -93,7 +89,12 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeClosesDecoratedStream()
     {
-        $this->mockInputStream->expects(once())->method('close');
-        $this->decodingInputStream->close();
+        $mockInputStream = $this->getMock('stubbles\streams\InputStream');
+        $mockInputStream->expects(once())->method('close');
+        $decodingInputStream = new DecodingInputStream(
+                $mockInputStream,
+                'iso-8859-1'
+        );
+        $decodingInputStream->close();
     }
 }

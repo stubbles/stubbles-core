@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use stubbles\streams\memory\MemoryOutputStream;
 /**
  * Test for stubbles\streams\EncodingOutputStream.
  *
@@ -18,24 +19,24 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  EncodingOutputStream
+     * @type  \stubbles\streams\EncodingOutputStream
      */
-    protected $encodingOutputStream;
+    private $encodingOutputStream;
     /**
      * mocked input stream
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\streams\memory\MemoryOutputStream
      */
-    protected $mockOutputStream;
+    private $memory;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockOutputStream     = $this->getMock('stubbles\streams\OutputStream');
+        $this->memory = new MemoryOutputStream();
         $this->encodingOutputStream = new EncodingOutputStream(
-                $this->mockOutputStream,
+                $this->memory,
                 'iso-8859-1'
         );
     }
@@ -56,11 +57,8 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeEncodesBytesBeforePassedToDecoratedStream()
     {
-        $this->mockOutputStream->expects(once())
-                ->method('write')
-                ->with(equalTo(utf8_decode('hällö')))
-                ->will(returnValue(5));
         $this->assertEquals(5, $this->encodingOutputStream->write('hällö'));
+        $this->assertEquals(utf8_decode('hällö'), $this->memory->buffer());
     }
 
     /**
@@ -68,11 +66,8 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineEncodesBytesBeforePassedToDecoratedStream()
     {
-        $this->mockOutputStream->expects(once())
-                ->method('writeLine')
-                ->with(equalTo(utf8_decode('hällö')))
-                ->will(returnValue(6));
         $this->assertEquals(6, $this->encodingOutputStream->writeLine('hällö'));
+        $this->assertEquals(utf8_decode("hällö\n"), $this->memory->buffer());
     }
 
     /**
@@ -81,17 +76,13 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesEncodesBytesBeforePassedToDecoratedStream()
     {
-        $this->mockOutputStream->expects($this->at(0))
-                ->method('writeLine')
-                ->with(equalTo(utf8_decode('hällö')))
-                ->will(returnValue(6));
-        $this->mockOutputStream->expects($this->at(1))
-                ->method('writeLine')
-                ->with(equalTo(utf8_decode('wörld')))
-                ->will(returnValue(6));
         $this->assertEquals(
                 12,
                 $this->encodingOutputStream->writeLines(['hällö', 'wörld'])
+        );
+        $this->assertEquals(
+                utf8_decode("hällö\nwörld\n"),
+                $this->memory->buffer()
         );
     }
 
@@ -100,7 +91,12 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeClosesDecoratedOutputStream()
     {
-        $this->mockOutputStream->expects(once())->method('close');
-        $this->encodingOutputStream->close();
+        $mockOutputStream = $this->getMock('stubbles\streams\OutputStream');
+        $mockOutputStream->expects(once())->method('close');
+        $encodingOutputStream = new EncodingOutputStream(
+                $mockOutputStream,
+                'iso-8859-1'
+        );
+        $encodingOutputStream->close();
     }
 }
