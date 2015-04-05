@@ -34,7 +34,10 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->mockInputStream     = $this->getMock('stubbles\streams\InputStream');
-        $this->decodingInputStream = new DecodingInputStream($this->mockInputStream, 'iso-8859-1');
+        $this->decodingInputStream = new DecodingInputStream(
+                $this->mockInputStream,
+                'iso-8859-1'
+        );
     }
 
     /**
@@ -46,68 +49,51 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * data returned from read() should be decoded to UTF-8
-     *
      * @test
      */
-    public function read()
+    public function readReturnsDecodedDataFromDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('read')
-                              ->with($this->equalTo(8192))
-                              ->will($this->returnValue(utf8_decode('hällö')));
+        $this->mockInputStream->method('read')
+                ->with($this->equalTo(8192))
+                ->will($this->returnValue(utf8_decode('hällö')));
         $this->assertEquals('hällö', $this->decodingInputStream->read());
     }
 
     /**
-     * data returned from readLine() should be decoded to UTF-8
-     *
      * @test
      */
-    public function readLine()
+    public function readLineReturnsDecodedLineFromDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('readLine')
-                              ->with($this->equalTo(8192))
-                              ->will($this->returnValue(utf8_decode('hällö')));
+        $this->mockInputStream->method('readLine')
+                ->with($this->equalTo(8192))
+                ->will($this->returnValue(utf8_decode('hällö')));
         $this->assertEquals('hällö', $this->decodingInputStream->readLine());
     }
 
     /**
-     * data returned from bytesLeft() should be returned
-     *
      * @test
      */
-    public function bytesLeft()
+    public function bytesLeftReturnsBytesLeftFromDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('bytesLeft')
-                              ->will($this->returnValue(5));
+        $this->mockInputStream->method('bytesLeft')->will($this->returnValue(5));
         $this->assertEquals(5, $this->decodingInputStream->bytesLeft());
     }
 
     /**
-     * data returned from eof() should be returned
-     *
      * @test
      */
-    public function eof()
+    public function eofReturnsEofFromDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('eof')
-                              ->will($this->returnValue(false));
+        $this->mockInputStream->method('eof')->will($this->returnValue(false));
         $this->assertFalse($this->decodingInputStream->eof());
     }
 
     /**
-     * close() should close the inner input stream
-     *
      * @test
      */
-    public function close()
+    public function closeClosesDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('close');
+        $this->mockInputStream->expects($this->once())->method('close');
         $this->decodingInputStream->close();
     }
 }

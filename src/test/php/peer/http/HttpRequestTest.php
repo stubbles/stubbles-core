@@ -45,32 +45,23 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         $mockStream  = $this->getMockBuilder('stubbles\peer\Stream')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $mockStream->expects($this->any())
-                ->method('setTimeout')
-                ->will($this->returnSelf());
-        $mockStream->expects($this->any())
-                ->method('in')
+        $mockStream->method('setTimeout')->will($this->returnSelf());
+        $mockStream->method('in')
                 ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
-        $mockStream->expects(($this->any()))
-                ->method('out')
+        $mockStream->method('out')
                 ->will($this->returnValue($this->memoryOutputStream));
-        $mockHttpUri->expects($this->any())
-                ->method('openSocket')
+        $mockHttpUri->method('openSocket')
                 ->will($this->returnValue($mockStream));
-        $mockHttpUri->expects($this->any())
-                ->method('path')
+        $mockHttpUri->method('path')
                 ->will($this->returnValue('/foo/resource'));
         if (null !== $queryString) {
-            $mockHttpUri->expects($this->any())
-                    ->method('hasQueryString')
+            $mockHttpUri->method('hasQueryString')
                     ->will($this->returnValue(true));
-            $mockHttpUri->expects($this->any())
-                    ->method('queryString')
+            $mockHttpUri->method('queryString')
                     ->will($this->returnValue($queryString));
         }
 
-        $mockHttpUri->expects($this->any())
-                ->method('hostname')
+        $mockHttpUri->method('hostname')
                 ->will($this->returnValue('example.com'));
         return HttpRequest::create(
                 $mockHttpUri,

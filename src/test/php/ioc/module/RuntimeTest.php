@@ -121,11 +121,11 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function bindsModeProvidedViaCallable()
     {
         $this->mockMode->expects($this->once())
-                       ->method('registerErrorHandler')
-                       ->with($this->equalTo($this->root->url()));
+                ->method('registerErrorHandler')
+                ->with($this->equalTo($this->root->url()));
         $this->mockMode->expects($this->once())
-                       ->method('registerExceptionHandler')
-                       ->with($this->equalTo($this->root->url()));
+                ->method('registerExceptionHandler')
+                ->with($this->equalTo($this->root->url()));
         $runtime = new Runtime($this->root->url(), function() { return $this->mockMode; });
         $binder  = new Binder();
         $runtime->configure($binder);
@@ -152,8 +152,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function doesNotBindPropertiesWhenConfigFileIsMissing()
     {
         $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
-        $mockBinder->expects($this->never())
-                   ->method('bindProperties');
+        $mockBinder->expects($this->never())->method('bindProperties');
         $runtime = new Runtime($this->root->url(), $this->mockMode);
         $runtime->configure($mockBinder);
     }
@@ -171,8 +170,7 @@ stubbles.number.decimals=4
 stubbles.webapp.xml.serializeMode=true")
                  ->at($this->root);
         $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
-        $mockBinder->expects($this->once())
-                   ->method('bindProperties');
+        $mockBinder->expects($this->once())->method('bindProperties');
         $runtime = new Runtime($this->root->url(), $this->mockMode);
         $runtime->configure($mockBinder);
     }
@@ -251,8 +249,7 @@ stubbles.webapp.xml.serializeMode=true")
     {
         $binder  = new Binder();
         $runtime = new Runtime($this->root->url(), $this->mockMode);
-        $runtime->addPathType('user')
-                          ->configure($binder);
+        $runtime->addPathType('user')->configure($binder);
         $this->assertEquals(
                 $this->getProjectPath($pathPart),
                 $binder->getInjector()->getConstant($constantName)

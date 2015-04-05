@@ -49,27 +49,10 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->compositeErrorHandler = new CompositeErrorHandler();
         $this->mockErrorHandler1     = $this->getMock('stubbles\lang\errorhandler\ErrorHandler');
         $this->compositeErrorHandler->addErrorHandler($this->mockErrorHandler1);
-        $this->mockErrorHandler2     = $this->getMock('stubbles\lang\errorhandler\ErrorHandler');
+        $this->mockErrorHandler2 = $this->getMock('stubbles\lang\errorhandler\ErrorHandler');
         $this->compositeErrorHandler->addErrorHandler($this->mockErrorHandler2);
-        $this->mockErrorHandler3     = $this->getMock('stubbles\lang\errorhandler\ErrorHandler');
+        $this->mockErrorHandler3 = $this->getMock('stubbles\lang\errorhandler\ErrorHandler');
         $this->compositeErrorHandler->addErrorHandler($this->mockErrorHandler3);
-    }
-
-    /**
-     * @test
-     */
-    public function isResponsibleCallsAllErrorHandlersUntilOneIsResponsible()
-    {
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler3->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(true));
-        $this->assertTrue($this->compositeErrorHandler->isResponsible(1, 'foo'));
     }
 
     /**
@@ -77,14 +60,12 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isResponsibleDoesOnlyCallErrorHandlersUntilResponsibleOneFound()
     {
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(true));
+        $this->mockErrorHandler1->method('isResponsible')
+                ->will($this->returnValue(false));
+        $this->mockErrorHandler2->method('isResponsible')
+                ->will($this->returnValue(true));
         $this->mockErrorHandler3->expects($this->never())
-                                ->method('isResponsible');
+                ->method('isResponsible');
         $this->assertTrue($this->compositeErrorHandler->isResponsible(1, 'foo'));
      }
 
@@ -93,33 +74,13 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isResponsibleReturnsFalseIfNoHandlerIsResponsible()
     {
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler3->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
+        $this->mockErrorHandler1->method('isResponsible')
+                ->will($this->returnValue(false));
+        $this->mockErrorHandler2->method('isResponsible')
+                ->will($this->returnValue(false));
+        $this->mockErrorHandler3->method('isResponsible')
+                ->will($this->returnValue(false));
         $this->assertFalse($this->compositeErrorHandler->isResponsible(1, 'foo'));
-    }
-
-    /**
-     * @test
-     */
-    public function isSupressableCallsAllErrorHandlersUntilOneDeniesSupressability()
-    {
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(true));
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(true));
-        $this->mockErrorHandler3->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(false));
-        $this->assertFalse($this->compositeErrorHandler->isSupressable(1, 'foo'));
     }
 
     /**
@@ -127,31 +88,26 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isSupressableReturnsFalseAsSoonAsOneHandlerDeniesSupressability()
     {
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(true));
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(false));
+        $this->mockErrorHandler1->method('isSupressable')
+                ->will($this->returnValue(true));
+        $this->mockErrorHandler2->method('isSupressable')
+                ->will($this->returnValue(false));
         $this->mockErrorHandler3->expects($this->never())
-                                ->method('isSupressable');
+                ->method('isSupressable');
         $this->assertFalse($this->compositeErrorHandler->isSupressable(1, 'foo'));
     }
 
     /**
      * @test
      */
-    public function isSupressableReturnsOnlyTrueIfHandlerAllowSupressability()
+    public function isSupressableReturnsOnlyTrueIfAllHandlerAllowSupressability()
     {
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(true));
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(true));
-        $this->mockErrorHandler3->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(true));
+        $this->mockErrorHandler1->method('isSupressable')
+                ->will($this->returnValue(true));
+        $this->mockErrorHandler2->method('isSupressable')
+                ->will($this->returnValue(true));
+        $this->mockErrorHandler3->method('isSupressable')
+                ->will($this->returnValue(true));
         $this->assertTrue($this->compositeErrorHandler->isSupressable(1, 'foo'));
     }
 
@@ -160,29 +116,15 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function handleSignalsDefaultStrategyIfNoErrorHandlerIsResponsible()
     {
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler1->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler1->expects($this->never())
-                                ->method('handle');
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler2->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler2->expects($this->never())
-                                ->method('handle');
-        $this->mockErrorHandler3->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('handle');
-        $this->assertEquals(ErrorHandler::CONTINUE_WITH_PHP_INTERNAL_HANDLING,
-                            $this->compositeErrorHandler->handle(1, 'foo')
+        $this->mockErrorHandler1->method('isResponsible')
+                ->will($this->returnValue(false));
+        $this->mockErrorHandler2->method('isResponsible')
+                ->will($this->returnValue(false));
+        $this->mockErrorHandler3->method('isResponsible')
+                ->will($this->returnValue(false));
+        $this->assertEquals(
+                ErrorHandler::CONTINUE_WITH_PHP_INTERNAL_HANDLING,
+                $this->compositeErrorHandler->handle(1, 'foo')
         );
     }
 
@@ -192,29 +134,15 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsStopIfErrorIsSuppressableAndSuppressedByGlobalErrorReporting()
     {
         $oldLevel = error_reporting(0);
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler1->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler1->expects($this->never())
-                                ->method('handle');
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(true));
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(true));
-        $this->mockErrorHandler2->expects($this->never())
-                                ->method('handle');
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('isResponsible');
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('handle');
-        $this->assertEquals(ErrorHandler::STOP_ERROR_HANDLING,
-                            $this->compositeErrorHandler->handle(1, 'foo')
+        $this->mockErrorHandler1->method('isResponsible')
+                ->will($this->returnValue(false));
+        $this->mockErrorHandler2->method('isResponsible')
+                ->will($this->returnValue(true));
+        $this->mockErrorHandler2->method('isSupressable')
+                ->will($this->returnValue(true));
+        $this->assertEquals(
+                ErrorHandler::STOP_ERROR_HANDLING,
+                $this->compositeErrorHandler->handle(1, 'foo')
         );
         error_reporting($oldLevel);
     }
@@ -225,30 +153,21 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsResultOfResponsibleErrorHandlerIfErrorReportingDisabled()
     {
         $oldLevel = error_reporting(0);
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isResponsible')
+        $this->mockErrorHandler1->method('isResponsible')
                                 ->will($this->returnValue(false));
-        $this->mockErrorHandler1->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler1->expects($this->never())
-                                ->method('handle');
+        $this->mockErrorHandler2->method('isResponsible')
+                ->will($this->returnValue(true));
         $this->mockErrorHandler2->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(true));
+                ->method('isSupressable')
+                ->will($this->returnValue(false));
         $this->mockErrorHandler2->expects($this->once())
-                                ->method('isSupressable')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler2->expects($this->once())
-                                ->method('handle')
-                                ->will($this->returnValue(ErrorHandler::STOP_ERROR_HANDLING));
+                ->method('handle')
+                ->will($this->returnValue(ErrorHandler::STOP_ERROR_HANDLING));
         $this->mockErrorHandler3->expects($this->never())
-                                ->method('isResponsible');
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('handle');
-        $this->assertEquals(ErrorHandler::STOP_ERROR_HANDLING,
-                            $this->compositeErrorHandler->handle(1, 'foo')
+                ->method('isResponsible');
+        $this->assertEquals(
+                ErrorHandler::STOP_ERROR_HANDLING,
+                $this->compositeErrorHandler->handle(1, 'foo')
         );
         error_reporting($oldLevel);
     }
@@ -259,29 +178,17 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsResultOfResponsibleErrorHandlerIfErrorReportingEnabled()
     {
         $oldLevel = error_reporting(E_ALL);
-        $this->mockErrorHandler1->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(false));
-        $this->mockErrorHandler1->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler1->expects($this->never())
-                                ->method('handle');
+        $this->mockErrorHandler1->method('isResponsible')
+                ->will($this->returnValue(false));
         $this->mockErrorHandler2->expects($this->once())
-                                ->method('isResponsible')
-                                ->will($this->returnValue(true));
-        $this->mockErrorHandler2->expects($this->never())
-                                ->method('isSupressable');
+                ->method('isResponsible')
+                ->will($this->returnValue(true));
         $this->mockErrorHandler2->expects($this->once())
-                                ->method('handle')
-                                ->will($this->returnValue(ErrorHandler::STOP_ERROR_HANDLING));
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('isResponsible');
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('isSupressable');
-        $this->mockErrorHandler3->expects($this->never())
-                                ->method('handle');
-        $this->assertEquals(ErrorHandler::STOP_ERROR_HANDLING,
-                            $this->compositeErrorHandler->handle(1, 'foo')
+                ->method('handle')
+                ->will($this->returnValue(ErrorHandler::STOP_ERROR_HANDLING));
+        $this->assertEquals(
+                ErrorHandler::STOP_ERROR_HANDLING,
+                $this->compositeErrorHandler->handle(1, 'foo')
         );
         error_reporting($oldLevel);
     }

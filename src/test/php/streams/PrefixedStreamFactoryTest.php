@@ -18,7 +18,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  PrefixedStreamFactory
+     * @type  \stubbles\streams\PrefixedStreamFactorys
      */
     protected $prefixedStreamFactory;
     /**
@@ -34,7 +34,10 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->mockStreamFactory     = $this->getMock('stubbles\streams\StreamFactory');
-        $this->prefixedStreamFactory = new PrefixedStreamFactory($this->mockStreamFactory, 'prefix/');
+        $this->prefixedStreamFactory = new PrefixedStreamFactory(
+                $this->mockStreamFactory,
+                'prefix/'
+        );
     }
 
     /**
@@ -44,10 +47,16 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $mockInputStream = $this->getMock('stubbles\streams\InputStream');
         $this->mockStreamFactory->expects($this->once())
-                                ->method('createInputStream')
-                                ->with($this->equalTo('prefix/foo'), $this->equalTo(['bar' => 'baz']))
-                                ->will($this->returnValue($mockInputStream));
-        $this->assertSame($mockInputStream, $this->prefixedStreamFactory->createInputStream('foo', ['bar' => 'baz']));
+                ->method('createInputStream')
+                ->with($this->equalTo('prefix/foo'), $this->equalTo(['bar' => 'baz']))
+                ->will($this->returnValue($mockInputStream));
+        $this->assertSame(
+                $mockInputStream,
+                $this->prefixedStreamFactory->createInputStream(
+                        'foo',
+                        ['bar' => 'baz']
+                )
+        );
     }
 
     /**
@@ -57,9 +66,15 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $mockOutputStream = $this->getMock('stubbles\streams\OutputStream');
         $this->mockStreamFactory->expects($this->once())
-                                ->method('createOutputStream')
-                                ->with($this->equalTo('prefix/foo'), $this->equalTo(['bar' => 'baz']))
-                                ->will($this->returnValue($mockOutputStream));
-        $this->assertSame($mockOutputStream, $this->prefixedStreamFactory->createOutputStream('foo', ['bar' => 'baz']));
+                ->method('createOutputStream')
+                ->with($this->equalTo('prefix/foo'), $this->equalTo(['bar' => 'baz']))
+                ->will($this->returnValue($mockOutputStream));
+        $this->assertSame(
+                $mockOutputStream,
+                $this->prefixedStreamFactory->createOutputStream(
+                        'foo',
+                        ['bar' => 'baz']
+                )
+        );
     }
 }

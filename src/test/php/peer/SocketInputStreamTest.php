@@ -44,10 +44,9 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readFromSocketWithDefaultLength()
     {
-        $this->mockSocket->expects($this->once())
-                         ->method('readBinary')
-                         ->with($this->equalTo(8192))
-                         ->will($this->returnValue('foo'));
+        $this->mockSocket->method('readBinary')
+                ->with($this->equalTo(8192))
+                ->will($this->returnValue('foo'));
         $this->assertEquals('foo', $this->socketInputStream->read());
     }
 
@@ -56,10 +55,9 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readFromSocketWithGivenLength()
     {
-        $this->mockSocket->expects($this->once())
-                         ->method('readBinary')
-                         ->with($this->equalTo(3))
-                         ->will($this->returnValue('foo'));
+        $this->mockSocket->method('readBinary')
+                ->with($this->equalTo(3))
+                ->will($this->returnValue('foo'));
         $this->assertEquals('foo', $this->socketInputStream->read(3));
     }
 
@@ -68,10 +66,9 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineFromSocketWithDefaultLength()
     {
-        $this->mockSocket->expects($this->once())
-                         ->method('readLine')
-                         ->with($this->equalTo(8192))
-                         ->will($this->returnValue('foo'));
+        $this->mockSocket->method('readLine')
+                ->with($this->equalTo(8192))
+                ->will($this->returnValue('foo'));
         $this->assertEquals('foo', $this->socketInputStream->readLine());
     }
 
@@ -80,10 +77,9 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineFromSocketWithGivenLength()
     {
-        $this->mockSocket->expects($this->once())
-                         ->method('readLine')
-                         ->with($this->equalTo(3))
-                         ->will($this->returnValue('foo'));
+        $this->mockSocket->method('readLine')
+                ->with($this->equalTo(3))
+                ->will($this->returnValue('foo'));
         $this->assertEquals('foo', $this->socketInputStream->readLine(3));
     }
 
@@ -92,9 +88,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function noBytesLeft()
     {
-        $this->mockSocket->expects($this->exactly(2))
-                         ->method('eof')
-                         ->will($this->returnValue(true));
+        $this->mockSocket->method('eof')->will($this->returnValue(true));
         $this->assertEquals(-1, $this->socketInputStream->bytesLeft());
         $this->assertTrue($this->socketInputStream->eof());
     }
@@ -104,9 +98,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bytesLeft()
     {
-        $this->mockSocket->expects($this->exactly(2))
-                         ->method('eof')
-                         ->will($this->returnValue(false));
+        $this->mockSocket->method('eof')->will($this->returnValue(false));
         $this->assertEquals(1, $this->socketInputStream->bytesLeft());
         $this->assertFalse($this->socketInputStream->eof());
     }

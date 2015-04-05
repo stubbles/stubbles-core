@@ -42,7 +42,10 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockInputStream     = $this->getMock('stubbles\streams\InputStream');
         $this->mockPredicate       = $this->getMock('stubbles\predicate\Predicate');
-        $this->filteredInputStream = new FilteredInputStream($this->mockInputStream, $this->mockPredicate);
+        $this->filteredInputStream = new FilteredInputStream(
+                $this->mockInputStream,
+                $this->mockPredicate
+        );
     }
 
     /**

@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\test\ioc\Mikey;
-use stubbles\test\ioc\SessionBindingScope;
 /**
  * Test for stubbles\ioc\Injector with the session scope.
  *
@@ -20,16 +18,20 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     /**
      * binder instance to be used in tests
      *
-     * @var  Binder
+     * @type  \stubbles\ioc\Injector
      */
-    protected $binder;
+    private $injector;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->binder = new Binder();
+        $binder = new Binder();
+        $binder->bind('stubbles\test\ioc\Person2')
+                ->to('stubbles\test\ioc\Mikey')
+                ->inSession();
+        $this->injector = $binder->getInjector();
 
     }
     /**
@@ -38,12 +40,8 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function canBindToSessionScopeWithoutSession()
     {
-        $this->binder->bind('stubbles\test\ioc\Person2')
-                     ->to('stubbles\test\ioc\Mikey')
-                     ->inSession();
         $this->assertTrue(
-                $this->binder->getInjector()
-                        ->hasBinding('stubbles\test\ioc\Person2')
+                $this->injector->hasBinding('stubbles\test\ioc\Person2')
         );
     }
 
@@ -54,10 +52,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function requestSessionScopedWithoutSessionThrowsRuntimeException()
     {
-        $this->binder->bind('stubbles\test\ioc\Person2')
-                     ->to('stubbles\test\ioc\Mikey')
-                     ->inSession();
-        $this->binder->getInjector()->getInstance('stubbles\test\ioc\Person2');
+        $this->injector->getInstance('stubbles\test\ioc\Person2');
     }
 
     /**
@@ -66,18 +61,12 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function requestSessionScopedWithSessionReturnsInstance()
     {
-        $this->binder->bind('stubbles\test\ioc\Person2')
-                     ->to('stubbles\test\ioc\Mikey')
-                     ->inSession();
-        $injector    = $this->binder->getInjector();
         $mockSession = $this->getMock('stubbles\ioc\binding\Session');
-        $mockSession->expects($this->once())
-                    ->method('hasValue')
-                    ->will($this->returnValue(false));
-        $injector->setSession($mockSession);
+        $mockSession->method('hasValue')->will($this->returnValue(false));
         $this->assertInstanceOf(
                 'stubbles\test\ioc\Mikey',
-                $injector->getInstance('stubbles\test\ioc\Person2')
+                $this->injector->setSession($mockSession)
+                        ->getInstance('stubbles\test\ioc\Person2')
         );
     }
 
@@ -87,11 +76,12 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setSessionAddsBindingForSession()
     {
-        $injector    = $this->binder->getInjector();
         $mockSession = $this->getMock('stubbles\ioc\binding\Session');
-        $injector->setSession($mockSession, 'stubbles\ioc\binding\Session');
         $this->assertTrue(
-                $injector->hasExplicitBinding('stubbles\ioc\binding\Session')
+                $this->injector->setSession(
+                        $mockSession,
+                        'stubbles\ioc\binding\Session'
+                        )->hasExplicitBinding('stubbles\ioc\binding\Session')
         );
     }
 
@@ -101,12 +91,13 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setSessionAddsBindingForSessionAsSingleton()
     {
-        $injector    = $this->binder->getInjector();
         $mockSession = $this->getMock('stubbles\ioc\binding\Session');
-        $injector->setSession($mockSession, 'stubbles\ioc\binding\Session');
         $this->assertSame(
                 $mockSession,
-                $injector->getInstance('stubbles\ioc\binding\Session')
+                $this->injector->setSession(
+                        $mockSession,
+                        'stubbles\ioc\binding\Session'
+                        )->getInstance('stubbles\ioc\binding\Session')
         );
     }
 }

@@ -22,7 +22,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
      *
      * @param  Injector  $injector
      */
-    protected function assertConstantInjection(Injector $injector)
+    private function assertConstantInjection(Injector $injector)
     {
         $question = $injector->getInstance('stubbles\test\\ioc\Question');
         $this->assertInstanceOf('stubbles\test\ioc\Question', $question);
@@ -88,8 +88,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     public function constantViaInjectionProviderInstance()
     {
         $mockProvider = $this->getMock('stubbles\ioc\InjectionProvider');
-        $mockProvider->expects($this->any())
-                     ->method('get')
+        $mockProvider->method('get')
                      ->will($this->returnValue(42));
         $binder = new Binder();
         $binder->bindConstant('answer')
@@ -123,7 +122,11 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')
-               ->toProviderClass(new \ReflectionClass('stubbles\test\ioc\AnswerConstantProvider'));
+                ->toProviderClass(
+                        new \ReflectionClass(
+                                'stubbles\test\ioc\AnswerConstantProvider'
+                        )
+                );
         $injector = $binder->getInjector();
         $this->assertTrue($injector->hasConstant('answer'));
         $this->assertEquals(42, $injector->getConstant('answer'));

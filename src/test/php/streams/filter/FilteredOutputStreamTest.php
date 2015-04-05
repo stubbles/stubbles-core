@@ -42,7 +42,10 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockOutputStream     = $this->getMock('stubbles\streams\OutputStream');
         $this->mockPredicate        = $this->getMock('stubbles\predicate\Predicate');
-        $this->filteredOutputStream = new FilteredOutputStream($this->mockOutputStream, $this->mockPredicate);
+        $this->filteredOutputStream = new FilteredOutputStream(
+                $this->mockOutputStream,
+                $this->mockPredicate
+        );
     }
 
     /**

@@ -40,24 +40,17 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
         $mockStream               = $this->getMockBuilder('stubbles\peer\Stream')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $mockStream->expects($this->any())
-                ->method('setTimeout')
-                ->will($this->returnSelf());
-        $mockStream->expects($this->any())
-                ->method('in')
+        $mockStream->method('setTimeout')->will($this->returnSelf());
+        $mockStream->method('in')
                 ->will($this->returnValue($this->getMock('stubbles\streams\InputStream')));
-        $mockStream->expects(($this->any()))
-                ->method('out')
+        $mockStream->method('out')
                 ->will($this->returnValue($this->memoryOutputStream));
-        $this->mockHttpUri->expects($this->any())
-                ->method('openSocket')
+        $this->mockHttpUri->method('openSocket')
                 ->with($this->equalTo(2))
                 ->will($this->returnValue($mockStream));
-        $this->mockHttpUri->expects($this->any())
-                ->method('path')
+        $this->mockHttpUri->method('path')
                 ->will($this->returnValue('/foo/resource'));
-        $this->mockHttpUri->expects($this->any())
-                ->method('hostname')
+        $this->mockHttpUri->method('hostname')
                 ->will($this->returnValue('example.com'));
         $this->httpConnection = new HttpConnection($this->mockHttpUri);
     }
@@ -67,14 +60,15 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializeGetRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->httpConnection->timeout(2)
-                                                     ->asUserAgent('Stubbles HTTP Client')
-                                                     ->referedFrom('http://example.com/')
-                                                     ->withCookie(['foo' => 'bar baz'])
-                                                     ->authorizedAs('user', 'pass')
-                                                     ->usingHeader('X-Binford', 6100)
-                                                     ->get()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->httpConnection->timeout(2)
+                        ->asUserAgent('Stubbles HTTP Client')
+                        ->referedFrom('http://example.com/')
+                        ->withCookie(['foo' => 'bar baz'])
+                        ->authorizedAs('user', 'pass')
+                        ->usingHeader('X-Binford', 6100)
+                        ->get()
         );
         $this->assertEquals(
                 Http::lines(
@@ -97,14 +91,15 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializeHeadRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->httpConnection->timeout(2)
-                                                     ->asUserAgent('Stubbles HTTP Client')
-                                                     ->referedFrom('http://example.com/')
-                                                     ->withCookie(['foo' => 'bar baz'])
-                                                     ->authorizedAs('user', 'pass')
-                                                     ->usingHeader('X-Binford', 6100)
-                                                     ->head()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->httpConnection->timeout(2)
+                            ->asUserAgent('Stubbles HTTP Client')
+                            ->referedFrom('http://example.com/')
+                            ->withCookie(['foo' => 'bar baz'])
+                            ->authorizedAs('user', 'pass')
+                            ->usingHeader('X-Binford', 6100)
+                            ->head()
         );
         $this->assertEquals(
                 Http::lines(
@@ -128,14 +123,15 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializePostRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->httpConnection->timeout(2)
-                                                     ->asUserAgent('Stubbles HTTP Client')
-                                                     ->referedFrom('http://example.com/')
-                                                     ->withCookie(['foo' => 'bar baz'])
-                                                     ->authorizedAs('user', 'pass')
-                                                     ->usingHeader('X-Binford', 6100)
-                                                     ->post('foobar')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->httpConnection->timeout(2)
+                        ->asUserAgent('Stubbles HTTP Client')
+                        ->referedFrom('http://example.com/')
+                        ->withCookie(['foo' => 'bar baz'])
+                        ->authorizedAs('user', 'pass')
+                        ->usingHeader('X-Binford', 6100)
+                        ->post('foobar')
         );
         $this->assertEquals(
                 Http::lines(
@@ -160,14 +156,15 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializePostRequestUsingPostValues()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->httpConnection->timeout(2)
-                                                     ->asUserAgent('Stubbles HTTP Client')
-                                                     ->referedFrom('http://example.com/')
-                                                     ->withCookie(['foo' => 'bar baz'])
-                                                     ->authorizedAs('user', 'pass')
-                                                     ->usingHeader('X-Binford', 6100)
-                                                     ->post(['foo' => 'bar', 'ba z' => 'dum my'])
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->httpConnection->timeout(2)
+                        ->asUserAgent('Stubbles HTTP Client')
+                        ->referedFrom('http://example.com/')
+                        ->withCookie(['foo' => 'bar baz'])
+                        ->authorizedAs('user', 'pass')
+                        ->usingHeader('X-Binford', 6100)
+                        ->post(['foo' => 'bar', 'ba z' => 'dum my'])
         );
         $this->assertEquals(
                 Http::lines(
@@ -194,14 +191,15 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializePutRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->httpConnection->timeout(2)
-                                                     ->asUserAgent('Stubbles HTTP Client')
-                                                     ->referedFrom('http://example.com/')
-                                                     ->withCookie(['foo' => 'bar baz'])
-                                                     ->authorizedAs('user', 'pass')
-                                                     ->usingHeader('X-Binford', 6100)
-                                                     ->put('foobar')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->httpConnection->timeout(2)
+                        ->asUserAgent('Stubbles HTTP Client')
+                        ->referedFrom('http://example.com/')
+                        ->withCookie(['foo' => 'bar baz'])
+                        ->authorizedAs('user', 'pass')
+                        ->usingHeader('X-Binford', 6100)
+                        ->put('foobar')
         );
         $this->assertEquals(
                 Http::lines(
@@ -227,14 +225,15 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializeDeleteRequest()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpResponse',
-                                $this->httpConnection->timeout(2)
-                                                     ->asUserAgent('Stubbles HTTP Client')
-                                                     ->referedFrom('http://example.com/')
-                                                     ->withCookie(['foo' => 'bar baz'])
-                                                     ->authorizedAs('user', 'pass')
-                                                     ->usingHeader('X-Binford', 6100)
-                                                     ->delete()
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpResponse',
+                $this->httpConnection->timeout(2)
+                        ->asUserAgent('Stubbles HTTP Client')
+                        ->referedFrom('http://example.com/')
+                        ->withCookie(['foo' => 'bar baz'])
+                        ->authorizedAs('user', 'pass')
+                        ->usingHeader('X-Binford', 6100)
+                        ->delete()
         );
         $this->assertEquals(
                 Http::lines(
@@ -258,8 +257,9 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function functionShortcut()
     {
-        $this->assertInstanceOf('stubbles\peer\http\HttpConnection',
-                                \stubbles\peer\http('http://example.net/')
+        $this->assertInstanceOf(
+                'stubbles\peer\http\HttpConnection',
+                \stubbles\peer\http('http://example.net/')
         );
     }
 }

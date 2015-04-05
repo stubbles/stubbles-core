@@ -18,13 +18,13 @@ class PluginHandler
      *
      * @type  scalar[]
      */
-    private $list1;
+    private $configList;
     /**
      * map of config values
      *
      * @type  scalar[]
      */
-    private $list2;
+    private $pluginList;
     /**
      * some passed arguments
      *
@@ -36,39 +36,44 @@ class PluginHandler
      *
      * @type  Plugin[]
      */
-    private $map1;
+    private $configMap;
     /**
      * map of plugins
      *
      * @type  Plugin[]
      */
-    private $map2;
+    private $pluginMap;
 
     /**
      * constructor
      *
-     * @param  scalar[]  $list1  list of config values
-     * @param  scalar[]  $map1   map of config values
-     * @List{list1}('listConfig')
-     * @Map{map1}('mapConfig')
-     * @List{list2}(stubbles\test\ioc\Plugin.class)
-     * @Map{map2}(stubbles\test\ioc\Plugin.class)
+     * @param  scalar[]                    $list1       list of config values
+     * @param  scalar[]                    $configMap   map of config values
+     * @param  stubbles\test\ioc\Plugin[]  $pluginList  list of plugins
+     * @param  stubbles\test\ioc\Plugin[]  $pluginMap   map of plugins
+     * @List{configList}('listConfig')
+     * @Map{configMap}('mapConfig')
+     * @List{pluginList}(stubbles\test\ioc\Plugin.class)
+     * @Map{pluginMap}(stubbles\test\ioc\Plugin.class)
      * @Named{std}('foo')
      * @Named{answer}('foo')
      * @List{list}('aList')
      * @Map{map}('aMap')
      */
     public function __construct(
-            array $list1,
-            array $map1,
-            array $list2 = null,
-            array $map2 = null,
-            Plugin $std = null, $answer = null, array $list = null, array $map = null)
+            array $configList,
+            array $configMap,
+            array $pluginList = null,
+            array $pluginMap = null,
+            Plugin $std = null,
+            $answer = null,
+            array $list = null,
+            array $map = null)
     {
-        $this->list1 = $list1;
-        $this->map1  = $map1;
-        $this->list2 = $list2;
-        $this->map2  = $map2;
+        $this->configList = $configList;
+        $this->configMap  = $configMap;
+        $this->pluginList = $pluginList;
+        $this->pluginMap  = $pluginMap;
         $this->args  = ['std'    => $std,
                         'answer' => $answer,
                         'list'   => $list,
@@ -83,7 +88,7 @@ class PluginHandler
      */
     public function getConfigList()
     {
-        return $this->list1;
+        return $this->configList;
     }
 
     /**
@@ -93,7 +98,7 @@ class PluginHandler
      */
     public function getPluginList()
     {
-        return $this->list2;
+        return $this->pluginList;
     }
 
     /**
@@ -103,7 +108,7 @@ class PluginHandler
      */
     public function getConfigMap()
     {
-        return $this->map1;
+        return $this->configMap;
     }
 
     /**
@@ -113,7 +118,7 @@ class PluginHandler
      */
     public function getPluginMap()
     {
-        return $this->map2;
+        return $this->pluginMap;
     }
 
     /**

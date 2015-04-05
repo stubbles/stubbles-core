@@ -59,9 +59,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function setsCorrectPropertiesInRuntimeModeWithSpecificProperties()
     {
-        $this->mockMode->expects($this->any())
-                       ->method('name')
-                       ->will($this->returnValue('PROD'));
+        $this->mockMode->method('name')->will($this->returnValue('PROD'));
         $propertyReceiver = $this->injector->getInstance('stubbles\test\ioc\PropertyReceiver');
         $this->assertEquals('baz', $propertyReceiver->foo);
         $this->assertEquals('someValue', $propertyReceiver->bar);
@@ -72,9 +70,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function setsCorrectPropertiesInRuntimeModeWithDefaultProperties()
     {
-        $this->mockMode->expects($this->any())
-                       ->method('name')
-                       ->will($this->returnValue('DEV'));
+        $this->mockMode->method('name')->will($this->returnValue('DEV'));
         $propertyReceiver = $this->injector->getInstance('stubbles\test\ioc\PropertyReceiver');
         $this->assertEquals('default', $propertyReceiver->foo);
         $this->assertEquals('someValue', $propertyReceiver->bar);

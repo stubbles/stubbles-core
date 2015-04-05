@@ -49,10 +49,9 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readCallsDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('read')
-                              ->with($this->equalTo(8192))
-                              ->will($this->returnValue('foo'));
+        $this->mockInputStream->method('read')
+                ->with($this->equalTo(8192))
+                ->will($this->returnValue('foo'));
         $this->assertEquals('foo', $this->abstractDecoratedInputStream->read());
     }
 
@@ -61,10 +60,9 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineCallsDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('readLine')
-                              ->with($this->equalTo(8192))
-                              ->will($this->returnValue('foo'));
+        $this->mockInputStream->method('readLine')
+                ->with($this->equalTo(8192))
+                ->will($this->returnValue('foo'));
         $this->assertEquals('foo', $this->abstractDecoratedInputStream->readLine());
     }
 
@@ -73,9 +71,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bytesLeftCallsDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('bytesLeft')
-                              ->will($this->returnValue(5));
+        $this->mockInputStream->method('bytesLeft')->will($this->returnValue(5));
         $this->assertEquals(5, $this->abstractDecoratedInputStream->bytesLeft());
     }
 
@@ -84,9 +80,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function eofCallsDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('eof')
-                              ->will($this->returnValue(false));
+        $this->mockInputStream->method('eof')->will($this->returnValue(false));
         $this->assertFalse($this->abstractDecoratedInputStream->eof());
     }
 
@@ -95,8 +89,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeCallsDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())
-                              ->method('close');
+        $this->mockInputStream->expects($this->once())->method('close');
         $this->abstractDecoratedInputStream->close();
     }
 }

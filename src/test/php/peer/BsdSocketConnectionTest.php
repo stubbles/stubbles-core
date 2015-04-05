@@ -36,8 +36,7 @@ class BsdSocketConnectionTest extends \PHPUnit_Framework_TestCase
     public function readReturnsData()
     {
         $bsdSocket = $this->createBsdSocketMock();
-        $bsdSocket->expects($this->once())
-                ->method('doRead')
+        $bsdSocket->method('doRead')
                 ->with($this->equalTo(4096), $this->equalTo(PHP_NORMAL_READ))
                 ->will($this->returnValue("foo\n"));
         $this->assertEquals("foo\n", $bsdSocket->read());
@@ -49,8 +48,7 @@ class BsdSocketConnectionTest extends \PHPUnit_Framework_TestCase
     public function readLineReturnsDataWithoutLinebreak()
     {
         $bsdSocket = $this->createBsdSocketMock();
-        $bsdSocket->expects($this->once())
-                ->method('doRead')
+        $bsdSocket->method('doRead')
                 ->with($this->equalTo(4096), $this->equalTo(PHP_NORMAL_READ))
                 ->will($this->returnValue("foo\n"));
         $this->assertEquals('foo', $bsdSocket->readLine());
@@ -62,8 +60,7 @@ class BsdSocketConnectionTest extends \PHPUnit_Framework_TestCase
     public function readBinaryReturnsData()
     {
         $bsdSocket = $this->createBsdSocketMock();
-        $bsdSocket->expects($this->once())
-                ->method('doRead')
+        $bsdSocket->method('doRead')
                 ->with($this->equalTo(1024), $this->equalTo(PHP_BINARY_READ))
                 ->will($this->returnValue("foo\n"));
         $this->assertEquals("foo\n", $bsdSocket->readBinary());

@@ -23,13 +23,16 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
         $binder       = new Binder();
         $mockProvider = $this->getMock('stubbles\ioc\InjectionProvider');
         $answer       = new \stubbles\test\ioc\Answer();
-        $mockProvider->expects($this->once())
-                     ->method('get')
-                     ->with($this->equalTo('answer'))
-                     ->will($this->returnValue($answer));
+        $mockProvider->method('get')
+                ->with($this->equalTo('answer'))
+                ->will($this->returnValue($answer));
         $binder->bind('stubbles\test\ioc\Answer')->toProvider($mockProvider);
-        $question = $binder->getInjector()->getInstance('stubbles\test\ioc\AnotherQuestion');
-        $this->assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
+        $question = $binder->getInjector()
+                ->getInstance('stubbles\test\ioc\AnotherQuestion');
+        $this->assertInstanceOf(
+                'stubbles\test\ioc\AnotherQuestion',
+                $question
+        );
         $this->assertSame($answer, $question->getAnswer());
     }
 
@@ -50,8 +53,10 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
     public function injectWithProviderClassName()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Answer')->toProviderClass('stubbles\test\ioc\MyProviderClass');
-        $question = $binder->getInjector()->getInstance('stubbles\test\ioc\AnotherQuestion');
+        $binder->bind('stubbles\test\ioc\Answer')
+                ->toProviderClass('stubbles\test\ioc\MyProviderClass');
+        $question = $binder->getInjector()
+                ->getInstance('stubbles\test\ioc\AnotherQuestion');
         $this->assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
         $this->assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());
     }
@@ -63,8 +68,11 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bind('stubbles\test\ioc\Answer')
-               ->toProviderClass(new \ReflectionClass('stubbles\test\ioc\MyProviderClass'));
-        $question = $binder->getInjector()->getInstance('stubbles\test\ioc\AnotherQuestion');
+                 ->toProviderClass(
+                       new \ReflectionClass('stubbles\test\ioc\MyProviderClass')
+                );
+        $question = $binder->getInjector()
+                ->getInstance('stubbles\test\ioc\AnotherQuestion');
         $this->assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
         $this->assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());
     }
