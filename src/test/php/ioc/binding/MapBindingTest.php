@@ -113,8 +113,8 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
     {
         $value = new \stdClass();
         $this->mockInjector->method('getInstance')
-                ->with($this->equalTo('\stdClass'))
-                ->will($this->returnValue($value));
+                ->with(equalTo('\stdClass'))
+                ->will(returnValue($value));
         $this->assertEquals(
             ['x' => $value],
             $this->mapBinding->withEntry('x', '\stdClass')
@@ -160,7 +160,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
     private function createInjectionProvider($value)
     {
         $mockProvider = $this->getMock('stubbles\ioc\InjectionProvider');
-        $mockProvider->method('get')->will($this->returnValue($value));
+        $mockProvider->method('get')->will(returnValue($value));
         return $mockProvider;
     }
 
@@ -301,8 +301,8 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
     private function prepareInjector(InjectionProvider $mockProvider, $mockProviderClass)
     {
         $this->mockInjector->method('getInstance')
-                ->with($this->equalTo($mockProviderClass))
-                ->will($this->returnValue($mockProvider));
+                ->with(equalTo($mockProviderClass))
+                ->will(returnValue($mockProvider));
 
     }
 
@@ -314,8 +314,8 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
     {
         $mockProviderClass = $this->getMockClass('stubbles\ioc\InjectionProvider');
         $this->mockInjector->method('getInstance')
-                ->with($this->equalTo($mockProviderClass))
-                ->will($this->returnValue('\stdClass'));
+                ->with(equalTo($mockProviderClass))
+                ->will(returnValue('\stdClass'));
         $this->mapBinding->withEntryFromProvider('x', $mockProviderClass)
                 ->getInstance(
                         $this->mockInjector,

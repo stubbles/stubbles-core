@@ -45,8 +45,8 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function writePassesBytesToSocket()
     {
         $this->mockSocket->method('write')
-                ->with($this->equalTo('foo'))
-                ->will($this->returnValue(3));
+                ->with(equalTo('foo'))
+                ->will(returnValue(3));
         $this->assertEquals(3, $this->socketOutputStream->write('foo'));
     }
 
@@ -56,8 +56,8 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function writeLinePassesBytesToSocketWithLinebreak()
     {
         $this->mockSocket->method('write')
-                ->with($this->equalTo("foo\r\n"))
-                ->will($this->returnValue(5));
+                ->with(equalTo("foo\r\n"))
+                ->will(returnValue(5));
         $this->assertEquals(5, $this->socketOutputStream->writeLine('foo'));
     }
 
@@ -66,15 +66,18 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesPassesBytesToSocketWithLinebreak()
     {
-        $this->mockSocket->expects($this->at(0))
+        $this->mockSocket->expects(at(0))
                          ->method('write')
-                         ->with($this->equalTo("foo\r\n"))
-                         ->will($this->returnValue(5));
-        $this->mockSocket->expects($this->at(1))
+                         ->with(equalTo("foo\r\n"))
+                         ->will(returnValue(5));
+        $this->mockSocket->expects(at(1))
                          ->method('write')
-                         ->with($this->equalTo("bar\r\n"))
-                         ->will($this->returnValue(5));
-        $this->assertEquals(10, $this->socketOutputStream->writeLines(['foo', 'bar']));
+                         ->with(equalTo("bar\r\n"))
+                         ->will(returnValue(5));
+        $this->assertEquals(
+                10,
+                $this->socketOutputStream->writeLines(['foo', 'bar'])
+        );
     }
 
     /**

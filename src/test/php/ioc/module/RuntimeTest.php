@@ -73,12 +73,12 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function registerMethodsShouldBeCalledWithGivenProjectPath()
     {
-        $this->mockMode->expects($this->once())
+        $this->mockMode->expects(once())
                        ->method('registerErrorHandler')
-                       ->with($this->equalTo($this->root->url()));
-        $this->mockMode->expects($this->once())
+                       ->with(equalTo($this->root->url()));
+        $this->mockMode->expects(once())
                        ->method('registerExceptionHandler')
-                       ->with($this->equalTo($this->root->url()));
+                       ->with(equalTo($this->root->url()));
         new Runtime($this->root->url(), $this->mockMode);
     }
 
@@ -120,12 +120,12 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function bindsModeProvidedViaCallable()
     {
-        $this->mockMode->expects($this->once())
+        $this->mockMode->expects(once())
                 ->method('registerErrorHandler')
-                ->with($this->equalTo($this->root->url()));
-        $this->mockMode->expects($this->once())
+                ->with(equalTo($this->root->url()));
+        $this->mockMode->expects(once())
                 ->method('registerExceptionHandler')
-                ->with($this->equalTo($this->root->url()));
+                ->with(equalTo($this->root->url()));
         $runtime = new Runtime($this->root->url(), function() { return $this->mockMode; });
         $binder  = new Binder();
         $runtime->configure($binder);
@@ -152,7 +152,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function doesNotBindPropertiesWhenConfigFileIsMissing()
     {
         $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
-        $mockBinder->expects($this->never())->method('bindProperties');
+        $mockBinder->expects(never())->method('bindProperties');
         $runtime = new Runtime($this->root->url(), $this->mockMode);
         $runtime->configure($mockBinder);
     }
@@ -170,7 +170,7 @@ stubbles.number.decimals=4
 stubbles.webapp.xml.serializeMode=true")
                  ->at($this->root);
         $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
-        $mockBinder->expects($this->once())->method('bindProperties');
+        $mockBinder->expects(once())->method('bindProperties');
         $runtime = new Runtime($this->root->url(), $this->mockMode);
         $runtime->configure($mockBinder);
     }

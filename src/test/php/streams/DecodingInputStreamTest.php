@@ -54,8 +54,8 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
     public function readReturnsDecodedDataFromDecoratedStream()
     {
         $this->mockInputStream->method('read')
-                ->with($this->equalTo(8192))
-                ->will($this->returnValue(utf8_decode('hällö')));
+                ->with(equalTo(8192))
+                ->will(returnValue(utf8_decode('hällö')));
         $this->assertEquals('hällö', $this->decodingInputStream->read());
     }
 
@@ -65,8 +65,8 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
     public function readLineReturnsDecodedLineFromDecoratedStream()
     {
         $this->mockInputStream->method('readLine')
-                ->with($this->equalTo(8192))
-                ->will($this->returnValue(utf8_decode('hällö')));
+                ->with(equalTo(8192))
+                ->will(returnValue(utf8_decode('hällö')));
         $this->assertEquals('hällö', $this->decodingInputStream->readLine());
     }
 
@@ -75,7 +75,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bytesLeftReturnsBytesLeftFromDecoratedStream()
     {
-        $this->mockInputStream->method('bytesLeft')->will($this->returnValue(5));
+        $this->mockInputStream->method('bytesLeft')->will(returnValue(5));
         $this->assertEquals(5, $this->decodingInputStream->bytesLeft());
     }
 
@@ -84,7 +84,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function eofReturnsEofFromDecoratedStream()
     {
-        $this->mockInputStream->method('eof')->will($this->returnValue(false));
+        $this->mockInputStream->method('eof')->will(returnValue(false));
         $this->assertFalse($this->decodingInputStream->eof());
     }
 
@@ -93,7 +93,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeClosesDecoratedStream()
     {
-        $this->mockInputStream->expects($this->once())->method('close');
+        $this->mockInputStream->expects(once())->method('close');
         $this->decodingInputStream->close();
     }
 }

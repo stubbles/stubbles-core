@@ -24,8 +24,8 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
         $mockProvider = $this->getMock('stubbles\ioc\InjectionProvider');
         $answer       = new \stubbles\test\ioc\Answer();
         $mockProvider->method('get')
-                ->with($this->equalTo('answer'))
-                ->will($this->returnValue($answer));
+                ->with(equalTo('answer'))
+                ->will(returnValue($answer));
         $binder->bind('stubbles\test\ioc\Answer')->toProvider($mockProvider);
         $question = $binder->getInjector()
                 ->getInstance('stubbles\test\ioc\AnotherQuestion');

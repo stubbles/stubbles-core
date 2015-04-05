@@ -53,9 +53,9 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     public function returnsInstanceFromSessionIfPresent()
     {
         $instance = new \stdClass();
-        $this->mockSession->method('hasValue')->will($this->returnValue(true));
-        $this->mockSession->method('value')->will($this->returnValue($instance));
-        $this->mockInjectionProvider->expects($this->never())->method('get');
+        $this->mockSession->method('hasValue')->will(returnValue(true));
+        $this->mockSession->method('value')->will(returnValue($instance));
+        $this->mockInjectionProvider->expects(never())->method('get');
         $this->assertSame(
                 $instance,
                 $this->sessionScope->setSession($this->mockSession)
@@ -72,12 +72,11 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     public function createsInstanceIfNotPresent()
     {
         $instance = new \stdClass();
-        $this->mockSession->method('hasValue')
-                ->will($this->returnValue(false));
-        $this->mockSession->expects($this->never())->method('value');
-        $this->mockInjectionProvider->expects($this->once())
+        $this->mockSession->method('hasValue')->will(returnValue(false));
+        $this->mockSession->expects(never())->method('value');
+        $this->mockInjectionProvider->expects(once())
                 ->method('get')
-                ->will($this->returnValue($instance));
+                ->will(returnValue($instance));
         $this->assertSame(
                 $instance,
                 $this->sessionScope->setSession($this->mockSession)

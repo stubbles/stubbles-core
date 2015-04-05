@@ -88,8 +88,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     public function constantViaInjectionProviderInstance()
     {
         $mockProvider = $this->getMock('stubbles\ioc\InjectionProvider');
-        $mockProvider->method('get')
-                     ->will($this->returnValue(42));
+        $mockProvider->method('get')->will(returnValue(42));
         $binder = new Binder();
         $binder->bindConstant('answer')
                ->toProvider($mockProvider);

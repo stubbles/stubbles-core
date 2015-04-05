@@ -54,10 +54,10 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
                 ['log', 'header', 'createResponseBody', 'writeBody'],
                 [vfsStream::url('root')]
         );
-        $abstractExceptionHandler->expects($this->never())->method('log');
-        $abstractExceptionHandler->expects($this->once())->method('header');
-        $abstractExceptionHandler->expects($this->once())->method('createResponseBody');
-        $abstractExceptionHandler->expects($this->once())->method('writeBody');
+        $abstractExceptionHandler->expects(never())->method('log');
+        $abstractExceptionHandler->expects(once())->method('header');
+        $abstractExceptionHandler->expects(once())->method('createResponseBody');
+        $abstractExceptionHandler->expects(once())->method('writeBody');
         $abstractExceptionHandler->disableLogging()->handleException(new \Exception());
     }
 

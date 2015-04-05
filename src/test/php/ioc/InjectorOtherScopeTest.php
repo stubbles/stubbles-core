@@ -29,8 +29,7 @@ class InjectorOtherTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($injector->hasBinding('\stdClass'));
         $instance = new \stdClass();
-        $mockBindingScope->method('getInstance')
-                ->will($this->returnValue($instance));
+        $mockBindingScope->method('getInstance')->will(returnValue($instance));
         $this->assertSame($instance, $injector->getInstance('\stdClass'));
     }
 }

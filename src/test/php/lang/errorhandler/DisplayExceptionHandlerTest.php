@@ -38,12 +38,12 @@ class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $exception = new \Exception('message');
         $displayExceptionHandler = $this->createExceptionHandler('cgi');
-        $displayExceptionHandler->expects($this->once())
+        $displayExceptionHandler->expects(once())
                 ->method('header')
-                ->with($this->equalTo('Status: 500 Internal Server Error'));
-        $displayExceptionHandler->expects($this->once())
+                ->with(equalTo('Status: 500 Internal Server Error'));
+        $displayExceptionHandler->expects(once())
                 ->method('writeBody')
-                ->with($this->equalTo("message\nTrace:\n" . $exception->getTraceAsString()));
+                ->with(equalTo("message\nTrace:\n" . $exception->getTraceAsString()));
         $displayExceptionHandler->handleException($exception);
     }
 }

@@ -53,12 +53,12 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $exception                = new \Exception('message');
         $prodModeExceptionHandler = $this->createExceptionHandler('cgi');
-        $prodModeExceptionHandler->expects($this->once())
-                                 ->method('header')
-                                 ->with($this->equalTo('Status: 500 Internal Server Error'));
-        $prodModeExceptionHandler->expects($this->once())
-                                 ->method('writeBody')
-                                 ->with($this->equalTo("I'm sorry but I can not fulfill your request. Somewhere someone messed something up."));
+        $prodModeExceptionHandler->expects(once())
+                ->method('header')
+                ->with(equalTo('Status: 500 Internal Server Error'));
+        $prodModeExceptionHandler->expects(once())
+                ->method('writeBody')
+                ->with(equalTo("I'm sorry but I can not fulfill your request. Somewhere someone messed something up."));
         $prodModeExceptionHandler->handleException($exception);
     }
 
@@ -72,12 +72,12 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
                  ->at($this->root);
         $exception                = new \stubbles\lang\exception\Exception('message');
         $prodModeExceptionHandler = $this->createExceptionHandler('apache');
-        $prodModeExceptionHandler->expects($this->once())
-                                 ->method('header')
-                                 ->with($this->equalTo('HTTP/1.1 500 Internal Server Error'));
-        $prodModeExceptionHandler->expects($this->once())
-                                 ->method('writeBody')
-                                 ->with($this->equalTo('An error occurred'));
+        $prodModeExceptionHandler->expects(once())
+                ->method('header')
+                ->with(equalTo('HTTP/1.1 500 Internal Server Error'));
+        $prodModeExceptionHandler->expects(once())
+                ->method('writeBody')
+                ->with(equalTo('An error occurred'));
         $prodModeExceptionHandler->handleException($exception);
     }
 }

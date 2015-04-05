@@ -370,7 +370,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
     private function createProviderForValue($value)
     {
         $mockProvider = $this->getMock('stubbles\ioc\InjectionProvider');
-        $mockProvider->method('get')->will($this->returnValue($value));
+        $mockProvider->method('get')->will(returnValue($value));
         return $mockProvider;
     }
 

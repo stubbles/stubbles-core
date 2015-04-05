@@ -46,10 +46,10 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
     public function inputStreamGetsPrefix()
     {
         $mockInputStream = $this->getMock('stubbles\streams\InputStream');
-        $this->mockStreamFactory->expects($this->once())
+        $this->mockStreamFactory->expects(once())
                 ->method('createInputStream')
-                ->with($this->equalTo('prefix/foo'), $this->equalTo(['bar' => 'baz']))
-                ->will($this->returnValue($mockInputStream));
+                ->with(equalTo('prefix/foo'), equalTo(['bar' => 'baz']))
+                ->will(returnValue($mockInputStream));
         $this->assertSame(
                 $mockInputStream,
                 $this->prefixedStreamFactory->createInputStream(
@@ -65,10 +65,10 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
     public function outputStreamGetsPrefix()
     {
         $mockOutputStream = $this->getMock('stubbles\streams\OutputStream');
-        $this->mockStreamFactory->expects($this->once())
+        $this->mockStreamFactory->expects(once())
                 ->method('createOutputStream')
-                ->with($this->equalTo('prefix/foo'), $this->equalTo(['bar' => 'baz']))
-                ->will($this->returnValue($mockOutputStream));
+                ->with(equalTo('prefix/foo'), equalTo(['bar' => 'baz']))
+                ->will(returnValue($mockOutputStream));
         $this->assertSame(
                 $mockOutputStream,
                 $this->prefixedStreamFactory->createOutputStream(

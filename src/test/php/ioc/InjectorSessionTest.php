@@ -62,7 +62,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     public function requestSessionScopedWithSessionReturnsInstance()
     {
         $mockSession = $this->getMock('stubbles\ioc\binding\Session');
-        $mockSession->method('hasValue')->will($this->returnValue(false));
+        $mockSession->method('hasValue')->will(returnValue(false));
         $this->assertInstanceOf(
                 'stubbles\test\ioc\Mikey',
                 $this->injector->setSession($mockSession)

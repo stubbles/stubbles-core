@@ -49,11 +49,14 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCallsDecoratedStream()
     {
-        $this->mockOutputStream->expects($this->once())
+        $this->mockOutputStream->expects(once())
                 ->method('write')
-                ->with($this->equalTo('foo'))
-                ->will($this->returnValue(3));
-        $this->assertEquals(3, $this->abstractDecoratedOutputStream->write('foo'));
+                ->with(equalTo('foo'))
+                ->will(returnValue(3));
+        $this->assertEquals(
+                3,
+                $this->abstractDecoratedOutputStream->write('foo')
+        );
     }
 
     /**
@@ -61,11 +64,14 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineCallsDecoratedStream()
     {
-        $this->mockOutputStream->expects($this->once())
+        $this->mockOutputStream->expects(once())
                 ->method('writeLine')
-                ->with($this->equalTo('foo'))
-                ->will($this->returnValue(4));
-        $this->assertEquals(4, $this->abstractDecoratedOutputStream->writeLine('foo'));
+                ->with(equalTo('foo'))
+                ->will(returnValue(4));
+        $this->assertEquals(
+                4,
+                $this->abstractDecoratedOutputStream->writeLine('foo')
+        );
     }
 
     /**
@@ -74,11 +80,14 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesCallsDecoratedStream()
     {
-        $this->mockOutputStream->expects($this->once())
+        $this->mockOutputStream->expects(once())
                 ->method('writeLines')
-                ->with($this->equalTo(['foo', 'bar']))
-                ->will($this->returnValue(8));
-        $this->assertEquals(8, $this->abstractDecoratedOutputStream->writeLines(['foo', 'bar']));
+                ->with(equalTo(['foo', 'bar']))
+                ->will(returnValue(8));
+        $this->assertEquals(
+                8,
+                $this->abstractDecoratedOutputStream->writeLines(['foo', 'bar'])
+        );
     }
 
     /**
@@ -86,7 +95,7 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeCallsDecoratedStream()
     {
-        $this->mockOutputStream->expects($this->once())->method('close');
+        $this->mockOutputStream->expects(once())->method('close');
         $this->abstractDecoratedOutputStream->close();
     }
 }
