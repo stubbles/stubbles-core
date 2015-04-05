@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\streams\filter;
+use stubbles\predicate\Predicate;
+use stubbles\streams\memory\MemoryInputStream;
 /**
  * Test for stubbles\streams\filter\FilteredInputStream.
  *
@@ -28,104 +30,38 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
     private $mockInputStream;
-    /**
-     * mocked predicate
-     *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockPredicate;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockInputStream     = $this->getMock('stubbles\streams\InputStream');
-        $this->mockPredicate       = $this->getMock('stubbles\predicate\Predicate');
+        $this->mockInputStream     = new MemoryInputStream("foo\nbar");
         $this->filteredInputStream = new FilteredInputStream(
                 $this->mockInputStream,
-                $this->mockPredicate
+                Predicate::castFrom(
+                        function($value)
+                        {
+                            return 'bar' === $value;
+                        }
+                )
         );
     }
 
     /**
-     * data returned from read() should be filtered
-     *
      * @test
      */
-    public function readAndFilter()
+    public function readReturnsEmptyStringIfChunkIsFiltered()
     {
-        $this->mockInputStream->expects($this->exactly(2))
-                              ->method('eof')
-                              ->will($this->onConsecutiveCalls(false, false));
-        $this->mockInputStream->expects($this->exactly(2))
-                              ->method('read')
-                              ->with($this->equalTo(8192))
-                              ->will($this->onConsecutiveCalls('foo', 'bar'));
-        $this->mockPredicate->expects($this->exactly(2))
-                            ->method('test')
-                            ->will($this->onConsecutiveCalls(false, true));
-        $this->assertEquals('bar', $this->filteredInputStream->read());
-    }
-
-    /**
-     * data returned from read() should be filtered
-     *
-     * @test
-     */
-    public function readAndFilterUntilEnd()
-    {
-        $this->mockInputStream->expects($this->exactly(2))
-                              ->method('eof')
-                              ->will($this->onConsecutiveCalls(false, true));
-        $this->mockInputStream->expects($this->once())
-                              ->method('read')
-                              ->with($this->equalTo(8192))
-                              ->will($this->returnValue('foo'));
-        $this->mockPredicate->expects($this->once())
-                            ->method('test')
-                            ->will($this->returnValue(false));
         $this->assertEquals('', $this->filteredInputStream->read());
     }
 
     /**
-     * data returned from readLine() should be filtered
-     *
      * @test
      */
-    public function readLineAndFilter()
+    public function readLineReturnsUnfilteredLinesOnly()
     {
-        $this->mockInputStream->expects($this->exactly(2))
-                              ->method('eof')
-                              ->will($this->onConsecutiveCalls(false, false));
-        $this->mockInputStream->expects($this->exactly(2))
-                              ->method('readLine')
-                              ->with($this->equalTo(8192))
-                              ->will($this->onConsecutiveCalls('foo', 'bar'));
-        $this->mockPredicate->expects($this->exactly(2))
-                            ->method('test')
-                            ->will($this->onConsecutiveCalls(false, true));
         $this->assertEquals('bar', $this->filteredInputStream->readLine());
-    }
-
-    /**
-     * data returned from readLine() should be filtered
-     *
-     * @test
-     */
-    public function readLineAndFilterUntilEnd()
-    {
-        $this->mockInputStream->expects($this->exactly(2))
-                              ->method('eof')
-                              ->will($this->onConsecutiveCalls(false, true));
-        $this->mockInputStream->expects($this->once())
-                              ->method('readLine')
-                              ->with($this->equalTo(8192))
-                              ->will($this->returnValue('foo'));
-        $this->mockPredicate->expects($this->once())
-                            ->method('test')
-                            ->will($this->returnValue(false));
-        $this->assertEquals('', $this->filteredInputStream->readLine());
     }
 
     /**
