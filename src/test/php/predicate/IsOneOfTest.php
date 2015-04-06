@@ -49,7 +49,7 @@ class IsOneOfTest extends \PHPUnit_Framework_TestCase
      */
     public function validValueEvaluatesToTrue($value)
     {
-        $this->assertTrue($this->isOneOf->test($value));
+        assertTrue($this->isOneOf->test($value));
     }
 
     /**
@@ -70,6 +70,6 @@ class IsOneOfTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueEvaluatesToFalse($value)
     {
-        $this->assertFalse($this->isOneOf->test($value));
+        assertFalse($this->isOneOf->test($value));
     }
 }

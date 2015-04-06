@@ -47,7 +47,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function getKeyReturnsUniqueListKey()
     {
-        $this->assertEquals(
+        assertEquals(
                 ListBinding::TYPE . '#foo',
                 $this->listBinding->getKey()
         );
@@ -58,7 +58,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsEmptyListIfNothingAdded()
     {
-        $this->assertEquals(
+        assertEquals(
                 [],
                 $this->listBinding->getInstance($this->mockInjector, 'int')
         );
@@ -69,7 +69,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsTypedEmptyListIfNothingAdded()
     {
-        $this->assertEquals(
+        assertEquals(
                 [],
                 $this->listBinding->getInstance(
                         $this->mockInjector,
@@ -83,7 +83,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function valueIsAddedToList()
     {
-        $this->assertEquals(
+        assertEquals(
             [303],
             $this->listBinding->withValue(303)
                     ->getInstance($this->mockInjector, 'int')
@@ -96,7 +96,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
     public function valueIsAddedToTypedList()
     {
         $value = new \stdClass();
-        $this->assertEquals(
+        assertEquals(
             [$value],
             $this->listBinding->withValue($value)
                     ->getInstance(
@@ -115,7 +115,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
         $this->mockInjector->method('getInstance')
                 ->with(equalTo('\stdClass'))
                 ->will(returnValue($value));
-        $this->assertEquals(
+        assertEquals(
             [$value],
             $this->listBinding->withValue('\stdClass')
                     ->getInstance(
@@ -167,7 +167,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function valueFromProviderIsAddedToList()
     {
-        $this->assertEquals(
+        assertEquals(
             [303],
             $this->listBinding->withValueFromProvider($this->createInjectionProvider(303))
                     ->getInstance($this->mockInjector, 'int')
@@ -180,7 +180,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
     public function valueFromProviderIsAddedToTypedList()
     {
         $value = new \stdClass();
-        $this->assertEquals(
+        assertEquals(
             [$value],
             $this->listBinding->withValueFromProvider($this->createInjectionProvider($value))
                     ->getInstance(
@@ -226,7 +226,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
         $mockProvider      = $this->createInjectionProvider(303);
         $mockProviderClass = $this->getMockClass('stubbles\ioc\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
-        $this->assertEquals(
+        assertEquals(
             [303],
             $this->listBinding->withValueFromProvider($mockProviderClass)
                     ->getInstance($this->mockInjector, 'int')
@@ -242,7 +242,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
         $mockProvider      = $this->createInjectionProvider($value);
         $mockProviderClass = $this->getMockClass('stubbles\ioc\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
-        $this->assertEquals(
+        assertEquals(
             [$value],
             $this->listBinding->withValueFromProvider($mockProviderClass)
                     ->getInstance(
@@ -331,7 +331,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function valueFromClosureIsAddedToList()
     {
-        $this->assertEquals(
+        assertEquals(
             [303],
             $this->listBinding->withValueFromClosure(function() { return 303; })
                     ->getInstance($this->mockInjector, 'int')
@@ -346,7 +346,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
     public function valueFromClosureIsAddedToTypedList()
     {
         $value = new \stdClass();
-        $this->assertEquals(
+        assertEquals(
             [$value],
             $this->listBinding->withValueFromClosure(
                             function() use($value) { return $value; }

@@ -50,7 +50,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
                 ->method('createInputStream')
                 ->with(equalTo('prefix/foo'), equalTo(['bar' => 'baz']))
                 ->will(returnValue($mockInputStream));
-        $this->assertSame(
+        assertSame(
                 $mockInputStream,
                 $this->prefixedStreamFactory->createInputStream(
                         'foo',
@@ -69,7 +69,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
                 ->method('createOutputStream')
                 ->with(equalTo('prefix/foo'), equalTo(['bar' => 'baz']))
                 ->will(returnValue($mockOutputStream));
-        $this->assertSame(
+        assertSame(
                 $mockOutputStream,
                 $this->prefixedStreamFactory->createOutputStream(
                         'foo',

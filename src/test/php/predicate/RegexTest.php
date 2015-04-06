@@ -36,7 +36,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
     public function validValueEvaluatesToTrue($regex, $value)
     {
         $regex = new Regex($regex);
-        $this->assertTrue($regex($value));
+        assertTrue($regex($value));
     }
 
     /**
@@ -61,7 +61,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
     public function invalidValueEvaluatesToFalse($regex, $value)
     {
         $regex = new Regex($regex);
-        $this->assertFalse($regex($value));
+        assertFalse($regex($value));
     }
 
     /**

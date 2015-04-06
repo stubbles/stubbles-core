@@ -22,7 +22,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
     public function createsSingletonScopeIfNonePassed()
     {
         $bindingScopes = new BindingScopes();
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\ioc\binding\SingletonBindingScope',
                 $bindingScopes->singleton()
         );
@@ -35,10 +35,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
     {
         $mockSingletonScope = $this->getMock('stubbles\ioc\binding\BindingScope');
         $bindingScopes = new BindingScopes($mockSingletonScope);
-        $this->assertSame(
-                $mockSingletonScope,
-                $bindingScopes->singleton()
-        );
+        assertSame($mockSingletonScope, $bindingScopes->singleton());
     }
 
     /**
@@ -48,9 +45,6 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
     {
         $mockSessionScope = $this->getMock('stubbles\ioc\binding\BindingScope');
         $bindingScopes = new BindingScopes(null, $mockSessionScope);
-        $this->assertSame(
-                $mockSessionScope,
-                $bindingScopes->session()
-        );
+        assertSame($mockSessionScope, $bindingScopes->session());
     }
 }

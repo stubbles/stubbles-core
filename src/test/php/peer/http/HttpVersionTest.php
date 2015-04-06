@@ -51,7 +51,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function fromStringDetectsCorrectMajorVersion()
     {
-        $this->assertEquals(1, HttpVersion::fromString('HTTP/1.2')->major());
+        assertEquals(1, HttpVersion::fromString('HTTP/1.2')->major());
     }
 
     /**
@@ -59,7 +59,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function fromStringDetectsCorrectMinorVersion()
     {
-        $this->assertEquals(2, HttpVersion::fromString('HTTP/1.2')->minor());
+        assertEquals(2, HttpVersion::fromString('HTTP/1.2')->minor());
     }
 
     /**
@@ -128,7 +128,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
     public function castToStringReturnsCorrectVersionString()
     {
         $versionString = 'HTTP/1.1';
-        $this->assertEquals(
+        assertEquals(
                 $versionString,
                 (string) HttpVersion::fromString($versionString)
         );
@@ -151,7 +151,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
     public function castFromInstanceReturnsInstance()
     {
         $httpVersion = new HttpVersion(1, 1);
-        $this->assertSame($httpVersion, HttpVersion::castFrom($httpVersion));
+        assertSame($httpVersion, HttpVersion::castFrom($httpVersion));
     }
 
     /**
@@ -159,7 +159,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function castFromStringReturnsInstance()
     {
-        $this->assertEquals(
+        assertEquals(
                 new HttpVersion(1, 1),
                 HttpVersion::castFrom('HTTP/1.1')
         );
@@ -171,7 +171,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualEmptyVersion($empty)
     {
-        $this->assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals($empty));
+        assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals($empty));
     }
 
     /**
@@ -179,7 +179,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualInvalidVersion()
     {
-        $this->assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals('HTTP/404'));
+        assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals('HTTP/404'));
     }
 
     /**
@@ -187,7 +187,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualWhenMajorVersionDiffers()
     {
-        $this->assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals('HTTP/2.0'));
+        assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals('HTTP/2.0'));
     }
 
     /**
@@ -195,7 +195,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualWhenMinorVersionDiffers()
     {
-        $this->assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_0));
+        assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_0));
     }
 
     /**
@@ -203,6 +203,6 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function isEqualWhenMajorAndMinorVersionEqual()
     {
-        $this->assertTrue(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_1));
+        assertTrue(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_1));
     }
 }

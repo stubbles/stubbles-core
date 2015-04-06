@@ -128,10 +128,11 @@ class ModeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function registerErrorHandlerWithClassNameReturnsCreatedInstance()
     {
-        $this->assertEquals('/tmp',
-                            $this->defaultMode->setErrorHandler('stubbles\lang\ModeErrorHandler')
-                                              ->registerErrorHandler('/tmp')
-                                              ->getProjectPath()
+        assertEquals(
+                '/tmp',
+                $this->defaultMode->setErrorHandler('stubbles\lang\ModeErrorHandler')
+                        ->registerErrorHandler('/tmp')
+                        ->getProjectPath()
         );
     }
 
@@ -141,9 +142,10 @@ class ModeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function registerErrorHandlerWithInstanceReturnsGivenInstance()
     {
         $errorHandler = new ModeErrorHandler('/tmp');
-        $this->assertSame($errorHandler,
-                          $this->defaultMode->setErrorHandler($errorHandler)
-                                            ->registerErrorHandler('/tmp')
+        assertSame(
+                $errorHandler,
+                $this->defaultMode->setErrorHandler($errorHandler)
+                        ->registerErrorHandler('/tmp')
         );
     }
 }

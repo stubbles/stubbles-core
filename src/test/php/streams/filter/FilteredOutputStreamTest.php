@@ -53,8 +53,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function dataPassingTheFilterShouldBeWritten()
     {
-        $this->assertEquals(3, $this->filteredOutputStream->write('foo'));
-        $this->assertEquals('foo', $this->memory->buffer());
+        assertEquals(3, $this->filteredOutputStream->write('foo'));
+        assertEquals('foo', $this->memory->buffer());
     }
 
     /**
@@ -62,8 +62,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function dataNotPassingTheFilterShouldNotBeWritten()
     {
-        $this->assertEquals(0, $this->filteredOutputStream->write('bar'));
-        $this->assertEquals('', $this->memory->buffer());
+        assertEquals(0, $this->filteredOutputStream->write('bar'));
+        assertEquals('', $this->memory->buffer());
     }
 
     /**
@@ -71,8 +71,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function dataPassingTheFilterShouldBeWrittenAsLine()
     {
-        $this->assertEquals(4, $this->filteredOutputStream->writeLine('foo'));
-        $this->assertEquals("foo\n", $this->memory->buffer());
+        assertEquals(4, $this->filteredOutputStream->writeLine('foo'));
+        assertEquals("foo\n", $this->memory->buffer());
     }
 
     /**
@@ -80,8 +80,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function dataNotPassingTheFilterShouldNotBeWrittenAsLine()
     {
-        $this->assertEquals(0, $this->filteredOutputStream->writeLine('bar'));
-        $this->assertEquals('', $this->memory->buffer());
+        assertEquals(0, $this->filteredOutputStream->writeLine('bar'));
+        assertEquals('', $this->memory->buffer());
     }
 
     /**
@@ -90,8 +90,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesProcessesOnlyLinesSatisfyingFilter()
     {
-        $this->assertEquals(4, $this->filteredOutputStream->writeLines(['foo', 'bar']));
-        $this->assertEquals("foo\n", $this->memory->buffer());
+        assertEquals(4, $this->filteredOutputStream->writeLines(['foo', 'bar']));
+        assertEquals("foo\n", $this->memory->buffer());
     }
 
     /**

@@ -42,8 +42,8 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
         $expectedLineNumber = 1;
         $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
         foreach ($this->inputStreamIterator as $lineNumber => $line) {
-            $this->assertEquals($expectedLineNumber, $lineNumber);
-            $this->assertEquals($expectedLine[$expectedLineNumber], $line);
+            assertEquals($expectedLineNumber, $lineNumber);
+            assertEquals($expectedLine[$expectedLineNumber], $line);
             $expectedLineNumber++;
         }
     }

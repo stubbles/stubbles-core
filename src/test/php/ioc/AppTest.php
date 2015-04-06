@@ -34,7 +34,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function createCreatesInstanceUsingBindings()
     {
         $appCommandWithBindings = AppClassWithBindings::create('projectPath');
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\test\ioc\AppClassWithBindings',
                 $appCommandWithBindings
         );
@@ -48,7 +48,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $appCommandWithBindings = App::createInstance('stubbles\test\ioc\AppClassWithBindings',
                                                       'projectPath'
                                   );
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\test\ioc\AppClassWithBindings',
                 $appCommandWithBindings
         );
@@ -59,7 +59,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceCreatesInstanceWithoutBindings()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\test\ioc\AppClassWithoutBindings',
                 App::createInstance('stubbles\test\ioc\AppClassWithoutBindings',
                                     'projectPath'
@@ -73,7 +73,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function projectPathIsBoundWithExplicitBindings()
     {
-        $this->assertEquals(
+        assertEquals(
                 'projectPath',
                 AppClassWithBindings::create('projectPath')->projectPath
         );
@@ -85,7 +85,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function projectPathIsBoundWithoutExplicitBindings()
     {
-        $this->assertEquals(
+        assertEquals(
                 'projectPath',
                 AppClassWithoutBindings::create('projectPath')->projectPath
         );
@@ -97,7 +97,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function canCreateRuntime()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\ioc\module\Runtime',
                 AppUsingBindingModule::callBindRuntime()
         );
@@ -110,7 +110,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function dynamicBindingViaClosure()
     {
-        $this->assertEquals(
+        assertEquals(
                 'closure',
                 AppClassWithBindings::create('projectPath')->wasBoundBy()
         );
@@ -125,7 +125,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $module = AppUsingBindingModule::currentWorkingDirectoryModule();
         $module($binder);
-        $this->assertTrue($binder->getInjector()->hasConstant('stubbles.cwd'));
+        assertTrue($binder->getInjector()->hasConstant('stubbles.cwd'));
     }
 
     /**
@@ -149,6 +149,6 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $module = AppUsingBindingModule::bindHostnameModule();
         $module($binder);
-        $this->assertTrue($binder->getInjector()->hasConstant($key));
+        assertTrue($binder->getInjector()->hasConstant($key));
     }
 }

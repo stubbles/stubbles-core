@@ -76,9 +76,9 @@ jjj')
      */
     public function read()
     {
-        $this->assertEquals(13, $this->resourceInputStream->bytesLeft());
-        $this->assertEquals("foobarbaz\njjj", $this->resourceInputStream->read());
-        $this->assertEquals(0, $this->resourceInputStream->bytesLeft());
+        assertEquals(13, $this->resourceInputStream->bytesLeft());
+        assertEquals("foobarbaz\njjj", $this->resourceInputStream->read());
+        assertEquals(0, $this->resourceInputStream->bytesLeft());
     }
 
     /**
@@ -88,9 +88,9 @@ jjj')
      */
     public function readBytes()
     {
-        $this->assertEquals(13, $this->resourceInputStream->bytesLeft());
-        $this->assertEquals('foobar', $this->resourceInputStream->read(6));
-        $this->assertEquals(7, $this->resourceInputStream->bytesLeft());
+        assertEquals(13, $this->resourceInputStream->bytesLeft());
+        assertEquals('foobar', $this->resourceInputStream->read(6));
+        assertEquals(7, $this->resourceInputStream->bytesLeft());
     }
 
     /**
@@ -100,9 +100,9 @@ jjj')
      */
     public function readLine()
     {
-        $this->assertEquals(13, $this->resourceInputStream->bytesLeft());
-        $this->assertEquals('foobarbaz', $this->resourceInputStream->readLine());
-        $this->assertEquals(3, $this->resourceInputStream->bytesLeft());
+        assertEquals(13, $this->resourceInputStream->bytesLeft());
+        assertEquals('foobarbaz', $this->resourceInputStream->readLine());
+        assertEquals(3, $this->resourceInputStream->bytesLeft());
     }
 
     /**
@@ -112,11 +112,11 @@ jjj')
      */
     public function endOfFile()
     {
-        $this->assertFalse($this->resourceInputStream->eof());
+        assertFalse($this->resourceInputStream->eof());
         $this->resourceInputStream->read();
-        $this->assertTrue($this->resourceInputStream->eof());
-        $this->assertEquals('', $this->resourceInputStream->read());
-        $this->assertEquals('', $this->resourceInputStream->read());
+        assertTrue($this->resourceInputStream->eof());
+        assertEquals('', $this->resourceInputStream->read());
+        assertEquals('', $this->resourceInputStream->read());
     }
 
     /**
@@ -126,12 +126,12 @@ jjj')
      */
     public function endOfFileReadLine()
     {
-        $this->assertFalse($this->resourceInputStream->eof());
-        $this->assertEquals('foobarbaz', $this->resourceInputStream->readLine());
-        $this->assertFalse($this->resourceInputStream->eof());
-        $this->assertEquals('jjj', $this->resourceInputStream->readLine());
-        $this->assertTrue($this->resourceInputStream->eof());
-        $this->assertEquals('', $this->resourceInputStream->readLine());
+        assertFalse($this->resourceInputStream->eof());
+        assertEquals('foobarbaz', $this->resourceInputStream->readLine());
+        assertFalse($this->resourceInputStream->eof());
+        assertEquals('jjj', $this->resourceInputStream->readLine());
+        assertTrue($this->resourceInputStream->eof());
+        assertEquals('', $this->resourceInputStream->readLine());
     }
 
     /**

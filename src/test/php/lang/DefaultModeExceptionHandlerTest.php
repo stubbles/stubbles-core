@@ -94,10 +94,11 @@ class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function registerExceptionHandlerWithClassNameReturnsCreatedInstance()
     {
-        $this->assertEquals('/tmp',
-                            $this->defaultMode->setExceptionHandler('stubbles\lang\ModeExceptionHandler')
-                                              ->registerExceptionHandler('/tmp')
-                                              ->getProjectPath()
+        assertEquals(
+                '/tmp',
+                $this->defaultMode->setExceptionHandler('stubbles\lang\ModeExceptionHandler')
+                        ->registerExceptionHandler('/tmp')
+                        ->getProjectPath()
         );
     }
 
@@ -107,9 +108,10 @@ class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     public function registerExceptionHandlerWithInstanceReturnsGivenInstance()
     {
         $exceptionHandler = new ModeExceptionHandler('/tmp');
-        $this->assertSame($exceptionHandler,
-                          $this->defaultMode->setExceptionHandler($exceptionHandler)
-                                            ->registerExceptionHandler('/tmp')
+        assertSame(
+                $exceptionHandler,
+                $this->defaultMode->setExceptionHandler($exceptionHandler)
+                        ->registerExceptionHandler('/tmp')
         );
     }
 }

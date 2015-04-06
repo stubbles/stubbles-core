@@ -57,7 +57,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readReturnsDataOfFirstLine()
     {
-        $this->assertEquals("bar\n", $this->stream->read());
+        assertEquals("bar\n", $this->stream->read());
     }
 
     /**
@@ -65,7 +65,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineReturnsTrimmedDataOfFirstLine()
     {
-        $this->assertEquals('bar', $this->stream->readLine());
+        assertEquals('bar', $this->stream->readLine());
     }
 
     /**
@@ -73,7 +73,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readBinaryReturnsData()
     {
-        $this->assertEquals("bar\nbaz", $this->stream->readBinary());
+        assertEquals("bar\nbaz", $this->stream->readBinary());
     }
 
     /**
@@ -81,8 +81,8 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writesToResource()
     {
-        $this->assertEquals(8, $this->stream->write('yoyoyoyo'));
-        $this->assertEquals('yoyoyoyo', $this->file->getContent());
+        assertEquals(8, $this->stream->write('yoyoyoyo'));
+        assertEquals('yoyoyoyo', $this->file->getContent());
     }
 
     /**
@@ -90,7 +90,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function eofReturnsTrueWhenNotAtEnd()
     {
-        $this->assertFalse($this->stream->eof());
+        assertFalse($this->stream->eof());
     }
 
     /**
@@ -99,7 +99,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function eofReturnsTrueWhenAtEnd()
     {
         $this->stream->readBinary();
-        $this->assertTrue($this->stream->eof());
+        assertTrue($this->stream->eof());
     }
 
     /**
@@ -107,7 +107,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function canBeUsedAsInputStream()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\streams\InputStream',
                 $this->stream->in()
         );
@@ -118,7 +118,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function alwaysReturnsSameInputStream()
     {
-        $this->assertSame(
+        assertSame(
                 $this->stream->in(),
                 $this->stream->in()
         );
@@ -129,7 +129,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function canBeUsedAsOutputStream()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\streams\OutputStream',
                 $this->stream->out()
         );
@@ -140,7 +140,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function alwaysReturnsSameOutputStream()
     {
-        $this->assertSame(
+        assertSame(
                 $this->stream->out(),
                 $this->stream->out()
         );
@@ -152,6 +152,6 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function nullingTheStreamClosesTheResource()
     {
         $this->stream = null;
-        $this->assertFalse(is_resource($this->underlyingStream));
+        assertFalse(is_resource($this->underlyingStream));
     }
 }

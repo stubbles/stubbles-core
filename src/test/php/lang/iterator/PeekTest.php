@@ -29,7 +29,7 @@ class PeekTest extends \PHPUnit_Framework_TestCase
             // do nothing
         }
 
-        $this->assertEquals('foobarbaz', $result);
+        assertEquals('foobarbaz', $result);
     }
 
     /**
@@ -43,7 +43,7 @@ class PeekTest extends \PHPUnit_Framework_TestCase
             // do nothing
         }
 
-        $this->assertEquals('foobarbaz', $result);
+        assertEquals('foobarbaz', $result);
     }
 
     /**
@@ -57,6 +57,6 @@ class PeekTest extends \PHPUnit_Framework_TestCase
             $i++;
         }
 
-        $this->assertEquals(3, $i);
+        assertEquals(3, $i);
     }
 }

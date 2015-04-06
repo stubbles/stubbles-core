@@ -50,11 +50,11 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCallsDecoratedStream()
     {
-        $this->assertEquals(
+        assertEquals(
                 3,
                 $this->abstractDecoratedOutputStream->write('foo')
         );
-        $this->assertEquals('foo', $this->memory->buffer());
+        assertEquals('foo', $this->memory->buffer());
     }
 
     /**
@@ -62,11 +62,11 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineCallsDecoratedStream()
     {
-        $this->assertEquals(
+        assertEquals(
                 4,
                 $this->abstractDecoratedOutputStream->writeLine('foo')
         );
-        $this->assertEquals("foo\n", $this->memory->buffer());
+        assertEquals("foo\n", $this->memory->buffer());
     }
 
     /**
@@ -75,11 +75,11 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesCallsDecoratedStream()
     {
-        $this->assertEquals(
+        assertEquals(
                 8,
                 $this->abstractDecoratedOutputStream->writeLines(['foo', 'bar'])
         );
-        $this->assertEquals("foo\nbar\n", $this->memory->buffer());
+        assertEquals("foo\nbar\n", $this->memory->buffer());
     }
 
     /**

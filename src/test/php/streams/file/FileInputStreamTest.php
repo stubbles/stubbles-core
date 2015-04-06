@@ -32,7 +32,7 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     public function constructWithString()
     {
         $fileInputStream = new FileInputStream(vfsStream::url('home/test.txt'));
-        $this->assertEquals('foo', $fileInputStream->readLine());
+        assertEquals('foo', $fileInputStream->readLine());
     }
 
     /**
@@ -50,7 +50,7 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     public function constructWithResource()
     {
         $fileInputStream = new FileInputStream(fopen(vfsStream::url('home/test.txt'), 'rb'));
-        $this->assertEquals('foo', $fileInputStream->readLine());
+        assertEquals('foo', $fileInputStream->readLine());
     }
 
     /**
@@ -81,13 +81,13 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     public function seek_SET()
     {
         $fileInputStream = new FileInputStream(vfsStream::url('home/test.txt'));
-        $this->assertEquals(0, $fileInputStream->tell());
+        assertEquals(0, $fileInputStream->tell());
         $fileInputStream->seek(2);
-        $this->assertEquals(2, $fileInputStream->tell());
-        $this->assertEquals('o', $fileInputStream->readLine());
+        assertEquals(2, $fileInputStream->tell());
+        assertEquals('o', $fileInputStream->readLine());
         $fileInputStream->seek(0, Seekable::SET);
-        $this->assertEquals(0, $fileInputStream->tell());
-        $this->assertEquals('foo', $fileInputStream->readLine());
+        assertEquals(0, $fileInputStream->tell());
+        assertEquals('foo', $fileInputStream->readLine());
     }
 
     /**
@@ -97,8 +97,8 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $fileInputStream = new FileInputStream(vfsStream::url('home/test.txt'));
         $fileInputStream->seek(1, Seekable::CURRENT);
-        $this->assertEquals(1, $fileInputStream->tell());
-        $this->assertEquals('oo', $fileInputStream->readLine());
+        assertEquals(1, $fileInputStream->tell());
+        assertEquals('oo', $fileInputStream->readLine());
     }
 
     /**
@@ -108,8 +108,8 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $fileInputStream = new FileInputStream(vfsStream::url('home/test.txt'));
         $fileInputStream->seek(-2, Seekable::END);
-        $this->assertEquals(1, $fileInputStream->tell());
-        $this->assertEquals('oo', $fileInputStream->readLine());
+        assertEquals(1, $fileInputStream->tell());
+        assertEquals('oo', $fileInputStream->readLine());
     }
 
     /**

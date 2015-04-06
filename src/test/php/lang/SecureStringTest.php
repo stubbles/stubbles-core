@@ -27,7 +27,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function forNullReturnsNullOnUnveil()
     {
-        $this->assertNull(SecureString::forNull()->unveil());
+        assertNull(SecureString::forNull()->unveil());
     }
 
     /**
@@ -35,7 +35,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function canContainNull()
     {
-        $this->assertTrue(SecureString::forNull()->isContained());
+        assertTrue(SecureString::forNull()->isContained());
     }
 
     /**
@@ -43,7 +43,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function forNullIdentifiesAsNull()
     {
-        $this->assertTrue(SecureString::forNull()->isNull());
+        assertTrue(SecureString::forNull()->isNull());
     }
 
     /**
@@ -51,7 +51,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function lengthOfNullStringIsZero()
     {
-        $this->assertEquals(0, SecureString::forNull()->length());
+        assertEquals(0, SecureString::forNull()->length());
     }
 
     /**
@@ -59,7 +59,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function substringNullStringIsNullString()
     {
-        $this->assertTrue(SecureString::forNull()->substring(2, 33)->isNull());
+        assertTrue(SecureString::forNull()->substring(2, 33)->isNull());
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function varExportNotRevealingPayload()
     {
-        $this->assertNotContains(
+        assertNotContains(
                 'payload',
                 var_export(SecureString::create('payload'), true)
         );
@@ -111,7 +111,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        $this->assertNotContains(
+        assertNotContains(
                 'payload',
                 $output
         );
@@ -128,7 +128,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        $this->assertNotContains(
+        assertNotContains(
                 'length',
                 $output
         );
@@ -138,7 +138,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function stringCastNotRevealingPayload() {
-        $this->assertNotContains(
+        assertNotContains(
                 'payload',
                 (string) SecureString::create('payload')
         );
@@ -149,7 +149,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function arrayCastNotRevealingPayload()
     {
-        $this->assertNotContains(
+        assertNotContains(
                 'payload',
                 var_export((array)SecureString::create('payload'), true)
         );
@@ -160,7 +160,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function isContainedReturnsTrueWhenEncryptionDoesNotFail()
     {
-        $this->assertTrue(
+        assertTrue(
                 SecureString::create('payload')->isContained()
         );
     }
@@ -170,7 +170,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function unveilRevealsOriginalData()
     {
-        $this->assertEquals(
+        assertEquals(
                 'payload',
                 SecureString::create('payload')->unveil()
         );
@@ -181,7 +181,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function lengthReturnsStringLengthOfOriginalData()
     {
-        $this->assertEquals(
+        assertEquals(
                 7,
                 SecureString::create('payload')->length()
         );
@@ -192,7 +192,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function nonNullSecureStringDoesNotIdentifyAsNull()
     {
-        $this->assertFalse(SecureString::create('payload')->isNull());
+        assertFalse(SecureString::create('payload')->isNull());
     }
 
     /**
@@ -200,7 +200,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function substringWithValidStartReturnsNewInstance()
     {
-        $this->assertEquals(
+        assertEquals(
                 'lo',
                 SecureString::create('payload')->substring(3, 2)->unveil()
         );
@@ -221,7 +221,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     public function bigData()
     {
         $data = str_repeat('*', 1024000);
-        $this->assertEquals(
+        assertEquals(
                 $data,
                 SecureString::create($data)->unveil()
         );
@@ -233,7 +233,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     public function createFromSecureStringReturnsInstance()
     {
         $secureString = SecureString::create('payload');
-        $this->assertSame(
+        assertSame(
                 $secureString,
                 SecureString::create($secureString)
         );
@@ -251,7 +251,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
             $this->fail('Exception thrown where no exception may be thrown');
         }
 
-        $this->assertFalse($secureString->isContained());
+        assertFalse($secureString->isContained());
     }
 
     /**
@@ -296,6 +296,6 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     {
         $secureString = SecureString::create('payload');
         $secureString = null;
-        $this->assertTrue(SecureString::switchBacking(SecureString::BACKING_PLAINTEXT));
+        assertTrue(SecureString::switchBacking(SecureString::BACKING_PLAINTEXT));
     }
 }

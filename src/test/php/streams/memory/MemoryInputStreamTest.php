@@ -37,13 +37,13 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function read()
     {
-        $this->assertFalse($this->memoryInputStream->eof());
-        $this->assertEquals(11, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(0, $this->memoryInputStream->tell());
-        $this->assertEquals("hello\nworld", $this->memoryInputStream->read());
-        $this->assertTrue($this->memoryInputStream->eof());
-        $this->assertEquals(0, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(11, $this->memoryInputStream->tell());
+        assertFalse($this->memoryInputStream->eof());
+        assertEquals(11, $this->memoryInputStream->bytesLeft());
+        assertEquals(0, $this->memoryInputStream->tell());
+        assertEquals("hello\nworld", $this->memoryInputStream->read());
+        assertTrue($this->memoryInputStream->eof());
+        assertEquals(0, $this->memoryInputStream->bytesLeft());
+        assertEquals(11, $this->memoryInputStream->tell());
     }
 
     /**
@@ -51,17 +51,17 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineSplitsOnLineBreak()
     {
-        $this->assertFalse($this->memoryInputStream->eof());
-        $this->assertEquals(11, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(0, $this->memoryInputStream->tell());
-        $this->assertEquals('hello', $this->memoryInputStream->readLine());
-        $this->assertFalse($this->memoryInputStream->eof());
-        $this->assertEquals(5, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(6, $this->memoryInputStream->tell());
-        $this->assertEquals('world', $this->memoryInputStream->readLine());
-        $this->assertTrue($this->memoryInputStream->eof());
-        $this->assertEquals(0, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(11, $this->memoryInputStream->tell());
+        assertFalse($this->memoryInputStream->eof());
+        assertEquals(11, $this->memoryInputStream->bytesLeft());
+        assertEquals(0, $this->memoryInputStream->tell());
+        assertEquals('hello', $this->memoryInputStream->readLine());
+        assertFalse($this->memoryInputStream->eof());
+        assertEquals(5, $this->memoryInputStream->bytesLeft());
+        assertEquals(6, $this->memoryInputStream->tell());
+        assertEquals('world', $this->memoryInputStream->readLine());
+        assertTrue($this->memoryInputStream->eof());
+        assertEquals(0, $this->memoryInputStream->bytesLeft());
+        assertEquals(11, $this->memoryInputStream->tell());
     }
 
     /**
@@ -71,17 +71,17 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     public function readLineWithBothLineBreaks()
     {
         $this->memoryInputStream = new MemoryInputStream("hello\r\nworld");
-        $this->assertFalse($this->memoryInputStream->eof());
-        $this->assertEquals(12, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(0, $this->memoryInputStream->tell());
-        $this->assertEquals('hello', $this->memoryInputStream->readLine());
-        $this->assertFalse($this->memoryInputStream->eof());
-        $this->assertEquals(5, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(7, $this->memoryInputStream->tell());
-        $this->assertEquals('world', $this->memoryInputStream->readLine());
-        $this->assertTrue($this->memoryInputStream->eof());
-        $this->assertEquals(0, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(12, $this->memoryInputStream->tell());
+        assertFalse($this->memoryInputStream->eof());
+        assertEquals(12, $this->memoryInputStream->bytesLeft());
+        assertEquals(0, $this->memoryInputStream->tell());
+        assertEquals('hello', $this->memoryInputStream->readLine());
+        assertFalse($this->memoryInputStream->eof());
+        assertEquals(5, $this->memoryInputStream->bytesLeft());
+        assertEquals(7, $this->memoryInputStream->tell());
+        assertEquals('world', $this->memoryInputStream->readLine());
+        assertTrue($this->memoryInputStream->eof());
+        assertEquals(0, $this->memoryInputStream->bytesLeft());
+        assertEquals(12, $this->memoryInputStream->tell());
     }
 
     /**
@@ -89,7 +89,7 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeDoesNothing()
     {
-        $this->assertNull($this->memoryInputStream->close());
+        assertNull($this->memoryInputStream->close());
     }
 
     /**
@@ -98,14 +98,14 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     public function seekCanSetPosition()
     {
         $this->memoryInputStream->seek(6);
-        $this->assertEquals(6, $this->memoryInputStream->tell());
-        $this->assertEquals(5, $this->memoryInputStream->bytesLeft());
-        $this->assertFalse($this->memoryInputStream->eof());
-        $this->assertEquals('world', $this->memoryInputStream->read());
+        assertEquals(6, $this->memoryInputStream->tell());
+        assertEquals(5, $this->memoryInputStream->bytesLeft());
+        assertFalse($this->memoryInputStream->eof());
+        assertEquals('world', $this->memoryInputStream->read());
         $this->memoryInputStream->seek(0, Seekable::SET);
-        $this->assertEquals(11, $this->memoryInputStream->bytesLeft());
-        $this->assertEquals(0, $this->memoryInputStream->tell());
-        $this->assertEquals("hello\nworld", $this->memoryInputStream->read());
+        assertEquals(11, $this->memoryInputStream->bytesLeft());
+        assertEquals(0, $this->memoryInputStream->tell());
+        assertEquals("hello\nworld", $this->memoryInputStream->read());
     }
 
     /**
@@ -117,10 +117,10 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $this->memoryInputStream->read(4);
         $this->memoryInputStream->seek(2, Seekable::CURRENT);
-        $this->assertEquals(6, $this->memoryInputStream->tell());
-        $this->assertEquals(5, $this->memoryInputStream->bytesLeft());
-        $this->assertFalse($this->memoryInputStream->eof());
-        $this->assertEquals('world', $this->memoryInputStream->read());
+        assertEquals(6, $this->memoryInputStream->tell());
+        assertEquals(5, $this->memoryInputStream->bytesLeft());
+        assertFalse($this->memoryInputStream->eof());
+        assertEquals('world', $this->memoryInputStream->read());
     }
 
     /**
@@ -129,10 +129,10 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     public function seekCanSetPositionFromEnd()
     {
         $this->memoryInputStream->seek(-5, Seekable::END);
-        $this->assertEquals(6, $this->memoryInputStream->tell());
-        $this->assertEquals(5, $this->memoryInputStream->bytesLeft());
-        $this->assertFalse($this->memoryInputStream->eof());
-        $this->assertEquals('world', $this->memoryInputStream->read());
+        assertEquals(6, $this->memoryInputStream->tell());
+        assertEquals(5, $this->memoryInputStream->bytesLeft());
+        assertFalse($this->memoryInputStream->eof());
+        assertEquals('world', $this->memoryInputStream->read());
     }
 
     /**

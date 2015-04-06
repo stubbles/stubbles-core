@@ -25,8 +25,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     private function assertConstantInjection(Injector $injector)
     {
         $question = $injector->getInstance('stubbles\test\\ioc\Question');
-        $this->assertInstanceOf('stubbles\test\ioc\Question', $question);
-        $this->assertEquals(42, $question->getAnswer());
+        assertInstanceOf('stubbles\test\ioc\Question', $question);
+        assertEquals(42, $question->getAnswer());
     }
 
     /**
@@ -45,7 +45,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     public function checkForNonExistingConstantReturnsFalse()
     {
         $binder = new Binder();
-        $this->assertFalse($binder->getInjector()->hasConstant('answer'));
+        assertFalse($binder->getInjector()->hasConstant('answer'));
     }
 
     /**
@@ -66,7 +66,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')->to(42);
-        $this->assertTrue($binder->getInjector()->hasConstant('answer'));
+        assertTrue($binder->getInjector()->hasConstant('answer'));
     }
 
     /**
@@ -77,7 +77,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')->to(42);
-        $this->assertEquals(42, $binder->getInjector()->getConstant('answer'));
+        assertEquals(42, $binder->getInjector()->getConstant('answer'));
     }
 
     /**
@@ -93,8 +93,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
         $binder->bindConstant('answer')
                ->toProvider($mockProvider);
         $injector = $binder->getInjector();
-        $this->assertTrue($injector->hasConstant('answer'));
-        $this->assertEquals(42, $injector->getConstant('answer'));
+        assertTrue($injector->hasConstant('answer'));
+        assertEquals(42, $injector->getConstant('answer'));
         $this->assertConstantInjection($binder->getInjector());
     }
 
@@ -127,8 +127,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
                         )
                 );
         $injector = $binder->getInjector();
-        $this->assertTrue($injector->hasConstant('answer'));
-        $this->assertEquals(42, $injector->getConstant('answer'));
+        assertTrue($injector->hasConstant('answer'));
+        assertEquals(42, $injector->getConstant('answer'));
         $this->assertConstantInjection($binder->getInjector());
     }
 
@@ -143,8 +143,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
         $binder->bindConstant('answer')
                ->toProviderClass('stubbles\test\ioc\AnswerConstantProvider');
         $injector = $binder->getInjector();
-        $this->assertTrue($injector->hasConstant('answer'));
-        $this->assertEquals(42, $injector->getConstant('answer'));
+        assertTrue($injector->hasConstant('answer'));
+        assertEquals(42, $injector->getConstant('answer'));
         $this->assertConstantInjection($binder->getInjector());
     }
 

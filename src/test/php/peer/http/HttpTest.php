@@ -88,7 +88,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function detectCorrectStatusClass($statusCode, $statusClass)
     {
-        $this->assertEquals($statusClass,
+        assertEquals($statusClass,
                             Http::statusClassFor($statusCode)
         );
     }
@@ -98,7 +98,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfStatusCodes()
     {
-        $this->assertNotCount(0, Http::statusCodes());
+        assertNotCount(0, Http::statusCodes());
     }
 
     /**
@@ -122,7 +122,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsCorrectReasonPhrase($statusCode, $reasonPhrase)
     {
-        $this->assertEquals($reasonPhrase,
+        assertEquals($reasonPhrase,
                             Http::reasonPhraseFor($statusCode)
         );
     }
@@ -141,7 +141,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function addsLineEnding()
     {
-        $this->assertEquals('foo' . Http::END_OF_LINE,
+        assertEquals('foo' . Http::END_OF_LINE,
                             Http::line('foo')
         );
     }
@@ -151,7 +151,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function emptyLineReturnsLineEndingOnly()
     {
-        $this->assertEquals(Http::END_OF_LINE,
+        assertEquals(Http::END_OF_LINE,
                             Http::emptyLine()
         );
     }
@@ -162,7 +162,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function linesConvertsAllLines()
     {
-        $this->assertEquals(
+        assertEquals(
                 Http::line('HEAD /foo/resource HTTP/1.1')
                 . Http::line('Host: example.com')
                 . Http::line('Connection: close')

@@ -36,7 +36,7 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotResponsibleForNonRecoverableErrors()
     {
-        $this->assertFalse($this->illegalArgumentErrorHandler->isResponsible(E_NOTICE, 'foo'));
+        assertFalse($this->illegalArgumentErrorHandler->isResponsible(E_NOTICE, 'foo'));
     }
 
     /**
@@ -44,7 +44,7 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotResponsibleForAllRecoverableErrors()
     {
-        $this->assertFalse($this->illegalArgumentErrorHandler->isResponsible(E_RECOVERABLE_ERROR, 'foo'));
+        assertFalse($this->illegalArgumentErrorHandler->isResponsible(E_RECOVERABLE_ERROR, 'foo'));
     }
 
     /**
@@ -52,7 +52,7 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isResponsibleForRecoverableErrorsWithArgumentPassingErrorMessage()
     {
-        $this->assertTrue($this->illegalArgumentErrorHandler->isResponsible(E_RECOVERABLE_ERROR, 'Argument 1 passed to \\some\\package\\Class::method() must be an instance of other\\package\\AnotherClass, string given'));
+        assertTrue($this->illegalArgumentErrorHandler->isResponsible(E_RECOVERABLE_ERROR, 'Argument 1 passed to \\some\\package\\Class::method() must be an instance of other\\package\\AnotherClass, string given'));
     }
 
     /**
@@ -60,7 +60,7 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function illegalArgumentsAreNeverSuppressable()
     {
-        $this->assertFalse($this->illegalArgumentErrorHandler->isSupressable(E_RECOVERABLE_ERROR, 'foo'));
+        assertFalse($this->illegalArgumentErrorHandler->isSupressable(E_RECOVERABLE_ERROR, 'foo'));
     }
 
     /**

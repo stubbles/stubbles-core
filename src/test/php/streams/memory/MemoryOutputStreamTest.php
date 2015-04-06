@@ -36,7 +36,7 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bufferIsInitiallyEmpty()
     {
-        $this->assertEquals('', $this->memoryOutputStream->buffer());
+        assertEquals('', $this->memoryOutputStream->buffer());
     }
 
     /**
@@ -45,7 +45,7 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function conversionToStringOnEmptyBufferReturnsEmptyString()
     {
-        $this->assertEquals('', (string) $this->memoryOutputStream);
+        assertEquals('', (string) $this->memoryOutputStream);
     }
 
     /**
@@ -55,7 +55,7 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function conversionToStringOnWrittenBufferReturnsBufferContents()
     {
         $this->memoryOutputStream->write('hello');
-        $this->assertEquals('hello', (string) $this->memoryOutputStream);
+        assertEquals('hello', (string) $this->memoryOutputStream);
     }
 
     /**
@@ -63,8 +63,8 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeWritesBytesIntoBuffer()
     {
-        $this->assertEquals(5, $this->memoryOutputStream->write('hello'));
-        $this->assertEquals('hello', $this->memoryOutputStream->buffer());
+        assertEquals(5, $this->memoryOutputStream->write('hello'));
+        assertEquals('hello', $this->memoryOutputStream->buffer());
     }
 
     /**
@@ -72,8 +72,8 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineWritesBytesIntoBuffer()
     {
-        $this->assertEquals(6, $this->memoryOutputStream->writeLine('hello'));
-        $this->assertEquals("hello\n", $this->memoryOutputStream->buffer());
+        assertEquals(6, $this->memoryOutputStream->writeLine('hello'));
+        assertEquals("hello\n", $this->memoryOutputStream->buffer());
     }
 
     /**
@@ -82,8 +82,8 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesWritesBytesIntoBuffer()
     {
-        $this->assertEquals(12, $this->memoryOutputStream->writeLines(['hello', 'world']));
-        $this->assertEquals("hello\nworld\n", $this->memoryOutputStream->buffer());
+        assertEquals(12, $this->memoryOutputStream->writeLines(['hello', 'world']));
+        assertEquals("hello\nworld\n", $this->memoryOutputStream->buffer());
     }
 
     /**
@@ -91,6 +91,6 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeDoesNothing()
     {
-        $this->assertNull($this->memoryOutputStream->close());
+        assertNull($this->memoryOutputStream->close());
     }
 }

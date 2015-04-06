@@ -22,6 +22,6 @@ class NegatePredicateTest extends \PHPUnit_Framework_TestCase
     public function negatesWrappedPredicate()
     {
         $negatePredicate = new NegatePredicate(function($value) { return 'foo' === $value; });
-        $this->assertTrue($negatePredicate('bar'));
+        assertTrue($negatePredicate('bar'));
     }
 }

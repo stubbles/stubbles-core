@@ -22,7 +22,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsWithMethodNameReturnsMethodAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 __CLASS__ . '::' . __FUNCTION__ . '()',
                 annotationsOf(__CLASS__, __FUNCTION__)->target()
         );
@@ -33,7 +33,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsWithClassNameReturnsClassAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 __CLASS__,
                 annotationsOf(__CLASS__)->target()
         );
@@ -44,7 +44,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function constructorAnnotationsWithClassNameReturnsConstructorAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 'PHPUnit_Framework_TestCase::__construct()',
                 annotationsOfConstructor(__CLASS__)->target()
         );
@@ -55,7 +55,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsWithClassInstanceReturnsClassAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 __CLASS__,
                 annotationsOf($this)->target()
         );
@@ -66,7 +66,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function constructorAnnotationsWithClassInstanceReturnsConstructorAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 'PHPUnit_Framework_TestCase::__construct()',
                 annotationsOfConstructor($this)->target()
         );
@@ -77,7 +77,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsWithFunctionNameReturnsFunctionAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 'stubbles\lang\reflect\annotationsOf()',
                 annotationsOf('stubbles\lang\reflect\annotationsOf')->target()
         );
@@ -106,7 +106,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function annotationsWithReflectionParameterReturnsParameterAnnotations()
     {
         $refParam = new \ReflectionParameter([$this, 'example'], 'refParam');
-        $this->assertEquals(
+        assertEquals(
                 __CLASS__ . '::example()#refParam',
                 annotationsOf($refParam)->target()
         );
@@ -117,7 +117,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsOfParameterWithClassInstanceReturnsParameterAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 __CLASS__ . '::example()#refParam',
                 annotationsOfParameter('refParam', $this, 'example')->target()
         );
@@ -128,7 +128,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsOfParameterWithClassNameReturnsParameterAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 __CLASS__ . '::example()#refParam',
                 annotationsOfParameter('refParam', __CLASS__, 'example')->target()
         );
@@ -159,7 +159,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function annotationsWithReflectionPropertyReturnsPropertyAnnotations($connector, $propertyName)
     {
         $refProperty = new \ReflectionProperty($this, $propertyName);
-        $this->assertEquals(
+        assertEquals(
                 __CLASS__ . $connector . $propertyName,
                 annotationsOf($refProperty)->target()
         );
@@ -188,13 +188,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function methodsOfReturnsAllMethods()
     {
-        $this->assertGreaterThan(
+        assertGreaterThan(
                 0,
                 methodsOf($this)
                     ->peek(
                         function($method)
                         {
-                            $this->assertInstanceOf('\ReflectionMethod', $method);
+                            assertInstanceOf('\ReflectionMethod', $method);
                         }
                     )->count()
         );
@@ -214,13 +214,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function propertiesOfReturnsAllMethods()
     {
-        $this->assertGreaterThan(
+        assertGreaterThan(
                 0,
                 propertiesOf($this)
                     ->peek(
                         function($method)
                         {
-                            $this->assertInstanceOf('\ReflectionProperty', $method);
+                            assertInstanceOf('\ReflectionProperty', $method);
                         }
                     )->count()
         );
@@ -240,13 +240,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function parametersOfReturnsAllParameters()
     {
-        $this->assertEquals(
+        assertEquals(
                 1,
                 parametersOf($this, 'example')
                     ->peek(
                         function($parameter)
                         {
-                            $this->assertInstanceOf('\ReflectionParameter', $parameter);
+                            assertInstanceOf('\ReflectionParameter', $parameter);
                         }
                     )->count()
         );
@@ -257,13 +257,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function parametersOfWithReflectionMethodReturnsAllParameters()
     {
-        $this->assertEquals(
+        assertEquals(
                 1,
                 parametersOf(new \ReflectionMethod($this, 'example'))
                     ->peek(
                         function($parameter)
                         {
-                            $this->assertInstanceOf('\ReflectionParameter', $parameter);
+                            assertInstanceOf('\ReflectionParameter', $parameter);
                         }
                     )->count()
         );
@@ -283,7 +283,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function parameterReturnsExactReflectionParameter()
     {
-        $this->assertEquals(
+        assertEquals(
                 'refParam',
                 parameter('refParam', $this, 'example')->getName()
         );

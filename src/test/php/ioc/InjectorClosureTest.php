@@ -26,7 +26,7 @@ class InjectorClosureTest extends \PHPUnit_Framework_TestCase
         $answer = new \stubbles\test\ioc\Answer();
         $binder->bind('stubbles\test\ioc\Answer')->toClosure(function() use($answer) { return $answer; });
         $question = $binder->getInjector()->getInstance('stubbles\test\ioc\AnotherQuestion');
-        $this->assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
-        $this->assertSame($answer, $question->getAnswer());
+        assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
+        assertSame($answer, $question->getAnswer());
     }
 }

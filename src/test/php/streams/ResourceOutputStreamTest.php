@@ -116,8 +116,8 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
-        $this->assertEquals(9, $resourceOutputStream->write('foobarbaz'));
-        $this->assertEquals('foobarbaz', $file->getContent());
+        assertEquals(9, $resourceOutputStream->write('foobarbaz'));
+        assertEquals('foobarbaz', $file->getContent());
     }
 
     /**
@@ -127,8 +127,8 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
-        $this->assertEquals(11, $resourceOutputStream->writeLine('foobarbaz'));
-        $this->assertEquals("foobarbaz\r\n", $file->getContent());
+        assertEquals(11, $resourceOutputStream->writeLine('foobarbaz'));
+        assertEquals("foobarbaz\r\n", $file->getContent());
     }
 
     /**
@@ -139,7 +139,7 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
-        $this->assertEquals(15, $resourceOutputStream->writeLines(['foo', 'bar', 'baz']));
-        $this->assertEquals("foo\r\nbar\r\nbaz\r\n", $file->getContent());
+        assertEquals(15, $resourceOutputStream->writeLines(['foo', 'bar', 'baz']));
+        assertEquals("foo\r\nbar\r\nbaz\r\n", $file->getContent());
     }
 }

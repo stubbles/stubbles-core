@@ -42,7 +42,7 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      */
     public function joiningNames()
     {
-        $this->assertEquals(
+        assertEquals(
                 'Timm, Alex, Dude',
                 Sequence::of($this->people)
                         ->map(function(Employee $e) { return $e->name(); })
@@ -56,7 +56,7 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      */
     public function joiningNamesWithSemicolon()
     {
-        $this->assertEquals(
+        assertEquals(
                 'Timm;Alex;Dude',
                 Sequence::of($this->people)
                         ->map(function(Employee $e) { return $e->name(); })
@@ -70,7 +70,7 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      */
     public function joiningNamesWithPrefixAndSuffix()
     {
-        $this->assertEquals(
+        assertEquals(
                 '(Timm, Alex, Dude)',
                 Sequence::of($this->people)
                         ->map(function(Employee $e) { return $e->name(); })
@@ -83,7 +83,7 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function groupingBy() {
-        $this->assertEquals(
+        assertEquals(
                 ['B' => [$this->people[1549]], 'I' => [$this->people[1552], $this->people[6100]]],
                 Sequence::of($this->people)
                         ->collect()
@@ -95,7 +95,7 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function groupingByWithSummingOfYears() {
-        $this->assertEquals(
+        assertEquals(
                 ['B' => 15, 'I' => 18],
                 Sequence::of($this->people)
                         ->collect()
@@ -110,7 +110,7 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function groupingByWithAveragingOfYears() {
-        $this->assertEquals(
+        assertEquals(
                 ['B' => 15, 'I' => 9],
                 Sequence::of($this->people)
                         ->collect()
@@ -125,7 +125,7 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function partitioningBy() {
-        $this->assertEquals(
+        assertEquals(
                 [true => [$this->people[1549], $this->people[1552]], false => [$this->people[6100]]],
                 Sequence::of($this->people)
                         ->collect()

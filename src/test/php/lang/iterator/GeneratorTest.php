@@ -33,7 +33,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $result[$key] = $value;
         }
 
-        $this->assertEquals(
+        assertEquals(
                 [0 => 2, 1 => 4, 2 => 6, 3 => 8, 4 => 10, 5 => 12, 6 => 14],
                 $result
         );
@@ -59,7 +59,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $result2[$key] = $value;
         }
 
-        $this->assertEquals($result1, $result2);
+        assertEquals($result1, $result2);
     }
 
     /**
@@ -71,12 +71,12 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         foreach (Generator::infinite(0, function($value) { return $value + 2; }) as $key => $value) {
             if (1000 > $key) {
                 $i++;
-                $this->assertEquals($key * 2, $value);
+                assertEquals($key * 2, $value);
             } else {
                 break;
             }
         }
 
-        $this->assertEquals(1000, $i);
+        assertEquals(1000, $i);
     }
 }

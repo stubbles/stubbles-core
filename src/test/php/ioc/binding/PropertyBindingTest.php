@@ -89,7 +89,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function hasValueForRuntimeMode()
     {
         $this->mockMode->method('name')->will(returnValue('PROD'));
-        $this->assertTrue($this->propertyBinding->hasProperty('foo.bar'));
+        assertTrue($this->propertyBinding->hasProperty('foo.bar'));
     }
 
     /**
@@ -98,7 +98,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsProdValueForRuntimeMode()
     {
         $this->mockMode->method('name')->will(returnValue('PROD'));
-        $this->assertEquals(
+        assertEquals(
                 'baz',
                 $this->propertyBinding->getInstance($this->mockInjector, 'foo.bar')
         );
@@ -110,7 +110,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function hasValueForDifferentRuntimeMode()
     {
         $this->mockMode->method('name')->will(returnValue('DEV'));
-        $this->assertTrue($this->propertyBinding->hasProperty('foo.bar'));
+        assertTrue($this->propertyBinding->hasProperty('foo.bar'));
     }
 
     /**
@@ -119,7 +119,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsConfigValueForDifferentRuntimeMode()
     {
         $this->mockMode->method('name')->will(returnValue('DEV'));
-        $this->assertEquals(
+        assertEquals(
                 'default',
                 $this->propertyBinding->getInstance($this->mockInjector, 'foo.bar')
         );
@@ -131,7 +131,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function hasValueWhenNoSpecificForRuntimeModeSet()
     {
         $this->mockMode->method('name')->will(returnValue('PROD'));
-        $this->assertTrue($this->propertyBinding->hasProperty('other'));
+        assertTrue($this->propertyBinding->hasProperty('other'));
     }
 
     /**
@@ -140,7 +140,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsConfigValueWhenNoSpecificForRuntimeModeSet()
     {
         $this->mockMode->method('name')->will(returnValue('PROD'));
-        $this->assertEquals('someValue',
+        assertEquals('someValue',
                             $this->propertyBinding->getInstance($this->mockInjector, 'other')
         );
     }
@@ -151,7 +151,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function doesNotHaveValueWhenPropertyNotSet()
     {
         $this->mockMode->method('name')->will(returnValue('PROD'));
-        $this->assertFalse($this->propertyBinding->hasProperty('does.not.exist'));
+        assertFalse($this->propertyBinding->hasProperty('does.not.exist'));
     }
 
     /**
@@ -172,7 +172,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsParsedValuesForModeSpecificProperties()
     {
         $this->mockMode->method('name')->will(returnValue('PROD'));
-        $this->assertEquals(
+        assertEquals(
                 lang\reflect(__CLASS__),
                 $this->propertyBinding->getInstance($this->mockInjector, 'baz')
         );
@@ -185,7 +185,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsParsedValuesForCommonProperties()
     {
         $this->mockMode->method('name')->will(returnValue('DEV'));
-        $this->assertEquals(
+        assertEquals(
                 lang\reflect('stubbles\lang\Properties'),
                 $this->propertyBinding->getInstance($this->mockInjector, 'baz')
         );
@@ -204,7 +204,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                 );
         $binder->bindProperties($properties, $this->mockMode);
         $example = $binder->getInjector()->getInstance('stubbles\ioc\binding\Example');
-        $this->assertInstanceOf('stubbles\lang\SecureString', $example->password);
+        assertInstanceOf('stubbles\lang\SecureString', $example->password);
         // ensure all references are removed to clean up environment
         // otherwise all *SecureStringTests will fail
         $properties = null;

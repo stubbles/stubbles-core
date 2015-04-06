@@ -21,7 +21,7 @@ class SocketDomainTest extends \PHPUnit_Framework_TestCase
      */
     public function AF_INETrequiresPort()
     {
-        $this->assertTrue(SocketDomain::$AF_INET->requiresPort());
+        assertTrue(SocketDomain::$AF_INET->requiresPort());
     }
 
     /**
@@ -29,7 +29,7 @@ class SocketDomainTest extends \PHPUnit_Framework_TestCase
      */
     public function AF_INET6requiresPort()
     {
-        $this->assertTrue(SocketDomain::$AF_INET6->requiresPort());
+        assertTrue(SocketDomain::$AF_INET6->requiresPort());
     }
 
     /**
@@ -37,7 +37,7 @@ class SocketDomainTest extends \PHPUnit_Framework_TestCase
      */
     public function AF_UNIXdoesNotRequirePort()
     {
-        $this->assertFalse(SocketDomain::$AF_UNIX->requiresPort());
+        assertFalse(SocketDomain::$AF_UNIX->requiresPort());
     }
 
     /**
@@ -60,7 +60,7 @@ class SocketDomainTest extends \PHPUnit_Framework_TestCase
      */
     public function namesAreCorrect($expectedName)
     {
-        $this->assertEquals($expectedName,
+        assertEquals($expectedName,
                             SocketDomain::forName($expectedName)->name()
         );
     }
@@ -85,7 +85,7 @@ class SocketDomainTest extends \PHPUnit_Framework_TestCase
      */
     public function valuesAreCorrect($expectedValue)
     {
-        $this->assertEquals($expectedValue,
+        assertEquals($expectedValue,
                             SocketDomain::forValue($expectedValue)->value()
         );
     }

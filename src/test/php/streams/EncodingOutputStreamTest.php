@@ -46,7 +46,7 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function knowsGivenCharset()
     {
-        $this->assertEquals(
+        assertEquals(
                 'iso-8859-1',
                 $this->encodingOutputStream->getCharset()
         );
@@ -57,8 +57,8 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeEncodesBytesBeforePassedToDecoratedStream()
     {
-        $this->assertEquals(5, $this->encodingOutputStream->write('hällö'));
-        $this->assertEquals(utf8_decode('hällö'), $this->memory->buffer());
+        assertEquals(5, $this->encodingOutputStream->write('hällö'));
+        assertEquals(utf8_decode('hällö'), $this->memory->buffer());
     }
 
     /**
@@ -66,8 +66,8 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineEncodesBytesBeforePassedToDecoratedStream()
     {
-        $this->assertEquals(6, $this->encodingOutputStream->writeLine('hällö'));
-        $this->assertEquals(utf8_decode("hällö\n"), $this->memory->buffer());
+        assertEquals(6, $this->encodingOutputStream->writeLine('hällö'));
+        assertEquals(utf8_decode("hällö\n"), $this->memory->buffer());
     }
 
     /**
@@ -76,11 +76,11 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesEncodesBytesBeforePassedToDecoratedStream()
     {
-        $this->assertEquals(
+        assertEquals(
                 12,
                 $this->encodingOutputStream->writeLines(['hällö', 'wörld'])
         );
-        $this->assertEquals(
+        assertEquals(
                 utf8_decode("hällö\nwörld\n"),
                 $this->memory->buffer()
         );

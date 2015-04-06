@@ -38,7 +38,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function doNotContainNonAddedAnnotation()
     {
-        $this->assertFalse($this->annotations->contain('foo'));
+        assertFalse($this->annotations->contain('foo'));
     }
 
     /**
@@ -46,7 +46,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function containsAddedAnnotation()
     {
-        $this->assertTrue(
+        assertTrue(
                 $this->annotations->add(new Annotation('foo'))
                                   ->contain('foo')
         );
@@ -57,7 +57,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function containsMoreThanOneAnnotation()
     {
-        $this->assertTrue(
+        assertTrue(
                 $this->annotations->add(new Annotation('foo'))
                                   ->add(new Annotation('foo'))
                                   ->contain('foo')
@@ -71,7 +71,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function firstNamedReturnsFirstAddedAnnotationWithThisName()
     {
         $first = new Annotation('foo');
-        $this->assertSame(
+        assertSame(
                 $first,
                 $this->annotations->add($first)
                                   ->add(new Annotation('foo'))
@@ -94,7 +94,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsEmptyListIfNoneOfThisTypeAdded()
     {
-        $this->assertEquals(
+        assertEquals(
                 [],
                 $this->annotations->named('foo')
         );
@@ -105,7 +105,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsAllAnnotationsOfThisType()
     {
-        $this->assertEquals(
+        assertEquals(
                 [new Annotation('foo'),
                  new Annotation('foo')
                 ],
@@ -121,7 +121,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsAllAnnotations()
     {
-        $this->assertEquals(
+        assertEquals(
                 [new Annotation('foo'),
                  new Annotation('foo'),
                  new Annotation('bar')
@@ -146,7 +146,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
             $types[] = $annotation->getAnnotationName();
         }
 
-        $this->assertEquals(['foo', 'foo', 'bar'], $types);
+        assertEquals(['foo', 'foo', 'bar'], $types);
     }
 
 }

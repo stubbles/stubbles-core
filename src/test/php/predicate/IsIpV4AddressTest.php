@@ -37,7 +37,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function stringIsNoIpAndEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpV4Address->test('foo'));
+        assertFalse($this->isIpV4Address->test('foo'));
     }
 
     /**
@@ -45,7 +45,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function nullIsNoIpAndEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpV4Address->test(null));
+        assertFalse($this->isIpV4Address->test(null));
     }
 
     /**
@@ -53,7 +53,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function emptyStringIsNoIpAndEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpV4Address->test(''));
+        assertFalse($this->isIpV4Address->test(''));
     }
 
     /**
@@ -61,8 +61,8 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function booleansAreNoIpAndResultInFalse()
     {
-        $this->assertFalse($this->isIpV4Address->test(true));
-        $this->assertFalse($this->isIpV4Address->test(false));
+        assertFalse($this->isIpV4Address->test(true));
+        assertFalse($this->isIpV4Address->test(false));
     }
 
     /**
@@ -70,8 +70,8 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function singleNumbersAreNoIpAndResultInFalse()
     {
-        $this->assertFalse($this->isIpV4Address->test(4));
-        $this->assertFalse($this->isIpV4Address->test(6));
+        assertFalse($this->isIpV4Address->test(4));
+        assertFalse($this->isIpV4Address->test(6));
     }
 
     /**
@@ -79,7 +79,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpWithMissingPartEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpV4Address->test('255.55.55'));
+        assertFalse($this->isIpV4Address->test('255.55.55'));
     }
 
     /**
@@ -87,7 +87,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpWithSuperflousPartEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpV4Address->test('111.222.333.444.555'));
+        assertFalse($this->isIpV4Address->test('111.222.333.444.555'));
     }
 
     /**
@@ -95,7 +95,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpWithMissingNumberEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpV4Address->test('1..3.4'));
+        assertFalse($this->isIpV4Address->test('1..3.4'));
     }
 
     /**
@@ -103,7 +103,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function greatestIpV4EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpV4Address->test('255.255.255.255'));
+        assertTrue($this->isIpV4Address->test('255.255.255.255'));
     }
 
     /**
@@ -111,7 +111,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function lowestIpV4EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpV4Address->test('0.0.0.0'));
+        assertTrue($this->isIpV4Address->test('0.0.0.0'));
     }
 
     /**
@@ -119,7 +119,7 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function correctIpEvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpV4Address->test('1.2.3.4'));
+        assertTrue($this->isIpV4Address->test('1.2.3.4'));
     }
 
     /**
@@ -127,6 +127,6 @@ class IsIpV4AddressTest extends \PHPUnit_Framework_TestCase
      */
     public function instanceOfIpAddressEvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpV4Address->test(new IpAddress('127.0.0.1')));
+        assertTrue($this->isIpV4Address->test(new IpAddress('127.0.0.1')));
     }
 }

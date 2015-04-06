@@ -29,11 +29,11 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
         $binder->bind('stubbles\test\ioc\Answer')->toProvider($mockProvider);
         $question = $binder->getInjector()
                 ->getInstance('stubbles\test\ioc\AnotherQuestion');
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\test\ioc\AnotherQuestion',
                 $question
         );
-        $this->assertSame($answer, $question->getAnswer());
+        assertSame($answer, $question->getAnswer());
     }
 
     /**
@@ -57,8 +57,8 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
                 ->toProviderClass('stubbles\test\ioc\MyProviderClass');
         $question = $binder->getInjector()
                 ->getInstance('stubbles\test\ioc\AnotherQuestion');
-        $this->assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
-        $this->assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());
+        assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
+        assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());
     }
 
     /**
@@ -73,7 +73,7 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
                 );
         $question = $binder->getInjector()
                 ->getInstance('stubbles\test\ioc\AnotherQuestion');
-        $this->assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
-        $this->assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());
+        assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
+        assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());
     }
 }

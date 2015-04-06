@@ -21,7 +21,7 @@ class DefaultErrorHandlerTest extends \PHPUnit_Framework_TestCase
      *
      * @type  DefaultErrorHandler
      */
-    protected $defaultErrorHandler;
+    private $defaultErrorHandler;
 
     /**
      * set up test environment
@@ -37,11 +37,13 @@ class DefaultErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function hasAddedAllErrorHandlers()
     {
         $properties = \stubbles\lang\extractObjectProperties($this->defaultErrorHandler);
-        $this->assertInstanceOf('stubbles\lang\errorhandler\IllegalArgumentErrorHandler',
-                                $properties['errorHandlers'][0]
+        assertInstanceOf(
+                'stubbles\lang\errorhandler\IllegalArgumentErrorHandler',
+                $properties['errorHandlers'][0]
         );
-        $this->assertInstanceOf('stubbles\lang\errorhandler\LogErrorHandler',
-                                $properties['errorHandlers'][1]
+        assertInstanceOf(
+                'stubbles\lang\errorhandler\LogErrorHandler',
+                $properties['errorHandlers'][1]
         );
     }
 }

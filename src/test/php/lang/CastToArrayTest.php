@@ -48,7 +48,7 @@ class CastToArrayTest extends \PHPUnit_Framework_TestCase
      */
     public function castToArrayOnTraversable()
     {
-        $this->assertEquals(
+        assertEquals(
                 ['foo' => 'bar', 'baz' => 303],
                 castToArray(new \ArrayIterator(['foo' => 'bar', 'baz' => 303]))
         );
@@ -59,7 +59,7 @@ class CastToArrayTest extends \PHPUnit_Framework_TestCase
      */
     public function castToArrayOnArray()
     {
-        $this->assertEquals(
+        assertEquals(
                 ['foo' => 'bar', 'baz' => 303],
                 castToArray(['foo' => 'bar', 'baz' => 303])
         );
@@ -73,7 +73,7 @@ class CastToArrayTest extends \PHPUnit_Framework_TestCase
         $object = new \stdClass();
         $object->foo = 'bar';
         $object->baz = 303;
-        $this->assertEquals(
+        assertEquals(
                 ['foo' => 'bar', 'baz' => 303],
                 castToArray($object)
         );
@@ -84,7 +84,7 @@ class CastToArrayTest extends \PHPUnit_Framework_TestCase
      */
     public function castToArrayOnObjectWithAsArrayMethod()
     {
-        $this->assertEquals(
+        assertEquals(
                 ['foo' => 'bar', 'baz' => 303],
                 castToArray(new AsArray())
         );
@@ -95,7 +95,7 @@ class CastToArrayTest extends \PHPUnit_Framework_TestCase
      */
     public function castToArrayOnObjectWithToArrayMethod()
     {
-        $this->assertEquals(
+        assertEquals(
                 ['foo' => 'bar', 'baz' => 303],
                 castToArray(new ToArray())
         );
@@ -106,7 +106,7 @@ class CastToArrayTest extends \PHPUnit_Framework_TestCase
      */
     public function castToArrayOnScalarValue()
     {
-        $this->assertEquals(
+        assertEquals(
                 [303],
                 castToArray(303)
         );

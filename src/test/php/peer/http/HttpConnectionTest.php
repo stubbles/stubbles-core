@@ -58,7 +58,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializeGetRequest()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\peer\http\HttpResponse',
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
@@ -68,7 +68,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                         ->usingHeader('X-Binford', 6100)
                         ->get()
         );
-        $this->assertEquals(
+        assertEquals(
                 Http::lines(
                         ['GET /foo/resource HTTP/1.1',
                          'Host: example.com',
@@ -89,7 +89,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializeHeadRequest()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\peer\http\HttpResponse',
                 $this->httpConnection->timeout(2)
                             ->asUserAgent('Stubbles HTTP Client')
@@ -99,7 +99,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                             ->usingHeader('X-Binford', 6100)
                             ->head()
         );
-        $this->assertEquals(
+        assertEquals(
                 Http::lines(
                         ['HEAD /foo/resource HTTP/1.1',
                          'Host: example.com',
@@ -121,7 +121,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializePostRequest()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\peer\http\HttpResponse',
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
@@ -131,7 +131,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                         ->usingHeader('X-Binford', 6100)
                         ->post('foobar')
         );
-        $this->assertEquals(
+        assertEquals(
                 Http::lines(
                         ['POST /foo/resource HTTP/1.1',
                          'Host: example.com',
@@ -154,7 +154,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializePostRequestUsingPostValues()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\peer\http\HttpResponse',
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
@@ -164,7 +164,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                         ->usingHeader('X-Binford', 6100)
                         ->post(['foo' => 'bar', 'ba z' => 'dum my'])
         );
-        $this->assertEquals(
+        assertEquals(
                 Http::lines(
                         ['POST /foo/resource HTTP/1.1',
                          'Host: example.com',
@@ -189,7 +189,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializePutRequest()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\peer\http\HttpResponse',
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
@@ -199,7 +199,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                         ->usingHeader('X-Binford', 6100)
                         ->put('foobar')
         );
-        $this->assertEquals(
+        assertEquals(
                 Http::lines(
                         ['PUT /foo/resource HTTP/1.1',
                          'Host: example.com',
@@ -223,7 +223,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function initializeDeleteRequest()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\peer\http\HttpResponse',
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
@@ -233,7 +233,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                         ->usingHeader('X-Binford', 6100)
                         ->delete()
         );
-        $this->assertEquals(
+        assertEquals(
                 Http::lines(
                         ['DELETE /foo/resource HTTP/1.1',
                          'Host: example.com',
@@ -255,7 +255,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function functionShortcut()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\peer\http\HttpConnection',
                 \stubbles\peer\http('http://example.net/')
         );

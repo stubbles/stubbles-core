@@ -37,7 +37,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
                 function($value) { return 'mappedValue'; }
         );
         foreach ($mapping as $value) {
-            $this->assertEquals('mappedValue', $value);
+            assertEquals('mappedValue', $value);
         }
     }
 
@@ -48,7 +48,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
     {
         $mapping = new MappingIterator(
                 new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
-                function($value, $key) { $this->assertEquals($value, $key); return 'mappedValue'; }
+                function($value, $key) { assertEquals($value, $key); return 'mappedValue'; }
         );
         foreach ($mapping as $value) {
             // intentionally empty
@@ -64,7 +64,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
         $mapping = new MappingIterator(
                 new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
                 null,
-                function($key, $value) { $this->assertEquals($value, $key); return 'mappedKey'; }
+                function($key, $value) { assertEquals($value, $key); return 'mappedKey'; }
         );
         foreach ($mapping as $value) {
             // intentionally empty
@@ -78,7 +78,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
     {
         $mapping = new MappingIterator(
                 new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
-                function($value, $key) { $this->assertEquals($value, $key); return 'mappedValue'; },
+                function($value, $key) { assertEquals($value, $key); return 'mappedValue'; },
                 function($key) { return 'mappedKey'; }
         );
         foreach ($mapping as $key => $value) {
@@ -95,7 +95,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
         $mapping = new MappingIterator(
                 new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
                 function($value) { return 'mappedValue'; },
-                function($key, $value) { $this->assertEquals($value, $key); return 'mappedKey'; }
+                function($key, $value) { assertEquals($value, $key); return 'mappedKey'; }
         );
         foreach ($mapping as $key => $value) {
             // intentionally empty
@@ -118,7 +118,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
             $values[] = $value;
         }
 
-        $this->assertEquals([303, 808, '909'], $values);
+        assertEquals([303, 808, '909'], $values);
     }
 
     /**
@@ -135,7 +135,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
             $keys[] = $key;
         }
 
-        $this->assertEquals(['foo', 'bar', 'baz'], $keys);
+        assertEquals(['foo', 'bar', 'baz'], $keys);
     }
 
     /**
@@ -149,7 +149,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
                 function($key) { return 'mappedKey'; }
         );
         foreach ($mapping as $key => $value) {
-            $this->assertEquals('mappedKey', $key);
+            assertEquals('mappedKey', $key);
         }
     }
 }

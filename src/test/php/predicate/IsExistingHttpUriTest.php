@@ -53,7 +53,7 @@ class IsExistingHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueEvaluatesToFalse($invalid)
     {
-        $this->assertFalse($this->isExistingHttpUri->test($invalid));
+        assertFalse($this->isExistingHttpUri->test($invalid));
     }
 
     /**
@@ -73,7 +73,7 @@ class IsExistingHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function validHttpUrlWithDnsEntryEvaluatesToTrue($value)
     {
-        $this->assertTrue(
+        assertTrue(
                 $this->isExistingHttpUri->test($value)
         );
     }
@@ -83,7 +83,7 @@ class IsExistingHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function validHttpUrlWithoutDnsEntryEvaluatesToFalse()
     {
-        $this->assertFalse(
+        assertFalse(
                 $this->isExistingHttpUri->test('http://stubbles.doesNotExist/')
         );
     }

@@ -69,13 +69,13 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->abstractExceptionHandler->handleException(new \Exception('exception message'));
         $line = __LINE__ - 1;
 
-        $this->assertTrue(
+        assertTrue(
                 $this->root->hasChild(
                         'log/errors/' . date('Y') . '/' . date('m')
                         . '/exceptions-' . date('Y-m-d') . '.log'
                 )
         );
-        $this->assertEquals(
+        assertEquals(
                 '|Exception|exception message|' . __FILE__ . '|' . $line . "||||\n",
                 substr(
                         $this->root->getChild(
@@ -97,13 +97,13 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $line      = __LINE__ - 1;
 
         $this->abstractExceptionHandler->handleException($exception);
-        $this->assertTrue(
+        assertTrue(
                 $this->root->hasChild(
                         'log/errors/' . date('Y') . '/' . date('m')
                         . '/exceptions-' . date('Y-m-d') . '.log'
                 )
         );
-        $this->assertEquals(
+        assertEquals(
                 '|stubbles\lang\exception\Exception|chained exception|'
                 . __FILE__ . '|' . $line . '|Exception|exception message|'
                 . __FILE__ . '|' . $line . "\n",
@@ -124,10 +124,10 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $exception = new \Exception('exception message');
         $this->abstractExceptionHandler->handleException($exception);
-        $this->assertTrue(
+        assertTrue(
                 $this->root->hasChild('log/errors/' . date('Y') . '/' . date('m'))
         );
-        $this->assertEquals(
+        assertEquals(
                 0700,
                 $this->root->getChild(
                         'log/errors/' . date('Y') . '/' . date('m')
@@ -142,10 +142,10 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $exception = new \Exception('exception message');
         $this->abstractExceptionHandler->setFilemode(0777)->handleException($exception);
-        $this->assertTrue(
+        assertTrue(
                 $this->root->hasChild('log/errors/' . date('Y') . '/' . date('m'))
         );
-        $this->assertEquals(
+        assertEquals(
                 0777,
                 $this->root->getChild(
                         'log/errors/' . date('Y') . '/' . date('m')

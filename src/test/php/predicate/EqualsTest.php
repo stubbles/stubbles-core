@@ -47,7 +47,7 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrue($expected, $value)
     {
         $equals = new Equals($expected);
-        $this->assertTrue($equals($value));
+        assertTrue($equals($value));
     }
 
     /**
@@ -79,6 +79,6 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalse($expected, $value)
     {
         $equals = new Equals($expected);
-        $this->assertFalse($equals($value));
+        assertFalse($equals($value));
     }
 }

@@ -30,7 +30,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withValueFromClosure(function() { return 323; });
         $binder->bindMap('mapConfig');
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(
+        assertEquals(
                 [303, 313, 323],
                 $pluginHandler->getConfigList()
         );
@@ -42,7 +42,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
     public function injectorReturnsFalseForNonAddedListOnCheck()
     {
         $binder = new Binder();
-        $this->assertFalse(
+        assertFalse(
                 $binder->getInjector()
                         ->hasBinding(ListBinding::TYPE, 'listConfig')
         );
@@ -58,7 +58,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withValue(303)
                 ->withValueFromProvider($this->createProviderForValue(313))
                 ->withValueFromClosure(function() { return 323; });
-        $this->assertTrue(
+        assertTrue(
                 $binder->getInjector()
                         ->hasBinding(ListBinding::TYPE, 'listConfig')
         );
@@ -84,7 +84,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withValue(303)
                 ->withValueFromProvider($this->createProviderForValue(313))
                 ->withValueFromClosure(function() { return 323; });
-        $this->assertEquals(
+        assertEquals(
                 [303, 313, 323],
                 $binder->getInjector()->getInstance(ListBinding::TYPE, 'listConfig')
         );
@@ -104,7 +104,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withValueFromClosure(function() { return 323; });
         $binder->bindMap('mapConfig');
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(
+        assertEquals(
                 [303, 313, 323],
                 $pluginHandler->getConfigList()
         );
@@ -116,7 +116,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
     public function injectorReturnsFalseForNonAddedMapOnCheck()
     {
         $binder = new Binder();
-        $this->assertFalse(
+        assertFalse(
                 $binder->getInjector()->hasBinding(MapBinding::TYPE, 'mapConfig')
         );
     }
@@ -131,7 +131,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withEntry('tb', 303)
                 ->withEntryFromProvider('dd', $this->createProviderForValue(313))
                 ->withEntryFromClosure('hf', function() { return 323; });
-        $this->assertTrue(
+        assertTrue(
                 $binder->getInjector()->hasBinding(MapBinding::TYPE, 'mapConfig')
         );
     }
@@ -156,7 +156,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withEntry('tb', 303)
                 ->withEntryFromProvider('dd', $this->createProviderForValue(313))
                 ->withEntryFromClosure('hf', function() { return 323; });
-        $this->assertEquals(
+        assertEquals(
                 ['tb' => 303, 'dd' => 313, 'hf' => 323],
                 $binder->getInjector()->getInstance(MapBinding::TYPE, 'mapConfig')
         );
@@ -174,7 +174,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withEntryFromProvider('dd', $this->createProviderForValue(313))
                 ->withEntryFromClosure('hf', function() { return 323; });
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(
+        assertEquals(
                 ['tb' => 303, 'dd' => 313, 'hf' => 323],
                 $pluginHandler->getConfigMap()
         );
@@ -194,7 +194,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
         $binder->bindMap('mapConfig')
                 ->withEntryFromClosure('hf', function() { return 323; });
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(['tb' => 303, 'dd' => 313, 'hf' => 323],
+        assertEquals(['tb' => 303, 'dd' => 313, 'hf' => 323],
                             $pluginHandler->getConfigMap()
         );
     }
@@ -217,7 +217,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                         function() use($mockPlugin3) { return $mockPlugin3; }
                 );
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(
+        assertEquals(
                 [$mockPlugin1, $mockPlugin2, $mockPlugin3],
                 $pluginHandler->getPluginList()
         );
@@ -243,7 +243,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                         function() use($mockPlugin3) { return $mockPlugin3; }
                 );
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(
+        assertEquals(
                 [$mockPlugin1, $mockPlugin2, $mockPlugin3],
                 $pluginHandler->getPluginList()
         );
@@ -271,7 +271,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                         function() use($mockPlugin3) { return $mockPlugin3; }
                 );
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(
+        assertEquals(
                 ['tb' => $mockPlugin1, 'dd' => $mockPlugin2, 'hf' => $mockPlugin3],
                 $pluginHandler->getPluginMap()
         );
@@ -301,7 +301,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                         function() use($mockPlugin3) { return $mockPlugin3; }
                 );
         $pluginHandler = $this->createPluginHandler($binder);
-        $this->assertEquals(
+        assertEquals(
                 ['tb' => $mockPlugin1, 'dd' => $mockPlugin2, 'hf' => $mockPlugin3],
                 $pluginHandler->getPluginMap()
         );
@@ -351,7 +351,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                ->withValue(313);
         $binder->bindMap('aMap')
                ->withEntry('tb', 303);
-        $this->assertEquals(
+        assertEquals(
                 ['std'    => $mockPlugin,
                  'answer' => 42,
                  'list'   => [313],

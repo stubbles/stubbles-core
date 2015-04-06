@@ -53,7 +53,7 @@ class IsHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueEvaluatesToFalse($invalid)
     {
-        $this->assertFalse($this->isHttpUri->test($invalid));
+        assertFalse($this->isHttpUri->test($invalid));
     }
 
     /**
@@ -73,7 +73,7 @@ class IsHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function validHttpUrlWithDnsEntryEvaluatesToTrue($value)
     {
-        $this->assertTrue(
+        assertTrue(
                 $this->isHttpUri->test($value)
         );
     }
@@ -95,7 +95,7 @@ class IsHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function validHttpUrlWithoutDnsEntryEvaluatesToTrue($value)
     {
-        $this->assertTrue(
+        assertTrue(
                 $this->isHttpUri->test($value)
         );
     }

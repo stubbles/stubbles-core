@@ -40,11 +40,11 @@ class FileOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function constructWithString()
     {
-        $this->assertFalse(file_exists($this->fileUrl));
+        assertFalse(file_exists($this->fileUrl));
         $fileOutputStream = new FileOutputStream($this->fileUrl);
-        $this->assertTrue(file_exists($this->fileUrl));
+        assertTrue(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
-        $this->assertEquals('foo', file_get_contents($this->fileUrl));
+        assertEquals('foo', file_get_contents($this->fileUrl));
     }
 
     /**
@@ -52,12 +52,12 @@ class FileOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function constructWithStringDelayed()
     {
-        $this->assertFalse(file_exists($this->fileUrl));
+        assertFalse(file_exists($this->fileUrl));
         $fileOutputStream = new FileOutputStream($this->fileUrl, 'wb', true);
-        $this->assertFalse(file_exists($this->fileUrl));
+        assertFalse(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
-        $this->assertTrue(file_exists($this->fileUrl));
-        $this->assertEquals('foo', file_get_contents($this->fileUrl));
+        assertTrue(file_exists($this->fileUrl));
+        assertEquals('foo', file_get_contents($this->fileUrl));
     }
 
     /**
@@ -75,11 +75,11 @@ class FileOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function constructWithResource()
     {
-        $this->assertFalse(file_exists($this->fileUrl));
+        assertFalse(file_exists($this->fileUrl));
         $fileOutputStream = new FileOutputStream(fopen($this->fileUrl, 'wb'));
-        $this->assertTrue(file_exists($this->fileUrl));
+        assertTrue(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
-        $this->assertEquals('foo', file_get_contents($this->fileUrl));
+        assertEquals('foo', file_get_contents($this->fileUrl));
     }
 
     /**

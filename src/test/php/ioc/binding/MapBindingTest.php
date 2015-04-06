@@ -47,7 +47,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function getKeyReturnsUniqueListKey()
     {
-        $this->assertEquals(
+        assertEquals(
                 MapBinding::TYPE . '#foo',
                 $this->mapBinding->getKey()
         );
@@ -58,7 +58,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsEmptyListIfNothingAdded()
     {
-        $this->assertEquals(
+        assertEquals(
             [],
             $this->mapBinding->getInstance($this->mockInjector, 'int')
         );
@@ -69,7 +69,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsTypedEmptyListIfNothingAdded()
     {
-        $this->assertEquals(
+        assertEquals(
             [],
             $this->mapBinding->getInstance(
                     $this->mockInjector,
@@ -83,7 +83,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function valueIsAddedToList()
     {
-        $this->assertEquals(
+        assertEquals(
             ['x' => 303],
             $this->mapBinding->withEntry('x', 303)
                     ->getInstance($this->mockInjector, 'int')
@@ -96,7 +96,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
     public function valueIsAddedToTypedList()
     {
         $value = new \stdClass();
-        $this->assertEquals(
+        assertEquals(
             ['x' => $value],
             $this->mapBinding->withEntry('x', $value)
                     ->getInstance(
@@ -115,7 +115,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
         $this->mockInjector->method('getInstance')
                 ->with(equalTo('\stdClass'))
                 ->will(returnValue($value));
-        $this->assertEquals(
+        assertEquals(
             ['x' => $value],
             $this->mapBinding->withEntry('x', '\stdClass')
                     ->getInstance(
@@ -169,7 +169,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function valueFromProviderIsAddedToList()
     {
-        $this->assertEquals(
+        assertEquals(
                 ['x' => 303],
                 $this->mapBinding->withEntryFromProvider(
                         'x',
@@ -184,7 +184,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
     public function valueFromProviderIsAddedToTypedList()
     {
         $value = new \stdClass();
-        $this->assertEquals(
+        assertEquals(
                 ['x' => $value],
                 $this->mapBinding->withEntryFromProvider(
                         'x',
@@ -234,7 +234,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
         $mockProvider      = $this->createInjectionProvider(303);
         $mockProviderClass = $this->getMockClass('stubbles\ioc\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
-        $this->assertEquals(
+        assertEquals(
                 ['x' => 303],
                 $this->mapBinding->withEntryFromProvider('x', $mockProviderClass)
                         ->getInstance($this->mockInjector, 'int')
@@ -250,7 +250,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
         $mockProvider      = $this->createInjectionProvider($value);
         $mockProviderClass = $this->getMockClass('stubbles\ioc\InjectionProvider');
         $this->prepareInjector($mockProvider, $mockProviderClass);
-        $this->assertEquals(
+        assertEquals(
                 ['x' => $value],
                 $this->mapBinding->withEntryFromProvider('x', $mockProviderClass)
                         ->getInstance(
@@ -339,7 +339,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function valueFromClosureIsAddedToList()
     {
-        $this->assertEquals(
+        assertEquals(
                 ['x' => 303],
                 $this->mapBinding->withEntryFromClosure('x', function() { return 303; })
                         ->getInstance($this->mockInjector, 'int')
@@ -354,7 +354,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
     public function valueFromClosureIsAddedToTypedList()
     {
         $value = new \stdClass();
-        $this->assertEquals(
+        assertEquals(
                 ['x' => $value],
                 $this->mapBinding->withEntryFromClosure(
                         'x',

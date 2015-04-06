@@ -105,7 +105,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithoutValues()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation('Foo'),
                 $this->parseMyTestClassAnnotation('Foo')
         );
@@ -116,7 +116,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithoutValuesButParentheses()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation('FooWithBrackets'),
                 $this->parseMyTestClassAnnotation('FooWithBrackets')
         );
@@ -127,7 +127,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesCastedAnnotation()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation('TomTom', [], 'Bar'),
                 $this->parseMyTestClassAnnotation('Bar')
         );
@@ -138,7 +138,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithSingleValue()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation('MyAnnotation', ['foo' => 'bar']),
                 $this->parseMyTestClassAnnotation('MyAnnotation')
         );
@@ -149,7 +149,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithValues()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'TwoParams',
                         ['foo' => 'bar', 'test' => 42]
@@ -163,7 +163,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithValueContainingSignalCharacters()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'InvalidChars',
                         ['foo' => 'ba@r=,']
@@ -177,7 +177,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithConstantAsValue()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'Constant',
                         ['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT']
@@ -191,7 +191,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithEnumAsValue()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'Enum',
                         ['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::$FOO']
@@ -205,7 +205,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithStringContainingEscapedCharacters()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'WithEscaped',
                         ['foo' => "This string contains ' and \, which is possible using escaping..."]
@@ -219,7 +219,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationSpanningMultipleLine()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'Multiline',
                         ['one' => 1, 'two' => 2]
@@ -233,7 +233,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesAnnotationWithClassAsValue()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'Class',
                         ['__value' => 'stubbles\lang\\reflect\annotation\parser\MyTestClass.class']
@@ -248,7 +248,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     public function tabsAreNoProblemForParsing()
     {
         $comment = "/**\n\t * This is a test class that has many annotations.\n\t *\n\t * @Foo\n\t */";
-        $this->assertEquals(
+        assertEquals(
                 [new Annotation('Foo', 'tabs')],
                 $this->annotationStateParser->parse($comment, 'tabs')['tabs']->all()
         );
@@ -281,7 +281,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesArgumentAnnotationFromMethodDocComment()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedParameterAnnotation('ForArgument1'),
                 $this->parseMyTestClass2Annotation('ForArgument1')
         );
@@ -292,7 +292,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesArgumentAnnotationWithValuesFromMethodDocComment()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedParameterAnnotation(
                         'ForArgument2',
                         ['key' => 'value']
@@ -306,7 +306,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesCastedArgumentAnnotationFromMethodDocComment()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedParameterAnnotation('Casted', [], 'MoreArgument1'),
                 $this->parseMyTestClass2Annotation('MoreArgument1')
         );
@@ -317,7 +317,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesCastedArgumentAnnotationWithValuesFromMethodDocComment()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedParameterAnnotation(
                         'Casted',
                         ['key' => 'value'],
@@ -332,7 +332,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesCastedArgumentAnnotationDifferentOrderFromMethodDocComment()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedParameterAnnotation('CastedAround', [], 'MoreArgument3'),
                 $this->parseMyTestClass2Annotation('MoreArgument3')
         );
@@ -343,7 +343,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesCastedArgumentAnnotationDifferentOrderWithValuesFromMethodDocComment()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->createExpectedParameterAnnotation(
                         'CastedAround',
                         ['key' => 'value'],

@@ -50,7 +50,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readCallsDecoratedStream()
     {
-        $this->assertEquals("foo\n", $this->abstractDecoratedInputStream->read());
+        assertEquals("foo\n", $this->abstractDecoratedInputStream->read());
     }
 
     /**
@@ -58,7 +58,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineCallsDecoratedStream()
     {
-        $this->assertEquals('foo', $this->abstractDecoratedInputStream->readLine());
+        assertEquals('foo', $this->abstractDecoratedInputStream->readLine());
     }
 
     /**
@@ -66,7 +66,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bytesLeftCallsDecoratedStream()
     {
-        $this->assertEquals(4, $this->abstractDecoratedInputStream->bytesLeft());
+        assertEquals(4, $this->abstractDecoratedInputStream->bytesLeft());
     }
 
     /**
@@ -74,7 +74,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function eofCallsDecoratedStream()
     {
-        $this->assertFalse($this->abstractDecoratedInputStream->eof());
+        assertFalse($this->abstractDecoratedInputStream->eof());
     }
 
     /**

@@ -18,18 +18,29 @@ class InjectorOtherTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function hasBindingWhenBoundToOtherScope()
+    {
+        $binder = new Binder();
+        $binder->bind('\stdClass')
+                ->to('\stdClass')
+                ->in($this->getMock('stubbles\ioc\binding\BindingScope'));
+        assertTrue($binder->getInjector()->hasBinding('\stdClass'));
+    }
+
+    /**
+     * @test
+     */
     public function otherScopeIsUsedToCreateInstance()
     {
         $binder = new Binder();
-        $mockBindingScope = $this->getMock('stubbles\ioc\binding\BindingScope');
+        $bindingScope = $this->getMock('stubbles\ioc\binding\BindingScope');
         $binder->bind('\stdClass')
                 ->to('\stdClass')
-                ->in($mockBindingScope);
+                ->in($bindingScope);
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('\stdClass'));
         $instance = new \stdClass();
-        $mockBindingScope->method('getInstance')->will(returnValue($instance));
-        $this->assertSame($instance, $injector->getInstance('\stdClass'));
+        $bindingScope->method('getInstance')->will(returnValue($instance));
+        assertSame($instance, $injector->getInstance('\stdClass'));
     }
 }

@@ -58,11 +58,11 @@ class AnnotatedTest extends \PHPUnit_Framework_TestCase
 
         $methodAnnotations = new Annotations('SomethingAnnotated::foo()');
         $methodAnnotations->add(new Annotation('Yo', 'SomethingAnnotated::foo()'));
-        $this->assertEquals(
+        assertEquals(
                 $methodAnnotations,
                 AnnotationCache::get('SomethingAnnotated::foo()')
         );
-        $this->assertEquals(
+        assertEquals(
                 new Annotations('SomethingAnnotated::foo()#param'),
                 AnnotationCache::get('SomethingAnnotated::foo()#param')
         );

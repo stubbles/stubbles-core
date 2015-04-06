@@ -44,7 +44,7 @@ class ContainsAnyOfTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrue(array $contained, $value)
     {
         $contains = new ContainsAnyOf($contained);
-        $this->assertTrue($contains($value));
+        assertTrue($contains($value));
     }
 
     /**
@@ -76,6 +76,6 @@ class ContainsAnyOfTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalse(array $contained, $value)
     {
         $contains = new ContainsAnyOf($contained);
-        $this->assertFalse($contains($value));
+        assertFalse($contains($value));
     }
 }

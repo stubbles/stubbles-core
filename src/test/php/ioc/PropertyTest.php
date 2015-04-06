@@ -61,8 +61,8 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockMode->method('name')->will(returnValue('PROD'));
         $propertyReceiver = $this->injector->getInstance('stubbles\test\ioc\PropertyReceiver');
-        $this->assertEquals('baz', $propertyReceiver->foo);
-        $this->assertEquals('someValue', $propertyReceiver->bar);
+        assertEquals('baz', $propertyReceiver->foo);
+        assertEquals('someValue', $propertyReceiver->bar);
     }
 
     /**
@@ -72,8 +72,8 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockMode->method('name')->will(returnValue('DEV'));
         $propertyReceiver = $this->injector->getInstance('stubbles\test\ioc\PropertyReceiver');
-        $this->assertEquals('default', $propertyReceiver->foo);
-        $this->assertEquals('someValue', $propertyReceiver->bar);
+        assertEquals('default', $propertyReceiver->foo);
+        assertEquals('someValue', $propertyReceiver->bar);
     }
 
     /**
@@ -93,7 +93,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function propertyInstanceIsBound()
     {
-        $this->assertSame(
+        assertSame(
                 $this->properties,
                 $this->injector->getInstance('stubbles\lang\Properties', 'config.ini')
         );

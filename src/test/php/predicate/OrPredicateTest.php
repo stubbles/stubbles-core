@@ -39,7 +39,7 @@ class OrPredicateTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsTrueWhenOnePredicateReturnsTrue()
     {
-        $this->assertTrue($this->orPredicate->test('foo'));
+        assertTrue($this->orPredicate->test('foo'));
     }
 
     /**
@@ -47,6 +47,6 @@ class OrPredicateTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsFalseWhenBothPredicatesReturnsFalse()
     {
-        $this->assertFalse($this->orPredicate->test('baz'));
+        assertFalse($this->orPredicate->test('baz'));
     }
 }

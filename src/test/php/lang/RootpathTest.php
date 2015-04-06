@@ -23,7 +23,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function constructWithoutArgumentCalculatesRootpathAutomatically()
     {
-        $this->assertEquals(
+        assertEquals(
                 realpath(__DIR__ . '/../../../../'),
                 (string) new Rootpath()
         );
@@ -43,7 +43,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function constructWithExistingPath()
     {
-        $this->assertEquals(
+        assertEquals(
                 __DIR__,
                 (string) new Rootpath(__DIR__)
         );
@@ -54,7 +54,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function constructWithExistingPathTurnsDotsIntoRealpath()
     {
-        $this->assertEquals(
+        assertEquals(
                 dirname(__DIR__),
                 (string) new Rootpath(__DIR__ . '/..')
         );
@@ -66,7 +66,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
     public function constructWithVfsStreamUriDoesNotApplyRealpath()
     {
         $root = vfsStream::setup()->url();
-        $this->assertEquals(
+        assertEquals(
                 $root,
                 (string) new Rootpath($root)
         );
@@ -78,7 +78,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
     public function castFromInstanceReturnsInstance()
     {
         $rootpath = new Rootpath();
-        $this->assertSame(
+        assertSame(
                 $rootpath,
                 Rootpath::castFrom($rootpath)
         );
@@ -89,7 +89,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function castFromWithoutArgumentCalculatesRootpathAutomatically()
     {
-        $this->assertEquals(
+        assertEquals(
                 realpath(__DIR__ . '/../../../../'),
                 (string) Rootpath::castFrom(null)
         );
@@ -109,7 +109,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function castFromWithExistingPath()
     {
-        $this->assertEquals(
+        assertEquals(
                 __DIR__,
                 (string) Rootpath::castFrom(__DIR__)
         );
@@ -120,7 +120,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function toCreatesPath()
     {
-        $this->assertEquals(
+        assertEquals(
                 __FILE__,
                 (string) Rootpath::castFrom(null)->to('src', 'test', 'php', 'lang', 'RootpathTest.php')
         );
@@ -131,7 +131,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotContainNonExistingPath()
     {
-        $this->assertFalse(
+        assertFalse(
                 Rootpath::castFrom(null)->contains(__DIR__ . '/doesNotExist')
         );
     }
@@ -141,7 +141,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotContainPathOutsideRoot()
     {
-        $this->assertFalse(
+        assertFalse(
                 Rootpath::castFrom(__DIR__)->contains(dirname(__DIR__))
         );
     }
@@ -151,7 +151,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function containsPathInsideRoot()
     {
-        $this->assertTrue(
+        assertTrue(
                 Rootpath::castFrom(__DIR__)->contains(__FILE__)
         );
     }
@@ -161,7 +161,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function listOfSourcePathesIsEmptyIfNoAutoloaderPresent()
     {
-        $this->assertEquals(
+        assertEquals(
                 [],
                 Rootpath::castFrom(__DIR__)->sourcePathes()
         );
@@ -173,7 +173,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
     public function listOfSourcePathesWorksWithPsr0Only()
     {
         $rootpath = Rootpath::castFrom(Rootpath::castFrom(null)->to('src', 'test', 'resources', 'rootpath', 'psr0'));
-        $this->assertEquals(
+        assertEquals(
                 [$rootpath->to('vendor/mikey179/vfsStream/src/main/php'),
                  $rootpath->to('vendor/symfony/yaml')
                 ],
@@ -187,7 +187,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
     public function listOfSourcePathesWorksWithPsr4Only()
     {
         $rootpath = Rootpath::castFrom(Rootpath::castFrom(null)->to('src', 'test', 'resources', 'rootpath', 'psr4'));
-        $this->assertEquals(
+        assertEquals(
                 [$rootpath->to('vendor/stubbles/core-dev/src/main/php'),
                  $rootpath->to('src/main/php')
                 ],
@@ -201,7 +201,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
     public function listOfSourcePathesContainsPsr0AndPsr4()
     {
         $rootpath = Rootpath::castFrom(Rootpath::castFrom(null)->to('src', 'test', 'resources', 'rootpath', 'all'));
-        $this->assertEquals(
+        assertEquals(
                 [$rootpath->to('vendor/mikey179/vfsStream/src/main/php'),
                  $rootpath->to('vendor/symfony/yaml'),
                  $rootpath->to('vendor/stubbles/core-dev/src/main/php'),

@@ -39,7 +39,7 @@ class AndPredicateTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsTrueWhenBothPredicatesReturnsTrue()
     {
-        $this->assertTrue($this->andPredicate->test('foo'));
+        assertTrue($this->andPredicate->test('foo'));
     }
 
     /**
@@ -47,6 +47,6 @@ class AndPredicateTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsFalseWhenOnePredicateReturnsFalse()
     {
-        $this->assertFalse($this->andPredicate->test('baz'));
+        assertFalse($this->andPredicate->test('baz'));
     }
 }

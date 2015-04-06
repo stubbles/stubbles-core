@@ -53,7 +53,7 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readReturnsEmptyStringIfChunkIsFiltered()
     {
-        $this->assertEquals('', $this->filteredInputStream->read());
+        assertEquals('', $this->filteredInputStream->read());
     }
 
     /**
@@ -61,7 +61,7 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineReturnsUnfilteredLinesOnly()
     {
-        $this->assertEquals('bar', $this->filteredInputStream->readLine());
+        assertEquals('bar', $this->filteredInputStream->readLine());
     }
 
     /**

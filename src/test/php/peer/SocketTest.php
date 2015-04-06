@@ -47,7 +47,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     public function isNotSecureByDefault()
     {
         $socket = createSocket('example.com');
-        $this->assertFalse($socket->usesSsl());
+        assertFalse($socket->usesSsl());
     }
 
     /**
@@ -65,7 +65,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     public function isSecureWhenCorrectPrefixGiven($securePrefix)
     {
         $socket = createSocket('example.com', 443, $securePrefix);
-        $this->assertTrue($socket->usesSsl());
+        assertTrue($socket->usesSsl());
     }
 
     /**
@@ -75,7 +75,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     public function connectReturnsStream()
     {
         FsockopenResult::$return = fopen(__FILE__, 'rb');
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\peer\Stream',
                 createSocket('localhost', 80)->connect()
         );

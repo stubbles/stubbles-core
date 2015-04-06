@@ -37,8 +37,8 @@ class MemoryStreamFactoryTest extends \PHPUnit_Framework_TestCase
     public function createInputStream()
     {
         $memoryInputStream = $this->memoryStreamFactory->createInputStream('buffer');
-        $this->assertInstanceOf('stubbles\streams\memory\MemoryInputStream', $memoryInputStream);
-        $this->assertEquals('buffer', $memoryInputStream->readLine());
+        assertInstanceOf('stubbles\streams\memory\MemoryInputStream', $memoryInputStream);
+        assertEquals('buffer', $memoryInputStream->readLine());
     }
 
     /**
@@ -46,7 +46,7 @@ class MemoryStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStream()
     {
-        $this->assertInstanceOf('stubbles\streams\memory\MemoryOutputStream',
+        assertInstanceOf('stubbles\streams\memory\MemoryOutputStream',
                                 $this->memoryStreamFactory->createOutputStream('buffer')
         );
     }

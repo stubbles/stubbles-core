@@ -39,7 +39,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     public function addBindingReturnsAddedBinding()
     {
         $mockBinding = $this->getMock('stubbles\ioc\binding\Binding');
-        $this->assertSame(
+        assertSame(
                 $mockBinding,
                 $this->binder->addBinding($mockBinding)
         );
@@ -51,7 +51,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindCreatesClassBinding()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\ioc\binding\ClassBinding',
                 $this->binder->bind('example\MyInterface')
         );
@@ -63,7 +63,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindConstantCreatesBinding()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\ioc\binding\ConstantBinding',
                 $this->binder->bindConstant('foo')
         );
@@ -75,7 +75,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindListCreatesBinding()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\ioc\binding\ListBinding',
                 $this->binder->bindList('foo')
         );
@@ -87,7 +87,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindMapCreatesBinding()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\ioc\binding\MapBinding',
                 $this->binder->bindMap('foo')
         );
@@ -101,7 +101,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $injector = $binder->getInjector();
-        $this->assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
+        assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
     }
 
     /**
@@ -112,7 +112,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     {
         $mockMode   = $this->getMock('stubbles\lang\Mode');
         $properties = new Properties([]);
-        $this->assertSame(
+        assertSame(
                 $properties,
                 $this->binder->bindProperties($properties, $mockMode)
         );
@@ -129,7 +129,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
                          ->at(vfsStream::setup());
         $mockMode   = $this->getMock('stubbles\lang\Mode');
         $properties = new Properties(['config' => ['foo' => 'bar']]);
-        $this->assertEquals(
+        assertEquals(
                 $properties,
                 $this->binder->bindPropertiesFromFile($file->url(), $mockMode)
         );

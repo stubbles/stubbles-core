@@ -39,7 +39,7 @@ class BsdSocketConnectionTest extends \PHPUnit_Framework_TestCase
         $bsdSocket->method('doRead')
                 ->with(equalTo(4096), equalTo(PHP_NORMAL_READ))
                 ->will(returnValue("foo\n"));
-        $this->assertEquals("foo\n", $bsdSocket->read());
+        assertEquals("foo\n", $bsdSocket->read());
     }
 
     /**
@@ -51,7 +51,7 @@ class BsdSocketConnectionTest extends \PHPUnit_Framework_TestCase
         $bsdSocket->method('doRead')
                 ->with(equalTo(4096), equalTo(PHP_NORMAL_READ))
                 ->will(returnValue("foo\n"));
-        $this->assertEquals('foo', $bsdSocket->readLine());
+        assertEquals('foo', $bsdSocket->readLine());
     }
 
     /**
@@ -63,6 +63,6 @@ class BsdSocketConnectionTest extends \PHPUnit_Framework_TestCase
         $bsdSocket->method('doRead')
                 ->with(equalTo(1024), equalTo(PHP_BINARY_READ))
                 ->will(returnValue("foo\n"));
-        $this->assertEquals("foo\n", $bsdSocket->readBinary());
+        assertEquals("foo\n", $bsdSocket->readBinary());
     }
 }

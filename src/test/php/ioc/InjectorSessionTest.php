@@ -40,7 +40,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function canBindToSessionScopeWithoutSession()
     {
-        $this->assertTrue(
+        assertTrue(
                 $this->injector->hasBinding('stubbles\test\ioc\Person2')
         );
     }
@@ -63,7 +63,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     {
         $mockSession = $this->getMock('stubbles\ioc\binding\Session');
         $mockSession->method('hasValue')->will(returnValue(false));
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\test\ioc\Mikey',
                 $this->injector->setSession($mockSession)
                         ->getInstance('stubbles\test\ioc\Person2')
@@ -77,7 +77,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     public function setSessionAddsBindingForSession()
     {
         $mockSession = $this->getMock('stubbles\ioc\binding\Session');
-        $this->assertTrue(
+        assertTrue(
                 $this->injector->setSession(
                         $mockSession,
                         'stubbles\ioc\binding\Session'
@@ -92,7 +92,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     public function setSessionAddsBindingForSessionAsSingleton()
     {
         $mockSession = $this->getMock('stubbles\ioc\binding\Session');
-        $this->assertSame(
+        assertSame(
                 $mockSession,
                 $this->injector->setSession(
                         $mockSession,

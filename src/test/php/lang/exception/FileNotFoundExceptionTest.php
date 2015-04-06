@@ -23,8 +23,9 @@ class FileNotFoundExceptionTest extends \PHPUnit_Framework_TestCase
     public function fileNameIsUsedForErrorMessage()
     {
         $fnfe = new FileNotFoundException('example.txt');
-        $this->assertEquals('The file example.txt could not be found or is not readable.',
-                            $fnfe->getMessage()
+        assertEquals(
+                'The file example.txt could not be found or is not readable.',
+                $fnfe->getMessage()
         );
     }
 }

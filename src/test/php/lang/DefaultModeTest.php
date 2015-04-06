@@ -23,7 +23,7 @@ class DefaultModeTest extends \PHPUnit_Framework_TestCase
     public function registerWithoutErrorHandlerReturnsFalse()
     {
         $mode = new DefaultMode('FOO', Mode::CACHE_ENABLED);
-        $this->assertFalse($mode->registerErrorHandler('/tmp'));
+        assertFalse($mode->registerErrorHandler('/tmp'));
     }
 
     /**
@@ -32,7 +32,7 @@ class DefaultModeTest extends \PHPUnit_Framework_TestCase
     public function registerWithoutExceptionHandlerReturnsFalse()
     {
         $mode = new DefaultMode('FOO', Mode::CACHE_DISABLED);
-        $this->assertFalse($mode->registerExceptionHandler('/tmp'));
+        assertFalse($mode->registerExceptionHandler('/tmp'));
     }
 
     /**
@@ -40,7 +40,7 @@ class DefaultModeTest extends \PHPUnit_Framework_TestCase
      */
     public function cacheIsEnabledInProdMode()
     {
-        $this->assertTrue(DefaultMode::prod()->isCacheEnabled());
+        assertTrue(DefaultMode::prod()->isCacheEnabled());
     }
 
     /**
@@ -48,7 +48,7 @@ class DefaultModeTest extends \PHPUnit_Framework_TestCase
      */
     public function cacheIsEnabledInTestMode()
     {
-        $this->assertTrue(DefaultMode::test()->isCacheEnabled());
+        assertTrue(DefaultMode::test()->isCacheEnabled());
     }
 
     /**
@@ -56,7 +56,7 @@ class DefaultModeTest extends \PHPUnit_Framework_TestCase
      */
     public function cacheIsDisabledInStageMode()
     {
-        $this->assertFalse(DefaultMode::stage()->isCacheEnabled());
+        assertFalse(DefaultMode::stage()->isCacheEnabled());
     }
 
     /**
@@ -64,7 +64,7 @@ class DefaultModeTest extends \PHPUnit_Framework_TestCase
      */
     public function cacheIsDisabledInDevMode()
     {
-        $this->assertFalse(DefaultMode::dev()->isCacheEnabled());
+        assertFalse(DefaultMode::dev()->isCacheEnabled());
     }
 
     /**
@@ -72,7 +72,7 @@ class DefaultModeTest extends \PHPUnit_Framework_TestCase
      */
     public function stageModeHasNoErrorHandlerByDefault()
     {
-        $this->assertFalse(DefaultMode::stage()->registerErrorHandler('/tmp'));
+        assertFalse(DefaultMode::stage()->registerErrorHandler('/tmp'));
     }
 
     /**
@@ -80,6 +80,6 @@ class DefaultModeTest extends \PHPUnit_Framework_TestCase
      */
     public function devModeHasNoErrorHandlerByDefault()
     {
-        $this->assertFalse(DefaultMode::dev()->registerErrorHandler('/tmp'));
+        assertFalse(DefaultMode::dev()->registerErrorHandler('/tmp'));
     }
 }

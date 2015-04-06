@@ -38,7 +38,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function castFromWithPredicateReturnsInstance()
     {
         $predicate = new FooPredicate();
-        $this->assertSame($predicate, Predicate::castFrom($predicate));
+        assertSame($predicate, Predicate::castFrom($predicate));
     }
 
     /**
@@ -46,7 +46,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
      */
     public function castFromWithCallableReturnsCallablePredicate()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\predicate\CallablePredicate',
                 Predicate::castFrom(function($value) { return 'foo' === $value; })
         );
@@ -67,7 +67,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function predicateIsCallable()
     {
         $predicate = new FooPredicate();
-        $this->assertTrue($predicate('foo'));
+        assertTrue($predicate('foo'));
     }
 
     /**
@@ -76,7 +76,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function asWellAsReturnsAndPredicate()
     {
         $predicate = new FooPredicate();
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\predicate\AndPredicate',
                 $predicate->asWellAs(function($value) { return 'foo' === $value; })
         );
@@ -88,7 +88,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function orElseReturnsOrPredicate()
     {
         $predicate = new FooPredicate();
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\predicate\OrPredicate',
                 $predicate->orElse(function($value) { return 'foo' === $value; })
         );
@@ -100,7 +100,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function negateReturnsNegatePredicate()
     {
         $predicate = new FooPredicate();
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\predicate\NegatePredicate',
                 $predicate->negate()
         );

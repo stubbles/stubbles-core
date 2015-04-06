@@ -30,7 +30,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeDefaultsToSOCK_STREAM()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_STREAM, $bsdSocket->type());
+        assertEquals(SOCK_STREAM, $bsdSocket->type());
     }
 
     /**
@@ -39,7 +39,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeCanBeSetToSOCK_DGRAM()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_DGRAM, $bsdSocket->setType(SOCK_DGRAM)->type());
+        assertEquals(SOCK_DGRAM, $bsdSocket->setType(SOCK_DGRAM)->type());
     }
 
     /**
@@ -48,7 +48,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeCanBeSetToSOCK_RAW()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_RAW, $bsdSocket->setType(SOCK_RAW)->type());
+        assertEquals(SOCK_RAW, $bsdSocket->setType(SOCK_RAW)->type());
     }
 
     /**
@@ -57,7 +57,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeCanBeSetToSOCK_SEQPACKET()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(
+        assertEquals(
                 SOCK_SEQPACKET,
                 $bsdSocket->setType(SOCK_SEQPACKET)->type()
         );
@@ -69,7 +69,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function typeCanBeSetToSOCK_RDM()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(SOCK_RDM, $bsdSocket->setType(SOCK_RDM)->type());
+        assertEquals(SOCK_RDM, $bsdSocket->setType(SOCK_RDM)->type());
     }
 
     /**
@@ -90,8 +90,8 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function protocolDefaultsToTcp()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
-        $this->assertTrue($bsdSocket->isTcp());
-        $this->assertFalse($bsdSocket->isUdp());
+        assertTrue($bsdSocket->isTcp());
+        assertFalse($bsdSocket->isUdp());
     }
 
     /**
@@ -100,8 +100,8 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function protocolCanBeSetToTcp()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
-        $this->assertTrue($bsdSocket->useTcp()->isTcp());
-        $this->assertFalse($bsdSocket->isUdp());
+        assertTrue($bsdSocket->useTcp()->isTcp());
+        assertFalse($bsdSocket->isUdp());
     }
 
     /**
@@ -110,8 +110,8 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function protocolCanBeSetToUdp()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_INET, 'example.com', 80);
-        $this->assertTrue($bsdSocket->useUdp()->isUdp());
-        $this->assertFalse($bsdSocket->isTcp());
+        assertTrue($bsdSocket->useUdp()->isUdp());
+        assertFalse($bsdSocket->isTcp());
     }
 
     /**
@@ -120,7 +120,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function returnsDefaultForOptionNotSet()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(
+        assertEquals(
                 'default',
                 $bsdSocket->option('bar', 'baz', 'default')
         );
@@ -132,7 +132,7 @@ class BsdSocketTest extends \PHPUnit_Framework_TestCase
     public function returnsValueFromOptionAlreadySet()
     {
         $bsdSocket = createBsdSocket(SocketDomain::$AF_UNIX, '/tmp/mysocket');
-        $this->assertEquals(
+        assertEquals(
                 'foo',
                 $bsdSocket->setOption('bar', 'baz', 'foo')
                         ->option('bar', 'baz', 'default')

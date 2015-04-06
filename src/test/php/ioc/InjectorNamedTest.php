@@ -28,16 +28,16 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
+        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
+        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
 
         $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleConstructorParams');
 
-        $this->assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParams', $group);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\TeamMember', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        $this->assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
+        assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParams', $group);
+        assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
+        assertInstanceOf('stubbles\test\ioc\TeamMember', $group->mikey);
+        assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
+        assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
     }
 
     /**
@@ -53,15 +53,15 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
+        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
+        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
 
         $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleConstructorParamsWithConstant');
 
-        $this->assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParamsWithConstant', $group);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        $this->assertInstanceOf('stubbles\test\ioc\TeamMember', $group->schst);
-        $this->assertEquals('role:boss', $group->role);
+        assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParamsWithConstant', $group);
+        assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
+        assertInstanceOf('stubbles\test\ioc\TeamMember', $group->schst);
+        assertEquals('role:boss', $group->role);
     }
 
     /**
@@ -77,15 +77,15 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
 
         $injector = $binder->getInjector();
 
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        $this->assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
+        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
+        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
 
         $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleConstructorParamsGroupedName');
 
-        $this->assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParamsGroupedName', $group);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\Boss', $group->mikey);
-        $this->assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        $this->assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
+        assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParamsGroupedName', $group);
+        assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
+        assertInstanceOf('stubbles\test\ioc\Boss', $group->mikey);
+        assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
+        assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
     }
 }

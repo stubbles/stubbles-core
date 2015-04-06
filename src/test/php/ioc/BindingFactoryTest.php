@@ -43,10 +43,10 @@ class BindingFactoryTest extends \PHPUnit_Framework_TestCase
         $injector = BindingFactory::createInjector(new AppTestBindingModuleOne(),
                                                    'stubbles\test\ioc\AppTestBindingModuleTwo'
                     );
-        $this->assertTrue($injector->hasBinding('foo'));
-        $this->assertTrue($injector->hasBinding('bar'));
-        $this->assertTrue($injector->hasBinding('stubbles\ioc\Injector'));
-        $this->assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
+        assertTrue($injector->hasBinding('foo'));
+        assertTrue($injector->hasBinding('bar'));
+        assertTrue($injector->hasBinding('stubbles\ioc\Injector'));
+        assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
     }
 
     /**
@@ -59,9 +59,9 @@ class BindingFactoryTest extends \PHPUnit_Framework_TestCase
                                                     'stubbles\test\ioc\AppTestBindingModuleTwo'
                                                    ]
                     );
-        $this->assertTrue($injector->hasBinding('foo'));
-        $this->assertTrue($injector->hasBinding('bar'));
-        $this->assertTrue($injector->hasBinding('stubbles\ioc\Injector'));
-        $this->assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
+        assertTrue($injector->hasBinding('foo'));
+        assertTrue($injector->hasBinding('bar'));
+        assertTrue($injector->hasBinding('stubbles\ioc\Injector'));
+        assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
     }
 }

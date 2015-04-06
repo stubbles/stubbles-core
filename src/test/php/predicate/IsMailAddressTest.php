@@ -48,7 +48,7 @@ class IsMailAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function validValueEvaluatesToTrue($value)
     {
-        $this->assertTrue($this->isMailAddress->test($value));
+        assertTrue($this->isMailAddress->test($value));
     }
 
     /**
@@ -79,7 +79,7 @@ class IsMailAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueEvaluatesToFalse($value)
     {
-        $this->assertFalse($this->isMailAddress->test($value));
+        assertFalse($this->isMailAddress->test($value));
     }
 
     /**
@@ -87,7 +87,7 @@ class IsMailAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function validatesIndependendOfLowerOrUpperCase()
     {
-        $this->assertTrue($this->isMailAddress->test('Example@example.ORG'));
-        $this->assertTrue($this->isMailAddress->test('Example.Foo.Bar@EXAMPLE.org'));
+        assertTrue($this->isMailAddress->test('Example@example.ORG'));
+        assertTrue($this->isMailAddress->test('Example.Foo.Bar@EXAMPLE.org'));
     }
 }

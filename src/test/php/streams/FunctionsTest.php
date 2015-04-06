@@ -35,7 +35,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function linesOfReturnsSequence()
     {
-        $this->assertInstanceOf(
+        assertInstanceOf(
                 'stubbles\lang\Sequence',
                 linesOf($this->file->url())
         );

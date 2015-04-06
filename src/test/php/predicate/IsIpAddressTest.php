@@ -37,7 +37,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function stringIsNoIpAndEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('foo'));
+        assertFalse($this->isIpAddress->test('foo'));
     }
 
     /**
@@ -45,7 +45,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function nullIsNoIpAndEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test(null));
+        assertFalse($this->isIpAddress->test(null));
     }
 
     /**
@@ -53,7 +53,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function emptyStringIsNoIpAndEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test(''));
+        assertFalse($this->isIpAddress->test(''));
     }
 
     /**
@@ -61,8 +61,8 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function booleansAreNoIpAndResultInFalse()
     {
-        $this->assertFalse($this->isIpAddress->test(true));
-        $this->assertFalse($this->isIpAddress->test(false));
+        assertFalse($this->isIpAddress->test(true));
+        assertFalse($this->isIpAddress->test(false));
     }
 
     /**
@@ -70,8 +70,8 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function singleNumbersAreNoIpAndResultInFalse()
     {
-        $this->assertFalse($this->isIpAddress->test(4));
-        $this->assertFalse($this->isIpAddress->test(6));
+        assertFalse($this->isIpAddress->test(4));
+        assertFalse($this->isIpAddress->test(6));
     }
 
     /**
@@ -79,7 +79,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV4WithMissingPartEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('255.55.55'));
+        assertFalse($this->isIpAddress->test('255.55.55'));
     }
 
     /**
@@ -87,7 +87,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV4WithSuperflousPartEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('111.222.333.444.555'));
+        assertFalse($this->isIpAddress->test('111.222.333.444.555'));
     }
 
     /**
@@ -95,7 +95,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV4WithMissingNumberEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('1..3.4'));
+        assertFalse($this->isIpAddress->test('1..3.4'));
     }
 
     /**
@@ -103,7 +103,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function greatestIpV4EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('255.255.255.255'));
+        assertTrue($this->isIpAddress->test('255.255.255.255'));
     }
 
     /**
@@ -111,7 +111,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function lowestIpV4EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('0.0.0.0'));
+        assertTrue($this->isIpAddress->test('0.0.0.0'));
     }
 
     /**
@@ -119,7 +119,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function correctIpV4EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('1.2.3.4'));
+        assertTrue($this->isIpAddress->test('1.2.3.4'));
     }
 
     /**
@@ -127,7 +127,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV6WithMissingPartEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test(':1'));
+        assertFalse($this->isIpAddress->test(':1'));
     }
 
     /**
@@ -135,7 +135,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV6EvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('::ffffff:::::a'));
+        assertFalse($this->isIpAddress->test('::ffffff:::::a'));
     }
 
     /**
@@ -143,7 +143,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV6WithHexquadAtStartEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('XXXX::a574:382b:23c1:aa49:4592:4efe:9982'));
+        assertFalse($this->isIpAddress->test('XXXX::a574:382b:23c1:aa49:4592:4efe:9982'));
     }
 
     /**
@@ -151,7 +151,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV6WithHexquadAtEndEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('9982::a574:382b:23c1:aa49:4592:4efe:XXXX'));
+        assertFalse($this->isIpAddress->test('9982::a574:382b:23c1:aa49:4592:4efe:XXXX'));
     }
 
     /**
@@ -159,7 +159,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV6WithHexquadEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('a574::XXXX:382b:23c1:aa49:4592:4efe:9982'));
+        assertFalse($this->isIpAddress->test('a574::XXXX:382b:23c1:aa49:4592:4efe:9982'));
     }
 
     /**
@@ -167,7 +167,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIpV6WithHexDigitEvaluatesToFalse()
     {
-        $this->assertFalse($this->isIpAddress->test('a574::382X:382b:23c1:aa49:4592:4efe:9982'));
+        assertFalse($this->isIpAddress->test('a574::382X:382b:23c1:aa49:4592:4efe:9982'));
     }
 
     /**
@@ -175,7 +175,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function correctIpV6EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('febc:a574:382b:23c1:aa49:4592:4efe:9982'));
+        assertTrue($this->isIpAddress->test('febc:a574:382b:23c1:aa49:4592:4efe:9982'));
     }
 
     /**
@@ -183,7 +183,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function localhostIpV6EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('::1'));
+        assertTrue($this->isIpAddress->test('::1'));
     }
 
     /**
@@ -191,7 +191,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function shortenedIpV6EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('febc:a574:382b::4592:4efe:9982'));
+        assertTrue($this->isIpAddress->test('febc:a574:382b::4592:4efe:9982'));
     }
 
     /**
@@ -199,7 +199,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function evenMoreShortenedIpV6EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('febc::23c1:aa49:0:0:9982'));
+        assertTrue($this->isIpAddress->test('febc::23c1:aa49:0:0:9982'));
     }
 
     /**
@@ -207,7 +207,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function singleShortenedIpV6EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('febc:a574:2b:23c1:aa49:4592:4efe:9982'));
+        assertTrue($this->isIpAddress->test('febc:a574:2b:23c1:aa49:4592:4efe:9982'));
     }
 
     /**
@@ -215,7 +215,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function shortenedPrefixIpV6EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('::382b:23c1:aa49:4592:4efe:9982'));
+        assertTrue($this->isIpAddress->test('::382b:23c1:aa49:4592:4efe:9982'));
     }
 
     /**
@@ -223,7 +223,7 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function shortenedPostfixIpV6EvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test('febc:a574:382b:23c1:aa49::'));
+        assertTrue($this->isIpAddress->test('febc:a574:382b:23c1:aa49::'));
     }
 
     /**
@@ -231,6 +231,6 @@ class IsIpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function instanceOfIpAddressEvaluatesToTrue()
     {
-        $this->assertTrue($this->isIpAddress->test(new IpAddress('127.0.0.1')));
+        assertTrue($this->isIpAddress->test(new IpAddress('127.0.0.1')));
     }
 }

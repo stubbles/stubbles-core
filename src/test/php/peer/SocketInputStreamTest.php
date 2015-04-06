@@ -47,7 +47,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
         $this->mockSocket->method('readBinary')
                 ->with(equalTo(8192))
                 ->will(returnValue('foo'));
-        $this->assertEquals('foo', $this->socketInputStream->read());
+        assertEquals('foo', $this->socketInputStream->read());
     }
 
     /**
@@ -58,7 +58,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
         $this->mockSocket->method('readBinary')
                 ->with(equalTo(3))
                 ->will(returnValue('foo'));
-        $this->assertEquals('foo', $this->socketInputStream->read(3));
+        assertEquals('foo', $this->socketInputStream->read(3));
     }
 
     /**
@@ -69,7 +69,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
         $this->mockSocket->method('readLine')
                 ->with(equalTo(8192))
                 ->will(returnValue('foo'));
-        $this->assertEquals('foo', $this->socketInputStream->readLine());
+        assertEquals('foo', $this->socketInputStream->readLine());
     }
 
     /**
@@ -80,7 +80,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
         $this->mockSocket->method('readLine')
                 ->with(equalTo(3))
                 ->will(returnValue('foo'));
-        $this->assertEquals('foo', $this->socketInputStream->readLine(3));
+        assertEquals('foo', $this->socketInputStream->readLine(3));
     }
 
     /**
@@ -89,8 +89,8 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
     public function noBytesLeft()
     {
         $this->mockSocket->method('eof')->will(returnValue(true));
-        $this->assertEquals(-1, $this->socketInputStream->bytesLeft());
-        $this->assertTrue($this->socketInputStream->eof());
+        assertEquals(-1, $this->socketInputStream->bytesLeft());
+        assertTrue($this->socketInputStream->eof());
     }
 
     /**
@@ -99,8 +99,8 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
     public function bytesLeft()
     {
         $this->mockSocket->method('eof')->will(returnValue(false));
-        $this->assertEquals(1, $this->socketInputStream->bytesLeft());
-        $this->assertFalse($this->socketInputStream->eof());
+        assertEquals(1, $this->socketInputStream->bytesLeft());
+        assertFalse($this->socketInputStream->eof());
     }
 
     /**
@@ -132,6 +132,6 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
     public function eofOnClosedSocketIsAlwaysTrue()
     {
         $this->socketInputStream->close();
-        $this->assertTrue($this->socketInputStream->eof());
+        assertTrue($this->socketInputStream->eof());
     }
 }

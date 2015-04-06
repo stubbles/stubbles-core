@@ -42,7 +42,7 @@ class CollectorTest extends \PHPUnit_Framework_TestCase
      */
     public function toList()
     {
-        $this->assertEquals(
+        assertEquals(
                 ['Timm', 'Alex', 'Dude'],
                 Sequence::of($this->people)
                         ->map(function($e) { return $e->name(); })
@@ -56,7 +56,7 @@ class CollectorTest extends \PHPUnit_Framework_TestCase
      */
     public function toMapUsesGivenKeyAndValueSelector()
     {
-        $this->assertEquals(
+        assertEquals(
                 [1549 => 'Timm', 1552 => 'Alex', 6100 => 'Dude'],
                 Sequence::of($this->people)
                         ->collect()
@@ -72,7 +72,7 @@ class CollectorTest extends \PHPUnit_Framework_TestCase
      */
     public function toMapPassesKeyAndValueWhenNoSelectorProvided()
     {
-        $this->assertEquals(
+        assertEquals(
                 $this->people,
                 Sequence::of($this->people)->collect()->inMap()
         );

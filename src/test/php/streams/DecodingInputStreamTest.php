@@ -46,7 +46,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function knowsGivenCharset()
     {
-        $this->assertEquals(
+        assertEquals(
                 'iso-8859-1',
                 $this->decodingInputStream->getCharset()
         );
@@ -57,7 +57,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readReturnsDecodedDataFromDecoratedStream()
     {
-        $this->assertEquals("hällö\n", $this->decodingInputStream->read());
+        assertEquals("hällö\n", $this->decodingInputStream->read());
     }
 
     /**
@@ -65,7 +65,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineReturnsDecodedLineFromDecoratedStream()
     {
-        $this->assertEquals('hällö', $this->decodingInputStream->readLine());
+        assertEquals('hällö', $this->decodingInputStream->readLine());
     }
 
     /**
@@ -73,7 +73,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bytesLeftReturnsBytesLeftFromDecoratedStream()
     {
-        $this->assertEquals(6, $this->decodingInputStream->bytesLeft());
+        assertEquals(6, $this->decodingInputStream->bytesLeft());
     }
 
     /**
@@ -81,7 +81,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function eofReturnsEofFromDecoratedStream()
     {
-        $this->assertFalse($this->decodingInputStream->eof());
+        assertFalse($this->decodingInputStream->eof());
     }
 
     /**

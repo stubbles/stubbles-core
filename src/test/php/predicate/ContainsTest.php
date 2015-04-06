@@ -62,7 +62,7 @@ class ContainsTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrue($contained, $value)
     {
         $contains = new Contains($contained);
-        $this->assertTrue($contains($value));
+        assertTrue($contains($value));
     }
 
     /**
@@ -94,6 +94,6 @@ class ContainsTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalse($contained, $value)
     {
         $contains = new Contains($contained);
-        $this->assertFalse($contains($value));
+        assertFalse($contains($value));
     }
 }

@@ -24,7 +24,7 @@ class StandardOutputStreamTest extends \PHPUnit_Framework_TestCase
         $out = new StandardOutputStream();
         ob_start();
         $out->write('foo');
-        $this->assertEquals('foo', ob_get_contents());
+        assertEquals('foo', ob_get_contents());
         ob_end_clean();
     }
 }

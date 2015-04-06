@@ -51,7 +51,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     private function assertSequence($expected, Sequence $sequence, $message= '!=')
     {
-        $this->assertEquals($expected, $sequence->values(), $message);
+        assertEquals($expected, $sequence->values(), $message);
     }
 
     /**
@@ -169,7 +169,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function sequenceIsCountable($expectedLength, $elements)
     {
-        $this->assertEquals($expectedLength, count(Sequence::of($elements)));
+        assertEquals($expectedLength, count(Sequence::of($elements)));
     }
 
     /**
@@ -192,7 +192,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function sum($expectedResult, $elements)
     {
-        $this->assertEquals(
+        assertEquals(
                 $expectedResult,
                 Sequence::of($elements)->reduce()->toSum()
         );
@@ -218,7 +218,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function min($expectedResult, $elements)
     {
-        $this->assertEquals(
+        assertEquals(
                 $expectedResult,
                 Sequence::of($elements)->reduce()->toMin()
         );
@@ -244,7 +244,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function max($expectedResult, $elements)
     {
-        $this->assertEquals(
+        assertEquals(
                 $expectedResult,
                 Sequence::of($elements)->reduce()->toMax()
         );
@@ -255,7 +255,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceReturnsNullForEmptyInputWhenNoIdentityGiven()
     {
-        $this->assertNull(
+        assertNull(
                 Sequence::of([])
                         ->reduce(
                                 function($a, $b)
@@ -271,7 +271,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceReturnsIdentityForEmptyInput()
     {
-        $this->assertEquals(
+        assertEquals(
                 -1,
                 Sequence::of([])
                         ->reduce(
@@ -289,7 +289,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceUsedForSumming()
     {
-        $this->assertEquals(
+        assertEquals(
                 10,
                 Sequence::of([1, 2, 3, 4])
                         ->reduce(function($a, $b) { return $a + $b; })
@@ -301,7 +301,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceUsedForMaxWithNativeMaxFunction()
     {
-        $this->assertEquals(10, Sequence::of([7, 1, 10, 3])->reduce('max'));
+        assertEquals(10, Sequence::of([7, 1, 10, 3])->reduce('max'));
     }
 
     /**
@@ -309,7 +309,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceUsedForConcatenation()
     {
-        $this->assertEquals(
+        assertEquals(
                 'Hello World',
                 Sequence::of(['Hello', ' ', 'World'])
                         ->reduce(function($a, $b) { return $a . $b; })
@@ -327,7 +327,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                                 function() { return ['total' => 0, 'sum' => 0]; },
                                 function(&$result, $element) { $result['total']++; $result['sum'] += $element; }
         );
-        $this->assertEquals(2.5, $result['sum'] / $result['total']);
+        assertEquals(2.5, $result['sum'] / $result['total']);
     }
 
     /**
@@ -342,7 +342,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                                 function(&$result, $arg) { $result .= ', '.$arg; },
                                 function($result) { return substr($result, 2); }
         );
-        $this->assertEquals('a, b, c', $result);
+        assertEquals('a, b, c', $result);
     }
 
     /**
@@ -350,7 +350,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function firstReturnsNullForEmptyInput()
     {
-        $this->assertNull(Sequence::of([])->first());
+        assertNull(Sequence::of([])->first());
     }
 
     /**
@@ -358,7 +358,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function firstReturnsFirstArrayElement()
     {
-        $this->assertEquals(1, Sequence::of([1, 2, 3])->first());
+        assertEquals(1, Sequence::of([1, 2, 3])->first());
     }
 
     /**
@@ -366,7 +366,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function eachOnEmptyInput()
     {
-        $this->assertEquals(
+        assertEquals(
                 0,
                 Sequence::of([])
                         ->each(function() { $this->fail('Should not be called'); })
@@ -379,12 +379,12 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function eachAppliesGivenCallableForAllElements()
     {
         $collect = [];
-        $this->assertEquals(
+        assertEquals(
                 4,
                 Sequence::of(['a', 'b', 'c', 'd'])
                         ->each(function($e) use(&$collect) { $collect[] = $e; })
         );
-        $this->assertEquals(['a', 'b', 'c', 'd'], $collect);
+        assertEquals(['a', 'b', 'c', 'd'], $collect);
     }
 
     /**
@@ -393,12 +393,12 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function eachStopsWhenCallableReturnsFalse()
     {
         $collect = [];
-        $this->assertEquals(
+        assertEquals(
                 2,
                 Sequence::of(['a', 'b', 'c', 'd'])
                         ->each(function($e) use(&$collect) { $collect[] = $e; if ('b' === $e) { return false; }})
         );
-        $this->assertEquals(['a', 'b'], $collect);
+        assertEquals(['a', 'b'], $collect);
     }
 
     /**
@@ -408,7 +408,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     {
         $out = new MemoryOutputStream();
         Sequence::of([1, 2, 3, 4])->each([$out, 'write']);
-        $this->assertEquals('1234', $out);
+        assertEquals('1234', $out);
     }
 
     /**
@@ -420,7 +420,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
         Sequence::of([1, 2, 3, 4])->peek('var_export')->reduce()->toSum();
         $bytes = ob_get_contents();
         ob_end_clean();
-        $this->assertEquals('1234', $bytes);
+        assertEquals('1234', $bytes);
     }
 
     /**
@@ -435,7 +435,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                 ->toSum();
         $bytes = ob_get_contents();
         ob_end_clean();
-        $this->assertEquals("'a'0'b'1'c'2'd'3", $bytes);
+        assertEquals("'a'0'b'1'c'2'd'3", $bytes);
     }
 
     /**
@@ -580,7 +580,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
         foreach (Sequence::of(['foo' => 1, 'bar' => 2, 'baz' => 3]) as $key => $element) {
           $result[$key] = $element;
         }
-        $this->assertEquals(['foo' => 1, 'bar' => 2, 'baz' => 3], $result);
+        assertEquals(['foo' => 1, 'bar' => 2, 'baz' => 3], $result);
     }
 
     /**
@@ -588,7 +588,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function dataReturnsCompleteDataAsArray()
     {
-        $this->assertEquals(
+        assertEquals(
                 ['foo' => 'bar', 'baz' => 303],
                 Sequence::of(new \ArrayIterator(['foo' => 'bar', 'baz' => 303]))->data()
         );
@@ -616,7 +616,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function methodsAnnotatedWithXmlIgnore($method)
     {
-        $this->assertTrue(
+        assertTrue(
                 reflect\annotationsOf('stubbles\lang\Sequence', $method)
                         ->contain('XmlIgnore')
         );
@@ -628,7 +628,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function canBeSerializedToJson()
     {
-        $this->assertEquals(
+        assertEquals(
                 '{"one":1,"0":2,"three":3,"1":4}',
                 json_encode(Sequence::of(['one' => 1, 2, 'three' => 3, 4]))
         );

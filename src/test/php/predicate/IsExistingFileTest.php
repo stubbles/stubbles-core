@@ -38,7 +38,7 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseForNull()
     {
         $isExistingFile = new IsExistingFile();
-        $this->assertFalse($isExistingFile(null));
+        assertFalse($isExistingFile(null));
     }
 
     /**
@@ -47,7 +47,7 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseForEmptyString()
     {
         $isExistingFile = new IsExistingFile();
-        $this->assertFalse($isExistingFile(''));
+        assertFalse($isExistingFile(''));
     }
 
     /**
@@ -56,7 +56,7 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrueIfRelativePathExists()
     {
         $isExistingFile = new IsExistingFile(vfsStream::url('root/basic'));
-        $this->assertTrue($isExistingFile('../foo.txt'));
+        assertTrue($isExistingFile('../foo.txt'));
     }
 
     /**
@@ -65,7 +65,7 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseIfFileDoesNotExistRelatively()
     {
         $isExistingFile = new IsExistingFile(vfsStream::url('root/basic'));
-        $this->assertFalse($isExistingFile('foo.txt'));
+        assertFalse($isExistingFile('foo.txt'));
     }
 
     /**
@@ -74,7 +74,7 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseIfFileDoesNotExistGlobally()
     {
         $isExistingFile = new IsExistingFile();
-        $this->assertFalse($isExistingFile(__DIR__ . '/doesNotExist.txt'));
+        assertFalse($isExistingFile(__DIR__ . '/doesNotExist.txt'));
     }
 
     /**
@@ -83,7 +83,7 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrueIfFileDoesExistRelatively()
     {
         $isExistingFile = new IsExistingFile(vfsStream::url('root/basic'));
-        $this->assertTrue($isExistingFile('bar.txt'));
+        assertTrue($isExistingFile('bar.txt'));
     }
 
     /**
@@ -92,7 +92,7 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrueIfFileDoesExistGlobally()
     {
         $isExistingFile = new IsExistingFile();
-        $this->assertTrue($isExistingFile(__FILE__));
+        assertTrue($isExistingFile(__FILE__));
     }
 
     /**
@@ -101,7 +101,7 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseIfIsRelativeDir()
     {
         $isExistingFile = new IsExistingFile(vfsStream::url('root'));
-        $this->assertFalse($isExistingFile('basic'));
+        assertFalse($isExistingFile('basic'));
     }
 
     /**
@@ -110,6 +110,6 @@ class IsExistingFileTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseIfIsGlobalDir()
     {
         $isExistingFile = new IsExistingFile();
-        $this->assertFalse($isExistingFile(__DIR__));
+        assertFalse($isExistingFile(__DIR__));
     }
 }

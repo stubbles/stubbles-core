@@ -51,7 +51,7 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
     {
         $baseObject3 = new SomeObject3($this->someObject1, $this->someObject2, 'foo');
         $baseObject3->aResource = fopen(__FILE__, 'rb');
-        $this->assertEquals('stubbles\\test\lang\SomeObject3 {
+        assertEquals('stubbles\\test\lang\SomeObject3 {
     foo(stubbles\\test\lang\SomeObject1): stubbles\\test\lang\SomeObject1 {
         bar(integer): 5
     }
@@ -75,7 +75,7 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
      */
     public function stringRepresentationWithNoProperties()
     {
-        $this->assertEquals('stubbles\\test\lang\SomeObject4 {
+        assertEquals('stubbles\\test\lang\SomeObject4 {
 }
 ',
                             __toString(new SomeObject4())
@@ -89,7 +89,7 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
     {
         $object = new SomeObject1();
         $object->foo = ['bar' => 'baz'];
-        $this->assertEquals('stubbles\\test\lang\SomeObject1 {
+        assertEquals('stubbles\\test\lang\SomeObject1 {
     bar(integer): 5
     foo(array): [..](1)
 }
@@ -103,7 +103,7 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
      */
     public function toStringWithSimpleDataType()
     {
-        $this->assertEquals('{
+        assertEquals('{
     (integer): 5
 }
 ',

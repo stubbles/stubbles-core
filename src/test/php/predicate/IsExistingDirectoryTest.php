@@ -40,7 +40,7 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseForNull()
     {
         $isExistingDirectory = new IsExistingDirectory();
-        $this->assertFalse($isExistingDirectory(null));
+        assertFalse($isExistingDirectory(null));
     }
 
     /**
@@ -49,7 +49,7 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseForEmptyString()
     {
         $isExistingDirectory = new IsExistingDirectory();
-        $this->assertFalse($isExistingDirectory(''));
+        assertFalse($isExistingDirectory(''));
     }
 
     /**
@@ -58,7 +58,7 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrueForRelativePath()
     {
         $isExistingDirectory = new IsExistingDirectory(vfsStream::url('root/basic'));
-        $this->assertTrue($isExistingDirectory('../other'));
+        assertTrue($isExistingDirectory('../other'));
     }
 
     /**
@@ -67,7 +67,7 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseIfDirDoesNotExistRelatively()
     {
         $isExistingDirectory = new IsExistingDirectory(vfsStream::url('root/basic'));
-        $this->assertFalse($isExistingDirectory('other'));
+        assertFalse($isExistingDirectory('other'));
     }
 
     /**
@@ -76,7 +76,7 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseIfDirDoesNotExistGlobally()
     {
         $isExistingDirectory = new IsExistingDirectory();
-        $this->assertFalse($isExistingDirectory(__DIR__ . '/../doesNotExist'));
+        assertFalse($isExistingDirectory(__DIR__ . '/../doesNotExist'));
     }
 
     /**
@@ -85,7 +85,7 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrueIfDirDoesExistRelatively()
     {
         $isExistingDirectory = new IsExistingDirectory(vfsStream::url('root/basic'));
-        $this->assertTrue($isExistingDirectory('bar'));
+        assertTrue($isExistingDirectory('bar'));
     }
 
     /**
@@ -94,7 +94,7 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToTrueIfDirDoesExistGlobally()
     {
         $isExistingDirectory = new IsExistingDirectory();
-        $this->assertTrue($isExistingDirectory(__DIR__));
+        assertTrue($isExistingDirectory(__DIR__));
     }
 
     /**
@@ -103,7 +103,7 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseIfIsRelativeFile()
     {
         $isExistingDirectory = new IsExistingDirectory(vfsStream::url('root'));
-        $this->assertFalse($isExistingDirectory('foo.txt'));
+        assertFalse($isExistingDirectory('foo.txt'));
     }
 
     /**
@@ -112,6 +112,6 @@ class IsExistingDirectoryTest extends \PHPUnit_Framework_TestCase
     public function evaluatesToFalseIfIsGlobalFile()
     {
         $isExistingDirectory = new IsExistingDirectory();
-        $this->assertFalse($isExistingDirectory(__FILE__));
+        assertFalse($isExistingDirectory(__FILE__));
     }
 }

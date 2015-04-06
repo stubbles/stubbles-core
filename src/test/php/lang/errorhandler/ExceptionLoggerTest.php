@@ -48,7 +48,7 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnClass()
     {
-        $this->assertTrue(
+        assertTrue(
                 reflect\annotationsOf($this->exceptionLogger)
                         ->contain('Singleton')
         );
@@ -61,8 +61,8 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
     public function annotationsPresentOnConstructor()
     {
         $annotations = reflect\annotationsOfConstructor($this->exceptionLogger);
-        $this->assertTrue($annotations->contain('Named'));
-        $this->assertEquals(
+        assertTrue($annotations->contain('Named'));
+        assertEquals(
                 'stubbles.project.path',
                 $annotations->named('Named')[0]->getName()
         );
@@ -76,8 +76,8 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
         $this->exceptionLogger->log(new \Exception('exception message'));
         $line = __LINE__ - 1;
 
-        $this->assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log'));
-        $this->assertEquals('|Exception|exception message|' . __FILE__ . '|' . $line . "||||\n",
+        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log'));
+        assertEquals('|Exception|exception message|' . __FILE__ . '|' . $line . "||||\n",
                             substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log')
                                               ->getContent(),
                                    19
@@ -95,8 +95,8 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
         $line      = __LINE__ - 1;
 
         $this->exceptionLogger->log($exception);
-        $this->assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log'));
-        $this->assertEquals('|stubbles\lang\exception\Exception|chained exception|' . __FILE__ . '|' . $line . '|Exception|exception message|' . __FILE__ . '|' . $line . "\n",
+        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log'));
+        assertEquals('|stubbles\lang\exception\Exception|chained exception|' . __FILE__ . '|' . $line . '|Exception|exception message|' . __FILE__ . '|' . $line . "\n",
                             substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log')
                                               ->getContent(),
                                    19
@@ -113,8 +113,8 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
         $line      = __LINE__ - 1;
 
         $this->exceptionLogger->log($exception);
-        $this->assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m')));
-        $this->assertEquals(0700, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
+        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m')));
+        assertEquals(0700, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
     }
 
     /**
@@ -126,7 +126,7 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
         $line      = __LINE__ - 1;
 
         $this->exceptionLogger->setFilemode(0777)->log($exception);
-        $this->assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m')));
-        $this->assertEquals(0777, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
+        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m')));
+        assertEquals(0777, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
     }
 }

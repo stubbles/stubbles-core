@@ -55,7 +55,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function runtimeIsNotInitializedWhenNoInstanceCreated()
     {
-        $this->assertFalse(Runtime::initialized());
+        assertFalse(Runtime::initialized());
     }
 
     /**
@@ -65,7 +65,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function runtimeIsInitializedAfterFirstInstanceCreation()
     {
         new Runtime($this->root->url());
-        $this->assertTrue(Runtime::initialized());
+        assertTrue(Runtime::initialized());
     }
 
     /**
@@ -90,7 +90,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $runtime = new Runtime($this->root->url(), $this->mockMode);
         $binder  = new Binder();
         $runtime->configure($binder);
-        $this->assertSame(
+        assertSame(
                 $this->mockMode,
                 $binder->getInjector()->getInstance('stubbles\lang\Mode')
         );
@@ -105,8 +105,8 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $binder  = new Binder();
         $runtime->configure($binder);
         $injector = $binder->getInjector();
-        $this->assertTrue($injector->hasExplicitBinding('stubbles\lang\Mode'));
-        $this->assertEquals('PROD',
+        assertTrue($injector->hasExplicitBinding('stubbles\lang\Mode'));
+        assertEquals('PROD',
                             $injector->getInstance('stubbles\lang\Mode')
                                      ->name()
         );
@@ -129,7 +129,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $runtime = new Runtime($this->root->url(), function() { return $this->mockMode; });
         $binder  = new Binder();
         $runtime->configure($binder);
-        $this->assertSame(
+        assertSame(
                 $this->mockMode,
                 $binder->getInjector()->getInstance('stubbles\lang\Mode')
         );
@@ -183,7 +183,7 @@ stubbles.webapp.xml.serializeMode=true")
         $binder  = new Binder();
         $runtime = new Runtime($this->root->url(), $this->mockMode);
         $runtime->configure($binder);
-        $this->assertEquals(
+        assertEquals(
                 $this->root->url(),
                 $binder->getInjector()->getConstant('stubbles.project.path')
         );
@@ -223,7 +223,7 @@ stubbles.webapp.xml.serializeMode=true")
         $binder  = new Binder();
         $runtime = new Runtime($this->root->url(), $this->mockMode);
         $runtime->configure($binder);
-        $this->assertEquals(
+        assertEquals(
                 $this->getProjectPath($pathPart),
                 $binder->getInjector()->getConstant($constantName)
         );
@@ -250,7 +250,7 @@ stubbles.webapp.xml.serializeMode=true")
         $binder  = new Binder();
         $runtime = new Runtime($this->root->url(), $this->mockMode);
         $runtime->addPathType('user')->configure($binder);
-        $this->assertEquals(
+        assertEquals(
                 $this->getProjectPath($pathPart),
                 $binder->getInjector()->getConstant($constantName)
         );

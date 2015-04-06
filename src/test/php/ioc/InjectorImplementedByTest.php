@@ -21,9 +21,10 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     public function createsInstanceFromImplementedByAnnotationIfNoExplicitBindingsSet()
     {
         $binder = new Binder();
-        $this->assertInstanceOf('stubbles\test\ioc\Schst',
-                                $binder->getInjector()
-                                       ->getInstance('stubbles\test\ioc\Person')
+        assertInstanceOf(
+                'stubbles\test\ioc\Schst',
+                $binder->getInjector()
+                        ->getInstance('stubbles\test\ioc\Person')
         );
     }
 
@@ -34,9 +35,10 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bind('stubbles\test\ioc\Person')->to('stubbles\test\ioc\Mikey');
-        $this->assertInstanceOf('stubbles\test\ioc\Mikey',
-                                $binder->getInjector()
-                                       ->getInstance('stubbles\test\ioc\Person')
+        assertInstanceOf(
+                'stubbles\test\ioc\Mikey',
+                $binder->getInjector()
+                        ->getInstance('stubbles\test\ioc\Person')
         );
     }
 }
