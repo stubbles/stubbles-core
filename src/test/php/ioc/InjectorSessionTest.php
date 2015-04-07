@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\lang\reflect\NewInstance;
 /**
  * Test for stubbles\ioc\Injector with the session scope.
  *
@@ -61,11 +62,13 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function requestSessionScopedWithSessionReturnsInstance()
     {
-        $mockSession = $this->getMock('stubbles\ioc\binding\Session');
-        $mockSession->method('hasValue')->will(returnValue(false));
+        $session = NewInstance::of(
+                'stubbles\ioc\binding\Session',
+                ['hasValue' => false]
+        );
         assertInstanceOf(
                 'stubbles\test\ioc\Mikey',
-                $this->injector->setSession($mockSession)
+                $this->injector->setSession($session)
                         ->getInstance('stubbles\test\ioc\Person2')
         );
     }
@@ -76,12 +79,11 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setSessionAddsBindingForSession()
     {
-        $mockSession = $this->getMock('stubbles\ioc\binding\Session');
         assertTrue(
                 $this->injector->setSession(
-                        $mockSession,
+                        NewInstance::of('stubbles\ioc\binding\Session'),
                         'stubbles\ioc\binding\Session'
-                        )->hasExplicitBinding('stubbles\ioc\binding\Session')
+                )->hasExplicitBinding('stubbles\ioc\binding\Session')
         );
     }
 
@@ -91,13 +93,13 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setSessionAddsBindingForSessionAsSingleton()
     {
-        $mockSession = $this->getMock('stubbles\ioc\binding\Session');
+        $session = NewInstance::of('stubbles\ioc\binding\Session');
         assertSame(
-                $mockSession,
+                $session,
                 $this->injector->setSession(
-                        $mockSession,
+                        $session,
                         'stubbles\ioc\binding\Session'
-                        )->getInstance('stubbles\ioc\binding\Session')
+                )->getInstance('stubbles\ioc\binding\Session')
         );
     }
 }

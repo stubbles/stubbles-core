@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use stubbles\lang\reflect\NewInstance;
 use org\bovigo\vfs\vfsStream;
 /**
  * Tests for stubbles\lang\errorhandler\AbstractExceptionHandler.
@@ -20,9 +21,9 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  AbstractExceptionHandler
+     * @type  \stubbles\lang\errorhandler\AbstractExceptionHandler
      */
-    private $abstractExceptionHandler;
+    private $exceptionHandler;
     /**
      * root path for log files
      *
@@ -36,10 +37,10 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->root                     = vfsStream::setup();
-        $this->abstractExceptionHandler = $this->getMock(
+        $this->root             = vfsStream::setup();
+        $this->exceptionHandler = NewInstance::of(
                 'stubbles\lang\errorhandler\AbstractExceptionHandler',
-                ['header', 'createResponseBody', 'writeBody'],
+                ['header' => false, 'createResponseBody' => false, 'writeBody' => false],
                 [vfsStream::url('root')]
         );
     }
@@ -49,16 +50,12 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function loggingDisabledFillsResponseOnly()
     {
-        $abstractExceptionHandler = $this->getMock(
-                'stubbles\lang\errorhandler\AbstractExceptionHandler',
-                ['log', 'header', 'createResponseBody', 'writeBody'],
-                [vfsStream::url('root')]
-        );
-        $abstractExceptionHandler->expects(never())->method('log');
-        $abstractExceptionHandler->expects(once())->method('header');
-        $abstractExceptionHandler->expects(once())->method('createResponseBody');
-        $abstractExceptionHandler->expects(once())->method('writeBody');
-        $abstractExceptionHandler->disableLogging()->handleException(new \Exception());
+        $this->exceptionHandler->disableLogging()
+                ->handleException(new \Exception());
+        assertEquals(0, $this->exceptionHandler->callsReceivedFor('log'));
+        assertEquals(1, $this->exceptionHandler->callsReceivedFor('header'));
+        assertEquals(1, $this->exceptionHandler->callsReceivedFor('createResponseBody'));
+        assertEquals(1, $this->exceptionHandler->callsReceivedFor('writeBody'));
     }
 
     /**
@@ -66,7 +63,7 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function handleExceptionLogsExceptionData()
     {
-        $this->abstractExceptionHandler->handleException(new \Exception('exception message'));
+        $this->exceptionHandler->handleException(new \Exception('exception message'));
         $line = __LINE__ - 1;
 
         assertTrue(
@@ -96,7 +93,7 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $exception = new \stubbles\lang\exception\Exception('chained exception', new \Exception('exception message'), 303);
         $line      = __LINE__ - 1;
 
-        $this->abstractExceptionHandler->handleException($exception);
+        $this->exceptionHandler->handleException($exception);
         assertTrue(
                 $this->root->hasChild(
                         'log/errors/' . date('Y') . '/' . date('m')
@@ -123,7 +120,7 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleShouldCreateLogDirectoryWithDefaultModeIfNotExists()
     {
         $exception = new \Exception('exception message');
-        $this->abstractExceptionHandler->handleException($exception);
+        $this->exceptionHandler->handleException($exception);
         assertTrue(
                 $this->root->hasChild('log/errors/' . date('Y') . '/' . date('m'))
         );
@@ -141,7 +138,7 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleShouldCreateLogDirectoryWithChangedModeIfNotExists()
     {
         $exception = new \Exception('exception message');
-        $this->abstractExceptionHandler->setFilemode(0777)->handleException($exception);
+        $this->exceptionHandler->setFilemode(0777)->handleException($exception);
         assertTrue(
                 $this->root->hasChild('log/errors/' . date('Y') . '/' . date('m'))
         );

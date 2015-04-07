@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
+use stubbles\lang\reflect\NewInstance;
 /**
  * Test for stubbles\ioc\binding\BindingScopes
  *
@@ -33,9 +34,9 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
      */
     public function usesPassedSingletonScope()
     {
-        $mockSingletonScope = $this->getMock('stubbles\ioc\binding\BindingScope');
-        $bindingScopes = new BindingScopes($mockSingletonScope);
-        assertSame($mockSingletonScope, $bindingScopes->singleton());
+        $singletonScope = NewInstance::of('stubbles\ioc\binding\BindingScope');
+        $bindingScopes = new BindingScopes($singletonScope);
+        assertSame($singletonScope, $bindingScopes->singleton());
     }
 
     /**
@@ -43,8 +44,8 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
      */
     public function usesPassedSessionScope()
     {
-        $mockSessionScope = $this->getMock('stubbles\ioc\binding\BindingScope');
-        $bindingScopes = new BindingScopes(null, $mockSessionScope);
-        assertSame($mockSessionScope, $bindingScopes->session());
+        $sessionScope = NewInstance::of('stubbles\ioc\binding\BindingScope');
+        $bindingScopes = new BindingScopes(null, $sessionScope);
+        assertSame($sessionScope, $bindingScopes->session());
     }
 }

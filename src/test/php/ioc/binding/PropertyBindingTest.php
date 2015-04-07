@@ -12,6 +12,7 @@ use stubbles\ioc\Binder;
 use stubbles\lang;
 use stubbles\lang\Properties;
 use stubbles\lang\SecureString;
+use stubbles\lang\reflect\NewInstance;
 /**
  * Class used for tests.
  *
@@ -55,9 +56,9 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     /**
      * mocked runtime mode
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\lang\Mode
      */
-    private $mockMode;
+    private $mode;
 
     /**
      * set up test environment
@@ -67,7 +68,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
         $this->mockInjector = $this->getMockBuilder('stubbles\ioc\Injector')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->mockMode        = $this->getMock('stubbles\lang\Mode');
+        $this->mode = NewInstance::of('stubbles\lang\Mode', ['name' => 'PROD']);
         $this->propertyBinding = new PropertyBinding(
                 new Properties(['PROD'   => ['foo.bar' => 'baz',
                                              'baz'     => __CLASS__ . '.class'
@@ -78,7 +79,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                                             ]
                                ]
                 ),
-                $this->mockMode
+                $this->mode
 
         );
     }
@@ -88,7 +89,6 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueForRuntimeMode()
     {
-        $this->mockMode->method('name')->will(returnValue('PROD'));
         assertTrue($this->propertyBinding->hasProperty('foo.bar'));
     }
 
@@ -97,7 +97,6 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsProdValueForRuntimeMode()
     {
-        $this->mockMode->method('name')->will(returnValue('PROD'));
         assertEquals(
                 'baz',
                 $this->propertyBinding->getInstance($this->mockInjector, 'foo.bar')
@@ -109,7 +108,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueForDifferentRuntimeMode()
     {
-        $this->mockMode->method('name')->will(returnValue('DEV'));
+        $this->mode->mapCalls(['name' => 'DEV']);
         assertTrue($this->propertyBinding->hasProperty('foo.bar'));
     }
 
@@ -118,7 +117,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsConfigValueForDifferentRuntimeMode()
     {
-        $this->mockMode->method('name')->will(returnValue('DEV'));
+        $this->mode->mapCalls(['name' => 'DEV']);
         assertEquals(
                 'default',
                 $this->propertyBinding->getInstance($this->mockInjector, 'foo.bar')
@@ -130,7 +129,6 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueWhenNoSpecificForRuntimeModeSet()
     {
-        $this->mockMode->method('name')->will(returnValue('PROD'));
         assertTrue($this->propertyBinding->hasProperty('other'));
     }
 
@@ -139,9 +137,9 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsConfigValueWhenNoSpecificForRuntimeModeSet()
     {
-        $this->mockMode->method('name')->will(returnValue('PROD'));
-        assertEquals('someValue',
-                            $this->propertyBinding->getInstance($this->mockInjector, 'other')
+        assertEquals(
+                'someValue',
+                $this->propertyBinding->getInstance($this->mockInjector, 'other')
         );
     }
 
@@ -150,7 +148,6 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveValueWhenPropertyNotSet()
     {
-        $this->mockMode->method('name')->will(returnValue('PROD'));
         assertFalse($this->propertyBinding->hasProperty('does.not.exist'));
     }
 
@@ -161,7 +158,6 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function throwsBindingExceptionWhenPropertyNotSet()
     {
-        $this->mockMode->method('name')->will(returnValue('PROD'));
         $this->propertyBinding->getInstance($this->mockInjector, 'does.not.exist');
     }
 
@@ -171,7 +167,6 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsParsedValuesForModeSpecificProperties()
     {
-        $this->mockMode->method('name')->will(returnValue('PROD'));
         assertEquals(
                 lang\reflect(__CLASS__),
                 $this->propertyBinding->getInstance($this->mockInjector, 'baz')
@@ -184,7 +179,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsParsedValuesForCommonProperties()
     {
-        $this->mockMode->method('name')->will(returnValue('DEV'));
+        $this->mode->mapCalls(['name' => 'DEV']);
         assertEquals(
                 lang\reflect('stubbles\lang\Properties'),
                 $this->propertyBinding->getInstance($this->mockInjector, 'baz')
@@ -197,12 +192,11 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function propertyBindingUsedWhenParamHasTypeHintButIsAnnotated()
     {
-        $this->mockMode->method('name')->will(returnValue('PROD'));
         $binder     = new Binder();
         $properties = new Properties(
                     ['config' => ['example.password' => 'somePassword']]
                 );
-        $binder->bindProperties($properties, $this->mockMode);
+        $binder->bindProperties($properties, $this->mode);
         $example = $binder->getInjector()->getInstance('stubbles\ioc\binding\Example');
         assertInstanceOf('stubbles\lang\SecureString', $example->password);
         // ensure all references are removed to clean up environment

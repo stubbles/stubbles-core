@@ -10,6 +10,7 @@
 namespace stubbles\ioc;
 use org\bovigo\vfs\vfsStream;
 use stubbles\lang\Properties;
+use stubbles\lang\reflect\NewInstance;
 /**
  * Test for stubbles\ioc\Binder
  *
@@ -38,10 +39,10 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function addBindingReturnsAddedBinding()
     {
-        $mockBinding = $this->getMock('stubbles\ioc\binding\Binding');
+        $binding = NewInstance::of('stubbles\ioc\binding\Binding');
         assertSame(
-                $mockBinding,
-                $this->binder->addBinding($mockBinding)
+                $binding,
+                $this->binder->addBinding($binding)
         );
     }
 
@@ -110,11 +111,13 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindPropertiesCreatesBinding()
     {
-        $mockMode   = $this->getMock('stubbles\lang\Mode');
         $properties = new Properties([]);
         assertSame(
                 $properties,
-                $this->binder->bindProperties($properties, $mockMode)
+                $this->binder->bindProperties(
+                        $properties,
+                        NewInstance::of('stubbles\lang\Mode')
+                )
         );
     }
 
@@ -125,13 +128,15 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     public function bindPropertiesFromFileCreatesBinding()
     {
         $file = vfsStream::newFile('config.ini')
-                         ->withContent("[config]\nfoo=bar")
-                         ->at(vfsStream::setup());
-        $mockMode   = $this->getMock('stubbles\lang\Mode');
+                ->withContent("[config]\nfoo=bar")
+                ->at(vfsStream::setup());
         $properties = new Properties(['config' => ['foo' => 'bar']]);
         assertEquals(
                 $properties,
-                $this->binder->bindPropertiesFromFile($file->url(), $mockMode)
+                $this->binder->bindPropertiesFromFile(
+                        $file->url(),
+                        NewInstance::of('stubbles\lang\Mode')
+                )
         );
     }
 }

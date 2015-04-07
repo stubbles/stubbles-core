@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\lang\reflect\NewInstance;
 /**
  * Helper class for the test.
 /**
@@ -87,11 +88,14 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
      */
     public function constantViaInjectionProviderInstance()
     {
-        $mockProvider = $this->getMock('stubbles\ioc\InjectionProvider');
-        $mockProvider->method('get')->will(returnValue(42));
         $binder = new Binder();
         $binder->bindConstant('answer')
-               ->toProvider($mockProvider);
+               ->toProvider(
+                        NewInstance::of(
+                                'stubbles\ioc\InjectionProvider',
+                                ['get' => 42]
+                        )
+                );
         $injector = $binder->getInjector();
         assertTrue($injector->hasConstant('answer'));
         assertEquals(42, $injector->getConstant('answer'));

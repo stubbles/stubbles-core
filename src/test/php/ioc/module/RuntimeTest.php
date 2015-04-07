@@ -9,6 +9,7 @@
  */
 namespace stubbles\ioc\module;
 use stubbles\ioc\Binder;
+use stubbles\lang\reflect\NewInstance;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for stubbles\ioc\module\Runtime.
@@ -21,9 +22,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     /**
      * mocked mode instance
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\lang\Mode
      */
-    private $mockMode;
+    private $mode;
     /**
      * root path
      *
@@ -36,8 +37,8 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->root     = vfsStream::setup('projects');
-        $this->mockMode = $this->getMock('stubbles\lang\Mode');
+        $this->root = vfsStream::setup('projects');
+        $this->mode = NewInstance::of('stubbles\lang\Mode');
         Runtime::reset();
     }
 
@@ -73,13 +74,20 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function registerMethodsShouldBeCalledWithGivenProjectPath()
     {
-        $this->mockMode->expects(once())
-                       ->method('registerErrorHandler')
-                       ->with(equalTo($this->root->url()));
-        $this->mockMode->expects(once())
-                       ->method('registerExceptionHandler')
-                       ->with(equalTo($this->root->url()));
-        new Runtime($this->root->url(), $this->mockMode);
+        $this->mode->mapCalls(
+                ['registerErrorHandler' => function($value)
+                        {
+                            assertEquals($this->root->url(), $value);
+                        },
+                 'registerExceptionHandler'=> function($value)
+                        {
+                            assertEquals($this->root->url(), $value);
+                        }
+                ]
+        );
+        new Runtime($this->root->url(), $this->mode);
+        assertEquals(1, $this->mode->callsReceivedFor('registerErrorHandler'));
+        assertEquals(1, $this->mode->callsReceivedFor('registerExceptionHandler'));
     }
 
     /**
@@ -87,11 +95,11 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function givenModeShouldBeBound()
     {
-        $runtime = new Runtime($this->root->url(), $this->mockMode);
+        $runtime = new Runtime($this->root->url(), $this->mode);
         $binder  = new Binder();
         $runtime->configure($binder);
         assertSame(
-                $this->mockMode,
+                $this->mode,
                 $binder->getInjector()->getInstance('stubbles\lang\Mode')
         );
     }
@@ -106,9 +114,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $runtime->configure($binder);
         $injector = $binder->getInjector();
         assertTrue($injector->hasExplicitBinding('stubbles\lang\Mode'));
-        assertEquals('PROD',
-                            $injector->getInstance('stubbles\lang\Mode')
-                                     ->name()
+        assertEquals(
+                'PROD',
+                $injector->getInstance('stubbles\lang\Mode')->name()
         );
         restore_error_handler();
         restore_exception_handler();
@@ -120,19 +128,26 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function bindsModeProvidedViaCallable()
     {
-        $this->mockMode->expects(once())
-                ->method('registerErrorHandler')
-                ->with(equalTo($this->root->url()));
-        $this->mockMode->expects(once())
-                ->method('registerExceptionHandler')
-                ->with(equalTo($this->root->url()));
-        $runtime = new Runtime($this->root->url(), function() { return $this->mockMode; });
+        $this->mode->mapCalls(
+                ['registerErrorHandler' => function($value)
+                        {
+                            assertEquals($this->root->url(), $value);
+                        },
+                 'registerExceptionHandler'=> function($value)
+                        {
+                            assertEquals($this->root->url(), $value);
+                        }
+                ]
+        );
+        $runtime = new Runtime($this->root->url(), function() { return $this->mode; });
         $binder  = new Binder();
         $runtime->configure($binder);
         assertSame(
-                $this->mockMode,
+                $this->mode,
                 $binder->getInjector()->getInstance('stubbles\lang\Mode')
         );
+        assertEquals(1, $this->mode->callsReceivedFor('registerErrorHandler'));
+        assertEquals(1, $this->mode->callsReceivedFor('registerExceptionHandler'));
     }
 
     /**
@@ -151,10 +166,10 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotBindPropertiesWhenConfigFileIsMissing()
     {
-        $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
-        $mockBinder->expects(never())->method('bindProperties');
-        $runtime = new Runtime($this->root->url(), $this->mockMode);
-        $runtime->configure($mockBinder);
+        $binder = NewInstance::of('stubbles\ioc\Binder');
+        $runtime = new Runtime($this->root->url(), $this->mode);
+        $runtime->configure($binder);
+        assertEquals(0, $binder->callsReceivedFor('bindProperties'));
     }
 
     /**
@@ -171,7 +186,7 @@ stubbles.webapp.xml.serializeMode=true")
                  ->at($this->root);
         $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
         $mockBinder->expects(once())->method('bindProperties');
-        $runtime = new Runtime($this->root->url(), $this->mockMode);
+        $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($mockBinder);
     }
 
@@ -181,7 +196,7 @@ stubbles.webapp.xml.serializeMode=true")
     public function projectPathIsBound()
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->root->url(), $this->mockMode);
+        $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($binder);
         assertEquals(
                 $this->root->url(),
@@ -221,7 +236,7 @@ stubbles.webapp.xml.serializeMode=true")
     public function pathesShouldBeBoundAsConstant($pathPart, $constantName)
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->root->url(), $this->mockMode);
+        $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($binder);
         assertEquals(
                 $this->getProjectPath($pathPart),
@@ -248,7 +263,7 @@ stubbles.webapp.xml.serializeMode=true")
     public function additionalPathTypesShouldBeBound($pathPart, $constantName)
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->root->url(), $this->mockMode);
+        $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->addPathType('user')->configure($binder);
         assertEquals(
                 $this->getProjectPath($pathPart),

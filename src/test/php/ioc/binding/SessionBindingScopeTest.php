@@ -9,6 +9,7 @@
  */
 namespace stubbles\ioc\binding;
 use stubbles\lang;
+use stubbles\lang\reflect\NewInstance;
 /**
  * Tests for stubbles\ioc\binding\SessionBindingScope.
  *
@@ -27,24 +28,24 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     /**
      * mocked session id
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\ioc\binding\Session
      */
-    private $mockSession;
+    private $session;
     /**
      * mocked injection provider
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\ioc\InjectionProvider
      */
-    private $mockInjectionProvider;
+    private $provider;
 
     /**
      * set up test enviroment
      */
     public function setUp()
     {
-        $this->mockSession           = $this->getMock('stubbles\ioc\binding\Session');
-        $this->sessionScope          = new SessionBindingScope();
-        $this->mockInjectionProvider = $this->getMock('stubbles\ioc\InjectionProvider');
+        $this->session      = NewInstance::of('stubbles\ioc\binding\Session');
+        $this->sessionScope = new SessionBindingScope();
+        $this->provider     = NewInstance::of('stubbles\ioc\InjectionProvider');
     }
 
     /**
@@ -53,15 +54,22 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     public function returnsInstanceFromSessionIfPresent()
     {
         $instance = new \stdClass();
-        $this->mockSession->method('hasValue')->will(returnValue(true));
-        $this->mockSession->method('value')->will(returnValue($instance));
-        $this->mockInjectionProvider->expects(never())->method('get');
+        $this->session->mapCalls(['hasValue' => true, 'value' => $instance]);
+        $this->provider->mapCalls(
+                ['get' => function()
+                        {
+                            $this->fail('Should not have been called,'
+                                    . ' as value is present in session.'
+                            );
+                        }
+                ]
+        );
         assertSame(
                 $instance,
-                $this->sessionScope->setSession($this->mockSession)
+                $this->sessionScope->setSession($this->session)
                         ->getInstance(
                                 lang\reflect('\stdClass'),
-                                $this->mockInjectionProvider
+                                $this->provider
                 )
         );
     }
@@ -72,17 +80,14 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     public function createsInstanceIfNotPresent()
     {
         $instance = new \stdClass();
-        $this->mockSession->method('hasValue')->will(returnValue(false));
-        $this->mockSession->expects(never())->method('value');
-        $this->mockInjectionProvider->expects(once())
-                ->method('get')
-                ->will(returnValue($instance));
+        $this->session->mapCalls(['hasValue' => false]);
+        $this->provider->mapCalls(['get' => $instance]);
         assertSame(
                 $instance,
-                $this->sessionScope->setSession($this->mockSession)
+                $this->sessionScope->setSession($this->session)
                         ->getInstance(
                                 lang\reflect('\stdClass'),
-                                $this->mockInjectionProvider
+                                $this->provider
                 )
         );
     }
@@ -95,7 +100,7 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     {
         $this->sessionScope->getInstance(
                 lang\reflect('\stdClass'),
-                $this->mockInjectionProvider
+                $this->provider
         );
     }
 }

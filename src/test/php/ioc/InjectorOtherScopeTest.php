@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\lang\reflect\NewInstance;
 /**
  * Test for stubbles\ioc\Injector with the session scope.
  *
@@ -23,7 +24,7 @@ class InjectorOtherTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bind('\stdClass')
                 ->to('\stdClass')
-                ->in($this->getMock('stubbles\ioc\binding\BindingScope'));
+                ->in(NewInstance::of('stubbles\ioc\binding\BindingScope'));
         assertTrue($binder->getInjector()->hasBinding('\stdClass'));
     }
 
@@ -32,15 +33,15 @@ class InjectorOtherTest extends \PHPUnit_Framework_TestCase
      */
     public function otherScopeIsUsedToCreateInstance()
     {
-        $binder = new Binder();
-        $bindingScope = $this->getMock('stubbles\ioc\binding\BindingScope');
+        $binder   = new Binder();
+        $instance = new \stdClass();
         $binder->bind('\stdClass')
                 ->to('\stdClass')
-                ->in($bindingScope);
-        $injector = $binder->getInjector();
-
-        $instance = new \stdClass();
-        $bindingScope->method('getInstance')->will(returnValue($instance));
-        assertSame($instance, $injector->getInstance('\stdClass'));
+                ->in(NewInstance::of(
+                        'stubbles\ioc\binding\BindingScope',
+                        ['getInstance' => $instance]
+                )
+        );
+        assertSame($instance, $binder->getInjector()->getInstance('\stdClass'));
     }
 }

@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use stubbles\lang\reflect\NewInstance;
 /**
  * Tests for stubbles\lang\errorhandler\CompositeErrorHandler
  *
@@ -25,19 +26,19 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * a mocked error handler
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\lang\errorhandler\ErrorHandler
      */
     protected $errorHandler1;
     /**
      * a mocked error handler
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\lang\errorhandler\ErrorHandler
      */
     protected $errorHandler2;
     /**
      * a mocked error handler
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\lang\errorhandler\ErrorHandler
      */
     protected $errorHandler3;
 
@@ -47,11 +48,11 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->compositeErrorHandler = new CompositeErrorHandler();
-        $this->errorHandler1 = $this->getMock('stubbles\lang\errorhandler\ErrorHandler');
+        $this->errorHandler1 = NewInstance::of('stubbles\lang\errorhandler\ErrorHandler');
         $this->compositeErrorHandler->addErrorHandler($this->errorHandler1);
-        $this->errorHandler2 = $this->getMock('stubbles\lang\errorhandler\ErrorHandler');
+        $this->errorHandler2 = NewInstance::of('stubbles\lang\errorhandler\ErrorHandler');
         $this->compositeErrorHandler->addErrorHandler($this->errorHandler2);
-        $this->errorHandler3 = $this->getMock('stubbles\lang\errorhandler\ErrorHandler');
+        $this->errorHandler3 = NewInstance::of('stubbles\lang\errorhandler\ErrorHandler');
         $this->compositeErrorHandler->addErrorHandler($this->errorHandler3);
     }
 
@@ -60,10 +61,10 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isResponsibleDoesOnlyCallErrorHandlersUntilResponsibleOneFound()
     {
-        $this->errorHandler1->method('isResponsible')->will(returnValue(false));
-        $this->errorHandler2->method('isResponsible')->will(returnValue(true));
-        $this->errorHandler3->expects(never())->method('isResponsible');
+        $this->errorHandler1->mapCalls(['isResponsible' => false]);
+        $this->errorHandler2->mapCalls(['isResponsible' => true]);
         assertTrue($this->compositeErrorHandler->isResponsible(1, 'foo'));
+        assertEquals(0, $this->errorHandler3->callsReceivedFor('isResponsible'));
      }
 
     /**
@@ -71,9 +72,9 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isResponsibleReturnsFalseIfNoHandlerIsResponsible()
     {
-        $this->errorHandler1->method('isResponsible')->will(returnValue(false));
-        $this->errorHandler2->method('isResponsible')->will(returnValue(false));
-        $this->errorHandler3->method('isResponsible')->will(returnValue(false));
+        $this->errorHandler1->mapCalls(['isResponsible' => false]);
+        $this->errorHandler2->mapCalls(['isResponsible' => false]);
+        $this->errorHandler3->mapCalls(['isResponsible' => false]);
         assertFalse($this->compositeErrorHandler->isResponsible(1, 'foo'));
     }
 
@@ -82,10 +83,10 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isSupressableReturnsFalseAsSoonAsOneHandlerDeniesSupressability()
     {
-        $this->errorHandler1->method('isSupressable')->will(returnValue(true));
-        $this->errorHandler2->method('isSupressable')->will(returnValue(false));
-        $this->errorHandler3->expects(never())->method('isSupressable');
+        $this->errorHandler1->mapCalls(['isSupressable' => true]);
+        $this->errorHandler2->mapCalls(['isSupressable' => false]);
         assertFalse($this->compositeErrorHandler->isSupressable(1, 'foo'));
+        assertEquals(0, $this->errorHandler3->callsReceivedFor('isSupressable'));
     }
 
     /**
@@ -93,9 +94,9 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isSupressableReturnsOnlyTrueIfAllHandlerAllowSupressability()
     {
-        $this->errorHandler1->method('isSupressable')->will(returnValue(true));
-        $this->errorHandler2->method('isSupressable')->will(returnValue(true));
-        $this->errorHandler3->method('isSupressable')->will(returnValue(true));
+        $this->errorHandler1->mapCalls(['isSupressable' => true]);
+        $this->errorHandler2->mapCalls(['isSupressable' => true]);
+        $this->errorHandler3->mapCalls(['isSupressable' => true]);
         assertTrue($this->compositeErrorHandler->isSupressable(1, 'foo'));
     }
 
@@ -104,9 +105,9 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function handleSignalsDefaultStrategyIfNoErrorHandlerIsResponsible()
     {
-        $this->errorHandler1->method('isResponsible')->will(returnValue(false));
-        $this->errorHandler2->method('isResponsible')->will(returnValue(false));
-        $this->errorHandler3->method('isResponsible')->will(returnValue(false));
+        $this->errorHandler1->mapCalls(['isResponsible' => false]);
+        $this->errorHandler2->mapCalls(['isResponsible' => false]);
+        $this->errorHandler3->mapCalls(['isResponsible' => false]);
         assertEquals(
                 ErrorHandler::CONTINUE_WITH_PHP_INTERNAL_HANDLING,
                 $this->compositeErrorHandler->handle(1, 'foo')
@@ -119,9 +120,10 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsStopIfErrorIsSuppressableAndSuppressedByGlobalErrorReporting()
     {
         $oldLevel = error_reporting(0);
-        $this->errorHandler1->method('isResponsible')->will(returnValue(false));
-        $this->errorHandler2->method('isResponsible')->will(returnValue(true));
-        $this->errorHandler2->method('isSupressable')->will(returnValue(true));
+        $this->errorHandler1->mapCalls(['isResponsible' => false]);
+        $this->errorHandler2->mapCalls(
+                ['isResponsible' => true, 'isSupressable' => true]
+        );
         assertEquals(
                 ErrorHandler::STOP_ERROR_HANDLING,
                 $this->compositeErrorHandler->handle(1, 'foo')
@@ -135,19 +137,18 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsResultOfResponsibleErrorHandlerIfErrorReportingDisabled()
     {
         $oldLevel = error_reporting(0);
-        $this->errorHandler1->method('isResponsible')->will(returnValue(false));
-        $this->errorHandler2->method('isResponsible')->will(returnValue(true));
-        $this->errorHandler2->expects(once())
-                ->method('isSupressable')
-                ->will(returnValue(false));
-        $this->errorHandler2->expects(once())
-                ->method('handle')
-                ->will(returnValue(ErrorHandler::STOP_ERROR_HANDLING));
-        $this->errorHandler3->expects(never())->method('isResponsible');
+        $this->errorHandler1->mapCalls(['isResponsible' => false]);
+        $this->errorHandler2->mapCalls(
+                ['isResponsible' => true,
+                 'isSupressable' => false,
+                 'handle'        => ErrorHandler::STOP_ERROR_HANDLING
+                ]
+        );
         assertEquals(
                 ErrorHandler::STOP_ERROR_HANDLING,
                 $this->compositeErrorHandler->handle(1, 'foo')
         );
+        assertEquals(0, $this->errorHandler3->callsReceivedFor('isResponsible'));
         error_reporting($oldLevel);
     }
 
@@ -157,13 +158,13 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsResultOfResponsibleErrorHandlerIfErrorReportingEnabled()
     {
         $oldLevel = error_reporting(E_ALL);
-        $this->errorHandler1->method('isResponsible')->will(returnValue(false));
-        $this->errorHandler2->expects(once())
-                ->method('isResponsible')
-                ->will(returnValue(true));
-        $this->errorHandler2->expects(once())
-                ->method('handle')
-                ->will(returnValue(ErrorHandler::STOP_ERROR_HANDLING));
+        $this->errorHandler1->mapCalls(['isResponsible' => false]);
+        $this->errorHandler2->mapCalls(
+                ['isResponsible' => true,
+                 'isSupressable' => false,
+                 'handle'        => ErrorHandler::STOP_ERROR_HANDLING
+                ]
+        );
         assertEquals(
                 ErrorHandler::STOP_ERROR_HANDLING,
                 $this->compositeErrorHandler->handle(1, 'foo')

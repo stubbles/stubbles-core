@@ -10,6 +10,7 @@
 namespace stubbles\ioc;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
+use stubbles\lang\reflect\NewInstance;
 use stubbles\test\ioc\PluginHandler;
 /**
  * Test for list and map bindings.
@@ -204,21 +205,21 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function createTypedList()
     {
-        $mockPlugin1 = $this->getMock('stubbles\test\ioc\Plugin');
-        $mockPlugin2 = $this->getMock('stubbles\test\ioc\Plugin');
-        $mockPlugin3 = $this->getMock('stubbles\test\ioc\Plugin');
-        $binder = new Binder();
+        $plugin1 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin2 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin3 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $binder  = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
         $binder->bindList('stubbles\test\ioc\Plugin')
-                ->withValue($mockPlugin1)
-                ->withValueFromProvider($this->createProviderForValue($mockPlugin2))
+                ->withValue($plugin1)
+                ->withValueFromProvider($this->createProviderForValue($plugin2))
                 ->withValueFromClosure(
-                        function() use($mockPlugin3) { return $mockPlugin3; }
+                        function() use($plugin3) { return $plugin3; }
                 );
         $pluginHandler = $this->createPluginHandler($binder);
         assertEquals(
-                [$mockPlugin1, $mockPlugin2, $mockPlugin3],
+                [$plugin1, $plugin2, $plugin3],
                 $pluginHandler->getPluginList()
         );
     }
@@ -228,23 +229,23 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function bindTypedListMoreThanOnceAddsToSameList()
     {
-        $mockPlugin1 = $this->getMock('stubbles\test\\ioc\Plugin');
-        $mockPlugin2 = $this->getMock('stubbles\test\\ioc\Plugin');
-        $mockPlugin3 = $this->getMock('stubbles\test\ioc\Plugin');
-        $binder = new Binder();
+        $plugin1 = NewInstance::of('stubbles\test\\ioc\Plugin');
+        $plugin2 = NewInstance::of('stubbles\test\\ioc\Plugin');
+        $plugin3 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $binder  = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
         $binder->bindList('stubbles\\test\\ioc\\Plugin')
-                ->withValue($mockPlugin1);
+                ->withValue($plugin1);
         $binder->bindList('stubbles\\test\\ioc\\Plugin')
-                ->withValueFromProvider($this->createProviderForValue($mockPlugin2));
+                ->withValueFromProvider($this->createProviderForValue($plugin2));
         $binder->bindList('stubbles\test\ioc\Plugin')
                 ->withValueFromClosure(
-                        function() use($mockPlugin3) { return $mockPlugin3; }
+                        function() use($plugin3) { return $plugin3; }
                 );
         $pluginHandler = $this->createPluginHandler($binder);
         assertEquals(
-                [$mockPlugin1, $mockPlugin2, $mockPlugin3],
+                [$plugin1, $plugin2, $plugin3],
                 $pluginHandler->getPluginList()
         );
     }
@@ -254,25 +255,25 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function createTypedMap()
     {
-        $mockPlugin1 = $this->getMock('stubbles\test\ioc\Plugin');
-        $mockPlugin2 = $this->getMock('stubbles\test\ioc\Plugin');
-        $mockPlugin3 = $this->getMock('stubbles\test\ioc\Plugin');
-        $binder = new Binder();
+        $plugin1 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin2 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin3 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $binder  = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
         $binder->bindMap('stubbles\test\ioc\Plugin')
-                ->withEntry('tb', $mockPlugin1)
+                ->withEntry('tb', $plugin1)
                 ->withEntryFromProvider(
                         'dd',
-                        $this->createProviderForValue($mockPlugin2)
+                        $this->createProviderForValue($plugin2)
                 )
                 ->withEntryFromClosure(
                         'hf',
-                        function() use($mockPlugin3) { return $mockPlugin3; }
+                        function() use($plugin3) { return $plugin3; }
                 );
         $pluginHandler = $this->createPluginHandler($binder);
         assertEquals(
-                ['tb' => $mockPlugin1, 'dd' => $mockPlugin2, 'hf' => $mockPlugin3],
+                ['tb' => $plugin1, 'dd' => $plugin2, 'hf' => $plugin3],
                 $pluginHandler->getPluginMap()
         );
     }
@@ -282,27 +283,27 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function bindTypedMapMoreThanOnceAddsToSameList()
     {
-        $mockPlugin1 = $this->getMock('stubbles\test\ioc\Plugin');
-        $mockPlugin2 = $this->getMock('stubbles\test\ioc\Plugin');
-        $mockPlugin3 = $this->getMock('stubbles\test\ioc\Plugin');
-        $binder = new Binder();
+        $plugin1 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin2 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin3 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $binder  = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
         $binder->bindMap('stubbles\\test\\ioc\\Plugin')
-                ->withEntry('tb', $mockPlugin1);
+                ->withEntry('tb', $plugin1);
         $binder->bindMap('stubbles\\test\\ioc\\Plugin')
                 ->withEntryFromProvider(
                         'dd',
-                        $this->createProviderForValue($mockPlugin2)
+                        $this->createProviderForValue($plugin2)
                 );
         $binder->bindMap('stubbles\test\ioc\Plugin')
                 ->withEntryFromClosure(
                         'hf',
-                        function() use($mockPlugin3) { return $mockPlugin3; }
+                        function() use($plugin3) { return $plugin3; }
                 );
         $pluginHandler = $this->createPluginHandler($binder);
         assertEquals(
-                ['tb' => $mockPlugin1, 'dd' => $mockPlugin2, 'hf' => $mockPlugin3],
+                ['tb' => $plugin1, 'dd' => $plugin2, 'hf' => $plugin3],
                 $pluginHandler->getPluginMap()
         );
     }
@@ -338,13 +339,13 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function mixedAnnotations()
     {
-        $mockPlugin = $this->getMock('stubbles\test\ioc\Plugin');
-        $binder     = new Binder();
+        $plugin = NewInstance::of('stubbles\test\ioc\Plugin');
+        $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
         $binder->bind('stubbles\test\ioc\Plugin')
                ->named('foo')
-               ->toInstance($mockPlugin);
+               ->toInstance($plugin);
         $binder->bindConstant('foo')
                ->to(42);
         $binder->bindList('aList')
@@ -352,7 +353,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
         $binder->bindMap('aMap')
                ->withEntry('tb', 303);
         assertEquals(
-                ['std'    => $mockPlugin,
+                ['std'    => $plugin,
                  'answer' => 42,
                  'list'   => [313],
                  'map'    => ['tb' => 303]
@@ -369,9 +370,10 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     private function createProviderForValue($value)
     {
-        $mockProvider = $this->getMock('stubbles\ioc\InjectionProvider');
-        $mockProvider->method('get')->will(returnValue($value));
-        return $mockProvider;
+        return NewInstance::of(
+                'stubbles\ioc\InjectionProvider',
+                ['get' => $value]
+        );
     }
 
     /**
