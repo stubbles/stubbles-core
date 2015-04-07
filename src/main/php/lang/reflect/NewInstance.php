@@ -26,27 +26,27 @@ class NewInstance
     /**
      * returns a new instance of the given class or interface
      *
-     * @param   string|\ReflectionClass  $class            interface or class to create a new instance of
+     * @param   string|\ReflectionClass  $target           interface or class to create a new instance of
      * @param   array                    $callmap          map of functions to overwrite with according closure
      * @param   mixed[]                  $constructorArgs  list of arguments for the constructor
      * @return  $class
      * @throws  \InvalidArgumentException
      */
-    public static function of($class, array $callmap = [], array $constructorArgs = [])
+    public static function of($target, array $callmap = [], array $constructorArgs = [])
     {
-        $clazz = lang\reflect($class);
-        if (!($clazz instanceof \ReflectionClass)) {
+        $class = lang\reflect($target);
+        if (!($class instanceof \ReflectionClass)) {
             throw new \InvalidArgumentException(
-                    'Given class ' . $class . ' does not resemble'
+                    'Given class ' . $target . ' does not resemble'
                     . ' a class or interface'
             );
         }
 
-        if (!isset(self::$classes[$clazz->getName()])) {
-            self::$classes[$clazz->getName()] = self::createCallMapClass($clazz);
+        if (!isset(self::$classes[$class->getName()])) {
+            self::$classes[$class->getName()] = self::createCallMapClass($class);
         }
 
-        return self::$classes[$clazz->getName()]
+        return self::$classes[$class->getName()]
                 ->newInstanceArgs($constructorArgs)
                 ->mapCalls($callmap);
     }
