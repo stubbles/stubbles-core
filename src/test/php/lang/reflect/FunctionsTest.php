@@ -195,6 +195,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                         function($method)
                         {
                             assertInstanceOf('\ReflectionMethod', $method);
+                        },
+                        function($methodName)
+                        {
+                            assertTrue(method_exists($this, $methodName));
                         }
                     )->count()
         );
@@ -218,9 +222,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 0,
                 propertiesOf($this)
                     ->peek(
-                        function($method)
+                        function($property)
                         {
-                            assertInstanceOf('\ReflectionProperty', $method);
+                            assertInstanceOf('\ReflectionProperty', $property);
+                        },
+                        function($propertyName)
+                        {
+                            assertTrue(property_exists($this, $propertyName));
                         }
                     )->count()
         );
@@ -247,6 +255,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                         function($parameter)
                         {
                             assertInstanceOf('\ReflectionParameter', $parameter);
+                        },
+                        function($paramName)
+                        {
+                            assertEquals('refParam', $paramName);
                         }
                     )->count()
         );
@@ -264,6 +276,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                         function($parameter)
                         {
                             assertInstanceOf('\ReflectionParameter', $parameter);
+                        },
+                        function($paramName)
+                        {
+                            assertEquals('refParam', $paramName);
                         }
                     )->count()
         );

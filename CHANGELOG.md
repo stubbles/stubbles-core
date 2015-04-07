@@ -50,7 +50,13 @@
   * it is not required any more to mark constructors with `@Inject` when they should be subject to dependency injection
   * added `stubbles\peer\IpAddress::createSocket()` and `stubbles\peer\IpAddress::createSecureSocket()`
   * improved speed for `stubbles\peer\http\HttpUri::hasDnsRecord()` by checking only relevant DNS records
-
+  * sequences returned from the following methods now have the name of the method/property/parameter as key:
+    * `stubbles\lang\reflect\methodsOf()`
+    * `stubbles\lang\reflect\propertiesOf()`
+    * `stubbles\lang\reflect\parametersOf()`
+    * `stubbles\lang\reflect\parametersOfConstructor()`
+    * `stubbles\lang\reflect\parameter()`
+    * `stubbles\lang\reflect\constructorParameter()`
 
 
 5.4.0 (2015-04-01)

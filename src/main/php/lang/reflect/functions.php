@@ -165,6 +165,11 @@ namespace stubbles\lang\reflect {
 
         return Sequence::of(
                 null === $filter ? $class->getMethods() : $class->getMethods($filter)
+        )->mapKeys(
+                function($key, \ReflectionMethod $method)
+                {
+                    return $method->getName();
+                }
         );
     }
 
@@ -188,6 +193,11 @@ namespace stubbles\lang\reflect {
 
         return Sequence::of(
                 null === $filter ? $class->getProperties() : $class->getProperties($filter)
+        )->mapKeys(
+                function($key, \ReflectionProperty $property)
+                {
+                    return $property->getName();
+                }
         );
     }
 
@@ -211,7 +221,13 @@ namespace stubbles\lang\reflect {
             $function = $classOrFunction;
         }
 
-        return Sequence::of($function->getParameters());
+        return Sequence::of($function->getParameters())
+                ->mapKeys(
+                function($key, \ReflectionParameter $parameter)
+                {
+                    return $parameter->getName();
+                }
+        );
     }
 
     /**
