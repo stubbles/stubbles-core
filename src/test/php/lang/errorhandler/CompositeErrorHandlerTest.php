@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use stubbles\lang\reflect\NewInstance;
+use bovigo\callmap\NewInstance;
 /**
  * Tests for stubbles\lang\errorhandler\CompositeErrorHandler
  *

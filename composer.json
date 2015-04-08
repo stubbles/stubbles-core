@@ -9,7 +9,8 @@
     },
     "require-dev": {
         "mikey179/vfsStream": "~1.5",
-        "phpunit/phpunit": "~4.6"
+        "phpunit/phpunit": "~4.6",
+        "bovigo/callmap": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -24,8 +25,17 @@
     "autoload-dev": {
         "psr-4": {
             "stubbles\\test\\": "src/test/helper"
-        }
+        },
+        "files": [
+            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+        ]
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mikey179/bovigo-callmap"
+        }
+    ],
     "extra": {
         "branch-alias": {
             "dev-master": "6.0.x-dev"

@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\lang\reflect\NewInstance;
+use bovigo\callmap\NewInstance;
 use stubbles\test\ioc\Answer;
 /**
  * Test for stubbles\ioc\Injector with provider binding.
@@ -22,19 +22,11 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function injectWithProviderInstance()
     {
-        $binder = new Binder();
-        $answer = new Answer();
-        $binder->bind('stubbles\test\ioc\Answer')
-                ->toProvider(NewInstance::of(
-                        'stubbles\ioc\InjectionProvider',
-                        ['get' => function($name) use ($answer)
-                                {
-                                    assertEquals('answer', $name);
-                                    return $answer;
-                                }
-                        ]
-                )
-        );
+        $binder   = new Binder();
+        $answer   = new Answer();
+        $provider = NewInstance::of('stubbles\ioc\InjectionProvider')
+                ->mapCalls(['get' => $answer]);
+        $binder->bind('stubbles\test\ioc\Answer')->toProvider($provider);
         $question = $binder->getInjector()
                 ->getInstance('stubbles\test\ioc\AnotherQuestion');
         assertInstanceOf(
@@ -42,6 +34,7 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
                 $question
         );
         assertSame($answer, $question->getAnswer());
+        assertEquals(['answer'], $provider->argumentsReceived('get'));
     }
 
     /**

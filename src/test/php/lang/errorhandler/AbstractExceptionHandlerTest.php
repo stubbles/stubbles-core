@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use stubbles\lang\reflect\NewInstance;
+use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 /**
  * Tests for stubbles\lang\errorhandler\AbstractExceptionHandler.
@@ -40,9 +40,8 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->root             = vfsStream::setup();
         $this->exceptionHandler = NewInstance::of(
                 'stubbles\lang\errorhandler\AbstractExceptionHandler',
-                ['header' => false, 'createResponseBody' => false, 'writeBody' => false],
                 [vfsStream::url('root')]
-        );
+        )->mapCalls(['header' => false, 'createResponseBody' => false, 'writeBody' => false]);
     }
 
     /**

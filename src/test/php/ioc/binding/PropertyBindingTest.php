@@ -8,11 +8,11 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
+use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
 use stubbles\lang;
 use stubbles\lang\Properties;
 use stubbles\lang\SecureString;
-use stubbles\lang\reflect\NewInstance;
 /**
  * Class used for tests.
  *
@@ -68,7 +68,8 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
         $this->mockInjector = $this->getMockBuilder('stubbles\ioc\Injector')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->mode = NewInstance::of('stubbles\lang\Mode', ['name' => 'PROD']);
+        $this->mode = NewInstance::of('stubbles\lang\Mode')
+                ->mapCalls(['name' => 'PROD']);
         $this->propertyBinding = new PropertyBinding(
                 new Properties(['PROD'   => ['foo.bar' => 'baz',
                                              'baz'     => __CLASS__ . '.class'

@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\lang\reflect\NewInstance;
+use bovigo\callmap\NewInstance;
 /**
  * Test for stubbles\ioc\Injector with the session scope.
  *
@@ -37,10 +37,8 @@ class InjectorOtherTest extends \PHPUnit_Framework_TestCase
         $instance = new \stdClass();
         $binder->bind('\stdClass')
                 ->to('\stdClass')
-                ->in(NewInstance::of(
-                        'stubbles\ioc\binding\BindingScope',
-                        ['getInstance' => $instance]
-                )
+                ->in(NewInstance::of('stubbles\ioc\binding\BindingScope')
+                        ->mapCalls(['getInstance' => $instance])
         );
         assertSame($instance, $binder->getInjector()->getInstance('\stdClass'));
     }

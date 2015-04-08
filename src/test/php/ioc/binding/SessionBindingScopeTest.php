@@ -8,8 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
+use bovigo\callmap\NewInstance;
 use stubbles\lang;
-use stubbles\lang\reflect\NewInstance;
 /**
  * Tests for stubbles\ioc\binding\SessionBindingScope.
  *
@@ -55,15 +55,6 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     {
         $instance = new \stdClass();
         $this->session->mapCalls(['hasValue' => true, 'value' => $instance]);
-        $this->provider->mapCalls(
-                ['get' => function()
-                        {
-                            $this->fail('Should not have been called,'
-                                    . ' as value is present in session.'
-                            );
-                        }
-                ]
-        );
         assertSame(
                 $instance,
                 $this->sessionScope->setSession($this->session)
@@ -72,6 +63,7 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
                                 $this->provider
                 )
         );
+        assertEquals(0, $this->provider->callsReceivedFor('get'));
     }
 
     /**

@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\lang\reflect\NewInstance;
+use bovigo\callmap\NewInstance;
 /**
  * Helper class for the test.
 /**
@@ -91,10 +91,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindConstant('answer')
                ->toProvider(
-                        NewInstance::of(
-                                'stubbles\ioc\InjectionProvider',
-                                ['get' => 42]
-                        )
+                        NewInstance::of('stubbles\ioc\InjectionProvider')
+                                ->mapCalls(['get' => 42])
                 );
         $injector = $binder->getInjector();
         assertTrue($injector->hasConstant('answer'));

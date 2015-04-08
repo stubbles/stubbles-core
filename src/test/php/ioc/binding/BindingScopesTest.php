@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
-use stubbles\lang\reflect\NewInstance;
+use bovigo\callmap\NewInstance;
 /**
  * Test for stubbles\ioc\binding\BindingScopes
  *

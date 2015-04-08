@@ -10,7 +10,7 @@
 namespace stubbles\ioc;
 use org\bovigo\vfs\vfsStream;
 use stubbles\lang\Properties;
-use stubbles\lang\reflect\NewInstance;
+use bovigo\callmap\NewInstance;
 /**
  * Test for stubbles\ioc\Binder
  *

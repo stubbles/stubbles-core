@@ -8,9 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use bovigo\callmap\NewInstance;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
-use stubbles\lang\reflect\NewInstance;
 use stubbles\test\ioc\PluginHandler;
 /**
  * Test for list and map bindings.
@@ -370,10 +370,8 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     private function createProviderForValue($value)
     {
-        return NewInstance::of(
-                'stubbles\ioc\InjectionProvider',
-                ['get' => $value]
-        );
+        return NewInstance::of('stubbles\ioc\InjectionProvider')
+                ->mapCalls(['get' => $value]);
     }
 
     /**

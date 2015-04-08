@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\lang\reflect\NewInstance;
+use bovigo\callmap\NewInstance;
 /**
  * Test for stubbles\ioc\Injector with the session scope.
  *
@@ -62,10 +62,8 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function requestSessionScopedWithSessionReturnsInstance()
     {
-        $session = NewInstance::of(
-                'stubbles\ioc\binding\Session',
-                ['hasValue' => false]
-        );
+        $session = NewInstance::of('stubbles\ioc\binding\Session')
+                ->mapCalls(['hasValue' => false]);
         assertInstanceOf(
                 'stubbles\test\ioc\Mikey',
                 $this->injector->setSession($session)

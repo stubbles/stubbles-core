@@ -8,8 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use bovigo\callmap\NewInstance;
 use stubbles\lang\Properties;
-use stubbles\lang\reflect\NewInstance;
 /**
  * Test for property bindings.
  *

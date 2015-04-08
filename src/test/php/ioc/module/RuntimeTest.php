@@ -8,8 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\module;
+use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
-use stubbles\lang\reflect\NewInstance;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for stubbles\ioc\module\Runtime.
@@ -74,20 +74,15 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function registerMethodsShouldBeCalledWithGivenProjectPath()
     {
-        $this->mode->mapCalls(
-                ['registerErrorHandler' => function($value)
-                        {
-                            assertEquals($this->root->url(), $value);
-                        },
-                 'registerExceptionHandler'=> function($value)
-                        {
-                            assertEquals($this->root->url(), $value);
-                        }
-                ]
-        );
         new Runtime($this->root->url(), $this->mode);
-        assertEquals(1, $this->mode->callsReceivedFor('registerErrorHandler'));
-        assertEquals(1, $this->mode->callsReceivedFor('registerExceptionHandler'));
+        assertEquals(
+                [$this->root->url()],
+                $this->mode->argumentsReceived('registerErrorHandler')
+        );
+        assertEquals(
+                [$this->root->url()],
+                $this->mode->argumentsReceived('registerExceptionHandler')
+        );
     }
 
     /**
@@ -128,17 +123,6 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function bindsModeProvidedViaCallable()
     {
-        $this->mode->mapCalls(
-                ['registerErrorHandler' => function($value)
-                        {
-                            assertEquals($this->root->url(), $value);
-                        },
-                 'registerExceptionHandler'=> function($value)
-                        {
-                            assertEquals($this->root->url(), $value);
-                        }
-                ]
-        );
         $runtime = new Runtime($this->root->url(), function() { return $this->mode; });
         $binder  = new Binder();
         $runtime->configure($binder);
@@ -146,8 +130,14 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
                 $this->mode,
                 $binder->getInjector()->getInstance('stubbles\lang\Mode')
         );
-        assertEquals(1, $this->mode->callsReceivedFor('registerErrorHandler'));
-        assertEquals(1, $this->mode->callsReceivedFor('registerExceptionHandler'));
+        assertEquals(
+                [$this->root->url()],
+                $this->mode->argumentsReceived('registerErrorHandler')
+        );
+        assertEquals(
+                [$this->root->url()],
+                $this->mode->argumentsReceived('registerExceptionHandler')
+        );
     }
 
     /**
