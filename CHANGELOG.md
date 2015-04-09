@@ -38,10 +38,7 @@
   * split `stubbles\peer\Socket` into two classes
     * `stubbles\peer\Socket::connect()` now returns an instance of `stubbles\peer\Stream`
     * all functionallity to read and write on a socket is now in `stubbles\peer\Stream`
-  * split `stubbles\peer\BsdSocket` into two classes
-    * `stubbles\peer\Socket::Bsdconnect()` now returns an instance of `stubbles\peer\BsdSocketConnection`
-    * all functionallity to read and write on a socket is now in `stubbles\peer\BsdSocketConnection`
-  * `stubbles\peer\BsdSocket` is not an instance of `stubbles\peer\Socket` any more
+  * removed `stubbles\peer\BsdSocket`
   * `stubbles\peer\IpAddress::openSocket()` and `stubbles\peer\IpAddress::openSecureSocket()` now return `stubbles\peer\Stream`
 
 
