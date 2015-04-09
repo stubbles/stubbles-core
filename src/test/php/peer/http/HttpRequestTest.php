@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+use bovigo\callmap\NewInstance;
 use stubbles\peer\HeaderList;
 use stubbles\streams\memory\MemoryOutputStream;
 /**
@@ -41,26 +42,28 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     private function createHttpRequest($queryString = null)
     {
-        $mockHttpUri = $this->getMock('stubbles\peer\http\HttpUri');
-        $mockStream  = $this->getMockBuilder('stubbles\peer\Stream')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $mockStream->method('setTimeout')->will(returnSelf());
-        $mockStream->method('in')
-                ->will(returnValue($this->getMock('stubbles\streams\InputStream')));
-        $mockStream->method('out')
-                ->will(returnValue($this->memoryOutputStream));
-        $mockHttpUri->method('openSocket')
-                ->will(returnValue($mockStream));
-        $mockHttpUri->method('path')->will(returnValue('/foo/resource'));
+        $stream  = NewInstance::stub('stubbles\peer\Stream')
+                ->mapCalls(
+                        ['in'  => NewInstance::of('stubbles\streams\InputStream'),
+                         'out' => $this->memoryOutputStream
+                        ]
+        );
+
+        $uriCalls = [
+            'openSocket' => $stream,
+            'path'       => '/foo/resource',
+            'hostname'   => 'example.com'
+        ];
         if (null !== $queryString) {
-            $mockHttpUri->method('hasQueryString')->will(returnValue(true));
-            $mockHttpUri->method('queryString')->will(returnValue($queryString));
+            $uriCalls['hasQueryString'] = true;
+            $uriCalls['queryString'] = $queryString;
+        } else {
+            $uriCalls['hasQueryString'] = false;
         }
 
-        $mockHttpUri->method('hostname')->will(returnValue('example.com'));
         return HttpRequest::create(
-                $mockHttpUri,
+                NewInstance::stub('stubbles\peer\http\HttpUri')
+                        ->mapCalls($uriCalls),
                 new HeaderList(['X-Binford' => 6100])
         );
     }

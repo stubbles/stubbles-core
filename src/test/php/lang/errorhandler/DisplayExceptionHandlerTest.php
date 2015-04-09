@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use bovigo\callmap\NewInstance;
 /**
  * Tests for stubbles\lang\errorhandler\DisplayExceptionHandler.
  *
@@ -23,11 +24,10 @@ class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function createExceptionHandler($sapi)
     {
-        $displayExceptionHandler = $this->getMock(
+        $displayExceptionHandler = NewInstance::of(
                 'stubbles\lang\errorhandler\DisplayExceptionHandler',
-                ['header', 'writeBody'],
                 ['/tmp', $sapi]
-        );
+        )->mapCalls(['header' => false, 'writeBody' => false]);
         return $displayExceptionHandler->disableLogging();
     }
 
@@ -38,12 +38,14 @@ class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $exception = new \Exception('message');
         $displayExceptionHandler = $this->createExceptionHandler('cgi');
-        $displayExceptionHandler->expects(once())
-                ->method('header')
-                ->with(equalTo('Status: 500 Internal Server Error'));
-        $displayExceptionHandler->expects(once())
-                ->method('writeBody')
-                ->with(equalTo("message\nTrace:\n" . $exception->getTraceAsString()));
         $displayExceptionHandler->handleException($exception);
+        assertEquals(
+                ['Status: 500 Internal Server Error'],
+                $displayExceptionHandler->argumentsReceived('header')
+        );
+        assertEquals(
+                ["message\nTrace:\n" . $exception->getTraceAsString()],
+                $displayExceptionHandler->argumentsReceived('writeBody')
+        );
     }
 }

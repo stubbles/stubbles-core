@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 /**
  * Test for stubbles\streams\InputStreamIterator.
@@ -54,6 +55,6 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
      */
     public function createFromNonSeekableInputStreamThrowsIllegalArgumentException()
     {
-        new InputStreamIterator($this->getMock('stubbles\streams\InputStream'));
+        new InputStreamIterator(NewInstance::of('stubbles\streams\InputStream'));
     }
 }

@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-callmap.git",
-                "reference": "8e200035daac498d2617ad82c4ee4b5047ebd9ae"
+                "reference": "bf0a04334d1934dc6c84d4e1e0803512d8b179e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/8e200035daac498d2617ad82c4ee4b5047ebd9ae",
-                "reference": "8e200035daac498d2617ad82c4ee4b5047ebd9ae",
+                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/bf0a04334d1934dc6c84d4e1e0803512d8b179e1",
+                "reference": "bf0a04334d1934dc6c84d4e1e0803512d8b179e1",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "source": "https://github.com/mikey179/bovigo-callmap/tree/master",
                 "issues": "https://github.com/mikey179/bovigo-callmap/issues"
             },
-            "time": "2015-04-08 14:51:58"
+            "time": "2015-04-09 13:24:29"
         },
         {
             "name": "doctrine/instantiator",

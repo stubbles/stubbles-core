@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 /**
  * Test for stubbles\streams\DecodingInputStream.
@@ -89,12 +90,12 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeClosesDecoratedStream()
     {
-        $mockInputStream = $this->getMock('stubbles\streams\InputStream');
-        $mockInputStream->expects(once())->method('close');
+        $inputStream = NewInstance::of('stubbles\streams\InputStream');
         $decodingInputStream = new DecodingInputStream(
-                $mockInputStream,
+                $inputStream,
                 'iso-8859-1'
         );
         $decodingInputStream->close();
+        assertEquals(1, $inputStream->callsReceivedFor('close'));
     }
 }

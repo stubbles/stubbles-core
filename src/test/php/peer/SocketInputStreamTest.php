@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use org\bovigo\vfs\vfsStream;
 /**
  * Test for stubbles\peer\SocketInputStream.
  *
@@ -20,23 +21,29 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      *
      * @type  \stubbles\peer\SocketInputStream
      */
-    protected $socketInputStream;
+    private $socketInputStream;
     /**
      * mocked socket instance
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\peer\Stream
      */
-    protected $mockSocket;
+    private $stream;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockSocket = $this->getMockBuilder('stubbles\peer\Stream')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $this->socketInputStream = new SocketInputStream($this->mockSocket);
+        $this->stream = new Stream(
+                fopen(
+                        vfsStream::newFile('foo.txt')
+                                ->withContent("foo\n")
+                                ->at(vfsStream::setup())
+                                ->url(),
+                        'rb+'
+                )
+        );
+        $this->socketInputStream = new SocketInputStream($this->stream);
     }
 
     /**
@@ -44,10 +51,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readFromSocketWithDefaultLength()
     {
-        $this->mockSocket->method('readBinary')
-                ->with(equalTo(8192))
-                ->will(returnValue('foo'));
-        assertEquals('foo', $this->socketInputStream->read());
+        assertEquals("foo\n", $this->socketInputStream->read());
     }
 
     /**
@@ -55,9 +59,6 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readFromSocketWithGivenLength()
     {
-        $this->mockSocket->method('readBinary')
-                ->with(equalTo(3))
-                ->will(returnValue('foo'));
         assertEquals('foo', $this->socketInputStream->read(3));
     }
 
@@ -66,21 +67,16 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineFromSocketWithDefaultLength()
     {
-        $this->mockSocket->method('readLine')
-                ->with(equalTo(8192))
-                ->will(returnValue('foo'));
         assertEquals('foo', $this->socketInputStream->readLine());
     }
 
     /**
      * @test
+     * @group  foo
      */
     public function readLineFromSocketWithGivenLength()
     {
-        $this->mockSocket->method('readLine')
-                ->with(equalTo(3))
-                ->will(returnValue('foo'));
-        assertEquals('foo', $this->socketInputStream->readLine(3));
+        assertEquals('foo', $this->socketInputStream->readLine(4));
     }
 
     /**
@@ -88,7 +84,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function noBytesLeft()
     {
-        $this->mockSocket->method('eof')->will(returnValue(true));
+        $this->socketInputStream->read();
         assertEquals(-1, $this->socketInputStream->bytesLeft());
         assertTrue($this->socketInputStream->eof());
     }
@@ -96,9 +92,8 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function bytesLeft()
+    public function alwaysOneByteLeftWhenNotAtEnd()
     {
-        $this->mockSocket->method('eof')->will(returnValue(false));
         assertEquals(1, $this->socketInputStream->bytesLeft());
         assertFalse($this->socketInputStream->eof());
     }

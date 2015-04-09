@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryOutputStream;
 /**
  * Test for stubbles\peer\http\HttpConnection.
@@ -20,15 +21,13 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  HttpConnection
+     * @type  \stubbles\peer\http\HttpConnection
      */
     private $httpConnection;
     /**
-     * URI instance to be used
-     *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\streams\memory\MemoryOutputStream
      */
-    private $mockHttpUri;
+    private $memoryOutputStream;
 
     /**
      * set up test environment
@@ -36,21 +35,23 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->memoryOutputStream = new MemoryOutputStream();
-        $this->mockHttpUri        = $this->getMock('stubbles\peer\http\HttpUri');
-        $mockStream               = $this->getMockBuilder('stubbles\peer\Stream')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $mockStream->method('setTimeout')->will(returnSelf());
-        $mockStream->method('in')
-                ->will(returnValue($this->getMock('stubbles\streams\InputStream')));
-        $mockStream->method('out')
-                ->will(returnValue($this->memoryOutputStream));
-        $this->mockHttpUri->method('openSocket')
-                ->with(equalTo(2))
-                ->will(returnValue($mockStream));
-        $this->mockHttpUri->method('path')->will(returnValue('/foo/resource'));
-        $this->mockHttpUri->method('hostname')->will(returnValue('example.com'));
-        $this->httpConnection = new HttpConnection($this->mockHttpUri);
+        $stream = NewInstance::stub('stubbles\peer\Stream')
+                ->mapCalls(
+                        ['in'  => NewInstance::of('stubbles\streams\InputStream'),
+                         'out' => $this->memoryOutputStream
+                        ]
+        );
+
+        $httpUri = NewInstance::stub('stubbles\peer\http\HttpUri')
+                ->mapCalls(
+                        ['openSocket'     => $stream,
+                         'path'           => '/foo/resource',
+                         'hostname'       => 'example.com',
+                         'hasQueryString' => true,
+                         'queryString'    => 'foo=bar'
+                        ]
+        );
+        $this->httpConnection = new HttpConnection($httpUri);
     }
 
     /**
@@ -70,7 +71,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
         );
         assertEquals(
                 Http::lines(
-                        ['GET /foo/resource HTTP/1.1',
+                        ['GET /foo/resource?foo=bar HTTP/1.1',
                          'Host: example.com',
                          'User-Agent: Stubbles HTTP Client',
                          'Referer: http://example.com/',
@@ -80,7 +81,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                          ''
                         ]
                 ),
-                            $this->memoryOutputStream
+                $this->memoryOutputStream
         );
     }
 
@@ -101,7 +102,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
         );
         assertEquals(
                 Http::lines(
-                        ['HEAD /foo/resource HTTP/1.1',
+                        ['HEAD /foo/resource?foo=bar HTTP/1.1',
                          'Host: example.com',
                          'User-Agent: Stubbles HTTP Client',
                          'Referer: http://example.com/',
@@ -112,7 +113,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                          ''
                         ]
                 ),
-                (string) $this->memoryOutputStream
+                $this->memoryOutputStream
         );
     }
 
@@ -145,7 +146,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                          'foobar'
                         ]
                 ),
-                (string) $this->memoryOutputStream
+                $this->memoryOutputStream
         );
     }
 
@@ -179,7 +180,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                          'foo=bar&ba+z=dum+my&'
                         ]
                 ),
-                (string) $this->memoryOutputStream
+                $this->memoryOutputStream
         );
     }
 
@@ -213,7 +214,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                          'foobar'
                         ]
                 ),
-                (string) $this->memoryOutputStream
+                $this->memoryOutputStream
         );
     }
 
@@ -245,7 +246,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                          ''
                         ]
                 ),
-                (string) $this->memoryOutputStream
+                $this->memoryOutputStream
         );
     }
 

@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use bovigo\callmap\NewInstance;
 /**
  * Test for stubbles\streams\PrefixedStreamFactory.
  *
@@ -26,16 +27,16 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockStreamFactory;
+    protected $streamFactory;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockStreamFactory     = $this->getMock('stubbles\streams\StreamFactory');
+        $this->streamFactory = NewInstance::of('stubbles\streams\StreamFactory');
         $this->prefixedStreamFactory = new PrefixedStreamFactory(
-                $this->mockStreamFactory,
+                $this->streamFactory,
                 'prefix/'
         );
     }
@@ -45,17 +46,20 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function inputStreamGetsPrefix()
     {
-        $mockInputStream = $this->getMock('stubbles\streams\InputStream');
-        $this->mockStreamFactory->expects(once())
-                ->method('createInputStream')
-                ->with(equalTo('prefix/foo'), equalTo(['bar' => 'baz']))
-                ->will(returnValue($mockInputStream));
+        $inputStream = NewInstance::of('stubbles\streams\InputStream');
+        $this->streamFactory->mapCalls(
+                ['createInputStream' => $inputStream]
+        );
         assertSame(
-                $mockInputStream,
+                $inputStream,
                 $this->prefixedStreamFactory->createInputStream(
                         'foo',
                         ['bar' => 'baz']
                 )
+        );
+        assertEquals(
+                ['prefix/foo', ['bar' => 'baz']],
+                $this->streamFactory->argumentsReceived('createInputStream')
         );
     }
 
@@ -64,17 +68,20 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function outputStreamGetsPrefix()
     {
-        $mockOutputStream = $this->getMock('stubbles\streams\OutputStream');
-        $this->mockStreamFactory->expects(once())
-                ->method('createOutputStream')
-                ->with(equalTo('prefix/foo'), equalTo(['bar' => 'baz']))
-                ->will(returnValue($mockOutputStream));
+        $outputStream = NewInstance::of('stubbles\streams\OutputStream');
+        $this->streamFactory->mapCalls(
+                ['createOutputStream' => $outputStream]
+        );
         assertSame(
-                $mockOutputStream,
+                $outputStream,
                 $this->prefixedStreamFactory->createOutputStream(
                         'foo',
                         ['bar' => 'baz']
                 )
+        );
+        assertEquals(
+                ['prefix/foo', ['bar' => 'baz']],
+                $this->streamFactory->argumentsReceived('createOutputStream')
         );
     }
 }

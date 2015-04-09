@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use bovigo\callmap\NewInstance;
 /**
  * Test for stubbles\peer\BsdSocketConnection.
  *

@@ -21,24 +21,24 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * instance to test
      *
-     * @type  FilteredInputStream
+     * @type  \stubbles\streams\filter\FilteredInputStream
      */
     private $filteredInputStream;
     /**
      * mocked input stream
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \stubbles\streams\memory\MemoryInputStream
      */
-    private $mockInputStream;
+    private $inputStream;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockInputStream     = new MemoryInputStream("foo\nbar");
+        $this->inputStream = new MemoryInputStream("foo\nbar");
         $this->filteredInputStream = new FilteredInputStream(
-                $this->mockInputStream,
+                $this->inputStream,
                 Predicate::castFrom(
                         function($value)
                         {
@@ -71,6 +71,6 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceWithNoStreamFilterAndNoPredicateAndNoCallableThrowsIllegalArgumentException()
     {
-        new FilteredInputStream($this->mockInputStream, new \stdClass());
+        new FilteredInputStream($this->inputStream, new \stdClass());
     }
 }

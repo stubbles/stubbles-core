@@ -174,10 +174,10 @@ stubbles.locale=\"de_DE\"
 stubbles.number.decimals=4
 stubbles.webapp.xml.serializeMode=true")
                  ->at($this->root);
-        $mockBinder = $this->getMock('stubbles\ioc\Binder', ['bindProperties']);
-        $mockBinder->expects(once())->method('bindProperties');
+        $binder  = NewInstance::of('stubbles\ioc\Binder');
         $runtime = new Runtime($this->root->url(), $this->mode);
-        $runtime->configure($mockBinder);
+        $runtime->configure($binder);
+        assertEquals(1, $binder->callsReceivedFor('bindProperties'));
     }
 
     /**

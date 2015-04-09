@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use org\bovigo\vfs\vfsStream;
 /**
  * Test for stubbles\peer\SocketOutputStream.
  *
@@ -20,23 +21,24 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      *
      * @type  \stubbles\peer\SocketOutputStream
      */
-    protected $socketOutputStream;
+    private $socketOutputStream;
     /**
      * mocked socket instance
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \org\bovigo\vfs\vfsStreamFile
      */
-    protected $mockSocket;
+    private $file;
+
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->mockSocket = $this->getMockBuilder('stubbles\peer\Stream')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $this->socketOutputStream = new SocketOutputStream($this->mockSocket);
+        $this->file = vfsStream::newFile('foo.txt')->at(vfsStream::setup());
+        $this->socketOutputStream = new SocketOutputStream(
+                new Stream(fopen($this->file->url(), 'wb+'))
+        );
     }
 
     /**
@@ -44,10 +46,8 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writePassesBytesToSocket()
     {
-        $this->mockSocket->method('write')
-                ->with(equalTo('foo'))
-                ->will(returnValue(3));
         assertEquals(3, $this->socketOutputStream->write('foo'));
+        $this->assertEquals('foo', $this->file->getContent());
     }
 
     /**
@@ -55,10 +55,8 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinePassesBytesToSocketWithLinebreak()
     {
-        $this->mockSocket->method('write')
-                ->with(equalTo("foo\r\n"))
-                ->will(returnValue(5));
         assertEquals(5, $this->socketOutputStream->writeLine('foo'));
+        $this->assertEquals("foo\r\n", $this->file->getContent());
     }
 
     /**
@@ -66,18 +64,11 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesPassesBytesToSocketWithLinebreak()
     {
-        $this->mockSocket->expects(at(0))
-                         ->method('write')
-                         ->with(equalTo("foo\r\n"))
-                         ->will(returnValue(5));
-        $this->mockSocket->expects(at(1))
-                         ->method('write')
-                         ->with(equalTo("bar\r\n"))
-                         ->will(returnValue(5));
         assertEquals(
                 10,
                 $this->socketOutputStream->writeLines(['foo', 'bar'])
         );
+        $this->assertEquals("foo\r\nbar\r\n", $this->file->getContent());
     }
 
     /**

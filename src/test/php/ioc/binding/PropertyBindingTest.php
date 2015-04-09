@@ -52,7 +52,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    private $mockInjector;
+    private $injector;
     /**
      * mocked runtime mode
      *
@@ -65,10 +65,8 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->mockInjector = $this->getMockBuilder('stubbles\ioc\Injector')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $this->mode = NewInstance::of('stubbles\lang\Mode')
+        $this->injector = NewInstance::of('stubbles\ioc\Injector');
+        $this->mode     = NewInstance::of('stubbles\lang\Mode')
                 ->mapCalls(['name' => 'PROD']);
         $this->propertyBinding = new PropertyBinding(
                 new Properties(['PROD'   => ['foo.bar' => 'baz',
@@ -100,7 +98,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 'baz',
-                $this->propertyBinding->getInstance($this->mockInjector, 'foo.bar')
+                $this->propertyBinding->getInstance($this->injector, 'foo.bar')
         );
     }
 
@@ -121,7 +119,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
         $this->mode->mapCalls(['name' => 'DEV']);
         assertEquals(
                 'default',
-                $this->propertyBinding->getInstance($this->mockInjector, 'foo.bar')
+                $this->propertyBinding->getInstance($this->injector, 'foo.bar')
         );
     }
 
@@ -140,7 +138,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 'someValue',
-                $this->propertyBinding->getInstance($this->mockInjector, 'other')
+                $this->propertyBinding->getInstance($this->injector, 'other')
         );
     }
 
@@ -159,7 +157,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function throwsBindingExceptionWhenPropertyNotSet()
     {
-        $this->propertyBinding->getInstance($this->mockInjector, 'does.not.exist');
+        $this->propertyBinding->getInstance($this->injector, 'does.not.exist');
     }
 
     /**
@@ -170,7 +168,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 lang\reflect(__CLASS__),
-                $this->propertyBinding->getInstance($this->mockInjector, 'baz')
+                $this->propertyBinding->getInstance($this->injector, 'baz')
         );
     }
 
@@ -183,7 +181,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
         $this->mode->mapCalls(['name' => 'DEV']);
         assertEquals(
                 lang\reflect('stubbles\lang\Properties'),
-                $this->propertyBinding->getInstance($this->mockInjector, 'baz')
+                $this->propertyBinding->getInstance($this->injector, 'baz')
         );
     }
 

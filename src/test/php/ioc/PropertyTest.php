@@ -35,7 +35,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      *
      * @type  \stubbles\lang\Mode
      */
-    private $mockMode;
+    private $mode;
 
     /**
      * set up test environment
@@ -49,9 +49,9 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
                              ]
                 ]
         );
-        $this->mockMode = NewInstance::of('stubbles\lang\Mode');
+        $this->mode = NewInstance::of('stubbles\lang\Mode');
         $binder = new Binder();
-        $binder->bindProperties($this->properties, $this->mockMode);
+        $binder->bindProperties($this->properties, $this->mode);
         $this->injector = $binder->getInjector();
     }
 
@@ -60,7 +60,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function setsCorrectPropertiesInRuntimeModeWithSpecificProperties()
     {
-        $this->mockMode->mapCalls(['name' => 'PROD']);
+        $this->mode->mapCalls(['name' => 'PROD']);
         $propertyReceiver = $this->injector->getInstance('stubbles\test\ioc\PropertyReceiver');
         assertEquals('baz', $propertyReceiver->foo);
         assertEquals('someValue', $propertyReceiver->bar);
@@ -71,7 +71,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function setsCorrectPropertiesInRuntimeModeWithDefaultProperties()
     {
-        $this->mockMode->mapCalls(['name' => 'DEV']);
+        $this->mode->mapCalls(['name' => 'DEV']);
         $propertyReceiver = $this->injector->getInstance('stubbles\test\ioc\PropertyReceiver');
         assertEquals('default', $propertyReceiver->foo);
         assertEquals('someValue', $propertyReceiver->bar);

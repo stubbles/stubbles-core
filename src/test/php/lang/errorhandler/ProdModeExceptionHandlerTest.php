@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 /**
  * Tests for stubbles\lang\errorhandler\ProdModeExceptionHandler.
@@ -39,10 +40,10 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function createExceptionHandler($sapi)
     {
-        $prodModeExceptionHandler = $this->getMock('stubbles\lang\errorhandler\ProdModeExceptionHandler',
-                                                   ['header', 'writeBody'],
-                                                   [vfsStream::url('root'), $sapi]
-                                    );
+        $prodModeExceptionHandler = NewInstance::of(
+                'stubbles\lang\errorhandler\ProdModeExceptionHandler',
+                [vfsStream::url('root'), $sapi]
+        )->mapCalls(['header' => false, 'writeBody' => false]);
         return $prodModeExceptionHandler->disableLogging();
     }
 
@@ -53,13 +54,15 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $exception                = new \Exception('message');
         $prodModeExceptionHandler = $this->createExceptionHandler('cgi');
-        $prodModeExceptionHandler->expects(once())
-                ->method('header')
-                ->with(equalTo('Status: 500 Internal Server Error'));
-        $prodModeExceptionHandler->expects(once())
-                ->method('writeBody')
-                ->with(equalTo("I'm sorry but I can not fulfill your request. Somewhere someone messed something up."));
         $prodModeExceptionHandler->handleException($exception);
+        assertEquals(
+                ['Status: 500 Internal Server Error'],
+                $prodModeExceptionHandler->argumentsReceived('header')
+        );
+        assertEquals(
+                ['I\'m sorry but I can not fulfill your request. Somewhere someone messed something up.'],
+                $prodModeExceptionHandler->argumentsReceived('writeBody')
+        );
     }
 
     /**
@@ -72,12 +75,14 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
                  ->at($this->root);
         $exception                = new \stubbles\lang\exception\Exception('message');
         $prodModeExceptionHandler = $this->createExceptionHandler('apache');
-        $prodModeExceptionHandler->expects(once())
-                ->method('header')
-                ->with(equalTo('HTTP/1.1 500 Internal Server Error'));
-        $prodModeExceptionHandler->expects(once())
-                ->method('writeBody')
-                ->with(equalTo('An error occurred'));
         $prodModeExceptionHandler->handleException($exception);
+        assertEquals(
+                ['HTTP/1.1 500 Internal Server Error'],
+                $prodModeExceptionHandler->argumentsReceived('header')
+        );
+        assertEquals(
+                ['An error occurred'],
+                $prodModeExceptionHandler->argumentsReceived('writeBody')
+        );
     }
 }

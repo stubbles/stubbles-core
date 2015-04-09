@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 /**
  * Helper class for the test to make abstract class instantiable.
@@ -82,9 +83,9 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeCallsDecoratedStream()
     {
-        $mockInputStream = $this->getMock('stubbles\streams\InputStream');
-        $mockInputStream->expects(once())->method('close');
-        $abstractDecoratedInputStream = new TestAbstractDecoratedInputStream($mockInputStream);
+        $inputStream = NewInstance::of('stubbles\streams\InputStream');
+        $abstractDecoratedInputStream = new TestAbstractDecoratedInputStream($inputStream);
         $abstractDecoratedInputStream->close();
+        assertEquals(1, $inputStream->callsReceivedFor('close'));
     }
 }
