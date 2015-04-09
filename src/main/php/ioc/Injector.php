@@ -50,12 +50,13 @@ class Injector
     /**
      * constructor
      *
-     * @param  \stubbles\ioc\binding\Binding[]   $bindings
+     * @param  \stubbles\ioc\binding\Binding[]      $bindings  optional
+     * @param  \stubbles\ioc\binding\BindingScopes  $scopes    optional
      * @since  1.5.0
      */
-    public function __construct(array $bindings, BindingScopes $scopes)
+    public function __construct(array $bindings = [], BindingScopes $scopes = null)
     {
-        $this->scopes = $scopes;
+        $this->scopes = $scopes !== null ? $scopes : new BindingScopes();
         foreach ($bindings as $binding) {
             $this->index[$binding->getKey()] = $binding;
         }
