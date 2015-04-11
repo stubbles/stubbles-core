@@ -77,11 +77,11 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         new Runtime($this->root->url(), $this->mode);
         assertEquals(
                 [$this->root->url()],
-                $this->mode->argumentsReceived('registerErrorHandler')
+                $this->mode->argumentsReceivedFor('registerErrorHandler')
         );
         assertEquals(
                 [$this->root->url()],
-                $this->mode->argumentsReceived('registerExceptionHandler')
+                $this->mode->argumentsReceivedFor('registerExceptionHandler')
         );
     }
 
@@ -132,11 +132,11 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         );
         assertEquals(
                 [$this->root->url()],
-                $this->mode->argumentsReceived('registerErrorHandler')
+                $this->mode->argumentsReceivedFor('registerErrorHandler')
         );
         assertEquals(
                 [$this->root->url()],
-                $this->mode->argumentsReceived('registerExceptionHandler')
+                $this->mode->argumentsReceivedFor('registerExceptionHandler')
         );
     }
 

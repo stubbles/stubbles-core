@@ -59,7 +59,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
         );
         assertEquals(
                 ['prefix/foo', ['bar' => 'baz']],
-                $this->streamFactory->argumentsReceived('createInputStream')
+                $this->streamFactory->argumentsReceivedFor('createInputStream')
         );
     }
 
@@ -81,7 +81,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
         );
         assertEquals(
                 ['prefix/foo', ['bar' => 'baz']],
-                $this->streamFactory->argumentsReceived('createOutputStream')
+                $this->streamFactory->argumentsReceivedFor('createOutputStream')
         );
     }
 }

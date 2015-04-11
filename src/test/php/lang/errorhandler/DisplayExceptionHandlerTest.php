@@ -41,11 +41,11 @@ class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $displayExceptionHandler->handleException($exception);
         assertEquals(
                 ['Status: 500 Internal Server Error'],
-                $displayExceptionHandler->argumentsReceived('header')
+                $displayExceptionHandler->argumentsReceivedFor('header')
         );
         assertEquals(
                 ["message\nTrace:\n" . $exception->getTraceAsString()],
-                $displayExceptionHandler->argumentsReceived('writeBody')
+                $displayExceptionHandler->argumentsReceivedFor('writeBody')
         );
     }
 }

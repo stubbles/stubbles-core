@@ -57,11 +57,11 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $prodModeExceptionHandler->handleException($exception);
         assertEquals(
                 ['Status: 500 Internal Server Error'],
-                $prodModeExceptionHandler->argumentsReceived('header')
+                $prodModeExceptionHandler->argumentsReceivedFor('header')
         );
         assertEquals(
                 ['I\'m sorry but I can not fulfill your request. Somewhere someone messed something up.'],
-                $prodModeExceptionHandler->argumentsReceived('writeBody')
+                $prodModeExceptionHandler->argumentsReceivedFor('writeBody')
         );
     }
 
@@ -78,11 +78,11 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $prodModeExceptionHandler->handleException($exception);
         assertEquals(
                 ['HTTP/1.1 500 Internal Server Error'],
-                $prodModeExceptionHandler->argumentsReceived('header')
+                $prodModeExceptionHandler->argumentsReceivedFor('header')
         );
         assertEquals(
                 ['An error occurred'],
-                $prodModeExceptionHandler->argumentsReceived('writeBody')
+                $prodModeExceptionHandler->argumentsReceivedFor('writeBody')
         );
     }
 }

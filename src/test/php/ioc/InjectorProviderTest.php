@@ -34,7 +34,7 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
                 $question
         );
         assertSame($answer, $question->getAnswer());
-        assertEquals(['answer'], $provider->argumentsReceived('get'));
+        assertEquals(['answer'], $provider->argumentsReceivedFor('get'));
     }
 
     /**
