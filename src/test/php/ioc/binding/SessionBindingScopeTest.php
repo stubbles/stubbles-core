@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use stubbles\lang;
 /**
@@ -63,7 +64,7 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
                                 $this->provider
                 )
         );
-        assertEquals(0, $this->provider->callsReceivedFor('get'));
+        callmap\verify($this->provider, 'get')->wasNeverCalled();
     }
 
     /**

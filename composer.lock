@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5b96e27795ad64efa55f40d450c3ef21",
+    "hash": "8340df557d794c1688f7a10a13cc4a84",
     "packages": [],
     "packages-dev": [
         {
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-callmap.git",
-                "reference": "be68331a3dcd2d9600d7af79f374b97e0f361a74"
+                "reference": "b38c4abc763c3f0f9085933ed274026402370476"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/be68331a3dcd2d9600d7af79f374b97e0f361a74",
-                "reference": "be68331a3dcd2d9600d7af79f374b97e0f361a74",
+                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/b38c4abc763c3f0f9085933ed274026402370476",
+                "reference": "b38c4abc763c3f0f9085933ed274026402370476",
                 "shasum": ""
             },
             "require": {
@@ -27,10 +27,13 @@
             "require-dev": {
                 "phpunit/phpunit": "~4.6"
             },
+            "suggest": {
+                "phpunit/phpunit": "To use argument verification"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3.x-dev"
+                    "dev-master": "0.5.x-dev"
                 }
             },
             "autoload": {
@@ -41,20 +44,12 @@
                     "src/main/php/functions.php"
                 ]
             },
-            "autoload-dev": {
-                "files": [
-                    "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
             "description": "Allows to stub and mock method calls by applying a callmap.",
-            "support": {
-                "source": "https://github.com/mikey179/bovigo-callmap/tree/master",
-                "issues": "https://github.com/mikey179/bovigo-callmap/issues"
-            },
-            "time": "2015-04-11 10:49:58"
+            "time": "2015-04-12 19:05:30"
         },
         {
             "name": "doctrine/instantiator",
@@ -1062,9 +1057,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "bovigo/callmap": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

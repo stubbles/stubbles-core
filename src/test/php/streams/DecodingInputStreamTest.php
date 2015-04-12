@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 /**
@@ -96,6 +97,6 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
                 'iso-8859-1'
         );
         $decodingInputStream->close();
-        assertEquals(1, $inputStream->callsReceivedFor('close'));
+        callmap\verify($inputStream, 'close')->wasCalledOnce();
     }
 }

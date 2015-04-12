@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\module;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
 use org\bovigo\vfs\vfsStream;
@@ -75,14 +76,10 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function registerMethodsShouldBeCalledWithGivenProjectPath()
     {
         new Runtime($this->root->url(), $this->mode);
-        assertEquals(
-                [$this->root->url()],
-                $this->mode->argumentsReceivedFor('registerErrorHandler')
-        );
-        assertEquals(
-                [$this->root->url()],
-                $this->mode->argumentsReceivedFor('registerExceptionHandler')
-        );
+        callmap\verify($this->mode, 'registerErrorHandler')
+                ->received($this->root->url());
+        callmap\verify($this->mode, 'registerExceptionHandler')
+                ->received($this->root->url());
     }
 
     /**
@@ -130,14 +127,10 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
                 $this->mode,
                 $binder->getInjector()->getInstance('stubbles\lang\Mode')
         );
-        assertEquals(
-                [$this->root->url()],
-                $this->mode->argumentsReceivedFor('registerErrorHandler')
-        );
-        assertEquals(
-                [$this->root->url()],
-                $this->mode->argumentsReceivedFor('registerExceptionHandler')
-        );
+        callmap\verify($this->mode, 'registerErrorHandler')
+                ->received($this->root->url());
+        callmap\verify($this->mode, 'registerExceptionHandler')
+                ->received($this->root->url());
     }
 
     /**
@@ -159,7 +152,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $binder = NewInstance::of('stubbles\ioc\Binder');
         $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($binder);
-        assertEquals(0, $binder->callsReceivedFor('bindProperties'));
+        callmap\verify($binder, 'bindProperties')->wasNeverCalled();
     }
 
     /**
@@ -177,7 +170,7 @@ stubbles.webapp.xml.serializeMode=true")
         $binder  = NewInstance::of('stubbles\ioc\Binder');
         $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($binder);
-        assertEquals(1, $binder->callsReceivedFor('bindProperties'));
+        callmap\verify($binder, 'bindProperties')->wasCalledOnce();
     }
 
     /**
