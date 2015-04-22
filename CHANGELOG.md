@@ -1,3 +1,9 @@
+5.4.1 (2015-04-22)
+------------------
+
+  * allowed iteration with non-seekable input streams
+
+
 5.4.0 (2015-04-01)
 ------------------
 
