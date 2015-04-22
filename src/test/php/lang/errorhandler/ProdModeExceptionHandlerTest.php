@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 /**
@@ -55,14 +56,10 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $exception                = new \Exception('message');
         $prodModeExceptionHandler = $this->createExceptionHandler('cgi');
         $prodModeExceptionHandler->handleException($exception);
-        assertEquals(
-                ['Status: 500 Internal Server Error'],
-                $prodModeExceptionHandler->argumentsReceived('header')
-        );
-        assertEquals(
-                ['I\'m sorry but I can not fulfill your request. Somewhere someone messed something up.'],
-                $prodModeExceptionHandler->argumentsReceived('writeBody')
-        );
+        callmap\verify($prodModeExceptionHandler, 'header')
+                ->received('Status: 500 Internal Server Error');
+        callmap\verify($prodModeExceptionHandler, 'writeBody')
+                ->received('I\'m sorry but I can not fulfill your request. Somewhere someone messed something up.');
     }
 
     /**
@@ -76,13 +73,9 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $exception                = new \stubbles\lang\exception\Exception('message');
         $prodModeExceptionHandler = $this->createExceptionHandler('apache');
         $prodModeExceptionHandler->handleException($exception);
-        assertEquals(
-                ['HTTP/1.1 500 Internal Server Error'],
-                $prodModeExceptionHandler->argumentsReceived('header')
-        );
-        assertEquals(
-                ['An error occurred'],
-                $prodModeExceptionHandler->argumentsReceived('writeBody')
-        );
+        callmap\verify($prodModeExceptionHandler, 'header')
+                ->received('HTTP/1.1 500 Internal Server Error');
+        callmap\verify($prodModeExceptionHandler, 'writeBody')
+                ->received('An error occurred');
     }
 }

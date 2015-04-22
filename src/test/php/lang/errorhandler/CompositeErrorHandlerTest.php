@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 /**
  * Tests for stubbles\lang\errorhandler\CompositeErrorHandler
@@ -64,7 +65,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->errorHandler1->mapCalls(['isResponsible' => false]);
         $this->errorHandler2->mapCalls(['isResponsible' => true]);
         assertTrue($this->compositeErrorHandler->isResponsible(1, 'foo'));
-        assertEquals(0, $this->errorHandler3->callsReceivedFor('isResponsible'));
+        callmap\verify($this->errorHandler3, 'isResponsible')->wasNeverCalled();
      }
 
     /**
@@ -86,7 +87,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->errorHandler1->mapCalls(['isSupressable' => true]);
         $this->errorHandler2->mapCalls(['isSupressable' => false]);
         assertFalse($this->compositeErrorHandler->isSupressable(1, 'foo'));
-        assertEquals(0, $this->errorHandler3->callsReceivedFor('isSupressable'));
+        callmap\verify($this->errorHandler3, 'isSupressable')->wasNeverCalled();
     }
 
     /**
@@ -148,7 +149,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
                 ErrorHandler::STOP_ERROR_HANDLING,
                 $this->compositeErrorHandler->handle(1, 'foo')
         );
-        assertEquals(0, $this->errorHandler3->callsReceivedFor('isResponsible'));
+        callmap\verify($this->errorHandler3, 'isResponsible')->wasNeverCalled();
         error_reporting($oldLevel);
     }
 

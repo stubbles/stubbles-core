@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 /**
  * Tests for stubbles\lang\errorhandler\DisplayExceptionHandler.
@@ -39,13 +40,9 @@ class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $exception = new \Exception('message');
         $displayExceptionHandler = $this->createExceptionHandler('cgi');
         $displayExceptionHandler->handleException($exception);
-        assertEquals(
-                ['Status: 500 Internal Server Error'],
-                $displayExceptionHandler->argumentsReceived('header')
-        );
-        assertEquals(
-                ["message\nTrace:\n" . $exception->getTraceAsString()],
-                $displayExceptionHandler->argumentsReceived('writeBody')
-        );
+        callmap\verify($displayExceptionHandler, 'header')
+                ->received('Status: 500 Internal Server Error');
+        callmap\verify($displayExceptionHandler, 'writeBody')
+                ->received("message\nTrace:\n" . $exception->getTraceAsString());
     }
 }

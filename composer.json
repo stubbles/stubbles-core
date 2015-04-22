@@ -10,7 +10,7 @@
     "require-dev": {
         "mikey179/vfsStream": "~1.5",
         "phpunit/phpunit": "~4.6",
-        "bovigo/callmap": "~0.1"
+        "bovigo/callmap": "~0.5"
     },
     "autoload": {
         "psr-4": {
