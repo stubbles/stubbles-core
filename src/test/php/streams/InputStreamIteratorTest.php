@@ -18,30 +18,13 @@ use stubbles\streams\memory\MemoryInputStream;
 class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  InputStreamIterator
-     */
-    private $inputStreamIterator;
-
-    /**
-     * set up test environment
-     */
-    public function setUp()
-    {
-        $this->inputStreamIterator = new InputStreamIterator(
-                new MemoryInputStream("foo\nbar\n\baz\n")
-        );
-    }
-
-    /**
      * @test
      */
-    public function iteration()
+    public function canIterateOverSeekableInputStream()
     {
         $expectedLineNumber = 1;
         $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
-        foreach ($this->inputStreamIterator as $lineNumber => $line) {
+        foreach (linesOf(new MemoryInputStream("foo\nbar\nbaz\n")) as $lineNumber => $line) {
             $this->assertEquals($expectedLineNumber, $lineNumber);
             $this->assertEquals($expectedLine[$expectedLineNumber], $line);
             $expectedLineNumber++;
@@ -50,10 +33,62 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
-    public function createFromNonSeekableInputStreamThrowsIllegalArgumentException()
+    public function canRewindSeekableInputStream()
     {
-        new InputStreamIterator($this->getMock('stubbles\streams\InputStream'));
+        $lines = linesOf(new MemoryInputStream("foo\nbar\nbaz\n"));
+        foreach ($lines as $lineNumber => $line) {
+            // do nothing
+        }
+
+        $expectedLineNumber = 1;
+        $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
+        foreach ($lines as $lineNumber => $line) {
+            $this->assertEquals($expectedLineNumber, $lineNumber);
+            $this->assertEquals($expectedLine[$expectedLineNumber], $line);
+            $expectedLineNumber++;
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function canIterateOverNonSeekableInputStream()
+    {
+        $inputStream = $this->getMock('stubbles\streams\InputStream');
+        $inputStream->method('readLine')
+                ->will($this->onConsecutiveCalls('foo', 'bar', 'baz'));
+        $inputStream->method('eof')
+                ->will($this->onConsecutiveCalls(false, false, false, true));
+        $expectedLineNumber = 1;
+        $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
+        foreach (linesOf($inputStream) as $lineNumber => $line) {
+            $this->assertEquals($expectedLineNumber, $lineNumber);
+            $this->assertEquals($expectedLine[$expectedLineNumber], $line);
+            $expectedLineNumber++;
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function canNotRewindNonSeekableInputStream()
+    {
+        $inputStream = $this->getMock('stubbles\streams\InputStream');
+        $inputStream->method('readLine')
+                ->will($this->onConsecutiveCalls('foo', 'bar', 'baz'));
+        $inputStream->method('eof')
+                ->will($this->onConsecutiveCalls(false, false, false, true, true, true));
+        $lines = linesOf($inputStream);
+        foreach ($lines as $lineNumber => $line) {
+            // do nothing
+        }
+
+        $count = 0;
+        foreach (linesOf($inputStream) as $lineNumber => $line) {
+            $count++;
+        }
+
+        $this->assertEquals(0, $count);
     }
 }

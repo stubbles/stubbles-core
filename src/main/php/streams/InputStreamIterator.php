@@ -44,10 +44,6 @@ class InputStreamIterator implements \Iterator
      */
     public function __construct(InputStream $inputStream)
     {
-        if (!($inputStream instanceof Seekable)) {
-            throw new IllegalArgumentException('Can not rewind non-seekable input stream ' . get_class($inputStream));
-        }
-
         $this->inputStream = $inputStream;
         $this->next();
     }
@@ -86,6 +82,10 @@ class InputStreamIterator implements \Iterator
      */
     public function rewind()
     {
+        if (!($this->inputStream instanceof Seekable)) {
+            return;
+        }
+
         $this->inputStream->seek(0, Seekable::SET);
         $this->lineNumber  = 0;
         $this->currentLine = null;
