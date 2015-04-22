@@ -9,16 +9,16 @@
     "packages-dev": [
         {
             "name": "bovigo/callmap",
-            "version": "v0.6.0",
+            "version": "v0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-callmap.git",
-                "reference": "6b896fc3ba8d9424767bdc3480db8ec225367ece"
+                "reference": "77883204c69bedd68d1a47d215afa4f183ac789c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/6b896fc3ba8d9424767bdc3480db8ec225367ece",
-                "reference": "6b896fc3ba8d9424767bdc3480db8ec225367ece",
+                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/77883204c69bedd68d1a47d215afa4f183ac789c",
+                "reference": "77883204c69bedd68d1a47d215afa4f183ac789c",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Allows to stub and mock method calls by applying a callmap.",
-            "time": "2015-04-18 17:32:53"
+            "time": "2015-04-22 13:55:10"
         },
         {
             "name": "doctrine/instantiator",
