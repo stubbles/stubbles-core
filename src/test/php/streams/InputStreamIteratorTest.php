@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 /**
@@ -19,30 +20,13 @@ use stubbles\streams\memory\MemoryInputStream;
 class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  InputStreamIterator
-     */
-    private $inputStreamIterator;
-
-    /**
-     * set up test environment
-     */
-    public function setUp()
-    {
-        $this->inputStreamIterator = new InputStreamIterator(
-                new MemoryInputStream("foo\nbar\n\baz\n")
-        );
-    }
-
-    /**
      * @test
      */
-    public function iteration()
+    public function canIterateOverSeekableInputStream()
     {
         $expectedLineNumber = 1;
         $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
-        foreach ($this->inputStreamIterator as $lineNumber => $line) {
+        foreach (linesOf(new MemoryInputStream("foo\nbar\nbaz\n")) as $lineNumber => $line) {
             assertEquals($expectedLineNumber, $lineNumber);
             assertEquals($expectedLine[$expectedLineNumber], $line);
             $expectedLineNumber++;
@@ -51,10 +35,64 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
-    public function createFromNonSeekableInputStreamThrowsIllegalArgumentException()
+    public function canRewindSeekableInputStream()
     {
-        new InputStreamIterator(NewInstance::of('stubbles\streams\InputStream'));
+        $lines = linesOf(new MemoryInputStream("foo\nbar\nbaz\n"));
+        foreach ($lines as $lineNumber => $line) {
+            // do nothing
+        }
+
+        $expectedLineNumber = 1;
+        $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
+        foreach ($lines as $lineNumber => $line) {
+            assertEquals($expectedLineNumber, $lineNumber);
+            assertEquals($expectedLine[$expectedLineNumber], $line);
+            $expectedLineNumber++;
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function canIterateOverNonSeekableInputStream()
+    {
+        $inputStream = NewInstance::of('stubbles\streams\InputStream')
+                ->mapCalls(
+                        ['readLine' => callmap\onConsecutiveCalls('foo', 'bar', 'baz'),
+                         'eof'      => callmap\onConsecutiveCalls(false, false, false, true)
+                        ]
+        );
+        $expectedLineNumber = 1;
+        $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
+        foreach (linesOf($inputStream) as $lineNumber => $line) {
+            assertEquals($expectedLineNumber, $lineNumber);
+            assertEquals($expectedLine[$expectedLineNumber], $line);
+            $expectedLineNumber++;
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function canNotRewindNonSeekableInputStream()
+    {
+        $inputStream = NewInstance::of('stubbles\streams\InputStream')
+                ->mapCalls(
+                        ['readLine' => callmap\onConsecutiveCalls('foo', 'bar', 'baz'),
+                         'eof'      => callmap\onConsecutiveCalls(false, false, false, true, true)
+                        ]
+        );
+        $lines = linesOf($inputStream);
+        foreach ($lines as $lineNumber => $line) {
+            // do nothing
+        }
+
+        $count = 0;
+        foreach (linesOf($inputStream) as $lineNumber => $line) {
+            $count++;
+        }
+
+        assertEquals(0, $count);
     }
 }
