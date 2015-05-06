@@ -1037,4 +1037,29 @@ class UriTest extends \PHPUnit_Framework_TestCase
     {
         Uri::fromString('http://example.org/?foo[bar=300&baz=200');
     }
+
+    /**
+     * @test
+     * @since  5.5.0
+     */
+    public function withPathExchangesPathCompletely()
+    {
+        assertEquals(
+                'http://example.org/bar',
+                Uri::fromString('http://example.org/foo')->withPath('/bar')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.5.0
+     */
+    public function withPathReturnsNewInstance()
+    {
+        $uri = Uri::fromString('http://example.org/foo');
+        assertNotSame(
+                $uri,
+                $uri->withPath('/bar')
+        );
+    }
 }

@@ -56,6 +56,12 @@
     * `stubbles\lang\reflect\constructorParameter()`
 
 
+5.5.0 (2015-05-06)
+------------------
+
+  * added `stubbles\peer\Uri::withPath()`
+
+
 5.4.1 (2015-04-22)
 ------------------
 

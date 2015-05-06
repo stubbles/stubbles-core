@@ -530,4 +530,29 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
                 HttpUri::fromParts('https', 'localhost', 8080, '/index.php', 'foo=bar')
         );
     }
+
+    /**
+     * @test
+     * @since  5.5.0
+     */
+    public function withPathExchangesPathCompletely()
+    {
+        assertEquals(
+                'http://example.org/bar',
+                HttpUri::fromString('http://example.org/foo')->withPath('/bar')
+        );
+    }
+
+    /**
+     * @test
+     * @since  5.5.0
+     */
+    public function withPathReturnsNewInstance()
+    {
+        $uri = HttpUri::fromString('http://example.org/foo');
+        assertNotSame(
+                $uri,
+                $uri->withPath('/bar')
+        );
+    }
 }
