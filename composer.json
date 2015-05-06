@@ -8,8 +8,8 @@
         "php": ">=5.4.0"
     },
     "require-dev": {
-        "mikey179/vfsStream": "~1.4",
-        "phpunit/phpunit": "~4.5"
+        "mikey179/vfsStream": "~1.5",
+        "phpunit/phpunit": "~4.6"
     },
     "autoload": {
         "psr-4": {
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.4.x-dev"
+            "dev-master": "5.5.x-dev"
         }
     },
     "minimum-stability": "dev",

@@ -168,6 +168,20 @@ abstract class HttpUri extends Uri
     }
 
     /**
+     * returns a new http uri instance with new path
+     *
+     * @param   string  $path  new path
+     * @return  \stubbles\peer\http\HttpUri
+     * @since   5.5.0
+     */
+    public function withPath($path)
+    {
+        return new ConstructedHttpUri(
+                $this->parsedUri->transpose(['path' => $path])
+        );
+    }
+
+    /**
      * checks whether current scheme is http
      *
      * @return  bool

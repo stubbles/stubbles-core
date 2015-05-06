@@ -220,6 +220,18 @@ abstract class Uri
     }
 
     /**
+     * returns a new uri instance with new path
+     *
+     * @param   string  $path  new path
+     * @return  \stubbles\peer\Uri
+     * @since   5.5.0
+     */
+    public function withPath($path)
+    {
+        return new ConstructedUri($this->parsedUri->transpose(['path' => $path]));
+    }
+
+    /**
      * returns path of the uri
      *
      * @return  string
