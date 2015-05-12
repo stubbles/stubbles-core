@@ -99,10 +99,11 @@ class AnnotationStateParser implements AnnotationParser
 
         $this->currentState = $this->states[$state];
         $this->currentState->selected();
-        $this->currentSignals = array_flip($this->currentState->signalTokens());
         if (null != $currentToken) {
             $this->currentState->process('', $currentToken, $nextToken);
         }
+
+        $this->currentSignals = array_flip($this->currentState->signalTokens());
     }
 
     /**
