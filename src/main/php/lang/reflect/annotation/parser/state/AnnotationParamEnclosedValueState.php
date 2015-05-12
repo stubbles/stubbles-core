@@ -52,7 +52,13 @@ class AnnotationParamEnclosedValueState extends AnnotationAbstractState implemen
      */
     public function signalTokens()
     {
-        return ["'", '"', '\\'];
+        if (null === $this->enclosed) {
+            return ["'", '"', '\\'];
+        } elseif ('"' === $this->enclosed) {
+            return ['"', '\\'];
+        }
+
+        return ["'", '\\'];
     }
 
     /**

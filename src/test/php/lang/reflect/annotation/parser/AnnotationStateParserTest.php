@@ -388,4 +388,22 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         $this->annotationStateParser->setAnnotationParamValue('paramValue');
         $this->annotationStateParser->registerSingleAnnotationParam('singleAnnotationValue');
     }
+
+    /**
+     * @test
+     * @since  5.5.1
+     */
+    public function foobar()
+    {
+        $annotations = $this->annotationStateParser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @Foo(name=\'dum "di" dam\')
+     */',
+                'target');
+        assertEquals(
+                'dum "di" dam',
+                $annotations['target']->firstNamed('Foo')->getName()
+        );
+    }
 }

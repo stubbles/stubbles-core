@@ -56,6 +56,13 @@
     * `stubbles\lang\reflect\constructorParameter()`
 
 
+5.5.1 (2015-05-12)
+------------------
+
+  * fixed annotation string values which contained both ' and "
+
+
+
 5.5.0 (2015-05-06)
 ------------------
 
