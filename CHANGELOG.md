@@ -44,6 +44,7 @@
 
 ### Other changes
 
+  * `@ImplementedBy` can now be speficied per runtime mode
   * it is not required any more to mark constructors with `@Inject` when they should be subject to dependency injection
   * added `stubbles\peer\IpAddress::createSocket()` and `stubbles\peer\IpAddress::createSecureSocket()`
   * improved speed for `stubbles\peer\http\HttpUri::hasDnsRecord()` by checking only relevant DNS records
