@@ -127,17 +127,14 @@ class Runtime implements BindingModule
      */
     public function configure(Binder $binder)
     {
-        $binder->bind('stubbles\lang\Mode')
-               ->toInstance($this->mode);
+        $binder->bindMode($this->mode);
         if (file_exists($this->propertiesFile())) {
             $binder->bindPropertiesFromFile($this->propertiesFile(), $this->mode);
         }
 
-        $binder->bindConstant('stubbles.project.path')
-                   ->to($this->projectPath);
+        $binder->bindConstant('stubbles.project.path')->to($this->projectPath);
         foreach ($this->buildPathes($this->projectPath) as $name => $value) {
-            $binder->bindConstant($name)
-                   ->to($value);
+            $binder->bindConstant($name)->to($value);
         }
     }
 

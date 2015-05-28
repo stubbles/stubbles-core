@@ -9,20 +9,15 @@
  */
 namespace stubbles\test\ioc;
 /**
- * The default implementation.
+ * Interface with annotation.
+ *
+ * @since  6.0.0
+ * @ImplementedBy(mode="DEV", class=stubbles\test\ioc\Mikey.class)
  */
-class Schst implements Person, Person2, Person3
+interface Person4
 {
     /**
      * a method
      */
-    public function sayHello()
-    {
-        return "My name is schst.";
-    }
-
-    public function sayHello2()
-    {
-        return 'My name is still schst.';
-    }
+    public function sayHello();
 }

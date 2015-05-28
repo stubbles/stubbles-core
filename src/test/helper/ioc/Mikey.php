@@ -11,7 +11,7 @@ namespace stubbles\test\ioc;
 /**
  * An alternative implementation.
  */
-class Mikey implements Person, Person2
+class Mikey implements Person, Person2, Person3
 {
     /**
      * a method
