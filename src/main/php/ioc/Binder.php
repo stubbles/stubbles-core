@@ -25,6 +25,10 @@ use stubbles\lang\Properties;
 class Binder
 {
     /**
+     * @type  \stubbles\lang\Mode
+     */
+    private $mode;
+    /**
      * list of available binding scopes
      *
      * @type  \stubbles\ioc\binding\BindingScopes
@@ -80,6 +84,12 @@ class Binder
     public function bind($interface)
     {
         return $this->addBinding(new ClassBinding($interface, $this->scopes));
+    }
+
+    public function bindMode(Mode $mode)
+    {
+        $this->mode = $mode;
+        $this->bind('stubbles\lang\Mode')->toInstance($mode);
     }
 
     /**
@@ -168,6 +178,6 @@ class Binder
      */
     public function getInjector()
     {
-        return new Injector($this->bindings, $this->scopes);
+        return new Injector($this->mode, $this->bindings, $this->scopes);
     }
 }

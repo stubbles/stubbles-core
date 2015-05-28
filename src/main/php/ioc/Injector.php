@@ -16,7 +16,9 @@ use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
 use stubbles\ioc\binding\Session;
+use stubbles\lang\Mode;
 use stubbles\lang\reflect;
+use stubbles\lang\reflect\annotation\Annotations;
 /**
  * Injector for the IoC functionality.
  *
@@ -24,6 +26,10 @@ use stubbles\lang\reflect;
  */
 class Injector
 {
+    /**
+     * @type  \stubbles\lang\Mode
+     */
+    private $mode;
     /**
      * index for faster access to bindings
      *
@@ -50,12 +56,14 @@ class Injector
     /**
      * constructor
      *
+     * @param  \stubbles\lang\Mode                  $mode      optional
      * @param  \stubbles\ioc\binding\Binding[]      $bindings  optional
      * @param  \stubbles\ioc\binding\BindingScopes  $scopes    optional
      * @since  1.5.0
      */
-    public function __construct(array $bindings = [], BindingScopes $scopes = null)
+    public function __construct(Mode $mode = null, array $bindings = [], BindingScopes $scopes = null)
     {
+        $this->mode   = $mode;
         $this->scopes = $scopes !== null ? $scopes : new BindingScopes();
         foreach ($bindings as $binding) {
             $this->index[$binding->getKey()] = $binding;
@@ -277,19 +285,43 @@ class Injector
         $annotations = reflect\annotationsOf($class);
         if ($class->isInterface() && $annotations->contain('ImplementedBy')) {
             return $this->bind($class->getName())
-                        ->to(
-                            $annotations->firstNamed('ImplementedBy')
-                                        ->getDefaultImplementation()
-                          );
+                    ->to($this->findImplementation($annotations, $class->getName()));
         } elseif ($annotations->contain('ProvidedBy')) {
             return $this->bind($class->getName())
-                        ->toProviderClass(
-                            $annotations->firstNamed('ProvidedBy')
-                                        ->getProviderClass()
-                          );
+                    ->toProviderClass(
+                        $annotations->firstNamed('ProvidedBy')
+                                ->getProviderClass()
+                    );
         }
 
         return $this->getImplicitBinding($class);
+    }
+
+    /**
+     * finds implementation to be used from list of @ImplementedBy annotations
+     *
+     * @param   \stubbles\lang\reflect\annotation\Annotations  $annotations
+     * @param   string                                         $type
+     * @return  \ReflectionClass
+     * @throws  \stubbles\ioc\binding\BindingException
+     */
+    private function findImplementation(Annotations $annotations, $type)
+    {
+        $implementation = null;
+        foreach ($annotations->named('ImplementedBy') as $annotation) {
+            /* @var $annotation \stubbles\lang\reflect\annotation\Annotation */
+            if (null !== $this->mode && $annotation->hasValueByName('mode') && strtoupper($annotation->getMode()) === $this->mode->name()) {
+                $implementation = $annotation->getClass();
+            } elseif (!$annotation->hasValueByName('mode') && null == $implementation) {
+                $implementation = $annotation->getClass();
+            }
+        }
+
+        if (null === $implementation) {
+            throw new BindingException('Interface ' . $type . ' annotated with @ImplementedBy, but no default found');
+        }
+
+        return $implementation;
     }
 
     /**
