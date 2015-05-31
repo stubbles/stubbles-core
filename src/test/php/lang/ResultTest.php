@@ -113,7 +113,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function whenNullOnResultOfNullReturnsOther()
     {
-        assertEquals(909, Result::of(null)->whenNull(909));
+        assertEquals(909, Result::of(null)->whenNull(909)->value());
     }
 
     /**
@@ -121,7 +121,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function whenNullOnResultOfNonNullReturnsValue()
     {
-        assertEquals(303, Result::of(303)->whenNull(909));
+        assertEquals(303, Result::of(303)->whenNull(909)->value());
     }
 
     /**
@@ -131,7 +131,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 909,
-                Result::of(null)->applyWhenNull(function() { return 909; })
+                Result::of(null)
+                        ->applyWhenNull(function() { return 909; })
+                        ->value()
         );
     }
 
@@ -142,7 +144,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 303,
-                Result::of(303)->applyWhenNull(function() { return 909; })
+                Result::of(303)
+                        ->applyWhenNull(function() { return 909; })
+                        ->value()
         );
     }
 }

@@ -113,33 +113,33 @@ class Result
     }
 
     /**
-     * returns the value if present, or given other
+     * returns the result if value is present, or result of other
      *
      * @param   mixed  $other
-     * @return  mixed
+     * @return  \stubbles\lang\Result
      */
     public function whenNull($other)
     {
         if ($this->isPresent()) {
-            return $this->value;
+            return $this;
         }
 
-        return $other;
+        return self::of($other);
     }
 
     /**
-     * returns the value if present, or the result of other
+     * returns the result if value is present, or the result of applied other
      *
      * @param   callable  $other
-     * @return  mixed
+     * @return  \stubbles\lang\Result
      */
     public function applyWhenNull(callable $other)
     {
         if ($this->isPresent()) {
-            return $this->value;
+            return $this;
         }
 
-        return $other();
+        return self::of($other());
     }
 }
 Result::__static();

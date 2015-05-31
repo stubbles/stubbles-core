@@ -1,3 +1,11 @@
+6.1.0 (2015-05-31)
+------------------
+
+### BC breaks
+
+  * `stubbles\lang\Result::whenNull()` and `stubbles\lang\Result::applyWhenNull()` now return an instance of `stubbles\lang\Result` instead if the raw value to allow more chaining
+
+
 6.0.0 (2015-05-28)
 ------------------
 
