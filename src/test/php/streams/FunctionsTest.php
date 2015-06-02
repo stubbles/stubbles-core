@@ -26,7 +26,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $root       = vfsStream::setup();
         $this->file = vfsStream::newFile('test.txt')
-                               ->withContent("some\nContent\n")
+                               ->withContent("foo\nfoo\n\n")
                                ->at($root);
     }
 
@@ -39,5 +39,16 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 'stubbles\lang\Sequence',
                 linesOf($this->file->url())
         );
+    }
+
+    /**
+     * @test
+     * @since  6.2.0
+     */
+    public function nonEmptyLinesOfReturnsNonEmptyLinesOnly()
+    {
+        foreach (nonEmptyLinesOf($this->file->url()) as $line) {
+            assertEquals('foo', $line);
+        }
     }
 }

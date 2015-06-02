@@ -23,4 +23,17 @@ namespace stubbles\streams {
     {
         return Sequence::of(new InputStreamIterator(FileInputStream::castFrom($input)));
     }
+
+    /**
+     * returns a sequence of non empty lines from given input source
+     *
+     * @api
+     * @param   \stubbles\streams\InputStream|string  $input
+     * @return  \stubbles\lang\Sequence
+     * @since   6.2.0
+     */
+    function nonEmptyLinesOf($input)
+    {
+        return linesOf($input)->filter(function($line) { return !empty($line); });
+    }
 }
