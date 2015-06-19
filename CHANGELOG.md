@@ -2,6 +2,10 @@
 ------------------
 
   * added `stubbles\streams\nonEmptyLinesOf()`
+  * added new methods to `stubbles\lang\Result`
+    * `stubbles\lang\Result::isEmpty()`
+    * `stubbles\lang\Result::whenEmpty()`
+    * `stubbles\lang\Result::applyWhenEmpty()`
 
 
 6.1.0 (2015-05-31)

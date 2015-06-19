@@ -149,4 +149,96 @@ class ResultTest extends \PHPUnit_Framework_TestCase
                         ->value()
         );
     }
+
+    /**
+     * @return  array
+     */
+    public function emptyValues()
+    {
+        return [[null], [''], [[]]];
+    }
+
+    /**
+     * @param  mixed  $value
+     * @test
+     * @dataProvider  emptyValues
+     * @since  6.2.0
+     */
+    public function isEmptyForEmptyValues($value)
+    {
+        assertTrue(Result::of($value)->isEmpty());
+    }
+
+    /**
+     * @return  array
+     */
+    public function nonEmptyValues()
+    {
+        return [[0], [303], ['foo'], [['foo']]];
+    }
+
+    /**
+     * @param  mixed  $value
+     * @test
+     * @dataProvider  nonEmptyValues
+     * @since  6.2.0
+     */
+    public function isNotEmptyForNomEmptyValues($value)
+    {
+        assertFalse(Result::of($value)->isEmpty());
+    }
+
+    /**
+     * @param  mixed  $value
+     * @test
+     * @dataProvider  emptyValues
+     * @since  6.2.0
+     */
+    public function whenEmptyOnResultOfEmptyReturnsOther($value)
+    {
+        assertEquals(909, Result::of($value)->whenEmpty(909)->value());
+    }
+
+    /**
+     * @param  mixed  $value
+     * @test
+     * @dataProvider  nonEmptyValues
+     * @since  6.2.0
+     */
+    public function whenEmptyOnResultOfNonEmptyReturnsValue($value)
+    {
+        assertEquals($value, Result::of($value)->whenEmpty(909)->value());
+    }
+
+    /**
+     * @param  mixed  $value
+     * @test
+     * @dataProvider  emptyValues
+     * @since  6.2.0
+     */
+    public function applyhenEmptyOnResultOfEmptyReturnsOther($value)
+    {
+        assertEquals(
+                909,
+                Result::of($value)
+                        ->applyWhenEmpty(function() { return 909; })
+                        ->value()
+        );
+    }
+
+    /**
+     * @param  mixed  $value
+     * @test
+     * @dataProvider  nonEmptyValues
+     * @since  6.2.0
+     */
+    public function applyWhenEmptyOnResultOfNonEmptyReturnsValue($value)
+    {
+        assertEquals(
+                $value,
+                Result::of($value)
+                        ->applyWhenEmpty(function() { return 909; })
+                        ->value()
+        );
+    }
 }
