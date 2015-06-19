@@ -9,7 +9,7 @@
     },
     "require-dev": {
         "mikey179/vfsStream": "^1.5",
-        "phpunit/phpunit": "^4.6",
+        "phpunit/phpunit": "^4.7",
         "bovigo/callmap": "^1.0"
     },
     "autoload": {
