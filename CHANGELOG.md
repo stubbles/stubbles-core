@@ -1,4 +1,4 @@
-6.2.0 (2015-06-??)
+6.2.0 (2015-06-19)
 ------------------
 
   * added `stubbles\streams\nonEmptyLinesOf()`
