@@ -1,3 +1,9 @@
+6.3.0 (2015-07-01)
+------------------
+
+  * allow access to project path in `stubbles\ioc\module\Runtime`
+
+
 6.2.0 (2015-06-19)
 ------------------
 

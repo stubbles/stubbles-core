@@ -54,7 +54,7 @@ class Runtime implements BindingModule
      *
      * @type  string
      */
-    private $projectPath;
+    protected $projectPath;
     /**
      * mode instance to bind
      *
