@@ -265,7 +265,7 @@ class HeaderList implements \IteratorAggregate
     /**
      * returns an iterator object
      *
-     * @return  \ArrayObject
+     * @return  \Traversable
      */
     public function getIterator()
     {
