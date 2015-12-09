@@ -4,6 +4,7 @@
 ### BC breaks
 
   * Raised minimum required PHP version to 5.5
+  * removed `stubbles\peer\createBsdSocket()`, `stubbles\peer\BsdSocket` was already removed in 6.0.0
 
 
 6.3.0 (2015-07-01)
