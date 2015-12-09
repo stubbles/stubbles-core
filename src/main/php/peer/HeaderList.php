@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use stubbles\lang;
 /**
  * Container for list of headers.
  *
@@ -54,7 +55,12 @@ class HeaderList implements \IteratorAggregate
     {
         $header  = [];
         $matches = [];
-        preg_match_all('=^(.[^: ]+): ([^\r\n]*)=m', $headers, $matches, PREG_SET_ORDER);
+        preg_match_all(
+                '=^(.[^: ]+): ([^\r\n]*)=m',
+                $headers,
+                $matches,
+                PREG_SET_ORDER
+        );
         foreach ($matches as $line) {
             $header[$line[1]] = $line[2];
         }
@@ -284,6 +290,6 @@ class HeaderList implements \IteratorAggregate
      */
     public function __toString()
     {
-        return \stubbles\lang\__toString($this);
+        return lang\__toString($this);
     }
 }

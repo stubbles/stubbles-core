@@ -66,9 +66,7 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
     public function returnsValeOfGivenHeader()
     {
         $headerList = headers(['Binford' => 6100]);
-        assertEquals('6100',
-                            $headerList->get('Binford')
-        );
+        assertEquals('6100', $headerList->get('Binford'));
     }
 
     /**
@@ -76,9 +74,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function addingHeaderIncreasesSize()
     {
-        assertEquals(1,
-                            $this->headerList->put('Binford', 6100)
-                                             ->size()
+        assertEquals(
+                1,
+                $this->headerList->put('Binford', 6100)->size()
         );
     }
 
@@ -87,8 +85,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function containsAddedHeader()
     {
-        assertTrue($this->headerList->put('Binford', 6100)
-                                           ->containsKey('Binford')
+        assertTrue(
+                $this->headerList->put('Binford', 6100)
+                        ->containsKey('Binford')
         );
     }
 
@@ -97,9 +96,10 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsValueOfAddedHeader()
     {
-        assertEquals('6100',
-                            $this->headerList->put('Binford', 6100)
-                                             ->get('Binford')
+        assertEquals(
+                '6100',
+                $this->headerList->put('Binford', 6100)
+                        ->get('Binford')
         );
     }
 
@@ -135,8 +135,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
         assertTrue($headerList->containsKey('Binford'));
         assertEquals('6100', $headerList->get('Binford'));
         assertTrue($headerList->containsKey('X-Powered-By'));
-        assertEquals('Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710231031)/Tomcat-5.5',
-                            $headerList->get('X-Powered-By')
+        assertEquals(
+                'Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710231031)/Tomcat-5.5',
+                $headerList->get('X-Powered-By')
         );
         assertTrue($headerList->containsKey('Content-Type'));
         assertEquals('text/html', $headerList->get('Content-Type'));
@@ -232,9 +233,10 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function remove()
     {
-        assertFalse($this->headerList->put('Binford', '6100')
-                                            ->remove('Binford')
-                                            ->containsKey('Binford')
+        assertFalse(
+                $this->headerList->put('Binford', '6100')
+                        ->remove('Binford')
+                        ->containsKey('Binford')
         );
     }
 
@@ -243,8 +245,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function putUserAgent()
     {
-        assertTrue($this->headerList->putUserAgent('Binford 6100')
-                                           ->containsKey('User-Agent')
+        assertTrue(
+                $this->headerList->putUserAgent('Binford 6100')
+                        ->containsKey('User-Agent')
         );
         assertEquals('Binford 6100', $this->headerList->get('User-Agent'));
     }
@@ -255,8 +258,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function putReferer()
     {
-        assertTrue($this->headerList->putReferer('http://example.com/')
-                                           ->containsKey('Referer')
+        assertTrue(
+                $this->headerList->putReferer('http://example.com/')
+                        ->containsKey('Referer')
         );
         assertEquals('http://example.com/', $this->headerList->get('Referer'));
     }
@@ -267,8 +271,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function putCookie()
     {
-        assertTrue($this->headerList->putCookie(['testcookie1' => 'testvalue1 %&'])
-                                           ->containsKey('Cookie')
+        assertTrue(
+                $this->headerList->putCookie(['testcookie1' => 'testvalue1 %&'])
+                        ->containsKey('Cookie')
         );
         assertEquals('testcookie1=' . urlencode('testvalue1 %&') . ';',
                             $this->headerList->get('Cookie')
@@ -281,11 +286,13 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function putAuthorization()
     {
-        assertTrue($this->headerList->putAuthorization('user', 'pass')
-                                           ->containsKey('Authorization')
+        assertTrue(
+                $this->headerList->putAuthorization('user', 'pass')
+                        ->containsKey('Authorization')
         );
-        assertEquals('BASIC ' . base64_encode('user:pass'),
-                            $this->headerList->get('Authorization')
+        assertEquals(
+                'BASIC ' . base64_encode('user:pass'),
+                $this->headerList->get('Authorization')
         );
     }
 
@@ -312,8 +319,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
     {
         $time = time();
         assertTrue($this->headerList->putDate($time)->containsKey('Date'));
-        assertEquals(gmdate('D, d M Y H:i:s', $time) . ' GMT',
-                            $this->headerList->get('Date')
+        assertEquals(
+                gmdate('D, d M Y H:i:s', $time) . ' GMT',
+                $this->headerList->get('Date')
         );
     }
 
@@ -355,9 +363,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsAddedValueForExistingHeader()
     {
-        assertEquals('baz',
-                            $this->headerList->put('foo', 'baz')
-                                             ->get('foo')
+        assertEquals(
+                'baz',
+                $this->headerList->put('foo', 'baz')->get('foo')
         );
     }
 
@@ -366,9 +374,9 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsAddedValueForExistingHeaderWhenDefaultSupplied()
     {
-        assertEquals('baz',
-                            $this->headerList->put('foo', 'baz')
-                                             ->get('foo', 'bar')
+        assertEquals(
+                'baz',
+                $this->headerList->put('foo', 'baz')->get('foo', 'bar')
         );
     }
 
@@ -377,15 +385,16 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
      */
     public function clearRemovesAllHeaders()
     {
-        assertEquals(0,
-                            $this->headerList->putUserAgent('Binford 6100')
-                                             ->putReferer('Home Improvement')
-                                             ->putCookie(['testcookie1' => 'testvalue1 %&'])
-                                             ->putAuthorization('user', 'pass')
-                                             ->putDate(time())
-                                             ->enablePower()
-                                             ->clear()
-                                             ->size()
+        assertEquals(
+                0,
+                $this->headerList->putUserAgent('Binford 6100')
+                        ->putReferer('Home Improvement')
+                        ->putCookie(['testcookie1' => 'testvalue1 %&'])
+                        ->putAuthorization('user', 'pass')
+                        ->putDate(time())
+                        ->enablePower()
+                        ->clear()
+                        ->size()
         );
     }
 
