@@ -61,11 +61,11 @@ class Parse
                     return;
 
                 },
-                'stubbles\peer\http\HttpUri'
+                HttpUri::class
         );
         self::addRecognition(function($string) { $classname = self::toClassname($string); if (null !== $classname) { return $classname; } }, 'string');
         self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'ReflectionClass');
-        self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } }, 'stubbles\lang\Enum');
+        self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } }, Enum::class);
         self::addRecognition(function($string) { if (defined($string)) { return constant($string); } }, 'constant');
     }
 

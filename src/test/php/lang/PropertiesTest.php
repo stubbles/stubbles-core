@@ -507,7 +507,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                  ->at($root)
                  ->withContent("[foo]\nbar=baz");
         $properties = parsePropertiesFile(vfsStream::url('config/test.ini'));
-        assertInstanceOf('stubbles\lang\Properties', $properties);
+        assertInstanceOf(Properties::class, $properties);
         assertTrue($properties->containSection('foo'));
         assertEquals(['bar' => 'baz'], $properties->section('foo'));
     }
@@ -531,7 +531,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function validIniStringReturnsInstance()
     {
         $properties = parseProperties("[foo]\nbar=baz");
-        assertInstanceOf('stubbles\lang\Properties', $properties);
+        assertInstanceOf(Properties::class, $properties);
         assertTrue($properties->containSection('foo'));
         assertEquals(['bar' => 'baz'], $properties->section('foo'));
     }
@@ -590,7 +590,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function propertiesWithKeyPasswordBecomeInstancesOfSecureString()
     {
         assertInstanceOf(
-                'stubbles\lang\SecureString',
+                SecureString::class,
                 properties(['foo' => ['password' => 'baz']])->value('foo', 'password')
         );
     }
@@ -603,7 +603,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function propertiesWhereKeyEndsWithPasswordBecomeInstancesOfSecureString()
     {
         assertInstanceOf(
-                'stubbles\lang\SecureString',
+                SecureString::class,
                 properties(['foo' => ['example.another.password' => 'baz']])
                         ->value('foo', 'example.another.password')
         );
@@ -617,7 +617,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function parseSecureStringValueReturnsSecureStringInstance()
     {
         assertInstanceOf(
-                'stubbles\lang\SecureString',
+                SecureString::class,
                 properties(['foo' => ['password' => 'baz']])
                         ->parseValue('foo', 'password')
         );
@@ -632,7 +632,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function parseSecureStringThrowsIllegalAccessException()
     {
         assertInstanceOf(
-                'stubbles\lang\SecureString',
+                SecureString::class,
                 properties(['foo' => ['password' => 'baz']])
                         ->parse('foo', 'password')
         );

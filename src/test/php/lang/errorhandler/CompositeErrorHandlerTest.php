@@ -49,11 +49,11 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->compositeErrorHandler = new CompositeErrorHandler();
-        $this->errorHandler1 = NewInstance::of('stubbles\lang\errorhandler\ErrorHandler');
+        $this->errorHandler1 = NewInstance::of(ErrorHandler::class);
         $this->compositeErrorHandler->addErrorHandler($this->errorHandler1);
-        $this->errorHandler2 = NewInstance::of('stubbles\lang\errorhandler\ErrorHandler');
+        $this->errorHandler2 = NewInstance::of(ErrorHandler::class);
         $this->compositeErrorHandler->addErrorHandler($this->errorHandler2);
-        $this->errorHandler3 = NewInstance::of('stubbles\lang\errorhandler\ErrorHandler');
+        $this->errorHandler3 = NewInstance::of(ErrorHandler::class);
         $this->compositeErrorHandler->addErrorHandler($this->errorHandler3);
     }
 

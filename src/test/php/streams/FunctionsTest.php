@@ -9,6 +9,7 @@
  */
 namespace stubbles\streams;
 use org\bovigo\vfs\vfsStream;
+use stubbles\lang\Sequence;
 /**
  * Tests for stubbles\streams\*().
  *
@@ -36,7 +37,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function linesOfReturnsSequence()
     {
         assertInstanceOf(
-                'stubbles\lang\Sequence',
+                Sequence::class,
                 linesOf($this->file->url())
         );
     }

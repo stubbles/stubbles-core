@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+use stubbles\peer\HeaderList;
 use stubbles\streams\memory\MemoryInputStream;
 /**
  * Test for stubbles\peer\http\HttpResponse.
@@ -49,7 +50,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
         );
         assertEquals('foobar', $httpResponse->body());
         $headerList = $httpResponse->headers();
-        assertInstanceOf('stubbles\peer\HeaderList', $headerList);
+        assertInstanceOf(HeaderList::class, $headerList);
         assertEquals(__METHOD__, $headerList->get('Host'));
         assertEquals(6, $headerList->get('Content-Length'));
 
@@ -70,7 +71,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                 )
         );
         $headerList = $httpResponse->headers();
-        assertInstanceOf('stubbles\peer\HeaderList', $headerList);
+        assertInstanceOf(HeaderList::class, $headerList);
         assertEquals(__METHOD__, $headerList->get('Host'));
         assertEquals('foobar', $httpResponse->body());
     }
@@ -91,7 +92,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                 )
         );
         $headerList = $httpResponse->headers();
-        assertInstanceOf('stubbles\peer\HeaderList', $headerList);
+        assertInstanceOf(HeaderList::class, $headerList);
         assertEquals(__METHOD__, $headerList->get('Host'));
         assertEquals(6, $headerList->get('Content-Length'));
         assertEquals('foobar', $httpResponse->body());
@@ -132,7 +133,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                 . 'foobar'
         );
         $headerList = $httpResponse->headers();
-        assertInstanceOf('stubbles\peer\HeaderList', $headerList);
+        assertInstanceOf(HeaderList::class, $headerList);
         assertEquals(__METHOD__, $headerList->get('Host'));
         assertEquals('HTTP/1.0 200 OK', $httpResponse->statusLine());
         assertEquals(new HttpVersion(1, 0), $httpResponse->httpVersion());
@@ -158,7 +159,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                 . 'foobar'
         );
         $headerList = $httpResponse->headers();
-        assertInstanceOf('stubbles\peer\HeaderList', $headerList);
+        assertInstanceOf(HeaderList::class, $headerList);
         assertEquals(__METHOD__, $headerList->get('Host'));
         assertEquals('HTTP/1.1 404 Not Found', $httpResponse->statusLine());
         assertEquals(new HttpVersion(1, 1), $httpResponse->httpVersion());

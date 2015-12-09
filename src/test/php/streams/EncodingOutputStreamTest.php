@@ -93,7 +93,7 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeClosesDecoratedOutputStream()
     {
-        $outputStream = NewInstance::of('stubbles\streams\OutputStream');
+        $outputStream = NewInstance::of(OutputStream::class);
         $encodingOutputStream = new EncodingOutputStream(
                 $outputStream,
                 'iso-8859-1'

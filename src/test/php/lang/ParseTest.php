@@ -447,7 +447,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [new \ReflectionClass($this), __CLASS__ . '.class'],
-            [new \ReflectionClass('stubbles\lang\Mode'), 'stubbles\lang\Mode.class'],
+            [new \ReflectionClass(Mode::class), Mode::class . '.class'],
             [null, null],
             [null, ''],
             [null, 'other']
@@ -609,7 +609,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function stringToEnumConversions()
     {
         return [
-            [MyEnum::$FOO, 'stubbles\lang\MyEnum::$FOO'],
+            [MyEnum::$FOO, MyEnum::class . '::$FOO'],
             [null, null],
             [null, ''],
             [null, 'other']
@@ -664,7 +664,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toEnumWithNonExistingEnumThrowsIllegalArgumentException()
     {
-        Parse::toEnum('stubbles\lang\MyEnum::$BAR');
+        Parse::toEnum(MyEnum::class . '::$BAR');
     }
 
     /**
@@ -674,7 +674,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function asEnumWithNonExistingEnumThrowsIllegalArgumentException()
     {
-        $parse = new Parse('stubbles\lang\MyEnum::$BAR');
+        $parse = new Parse(MyEnum::class . '::$BAR');
         $parse->asEnum();
     }
 
@@ -686,7 +686,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function asEnumWithNonExistingEnumAndDefaultThrowsIllegalArgumentException()
     {
-        $parse = new Parse('stubbles\lang\MyEnum::$BAR');
+        $parse = new Parse(MyEnum::class . '::$BAR');
         $parse->defaultingTo('foo')->asEnum();
     }
 
@@ -717,8 +717,8 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [['a', 'b', 'c', 'd', 'e'], 'a..e'],
             [HttpUri::fromString('http://example.net/'), 'http://example.net/'],
             [new \ReflectionClass($this), __CLASS__ . '.class'],
-            [MyEnum::$FOO, 'stubbles\lang\MyEnum::$FOO'],
-            [MyEnum::TEST_CONSTANT, 'stubbles\lang\MyEnum::TEST_CONSTANT'],
+            [MyEnum::$FOO, MyEnum::class . '::$FOO'],
+            [MyEnum::TEST_CONSTANT, MyEnum::class . '::TEST_CONSTANT'],
             ['just a string', 'just a string']
         ];
     }

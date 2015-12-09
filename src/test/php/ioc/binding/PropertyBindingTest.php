@@ -10,7 +10,9 @@
 namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
+use stubbles\ioc\Injector;
 use stubbles\lang;
+use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use stubbles\lang\SecureString;
 /**
@@ -65,8 +67,8 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->injector = NewInstance::of('stubbles\ioc\Injector');
-        $this->mode     = NewInstance::of('stubbles\lang\Mode')
+        $this->injector = NewInstance::of(Injector::class);
+        $this->mode     = NewInstance::of(Mode::class)
                 ->mapCalls(['name' => 'PROD']);
         $this->propertyBinding = new PropertyBinding(
                 new Properties(['PROD'   => ['foo.bar' => 'baz',
@@ -74,7 +76,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                                             ],
                                 'config' => ['foo.bar'          => 'default',
                                              'other'            => 'someValue',
-                                             'baz'              => 'stubbles\lang\Properties.class'
+                                             'baz'              => Properties::class . '.class'
                                             ]
                                ]
                 ),
@@ -180,7 +182,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     {
         $this->mode->mapCalls(['name' => 'DEV']);
         assertEquals(
-                lang\reflect('stubbles\lang\Properties'),
+                lang\reflect(Properties::class),
                 $this->propertyBinding->getInstance($this->injector, 'baz')
         );
     }
@@ -196,8 +198,8 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                     ['config' => ['example.password' => 'somePassword']]
                 );
         $binder->bindProperties($properties, $this->mode);
-        $example = $binder->getInjector()->getInstance('stubbles\ioc\binding\Example');
-        assertInstanceOf('stubbles\lang\SecureString', $example->password);
+        $example = $binder->getInjector()->getInstance(Example::class);
+        assertInstanceOf(SecureString::class, $example->password);
         // ensure all references are removed to clean up environment
         // otherwise all *SecureStringTests will fail
         $properties = null;

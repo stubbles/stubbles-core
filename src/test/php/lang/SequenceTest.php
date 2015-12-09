@@ -617,7 +617,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function methodsAnnotatedWithXmlIgnore($method)
     {
         assertTrue(
-                reflect\annotationsOf('stubbles\lang\Sequence', $method)
+                reflect\annotationsOf(Sequence::class, $method)
                         ->contain('XmlIgnore')
         );
     }

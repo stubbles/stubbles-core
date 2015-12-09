@@ -76,7 +76,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     {
         FsockopenResult::$return = fopen(__FILE__, 'rb');
         assertInstanceOf(
-                'stubbles\peer\Stream',
+                Stream::class,
                 createSocket('localhost', 80)->connect()
         );
     }

@@ -8,6 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use stubbles\lang\errorhandler\DefaultErrorHandler;
+use stubbles\lang\errorhandler\DisplayExceptionHandler;
+use stubbles\lang\errorhandler\ProdModeExceptionHandler;
 /**
  * Handlings for different runtime modes of Stubbles.
  *
@@ -121,8 +124,8 @@ class DefaultMode implements Mode
     public static function prod()
     {
         return self::create('PROD', Mode::CACHE_ENABLED)
-                   ->setExceptionHandler('stubbles\lang\errorhandler\ProdModeExceptionHandler')
-                   ->setErrorHandler('stubbles\lang\errorhandler\DefaultErrorHandler');
+                   ->setExceptionHandler(ProdModeExceptionHandler::class)
+                   ->setErrorHandler(DefaultErrorHandler::class);
     }
 
     /**
@@ -138,8 +141,8 @@ class DefaultMode implements Mode
     public static function test()
     {
         return self::create('TEST', MODE::CACHE_ENABLED)
-                   ->setExceptionHandler('stubbles\lang\errorhandler\DisplayExceptionHandler')
-                   ->setErrorHandler('stubbles\lang\errorhandler\DefaultErrorHandler');
+                   ->setExceptionHandler(DisplayExceptionHandler::class)
+                   ->setErrorHandler(DefaultErrorHandler::class);
     }
 
     /**
@@ -155,7 +158,7 @@ class DefaultMode implements Mode
     public static function stage()
     {
         return self::create('STAGE', MODE::CACHE_DISABLED)
-                   ->setExceptionHandler('stubbles\lang\errorhandler\DisplayExceptionHandler');
+                   ->setExceptionHandler(DisplayExceptionHandler::class);
     }
 
     /**
@@ -171,7 +174,7 @@ class DefaultMode implements Mode
     public static function dev()
     {
         return self::create('DEV', MODE::CACHE_DISABLED)
-                   ->setExceptionHandler('stubbles\lang\errorhandler\DisplayExceptionHandler');
+                   ->setExceptionHandler(DisplayExceptionHandler::class);
     }
 
     /**
@@ -225,10 +228,11 @@ class DefaultMode implements Mode
             return false;
         }
 
-        $callback = $this->createCallback($this->exceptionHandler['class'],
-                                          $this->exceptionHandler['method'],
-                                          $projectPath
-                    );
+        $callback = $this->createCallback(
+                $this->exceptionHandler['class'],
+                $this->exceptionHandler['method'],
+                $projectPath
+        );
         set_exception_handler($callback);
         return $callback[0];
     }
@@ -273,10 +277,11 @@ class DefaultMode implements Mode
             return false;
         }
 
-        $callback = $this->createCallback($this->errorHandler['class'],
-                                          $this->errorHandler['method'],
-                                          $projectPath
-                    );
+        $callback = $this->createCallback(
+                $this->errorHandler['class'],
+                $this->errorHandler['method'],
+                $projectPath
+        );
         set_error_handler($callback);
         return $callback[0];
     }

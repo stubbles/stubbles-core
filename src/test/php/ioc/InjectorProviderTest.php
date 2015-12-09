@@ -10,7 +10,9 @@
 namespace stubbles\ioc;
 use bovigo\callmap;
 use bovigo\callmap\NewInstance;
+use stubbles\test\ioc\AnotherQuestion;
 use stubbles\test\ioc\Answer;
+use stubbles\test\ioc\MyProviderClass;
 /**
  * Test for stubbles\ioc\Injector with provider binding.
  *
@@ -25,13 +27,13 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $answer   = new Answer();
-        $provider = NewInstance::of('stubbles\ioc\InjectionProvider')
+        $provider = NewInstance::of(InjectionProvider::class)
                 ->mapCalls(['get' => $answer]);
-        $binder->bind('stubbles\test\ioc\Answer')->toProvider($provider);
+        $binder->bind(Answer::class)->toProvider($provider);
         $question = $binder->getInjector()
-                ->getInstance('stubbles\test\ioc\AnotherQuestion');
+                ->getInstance(AnotherQuestion::class);
         assertInstanceOf(
-                'stubbles\test\ioc\AnotherQuestion',
+                AnotherQuestion::class,
                 $question
         );
         assertSame($answer, $question->getAnswer());
@@ -45,8 +47,8 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
     public function injectWithInvalidProviderClassThrowsException()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Answer')->toProviderClass('\stdClass');
-        $binder->getInjector()->getInstance('stubbles\test\ioc\AnotherQuestion');
+        $binder->bind(Answer::class)->toProviderClass('\stdClass');
+        $binder->getInjector()->getInstance(AnotherQuestion::class);
     }
 
     /**
@@ -55,12 +57,12 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
     public function injectWithProviderClassName()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Answer')
-                ->toProviderClass('stubbles\test\ioc\MyProviderClass');
+        $binder->bind(Answer::class)
+                ->toProviderClass(MyProviderClass::class);
         $question = $binder->getInjector()
-                ->getInstance('stubbles\test\ioc\AnotherQuestion');
-        assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
-        assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());
+                ->getInstance(AnotherQuestion::class);
+        assertInstanceOf(AnotherQuestion::class, $question);
+        assertInstanceOf(Answer::class, $question->getAnswer());
     }
 
     /**
@@ -69,13 +71,13 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
     public function injectWithProviderClass()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Answer')
+        $binder->bind(Answer::class)
                  ->toProviderClass(
-                       new \ReflectionClass('stubbles\test\ioc\MyProviderClass')
+                       new \ReflectionClass(MyProviderClass::class)
                 );
         $question = $binder->getInjector()
-                ->getInstance('stubbles\test\ioc\AnotherQuestion');
-        assertInstanceOf('stubbles\test\ioc\AnotherQuestion', $question);
-        assertInstanceOf('stubbles\test\ioc\Answer', $question->getAnswer());
+                ->getInstance(AnotherQuestion::class);
+        assertInstanceOf(AnotherQuestion::class, $question);
+        assertInstanceOf(Answer::class, $question->getAnswer());
     }
 }

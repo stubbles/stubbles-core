@@ -23,7 +23,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function canCreateInstanceForSchemeHttp()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpUri',
+                HttpUri::class,
                 HttpUri::fromString('http://example.net/')
         );
     }
@@ -35,7 +35,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function canCreateInstanceForSchemeHttps()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpUri',
+                HttpUri::class,
                 HttpUri::fromString('https://example.net/')
         );
     }
@@ -364,7 +364,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function connectCreatesHttpConnection()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpConnection',
+                HttpConnection::class,
                 HttpUri::fromString('http://example.net/')->connect()
         );
     }
@@ -526,7 +526,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function fromPartsReturnsInstanceOfHttpUri()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpUri',
+                HttpUri::class,
                 HttpUri::fromParts('https', 'localhost', 8080, '/index.php', 'foo=bar')
         );
     }

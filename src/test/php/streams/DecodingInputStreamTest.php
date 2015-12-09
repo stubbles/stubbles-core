@@ -91,7 +91,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeClosesDecoratedStream()
     {
-        $inputStream = NewInstance::of('stubbles\streams\InputStream');
+        $inputStream = NewInstance::of(InputStream::class);
         $decodingInputStream = new DecodingInputStream(
                 $inputStream,
                 'iso-8859-1'

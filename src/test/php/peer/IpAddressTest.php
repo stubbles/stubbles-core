@@ -85,7 +85,7 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
     public function createSocketReturnsSocketInstance()
     {
         assertInstanceOf(
-                'stubbles\peer\Socket',
+                Socket::class,
                 IpAddress::castFrom('127.0.0.1')->createSocket(80)
         );
     }
@@ -96,7 +96,7 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
     public function createSecureSocketReturnsSocketInstance()
     {
         assertInstanceOf(
-                'stubbles\peer\Socket',
+                Socket::class,
                 IpAddress::castFrom('127.0.0.1')->createSecureSocket(443)
         );
     }

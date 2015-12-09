@@ -57,7 +57,7 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
      */
     public function canIterateOverNonSeekableInputStream()
     {
-        $inputStream = NewInstance::of('stubbles\streams\InputStream')
+        $inputStream = NewInstance::of(InputStream::class)
                 ->mapCalls(
                         ['readLine' => callmap\onConsecutiveCalls('foo', 'bar', 'baz'),
                          'eof'      => callmap\onConsecutiveCalls(false, false, false, true)
@@ -77,7 +77,7 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
      */
     public function canNotRewindNonSeekableInputStream()
     {
-        $inputStream = NewInstance::of('stubbles\streams\InputStream')
+        $inputStream = NewInstance::of(InputStream::class)
                 ->mapCalls(
                         ['readLine' => callmap\onConsecutiveCalls('foo', 'bar', 'baz'),
                          'eof'      => callmap\onConsecutiveCalls(false, false, false, true, true)

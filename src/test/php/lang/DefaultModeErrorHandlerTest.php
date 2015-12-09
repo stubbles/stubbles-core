@@ -130,7 +130,7 @@ class ModeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 '/tmp',
-                $this->defaultMode->setErrorHandler('stubbles\lang\ModeErrorHandler')
+                $this->defaultMode->setErrorHandler(ModeErrorHandler::class)
                         ->registerErrorHandler('/tmp')
                         ->getProjectPath()
         );

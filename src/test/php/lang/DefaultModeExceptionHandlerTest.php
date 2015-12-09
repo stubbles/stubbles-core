@@ -96,7 +96,7 @@ class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 '/tmp',
-                $this->defaultMode->setExceptionHandler('stubbles\lang\ModeExceptionHandler')
+                $this->defaultMode->setExceptionHandler(ModeExceptionHandler::class)
                         ->registerExceptionHandler('/tmp')
                         ->getProjectPath()
         );

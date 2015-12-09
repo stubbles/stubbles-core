@@ -89,7 +89,7 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeClosesDecoratedStream()
     {
-        $outputStream = NewInstance::of('stubbles\streams\OutputStream');
+        $outputStream = NewInstance::of(OutputStream::class);
         $abstractDecoratedOutputStream = new TestAbstractDecoratedOutputStream(
                 $outputStream
         );

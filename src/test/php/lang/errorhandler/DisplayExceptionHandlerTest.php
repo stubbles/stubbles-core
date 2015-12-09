@@ -26,7 +26,7 @@ class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     public function createExceptionHandler($sapi)
     {
         $displayExceptionHandler = NewInstance::of(
-                'stubbles\lang\errorhandler\DisplayExceptionHandler',
+                DisplayExceptionHandler::class,
                 ['/tmp', $sapi]
         )->mapCalls(['header' => false, 'writeBody' => false]);
         return $displayExceptionHandler->disableLogging();

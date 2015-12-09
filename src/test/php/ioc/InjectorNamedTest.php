@@ -8,6 +8,12 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\test\ioc\Boss;
+use stubbles\test\ioc\DevelopersMultipleConstructorParams;
+use stubbles\test\ioc\DevelopersMultipleConstructorParamsGroupedName;
+use stubbles\test\ioc\DevelopersMultipleConstructorParamsWithConstant;
+use stubbles\test\ioc\Employee;
+use stubbles\test\ioc\TeamMember;
 /**
  * Test for stubbles\ioc with @Named annotation.
  *
@@ -23,21 +29,21 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
     public function namedConstructorInjectionWithMultipleParamAndOneNamedParam()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Employee')->named('schst')->to('stubbles\test\ioc\Boss');
-        $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
+        $binder->bind(Employee::class)->named('schst')->to(Boss::class);
+        $binder->bind(Employee::class)->to(TeamMember::class);
 
         $injector = $binder->getInjector();
 
-        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
+        assertTrue($injector->hasBinding(Employee::class, 'schst'));
+        assertTrue($injector->hasBinding(Employee::class));
 
-        $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleConstructorParams');
+        $group = $injector->getInstance(DevelopersMultipleConstructorParams::class);
 
-        assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParams', $group);
-        assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
-        assertInstanceOf('stubbles\test\ioc\TeamMember', $group->mikey);
-        assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
+        assertInstanceOf(DevelopersMultipleConstructorParams::class, $group);
+        assertInstanceOf(Employee::class, $group->mikey);
+        assertInstanceOf(TeamMember::class, $group->mikey);
+        assertInstanceOf(Employee::class, $group->schst);
+        assertInstanceOf(Boss::class, $group->schst);
     }
 
     /**
@@ -49,18 +55,18 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('boss')->to('role:boss');
-        $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
+        $binder->bind(Employee::class)->to(TeamMember::class);
 
         $injector = $binder->getInjector();
 
-        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
+        assertTrue($injector->hasBinding(Employee::class, 'schst'));
+        assertTrue($injector->hasBinding(Employee::class));
 
-        $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleConstructorParamsWithConstant');
+        $group = $injector->getInstance(DevelopersMultipleConstructorParamsWithConstant::class);
 
-        assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParamsWithConstant', $group);
-        assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        assertInstanceOf('stubbles\test\ioc\TeamMember', $group->schst);
+        assertInstanceOf(DevelopersMultipleConstructorParamsWithConstant::class, $group);
+        assertInstanceOf(Employee::class, $group->schst);
+        assertInstanceOf(TeamMember::class, $group->schst);
         assertEquals('role:boss', $group->role);
     }
 
@@ -72,20 +78,20 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
     public function namedConstructorInjectionWithMultipleParamAndNamedParamGroup()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Employee')->named('schst')->to('stubbles\test\ioc\Boss');
-        $binder->bind('stubbles\test\ioc\Employee')->to('stubbles\test\ioc\TeamMember');
+        $binder->bind(Employee::class)->named('schst')->to(Boss::class);
+        $binder->bind(Employee::class)->to(TeamMember::class);
 
         $injector = $binder->getInjector();
 
-        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee', 'schst'));
-        assertTrue($injector->hasBinding('stubbles\test\ioc\Employee'));
+        assertTrue($injector->hasBinding(Employee::class, 'schst'));
+        assertTrue($injector->hasBinding(Employee::class));
 
-        $group = $injector->getInstance('stubbles\test\ioc\DevelopersMultipleConstructorParamsGroupedName');
+        $group = $injector->getInstance(DevelopersMultipleConstructorParamsGroupedName::class);
 
-        assertInstanceOf('stubbles\test\ioc\DevelopersMultipleConstructorParamsGroupedName', $group);
-        assertInstanceOf('stubbles\test\ioc\Employee', $group->mikey);
-        assertInstanceOf('stubbles\test\ioc\Boss', $group->mikey);
-        assertInstanceOf('stubbles\test\ioc\Employee', $group->schst);
-        assertInstanceOf('stubbles\test\ioc\Boss', $group->schst);
+        assertInstanceOf(DevelopersMultipleConstructorParamsGroupedName::class, $group);
+        assertInstanceOf(Employee::class, $group->mikey);
+        assertInstanceOf(Boss::class, $group->mikey);
+        assertInstanceOf(Employee::class, $group->schst);
+        assertInstanceOf(Boss::class, $group->schst);
     }
 }

@@ -260,7 +260,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
                  ->at($root)
                  ->withContent("[foo]\nbar=baz");
         $properties = ModifiableProperties::fromFile(vfsStream::url('config/test.ini'));
-        assertInstanceOf('stubbles\lang\ModifiableProperties', $properties);
+        assertInstanceOf(ModifiableProperties::class, $properties);
         assertTrue($properties->containSection('foo'));
         assertEquals(['bar' => 'baz'], $properties->section('foo'));
     }
@@ -284,7 +284,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     public function validIniStringReturnsInstance()
     {
         $properties = ModifiableProperties::fromString("[foo]\nbar=baz");
-        assertInstanceOf('stubbles\lang\ModifiableProperties', $properties);
+        assertInstanceOf(ModifiableProperties::class, $properties);
         assertTrue($properties->containSection('foo'));
         assertEquals(['bar' => 'baz'], $properties->section('foo'));
     }
@@ -296,7 +296,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     public function mergeReturnsModifiableProperties()
     {
         assertInstanceOf(
-                'stubbles\lang\ModifiableProperties',
+                ModifiableProperties::class,
                 $this->modifiableProperties->merge(new Properties([]))
         );
     }
@@ -308,7 +308,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     public function unmodifiableTurnsModifiableIntoNonModifiableProperties()
     {
         assertInstanceOf(
-                'stubbles\lang\Properties',
+                Properties::class,
                 $this->modifiableProperties->unmodifiable()
         );
     }

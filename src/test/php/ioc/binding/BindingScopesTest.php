@@ -24,7 +24,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
     {
         $bindingScopes = new BindingScopes();
         assertInstanceOf(
-                'stubbles\ioc\binding\SingletonBindingScope',
+                SingletonBindingScope::class,
                 $bindingScopes->singleton()
         );
     }
@@ -34,7 +34,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
      */
     public function usesPassedSingletonScope()
     {
-        $singletonScope = NewInstance::of('stubbles\ioc\binding\BindingScope');
+        $singletonScope = NewInstance::of(BindingScope::class);
         $bindingScopes = new BindingScopes($singletonScope);
         assertSame($singletonScope, $bindingScopes->singleton());
     }
@@ -44,7 +44,7 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
      */
     public function usesPassedSessionScope()
     {
-        $sessionScope = NewInstance::of('stubbles\ioc\binding\BindingScope');
+        $sessionScope = NewInstance::of(BindingScope::class);
         $bindingScopes = new BindingScopes(null, $sessionScope);
         assertSame($sessionScope, $bindingScopes->session());
     }

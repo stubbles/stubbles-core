@@ -40,7 +40,7 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->root             = vfsStream::setup();
         $this->exceptionHandler = NewInstance::of(
-                'stubbles\lang\errorhandler\AbstractExceptionHandler',
+                AbstractExceptionHandler::class,
                 [vfsStream::url('root')]
         )->mapCalls(['header' => false, 'createResponseBody' => false, 'writeBody' => false]);
     }

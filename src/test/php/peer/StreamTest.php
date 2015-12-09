@@ -9,6 +9,8 @@
  */
 namespace stubbles\peer;
 use org\bovigo\vfs\vfsStream;
+use stubbles\streams\InputStream;
+use stubbles\streams\OutputStream;
 /**
  * Test for stubbles\peer\Stream.
  *
@@ -108,7 +110,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function canBeUsedAsInputStream()
     {
         assertInstanceOf(
-                'stubbles\streams\InputStream',
+                InputStream::class,
                 $this->stream->in()
         );
     }
@@ -130,7 +132,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function canBeUsedAsOutputStream()
     {
         assertInstanceOf(
-                'stubbles\streams\OutputStream',
+                OutputStream::class,
                 $this->stream->out()
         );
     }

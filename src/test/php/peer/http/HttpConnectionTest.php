@@ -9,6 +9,11 @@
  */
 namespace stubbles\peer\http;
 use bovigo\callmap\NewInstance;
+use stubbles\peer\Stream;
+use stubbles\peer\http\HttpConnection;
+use stubbles\peer\http\HttpUri;
+use stubbles\peer\http\HttpResponse;
+use stubbles\streams\InputStream;
 use stubbles\streams\memory\MemoryOutputStream;
 /**
  * Test for stubbles\peer\http\HttpConnection.
@@ -35,14 +40,14 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->memoryOutputStream = new MemoryOutputStream();
-        $stream = NewInstance::stub('stubbles\peer\Stream')
+        $stream = NewInstance::stub(Stream::class)
                 ->mapCalls(
-                        ['in'  => NewInstance::of('stubbles\streams\InputStream'),
+                        ['in'  => NewInstance::of(InputStream::class),
                          'out' => $this->memoryOutputStream
                         ]
         );
 
-        $httpUri = NewInstance::stub('stubbles\peer\http\HttpUri')
+        $httpUri = NewInstance::stub(HttpUri::class)
                 ->mapCalls(
                         ['openSocket'     => $stream,
                          'path'           => '/foo/resource',
@@ -60,7 +65,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function initializeGetRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
                         ->referedFrom('http://example.com/')
@@ -91,7 +96,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function initializeHeadRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->httpConnection->timeout(2)
                             ->asUserAgent('Stubbles HTTP Client')
                             ->referedFrom('http://example.com/')
@@ -123,7 +128,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function initializePostRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
                         ->referedFrom('http://example.com/')
@@ -156,7 +161,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function initializePostRequestUsingPostValues()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
                         ->referedFrom('http://example.com/')
@@ -191,7 +196,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function initializePutRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
                         ->referedFrom('http://example.com/')
@@ -225,7 +230,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function initializeDeleteRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
                         ->referedFrom('http://example.com/')
@@ -257,7 +262,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     public function functionShortcut()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpConnection',
+                HttpConnection::class,
                 \stubbles\peer\http('http://example.net/')
         );
     }

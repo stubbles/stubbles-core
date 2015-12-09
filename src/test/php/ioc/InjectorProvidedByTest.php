@@ -8,6 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\test\ioc\Mikey;
+use stubbles\test\ioc\Person2;
+use stubbles\test\ioc\Schst;
 /**
  * Test for stubbles\ioc\Injector with the ProvidedBy annotation.
  *
@@ -23,9 +26,8 @@ class InjectorProvidedByTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         assertInstanceOf(
-                'stubbles\test\ioc\Schst',
-                $binder->getInjector()
-                        ->getInstance('stubbles\test\ioc\Person2')
+                Schst::class,
+                $binder->getInjector()->getInstance(Person2::class)
         );
     }
 
@@ -35,11 +37,10 @@ class InjectorProvidedByTest extends \PHPUnit_Framework_TestCase
     public function explicitBindingOverwritesProvidedByAnnotation()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Person2')->to('stubbles\test\ioc\Mikey');
+        $binder->bind(Person2::class)->to(Mikey::class);
         assertInstanceOf(
-                'stubbles\test\ioc\Mikey',
-                $binder->getInjector()
-                        ->getInstance('stubbles\test\ioc\Person2')
+                Mikey::class,
+                $binder->getInjector()->getInstance(Person2::class)
         );
     }
 }

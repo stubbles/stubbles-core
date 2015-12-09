@@ -9,6 +9,9 @@
  */
 namespace stubbles\ioc;
 use bovigo\callmap\NewInstance;
+use stubbles\ioc\binding\Session;
+use stubbles\test\ioc\Mikey;
+use stubbles\test\ioc\Person2;
 /**
  * Test for stubbles\ioc\Injector with the session scope.
  *
@@ -29,8 +32,8 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Person2')
-                ->to('stubbles\test\ioc\Mikey')
+        $binder->bind(Person2::class)
+                ->to(Mikey::class)
                 ->inSession();
         $this->injector = $binder->getInjector();
 
@@ -42,7 +45,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     public function canBindToSessionScopeWithoutSession()
     {
         assertTrue(
-                $this->injector->hasBinding('stubbles\test\ioc\Person2')
+                $this->injector->hasBinding(Person2::class)
         );
     }
 
@@ -53,7 +56,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function requestSessionScopedWithoutSessionThrowsRuntimeException()
     {
-        $this->injector->getInstance('stubbles\test\ioc\Person2');
+        $this->injector->getInstance(Person2::class);
     }
 
     /**
@@ -62,12 +65,12 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function requestSessionScopedWithSessionReturnsInstance()
     {
-        $session = NewInstance::of('stubbles\ioc\binding\Session')
+        $session = NewInstance::of(Session::class)
                 ->mapCalls(['hasValue' => false]);
         assertInstanceOf(
-                'stubbles\test\ioc\Mikey',
+                Mikey::class,
                 $this->injector->setSession($session)
-                        ->getInstance('stubbles\test\ioc\Person2')
+                        ->getInstance(Person2::class)
         );
     }
 
@@ -79,9 +82,9 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     {
         assertTrue(
                 $this->injector->setSession(
-                        NewInstance::of('stubbles\ioc\binding\Session'),
-                        'stubbles\ioc\binding\Session'
-                )->hasExplicitBinding('stubbles\ioc\binding\Session')
+                        NewInstance::of(Session::class),
+                        Session::class
+                )->hasExplicitBinding(Session::class)
         );
     }
 
@@ -91,13 +94,13 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setSessionAddsBindingForSessionAsSingleton()
     {
-        $session = NewInstance::of('stubbles\ioc\binding\Session');
+        $session = NewInstance::of(Session::class);
         assertSame(
                 $session,
                 $this->injector->setSession(
                         $session,
-                        'stubbles\ioc\binding\Session'
-                )->getInstance('stubbles\ioc\binding\Session')
+                        Session::class
+                )->getInstance(Session::class)
         );
     }
 }

@@ -9,6 +9,12 @@
  */
 namespace stubbles\ioc;
 use bovigo\callmap\NewInstance;
+use stubbles\lang\Mode;
+use stubbles\test\ioc\Mikey;
+use stubbles\test\ioc\Person;
+use stubbles\test\ioc\Person3;
+use stubbles\test\ioc\Person4;
+use stubbles\test\ioc\Schst;
 /**
  * Test for stubbles\ioc\Injector with the ImplementedBy annotation.
  *
@@ -23,8 +29,8 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         assertInstanceOf(
-                'stubbles\test\ioc\Schst',
-                $binder->getInjector()->getInstance('stubbles\test\ioc\Person')
+                Schst::class,
+                $binder->getInjector()->getInstance(Person::class)
         );
     }
 
@@ -34,10 +40,10 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     public function explicitBindingOverwritesImplementedByAnnotation()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Person')->to('stubbles\test\ioc\Mikey');
+        $binder->bind(Person::class)->to(Mikey::class);
         assertInstanceOf(
-                'stubbles\test\ioc\Mikey',
-                $binder->getInjector()->getInstance('stubbles\test\ioc\Person')
+                Mikey::class,
+                $binder->getInjector()->getInstance(Person::class)
         );
     }
 
@@ -49,8 +55,8 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         assertInstanceOf(
-                'stubbles\test\ioc\Schst',
-                $binder->getInjector()->getInstance('stubbles\test\ioc\Person3')
+                Schst::class,
+                $binder->getInjector()->getInstance(Person3::class)
         );
     }
 
@@ -63,11 +69,11 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
 
         $binder = new Binder();
         $binder->bindMode(
-                NewInstance::of('stubbles\lang\Mode')->mapCalls(['name' => 'PROD'])
+                NewInstance::of(Mode::class)->mapCalls(['name' => 'PROD'])
         );
         assertInstanceOf(
-                'stubbles\test\ioc\Schst',
-                $binder->getInjector()->getInstance('stubbles\test\ioc\Person3')
+                Schst::class,
+                $binder->getInjector()->getInstance(Person3::class)
         );
     }
 
@@ -80,11 +86,11 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
 
         $binder = new Binder();
         $binder->bindMode(
-                NewInstance::of('stubbles\lang\Mode')->mapCalls(['name' => 'DEV'])
+                NewInstance::of(Mode::class)->mapCalls(['name' => 'DEV'])
         );
         assertInstanceOf(
-                'stubbles\test\ioc\Mikey',
-                $binder->getInjector()->getInstance('stubbles\test\ioc\Person3')
+                Mikey::class,
+                $binder->getInjector()->getInstance(Person3::class)
         );
     }
 
@@ -97,9 +103,9 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindMode(
-                NewInstance::of('stubbles\lang\Mode')->mapCalls(['name' => 'PROD'])
+                NewInstance::of(Mode::class)->mapCalls(['name' => 'PROD'])
         );
-        $binder->getInjector()->getInstance('stubbles\test\ioc\Person4');
+        $binder->getInjector()->getInstance(Person4::class);
     }
 
     /**
@@ -110,6 +116,6 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     public function throwsBindingExceptionWhenNoFallbackSpecifiedAndNoModeSet()
     {
         $binder = new Binder();
-        $binder->getInjector()->getInstance('stubbles\test\ioc\Person4');
+        $binder->getInjector()->getInstance(Person4::class);
     }
 }

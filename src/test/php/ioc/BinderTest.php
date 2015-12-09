@@ -9,6 +9,12 @@
  */
 namespace stubbles\ioc;
 use org\bovigo\vfs\vfsStream;
+use stubbles\ioc\binding\Binding;
+use stubbles\ioc\binding\ClassBinding;
+use stubbles\ioc\binding\ConstantBinding;
+use stubbles\ioc\binding\ListBinding;
+use stubbles\ioc\binding\MapBinding;
+use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use bovigo\callmap\NewInstance;
 /**
@@ -39,7 +45,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function addBindingReturnsAddedBinding()
     {
-        $binding = NewInstance::of('stubbles\ioc\binding\Binding');
+        $binding = NewInstance::of(Binding::class);
         assertSame(
                 $binding,
                 $this->binder->addBinding($binding)
@@ -53,7 +59,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     public function bindCreatesClassBinding()
     {
         assertInstanceOf(
-                'stubbles\ioc\binding\ClassBinding',
+                ClassBinding::class,
                 $this->binder->bind('example\MyInterface')
         );
     }
@@ -65,7 +71,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     public function bindConstantCreatesBinding()
     {
         assertInstanceOf(
-                'stubbles\ioc\binding\ConstantBinding',
+                ConstantBinding::class,
                 $this->binder->bindConstant('foo')
         );
     }
@@ -76,10 +82,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindListCreatesBinding()
     {
-        assertInstanceOf(
-                'stubbles\ioc\binding\ListBinding',
-                $this->binder->bindList('foo')
-        );
+        assertInstanceOf(ListBinding::class, $this->binder->bindList('foo'));
     }
 
     /**
@@ -88,10 +91,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
      */
     public function bindMapCreatesBinding()
     {
-        assertInstanceOf(
-                'stubbles\ioc\binding\MapBinding',
-                $this->binder->bindMap('foo')
-        );
+        assertInstanceOf(MapBinding::class, $this->binder->bindMap('foo'));
     }
 
     /**
@@ -102,7 +102,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $injector = $binder->getInjector();
-        assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
+        assertSame($injector, $injector->getInstance(Injector::class));
     }
 
     /**
@@ -116,7 +116,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
                 $properties,
                 $this->binder->bindProperties(
                         $properties,
-                        NewInstance::of('stubbles\lang\Mode')
+                        NewInstance::of(Mode::class)
                 )
         );
     }
@@ -135,7 +135,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
                 $properties,
                 $this->binder->bindPropertiesFromFile(
                         $file->url(),
-                        NewInstance::of('stubbles\lang\Mode')
+                        NewInstance::of(Mode::class)
                 )
         );
     }

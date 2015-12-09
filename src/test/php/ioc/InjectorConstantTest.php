@@ -9,6 +9,8 @@
  */
 namespace stubbles\ioc;
 use bovigo\callmap\NewInstance;
+use stubbles\test\ioc\AnswerConstantProvider;
+use stubbles\test\ioc\Question;
 /**
  * Helper class for the test.
 /**
@@ -25,8 +27,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
      */
     private function assertConstantInjection(Injector $injector)
     {
-        $question = $injector->getInstance('stubbles\test\\ioc\Question');
-        assertInstanceOf('stubbles\test\ioc\Question', $question);
+        $question = $injector->getInstance(Question::class);
+        assertInstanceOf(Question::class, $question);
         assertEquals(42, $question->getAnswer());
     }
 
@@ -91,7 +93,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindConstant('answer')
                ->toProvider(
-                        NewInstance::of('stubbles\ioc\InjectionProvider')
+                        NewInstance::of(InjectionProvider::class)
                                 ->mapCalls(['get' => 42])
                 );
         $injector = $binder->getInjector();
@@ -124,9 +126,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindConstant('answer')
                 ->toProviderClass(
-                        new \ReflectionClass(
-                                'stubbles\test\ioc\AnswerConstantProvider'
-                        )
+                        new \ReflectionClass(AnswerConstantProvider::class)
                 );
         $injector = $binder->getInjector();
         assertTrue($injector->hasConstant('answer'));
@@ -143,7 +143,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')
-               ->toProviderClass('stubbles\test\ioc\AnswerConstantProvider');
+               ->toProviderClass(AnswerConstantProvider::class);
         $injector = $binder->getInjector();
         assertTrue($injector->hasConstant('answer'));
         assertEquals(42, $injector->getConstant('answer'));

@@ -11,6 +11,7 @@ namespace stubbles\ioc\module;
 use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
+use stubbles\lang\Mode;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for stubbles\ioc\module\Runtime.
@@ -39,7 +40,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->root = vfsStream::setup('projects');
-        $this->mode = NewInstance::of('stubbles\lang\Mode');
+        $this->mode = NewInstance::of(Mode::class);
         Runtime::reset();
     }
 
@@ -92,7 +93,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $runtime->configure($binder);
         assertSame(
                 $this->mode,
-                $binder->getInjector()->getInstance('stubbles\lang\Mode')
+                $binder->getInjector()->getInstance(Mode::class)
         );
     }
 
@@ -105,10 +106,10 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $binder  = new Binder();
         $runtime->configure($binder);
         $injector = $binder->getInjector();
-        assertTrue($injector->hasExplicitBinding('stubbles\lang\Mode'));
+        assertTrue($injector->hasExplicitBinding(Mode::class));
         assertEquals(
                 'PROD',
-                $injector->getInstance('stubbles\lang\Mode')->name()
+                $injector->getInstance(Mode::class)->name()
         );
         restore_error_handler();
         restore_exception_handler();
@@ -125,7 +126,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $runtime->configure($binder);
         assertSame(
                 $this->mode,
-                $binder->getInjector()->getInstance('stubbles\lang\Mode')
+                $binder->getInjector()->getInstance(Mode::class)
         );
         callmap\verify($this->mode, 'registerErrorHandler')
                 ->received($this->root->url());
@@ -149,7 +150,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotBindPropertiesWhenConfigFileIsMissing()
     {
-        $binder = NewInstance::of('stubbles\ioc\Binder');
+        $binder = NewInstance::of(Binder::class);
         $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($binder);
         callmap\verify($binder, 'bindProperties')->wasNeverCalled();
@@ -167,7 +168,7 @@ stubbles.locale=\"de_DE\"
 stubbles.number.decimals=4
 stubbles.webapp.xml.serializeMode=true")
                  ->at($this->root);
-        $binder  = NewInstance::of('stubbles\ioc\Binder');
+        $binder  = NewInstance::of(Binder::class);
         $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($binder);
         callmap\verify($binder, 'bindProperties')->wasCalledOnce();

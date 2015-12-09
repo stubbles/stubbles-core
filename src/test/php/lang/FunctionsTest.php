@@ -158,7 +158,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         assertInstanceOf(
                 'ReflectionClass',
-                reflect('stubbles\lang\Mode')
+                reflect(Mode::class)
         );
     }
 

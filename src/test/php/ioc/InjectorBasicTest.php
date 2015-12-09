@@ -8,6 +8,16 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\test\ioc\Bike;
+use stubbles\test\ioc\BikeWithOptionalOtherParam;
+use stubbles\test\ioc\BikeWithOptionalTire;
+use stubbles\test\ioc\Car;
+use stubbles\test\ioc\Goodyear;
+use stubbles\test\ioc\ImplicitDependency;
+use stubbles\test\ioc\ImplicitOptionalDependency;
+use stubbles\test\ioc\MissingArrayInjection;
+use stubbles\test\ioc\Tire;
+use stubbles\test\ioc\Vehicle;
 /**
  * Test for stubbles\ioc\Injector.
  *
@@ -23,20 +33,20 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     public function constructorInjection()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Tire')->to('stubbles\test\ioc\Goodyear');
-        $binder->bind('stubbles\test\ioc\Vehicle')->to('stubbles\test\ioc\Car');
+        $binder->bind(Tire::class)->to(Goodyear::class);
+        $binder->bind(Vehicle::class)->to(Car::class);
 
         $injector = $binder->getInjector();
 
-        assertTrue($injector->hasBinding('stubbles\test\ioc\Vehicle'));
-        assertTrue($injector->hasBinding('stubbles\test\ioc\Tire'));
+        assertTrue($injector->hasBinding(Vehicle::class));
+        assertTrue($injector->hasBinding(Tire::class));
 
-        $vehicle = $injector->getInstance('stubbles\test\ioc\Vehicle');
+        $vehicle = $injector->getInstance(Vehicle::class);
 
-        assertInstanceOf('stubbles\test\ioc\Vehicle', $vehicle);
-        assertInstanceOf('stubbles\test\ioc\Car', $vehicle);
-        assertInstanceOf('stubbles\test\ioc\Tire', $vehicle->tire);
-        assertInstanceOf('stubbles\test\ioc\Goodyear', $vehicle->tire);
+        assertInstanceOf(Vehicle::class, $vehicle);
+        assertInstanceOf(Car::class, $vehicle);
+        assertInstanceOf(Tire::class, $vehicle->tire);
+        assertInstanceOf(Goodyear::class, $vehicle->tire);
     }
 
     /**
@@ -48,10 +58,10 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        assertFalse($injector->hasExplicitBinding('stubbles\test\ioc\Goodyear'));
-        $goodyear = $injector->getInstance('stubbles\test\ioc\Goodyear');
-        assertInstanceOf('stubbles\test\ioc\Goodyear', $goodyear);
-        assertTrue($injector->hasExplicitBinding('stubbles\test\ioc\Goodyear'));
+        assertFalse($injector->hasExplicitBinding(Goodyear::class));
+        $goodyear = $injector->getInstance(Goodyear::class);
+        assertInstanceOf(Goodyear::class, $goodyear);
+        assertTrue($injector->hasExplicitBinding(Goodyear::class));
     }
 
     /**
@@ -63,11 +73,11 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        assertFalse($injector->hasExplicitBinding('stubbles\test\ioc\ImplicitDependency'));
-        $obj      = $injector->getInstance('stubbles\test\ioc\ImplicitDependency');
-        assertInstanceOf('stubbles\test\ioc\ImplicitDependency', $obj);
-        assertInstanceOf('stubbles\test\ioc\Goodyear', $obj->getGoodyearByConstructor());
-        assertTrue($injector->hasExplicitBinding('stubbles\test\ioc\ImplicitDependency'));
+        assertFalse($injector->hasExplicitBinding(ImplicitDependency::class));
+        $obj      = $injector->getInstance(ImplicitDependency::class);
+        assertInstanceOf(ImplicitDependency::class, $obj);
+        assertInstanceOf(Goodyear::class, $obj->getGoodyearByConstructor());
+        assertTrue($injector->hasExplicitBinding(ImplicitDependency::class));
     }
 
     /**
@@ -77,7 +87,7 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        $obj      = $injector->getInstance('stubbles\test\ioc\ImplicitOptionalDependency');
+        $obj      = $injector->getInstance(ImplicitOptionalDependency::class);
         assertNull($obj->getGoodyear());
     }
 
@@ -87,10 +97,10 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     public function optionalImplicitDependencyWillBeSetIfBound()
     {
         $binder = new Binder();
-        $binder->bind('stubbles\test\ioc\Goodyear')->to('stubbles\test\ioc\Goodyear');
+        $binder->bind(Goodyear::class)->to(Goodyear::class);
         $injector = $binder->getInjector();
-        $obj      = $injector->getInstance('stubbles\test\ioc\ImplicitOptionalDependency');
-        assertInstanceOf('stubbles\test\ioc\Goodyear', $obj->getGoodyear());
+        $obj      = $injector->getInstance(ImplicitOptionalDependency::class);
+        assertInstanceOf(Goodyear::class, $obj->getGoodyear());
     }
 
     /**
@@ -101,7 +111,7 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        $injector->getInstance('stubbles\test\ioc\Vehicle');
+        $injector->getInstance(Vehicle::class);
     }
 
     /**
@@ -112,7 +122,7 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        $injector->getInstance('stubbles\test\ioc\Bike');
+        $injector->getInstance(Bike::class);
     }
 
     /**
@@ -123,7 +133,7 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        $injector->getInstance('stubbles\test\ioc\MissingArrayInjection');
+        $injector->getInstance(MissingArrayInjection::class);
     }
 
     /**
@@ -134,8 +144,8 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $injector = $binder->getInjector();
-        $bike     = $injector->getInstance('stubbles\test\ioc\BikeWithOptionalTire');
-        assertInstanceOf('stubbles\test\ioc\Goodyear', $bike->tire);
+        $bike     = $injector->getInstance(BikeWithOptionalTire::class);
+        assertInstanceOf(Goodyear::class, $bike->tire);
     }
 
     /**
@@ -145,9 +155,9 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     public function constructorInjectionWithOptionalSecondParam()
     {
         $binder   = new Binder();
-        $binder->bind('stubbles\test\ioc\Tire')->to('stubbles\test\ioc\Goodyear');
+        $binder->bind(Tire::class)->to(Goodyear::class);
         $injector = $binder->getInjector();
-        $bike     = $injector->getInstance('stubbles\test\ioc\BikeWithOptionalOtherParam');
+        $bike     = $injector->getInstance(BikeWithOptionalOtherParam::class);
         assertEquals('foo', $bike->other);
     }
 }

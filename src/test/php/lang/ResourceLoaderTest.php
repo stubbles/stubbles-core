@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use stubbles\streams\InputStream;
 /**
  * Tests for stubbles\lang\ResourceLoader.
  *
@@ -69,7 +70,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     public function openLocalResourceReturnsInputStream()
     {
         assertInstanceOf(
-                'stubbles\streams\InputStream',
+                InputStream::class,
                 $this->resourceLoader->open('lang/stubbles.ini')
         );
 
@@ -117,7 +118,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     public function openResourceWithCompletePathInRootReturnsInputStream()
     {
         assertInstanceOf(
-                'stubbles\streams\InputStream',
+                InputStream::class,
                 $this->resourceLoader->open(__FILE__)
         );
     }

@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\ioc\module\Runtime;
 use stubbles\test\ioc\AppClassWithBindings;
 use stubbles\test\ioc\AppClassWithoutBindings;
 use stubbles\test\ioc\AppUsingBindingModule;
@@ -34,10 +35,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function createCreatesInstanceUsingBindings()
     {
         $appCommandWithBindings = AppClassWithBindings::create('projectPath');
-        assertInstanceOf(
-                'stubbles\test\ioc\AppClassWithBindings',
-                $appCommandWithBindings
-        );
+        assertInstanceOf(AppClassWithBindings::class, $appCommandWithBindings);
     }
 
     /**
@@ -45,13 +43,11 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceCreatesInstanceUsingBindings()
     {
-        $appCommandWithBindings = App::createInstance('stubbles\test\ioc\AppClassWithBindings',
-                                                      'projectPath'
-                                  );
-        assertInstanceOf(
-                'stubbles\test\ioc\AppClassWithBindings',
-                $appCommandWithBindings
+        $appCommandWithBindings = App::createInstance(
+                AppClassWithBindings::class,
+                'projectPath'
         );
+        assertInstanceOf(AppClassWithBindings::class, $appCommandWithBindings);
     }
 
     /**
@@ -60,9 +56,10 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function createInstanceCreatesInstanceWithoutBindings()
     {
         assertInstanceOf(
-                'stubbles\test\ioc\AppClassWithoutBindings',
-                App::createInstance('stubbles\test\ioc\AppClassWithoutBindings',
-                                    'projectPath'
+                AppClassWithoutBindings::class,
+                App::createInstance(
+                        AppClassWithoutBindings::class,
+                        'projectPath'
                 )
         );
     }
@@ -98,7 +95,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function canCreateRuntime()
     {
         assertInstanceOf(
-                'stubbles\ioc\module\Runtime',
+                Runtime::class,
                 AppUsingBindingModule::callBindRuntime()
         );
     }

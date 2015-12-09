@@ -84,7 +84,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function closeCallsDecoratedStream()
     {
-        $inputStream = NewInstance::of('stubbles\streams\InputStream');
+        $inputStream = NewInstance::of(InputStream::class);
         $abstractDecoratedInputStream = new TestAbstractDecoratedInputStream($inputStream);
         $abstractDecoratedInputStream->close();
         callmap\verify($inputStream, 'close')->wasCalledOnce();

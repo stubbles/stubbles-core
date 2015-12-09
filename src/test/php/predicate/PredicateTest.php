@@ -47,7 +47,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function castFromWithCallableReturnsCallablePredicate()
     {
         assertInstanceOf(
-                'stubbles\predicate\CallablePredicate',
+                CallablePredicate::class,
                 Predicate::castFrom(function($value) { return 'foo' === $value; })
         );
     }
@@ -77,7 +77,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     {
         $predicate = new FooPredicate();
         assertInstanceOf(
-                'stubbles\predicate\AndPredicate',
+                AndPredicate::class,
                 $predicate->asWellAs(function($value) { return 'foo' === $value; })
         );
     }
@@ -89,7 +89,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     {
         $predicate = new FooPredicate();
         assertInstanceOf(
-                'stubbles\predicate\OrPredicate',
+                OrPredicate::class,
                 $predicate->orElse(function($value) { return 'foo' === $value; })
         );
     }
@@ -101,7 +101,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     {
         $predicate = new FooPredicate();
         assertInstanceOf(
-                'stubbles\predicate\NegatePredicate',
+                NegatePredicate::class,
                 $predicate->negate()
         );
     }

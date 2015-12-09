@@ -9,7 +9,9 @@
  */
 namespace stubbles\ioc;
 use bovigo\callmap\NewInstance;
+use stubbles\lang\Mode;
 use stubbles\lang\Properties;
+use stubbles\test\ioc\PropertyReceiver;
 /**
  * Test for property bindings.
  *
@@ -49,7 +51,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
                              ]
                 ]
         );
-        $this->mode = NewInstance::of('stubbles\lang\Mode');
+        $this->mode = NewInstance::of(Mode::class);
         $binder = new Binder();
         $binder->bindProperties($this->properties, $this->mode);
         $this->injector = $binder->getInjector();
@@ -61,7 +63,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     public function setsCorrectPropertiesInRuntimeModeWithSpecificProperties()
     {
         $this->mode->mapCalls(['name' => 'PROD']);
-        $propertyReceiver = $this->injector->getInstance('stubbles\test\ioc\PropertyReceiver');
+        $propertyReceiver = $this->injector->getInstance(PropertyReceiver::class);
         assertEquals('baz', $propertyReceiver->foo);
         assertEquals('someValue', $propertyReceiver->bar);
     }
@@ -72,7 +74,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     public function setsCorrectPropertiesInRuntimeModeWithDefaultProperties()
     {
         $this->mode->mapCalls(['name' => 'DEV']);
-        $propertyReceiver = $this->injector->getInstance('stubbles\test\ioc\PropertyReceiver');
+        $propertyReceiver = $this->injector->getInstance(PropertyReceiver::class);
         assertEquals('default', $propertyReceiver->foo);
         assertEquals('someValue', $propertyReceiver->bar);
     }
@@ -85,7 +87,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     public function instanceCreationThrowsBindingExceptionWhenNoPropertiesBound()
     {
         $binder = new Binder();
-        $binder->getInjector()->getInstance('stubbles\test\ioc\PropertyReceiver');
+        $binder->getInjector()->getInstance(PropertyReceiver::class);
     }
 
     /**
@@ -96,7 +98,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     {
         assertSame(
                 $this->properties,
-                $this->injector->getInstance('stubbles\lang\Properties', 'config.ini')
+                $this->injector->getInstance(Properties::class, 'config.ini')
         );
     }
 }

@@ -9,6 +9,7 @@
  */
 namespace stubbles\ioc;
 use stubbles\test\ioc\AppTestBindingModuleOne;
+use stubbles\test\ioc\AppTestBindingModuleTwo;
 /**
  * Test for stubbles\ioc\App.
  *
@@ -40,13 +41,14 @@ class BindingFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function bindingModulesAreProcessed()
     {
-        $injector = BindingFactory::createInjector(new AppTestBindingModuleOne(),
-                                                   'stubbles\test\ioc\AppTestBindingModuleTwo'
-                    );
+        $injector = BindingFactory::createInjector(
+                new AppTestBindingModuleOne(),
+                AppTestBindingModuleTwo::class
+        );
         assertTrue($injector->hasBinding('foo'));
         assertTrue($injector->hasBinding('bar'));
-        assertTrue($injector->hasBinding('stubbles\ioc\Injector'));
-        assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
+        assertTrue($injector->hasBinding(Injector::class));
+        assertSame($injector, $injector->getInstance(Injector::class));
     }
 
     /**
@@ -55,13 +57,13 @@ class BindingFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function bindingModulesAreProcessedIfPassedAsArray()
     {
-        $injector = BindingFactory::createInjector([new AppTestBindingModuleOne(),
-                                                    'stubbles\test\ioc\AppTestBindingModuleTwo'
-                                                   ]
-                    );
+        $injector = BindingFactory::createInjector([
+                new AppTestBindingModuleOne(),
+                AppTestBindingModuleTwo::class
+        ]);
         assertTrue($injector->hasBinding('foo'));
         assertTrue($injector->hasBinding('bar'));
-        assertTrue($injector->hasBinding('stubbles\ioc\Injector'));
-        assertSame($injector, $injector->getInstance('stubbles\ioc\Injector'));
+        assertTrue($injector->hasBinding(Injector::class));
+        assertSame($injector, $injector->getInstance(Injector::class));
     }
 }

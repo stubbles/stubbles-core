@@ -10,6 +10,10 @@
 namespace stubbles\peer\http;
 use bovigo\callmap\NewInstance;
 use stubbles\peer\HeaderList;
+use stubbles\peer\Stream;
+use stubbles\peer\http\HttpResponse;
+use stubbles\peer\http\HttpUri;
+use stubbles\streams\InputStream;
 use stubbles\streams\memory\MemoryOutputStream;
 /**
  * Test for stubbles\peer\http\HttpRequest.
@@ -42,9 +46,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     private function createHttpRequest($queryString = null)
     {
-        $stream  = NewInstance::stub('stubbles\peer\Stream')
+        $stream  = NewInstance::stub(Stream::class)
                 ->mapCalls(
-                        ['in'  => NewInstance::of('stubbles\streams\InputStream'),
+                        ['in'  => NewInstance::of(InputStream::class),
                          'out' => $this->memoryOutputStream
                         ]
         );
@@ -62,8 +66,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
         }
 
         return HttpRequest::create(
-                NewInstance::stub('stubbles\peer\http\HttpUri')
-                        ->mapCalls($uriCalls),
+                NewInstance::stub(HttpUri::class)->mapCalls($uriCalls),
                 new HeaderList(['X-Binford' => 6100])
         );
     }
@@ -74,7 +77,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function getWritesCorrectRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->get()
         );
         assertEquals(
@@ -96,7 +99,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function getWritesCorrectRequestWithQueryString()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest('foo=bar&baz=1')->get()
         );
         assertEquals(
@@ -117,7 +120,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function getWritesCorrectRequestWithVersion()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->get(5, HttpVersion::HTTP_1_0)
         );
         assertEquals(
@@ -147,7 +150,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function headWritesCorrectRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->head()
         );
         assertEquals(
@@ -170,7 +173,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function headWritesCorrectRequestWithQueryString()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest('foo=bar&baz=1')->head()
         );
         assertEquals(
@@ -192,7 +195,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function headWritesCorrectRequestWithVersion()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->head(5, HttpVersion::HTTP_1_0)
         );
         assertEquals(
@@ -223,7 +226,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->post('foobar')
         );
         assertEquals(
@@ -247,7 +250,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function postIgnoresQueryString()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest('foo=bar&baz=1')->post('foobar')
         );
         assertEquals(
@@ -270,7 +273,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestWithVersion()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->post('foobar', 5, HttpVersion::HTTP_1_0)
         );
         assertEquals(
@@ -293,7 +296,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestUsingEmptyPostValues()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->post([])
         );
         assertEquals(
@@ -316,7 +319,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestUsingPostValues()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'])
         );
         assertEquals(
@@ -340,7 +343,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function postWritesCorrectRequestUsingPostValuesWithVersion()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->post(
                         ['foo' => 'bar', 'ba z' => 'dum my'],
                         5,
@@ -378,7 +381,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function putWritesCorrectRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->put('foobar')
         );
         assertEquals(
@@ -402,7 +405,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function putIgnoresQueryString()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest('foo=bar&baz=1')->put('foobar')
         );
         assertEquals(
@@ -426,7 +429,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function putWritesCorrectRequestWithVersion()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->put('foobar', 5, HttpVersion::HTTP_1_0)
         );
         assertEquals(
@@ -460,7 +463,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function deleteWritesCorrectRequest()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->delete()
         );
         assertEquals(
@@ -482,7 +485,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function deleteIgnoresQueryString()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest('foo=bar&baz=1')->delete()
         );
         assertEquals(
@@ -504,7 +507,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     public function deleteWritesCorrectRequestWithVersion()
     {
         assertInstanceOf(
-                'stubbles\peer\http\HttpResponse',
+                HttpResponse::class,
                 $this->createHttpRequest()->delete(5, HttpVersion::HTTP_1_0)
         );
         assertEquals(

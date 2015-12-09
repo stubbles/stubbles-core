@@ -10,6 +10,7 @@
 namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\InjectionProvider;
+use stubbles\ioc\Injector;
 /**
  * Test for stubbles\ioc\binding\ListBinding.
  *
@@ -37,7 +38,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->injector    = NewInstance::of('stubbles\ioc\Injector');
+        $this->injector    = NewInstance::of(Injector::class);
         $this->listBinding = new ListBinding('foo');
     }
 
@@ -142,7 +143,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
     {
         $this->listBinding->withValue(new \stdClass())->getInstance(
                 $this->injector,
-                new \ReflectionClass('stubbles\ioc\InjectionProvider')
+                new \ReflectionClass(InjectionProvider::class)
         );
     }
 
@@ -154,7 +155,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     private function createInjectionProvider($value)
     {
-        return NewInstance::of('stubbles\ioc\InjectionProvider')
+        return NewInstance::of(InjectionProvider::class)
                 ->mapCalls(['get' => $value]);
     }
 
@@ -210,7 +211,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
                 $this->createInjectionProvider(new \stdClass())
         )->getInstance(
                 $this->injector,
-                new \ReflectionClass('stubbles\ioc\InjectionProvider')
+                new \ReflectionClass(InjectionProvider::class)
         );
     }
 
@@ -272,7 +273,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
         $this->listBinding->withValueFromProvider(get_class($provider))
                 ->getInstance(
                         $this->injector,
-                        new \ReflectionClass('stubbles\ioc\InjectionProvider')
+                        new \ReflectionClass(InjectionProvider::class)
         );
     }
 
@@ -293,12 +294,12 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function addInvalidProviderClassThrowsBindingException()
     {
-        $providerClass = get_class(NewInstance::of('stubbles\ioc\InjectionProvider'));
+        $providerClass = get_class(NewInstance::of(InjectionProvider::class));
         $this->injector->mapCalls(['getInstance' => '\stdClass']);
         $this->listBinding->withValueFromProvider($providerClass)
                 ->getInstance(
                         $this->injector,
-                        new \ReflectionClass('stubbles\ioc\InjectionProvider')
+                        new \ReflectionClass(InjectionProvider::class)
         );
     }
 
@@ -370,7 +371,7 @@ class ListBindingTest extends \PHPUnit_Framework_TestCase
         $this->listBinding->withValueFromClosure(function() { return new \stdClass(); })
                 ->getInstance(
                         $this->injector,
-                        new \ReflectionClass('stubbles\ioc\InjectionProvider')
+                        new \ReflectionClass(InjectionProvider::class)
         );
     }
 }

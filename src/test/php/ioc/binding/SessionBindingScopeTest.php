@@ -10,6 +10,7 @@
 namespace stubbles\ioc\binding;
 use bovigo\callmap;
 use bovigo\callmap\NewInstance;
+use stubbles\ioc\InjectionProvider;
 use stubbles\lang;
 /**
  * Tests for stubbles\ioc\binding\SessionBindingScope.
@@ -44,9 +45,9 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->session      = NewInstance::of('stubbles\ioc\binding\Session');
+        $this->session      = NewInstance::of(Session::class);
         $this->sessionScope = new SessionBindingScope();
-        $this->provider     = NewInstance::of('stubbles\ioc\InjectionProvider');
+        $this->provider     = NewInstance::of(InjectionProvider::class);
     }
 
     /**

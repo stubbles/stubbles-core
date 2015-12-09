@@ -89,7 +89,7 @@ class Binder
     public function bindMode(Mode $mode)
     {
         $this->mode = $mode;
-        $this->bind('stubbles\lang\Mode')->toInstance($mode);
+        $this->bind(Mode::class)->toInstance($mode);
     }
 
     /**
@@ -116,7 +116,7 @@ class Binder
     public function bindProperties(Properties $properties, Mode $mode)
     {
         $this->addBinding(new PropertyBinding($properties, $mode));
-        $this->bind('stubbles\lang\Properties')
+        $this->bind(Properties::class)
              ->named('config.ini')
              ->toInstance($properties);
         return $properties;

@@ -299,8 +299,8 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
             [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
             ['true', "'true'"],
             ['null', '"null"'],
-            [MyTestClass::TEST_CONSTANT, 'stubbles\lang\reflect\annotation\MyTestClass::TEST_CONSTANT'],
-            [MyTestClass::$FOO, 'stubbles\lang\reflect\annotation\MyTestClass::$FOO']
+            [MyTestClass::TEST_CONSTANT, MyTestClass::class . '::TEST_CONSTANT'],
+            [MyTestClass::$FOO, MyTestClass::class . '::$FOO']
         ];
     }
 

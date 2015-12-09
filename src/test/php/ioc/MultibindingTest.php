@@ -11,6 +11,7 @@ namespace stubbles\ioc;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
+use stubbles\test\ioc\Plugin;
 use stubbles\test\ioc\PluginHandler;
 /**
  * Test for list and map bindings.
@@ -205,13 +206,13 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function createTypedList()
     {
-        $plugin1 = NewInstance::of('stubbles\test\ioc\Plugin');
-        $plugin2 = NewInstance::of('stubbles\test\ioc\Plugin');
-        $plugin3 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin1 = NewInstance::of(Plugin::class);
+        $plugin2 = NewInstance::of(Plugin::class);
+        $plugin3 = NewInstance::of(Plugin::class);
         $binder  = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindList('stubbles\test\ioc\Plugin')
+        $binder->bindList(Plugin::class)
                 ->withValue($plugin1)
                 ->withValueFromProvider($this->createProviderForValue($plugin2))
                 ->withValueFromClosure(
@@ -229,17 +230,17 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function bindTypedListMoreThanOnceAddsToSameList()
     {
-        $plugin1 = NewInstance::of('stubbles\test\\ioc\Plugin');
-        $plugin2 = NewInstance::of('stubbles\test\\ioc\Plugin');
-        $plugin3 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin1 = NewInstance::of(Plugin::class);
+        $plugin2 = NewInstance::of(Plugin::class);
+        $plugin3 = NewInstance::of(Plugin::class);
         $binder  = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindList('stubbles\\test\\ioc\\Plugin')
+        $binder->bindList(Plugin::class)
                 ->withValue($plugin1);
-        $binder->bindList('stubbles\\test\\ioc\\Plugin')
+        $binder->bindList(Plugin::class)
                 ->withValueFromProvider($this->createProviderForValue($plugin2));
-        $binder->bindList('stubbles\test\ioc\Plugin')
+        $binder->bindList(Plugin::class)
                 ->withValueFromClosure(
                         function() use($plugin3) { return $plugin3; }
                 );
@@ -255,13 +256,13 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function createTypedMap()
     {
-        $plugin1 = NewInstance::of('stubbles\test\ioc\Plugin');
-        $plugin2 = NewInstance::of('stubbles\test\ioc\Plugin');
-        $plugin3 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin1 = NewInstance::of(Plugin::class);
+        $plugin2 = NewInstance::of(Plugin::class);
+        $plugin3 = NewInstance::of(Plugin::class);
         $binder  = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindMap('stubbles\test\ioc\Plugin')
+        $binder->bindMap(Plugin::class)
                 ->withEntry('tb', $plugin1)
                 ->withEntryFromProvider(
                         'dd',
@@ -283,20 +284,20 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function bindTypedMapMoreThanOnceAddsToSameList()
     {
-        $plugin1 = NewInstance::of('stubbles\test\ioc\Plugin');
-        $plugin2 = NewInstance::of('stubbles\test\ioc\Plugin');
-        $plugin3 = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin1 = NewInstance::of(Plugin::class);
+        $plugin2 = NewInstance::of(Plugin::class);
+        $plugin3 = NewInstance::of(Plugin::class);
         $binder  = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindMap('stubbles\\test\\ioc\\Plugin')
+        $binder->bindMap(Plugin::class)
                 ->withEntry('tb', $plugin1);
-        $binder->bindMap('stubbles\\test\\ioc\\Plugin')
+        $binder->bindMap(Plugin::class)
                 ->withEntryFromProvider(
                         'dd',
                         $this->createProviderForValue($plugin2)
                 );
-        $binder->bindMap('stubbles\test\ioc\Plugin')
+        $binder->bindMap(Plugin::class)
                 ->withEntryFromClosure(
                         'hf',
                         function() use($plugin3) { return $plugin3; }
@@ -317,7 +318,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindList('stubbles\test\ioc\Plugin')->withValue(303);
+        $binder->bindList(Plugin::class)->withValue(303);
         $this->createPluginHandler($binder);
     }
 
@@ -330,7 +331,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bindMap('stubbles\test\ioc\Plugin')->withEntry('tb', 303);
+        $binder->bindMap(Plugin::class)->withEntry('tb', 303);
         $this->createPluginHandler($binder);
     }
 
@@ -339,11 +340,11 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function mixedAnnotations()
     {
-        $plugin = NewInstance::of('stubbles\test\ioc\Plugin');
+        $plugin = NewInstance::of(Plugin::class);
         $binder = new Binder();
         $binder->bindList('listConfig');
         $binder->bindMap('mapConfig');
-        $binder->bind('stubbles\test\ioc\Plugin')
+        $binder->bind(Plugin::class)
                ->named('foo')
                ->toInstance($plugin);
         $binder->bindConstant('foo')
@@ -370,7 +371,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     private function createProviderForValue($value)
     {
-        return NewInstance::of('stubbles\ioc\InjectionProvider')
+        return NewInstance::of(InjectionProvider::class)
                 ->mapCalls(['get' => $value]);
     }
 
@@ -382,6 +383,6 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     private function createPluginHandler(Binder $binder)
     {
-        return $binder->getInjector()->getInstance('stubbles\test\ioc\PluginHandler');
+        return $binder->getInjector()->getInstance(PluginHandler::class);
     }
 }

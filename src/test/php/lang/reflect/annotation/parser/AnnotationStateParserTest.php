@@ -85,7 +85,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     private function createExpectedMyTestClassAnnotation($name, array $values = [], $type = null)
     {
-        return [new Annotation($name, 'stubbles\lang\reflect\annotation\parser\MyTestClass', $values, $type)];
+        return [new Annotation($name, MyTestClass::class, $values, $type)];
     }
 
     /**
@@ -93,11 +93,11 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     private function parseMyTestClassAnnotation($type)
     {
-        $clazz = new \ReflectionClass('stubbles\lang\reflect\annotation\parser\MyTestClass');
+        $clazz = new \ReflectionClass(MyTestClass::class);
         return $this->annotationStateParser->parse(
                 $clazz->getDocComment(),
-                'stubbles\lang\reflect\annotation\parser\MyTestClass'
-        )['stubbles\lang\reflect\annotation\parser\MyTestClass']->named($type);
+                MyTestClass::class
+        )[MyTestClass::class]->named($type);
     }
 
     /**
@@ -180,7 +180,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'Constant',
-                        ['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT']
+                        ['foo' => MyTestClass::class . '::TEST_CONSTANT']
                 ),
                 $this->parseMyTestClassAnnotation('Constant')
         );
@@ -194,7 +194,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'Enum',
-                        ['foo' => 'stubbles\lang\reflect\annotation\parser\MyTestClass::$FOO']
+                        ['foo' => MyTestClass::class . '::$FOO']
                 ),
                 $this->parseMyTestClassAnnotation('Enum')
         );
@@ -236,7 +236,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         assertEquals(
                 $this->createExpectedMyTestClassAnnotation(
                         'Class',
-                        ['__value' => 'stubbles\lang\\reflect\annotation\parser\MyTestClass.class']
+                        ['__value' => MyTestClass::class . '.class']
                 ),
                 $this->parseMyTestClassAnnotation('Class')
         );
@@ -261,7 +261,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     private function createExpectedParameterAnnotation($name, array $values = [], $type = null)
     {
-        return [new Annotation($name, 'stubbles\lang\reflect\annotation\parser\MyTestClass2::foo()#bar', $values, $type)];
+        return [new Annotation($name, MyTestClass2::class . '::foo()#bar', $values, $type)];
     }
 
     /**
@@ -269,11 +269,11 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     private function parseMyTestClass2Annotation($type)
     {
-        $method = new \ReflectionMethod('stubbles\lang\\reflect\annotation\parser\MyTestClass2', 'foo');
+        $method = new \ReflectionMethod(MyTestClass2::class, 'foo');
         return $this->annotationStateParser->parse(
                 $method->getDocComment(),
-                'stubbles\lang\\reflect\annotation\parser\MyTestClass2::foo()'
-        )['stubbles\lang\reflect\annotation\parser\MyTestClass2::foo()#bar']->named($type);
+                MyTestClass2::class . '::foo()'
+        )[MyTestClass2::class . '::foo()#bar']->named($type);
     }
 
     /**

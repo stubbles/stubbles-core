@@ -35,7 +35,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->streamFactory = NewInstance::of('stubbles\streams\StreamFactory');
+        $this->streamFactory = NewInstance::of(StreamFactory::class);
         $this->prefixedStreamFactory = new PrefixedStreamFactory(
                 $this->streamFactory,
                 'prefix/'
@@ -47,7 +47,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function inputStreamGetsPrefix()
     {
-        $inputStream = NewInstance::of('stubbles\streams\InputStream');
+        $inputStream = NewInstance::of(InputStream::class);
         $this->streamFactory->mapCalls(
                 ['createInputStream' => $inputStream]
         );
@@ -67,7 +67,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function outputStreamGetsPrefix()
     {
-        $outputStream = NewInstance::of('stubbles\streams\OutputStream');
+        $outputStream = NewInstance::of(InputStream::class);
         $this->streamFactory->mapCalls(
                 ['createOutputStream' => $outputStream]
         );

@@ -38,11 +38,11 @@ class DefaultErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $properties = \stubbles\lang\extractObjectProperties($this->defaultErrorHandler);
         assertInstanceOf(
-                'stubbles\lang\errorhandler\IllegalArgumentErrorHandler',
+                IllegalArgumentErrorHandler::class,
                 $properties['errorHandlers'][0]
         );
         assertInstanceOf(
-                'stubbles\lang\errorhandler\LogErrorHandler',
+                LogErrorHandler::class,
                 $properties['errorHandlers'][1]
         );
     }
