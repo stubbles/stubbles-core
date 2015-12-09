@@ -5,12 +5,13 @@
     "license": "BSD-3-Clause",
     "description": "Provides base classes for Stubbles packages.",
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "ext-iconv": "*"
     },
     "require-dev": {
-        "mikey179/vfsStream": "^1.5",
-        "phpunit/phpunit": "^4.7",
-        "bovigo/callmap": "^1.0"
+        "mikey179/vfsStream": "^1.6",
+        "phpunit/phpunit": "^4.8",
+        "bovigo/callmap": "^1.1"
     },
     "autoload": {
         "psr-4": {
