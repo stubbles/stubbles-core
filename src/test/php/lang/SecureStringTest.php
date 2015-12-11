@@ -74,7 +74,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  emptyValues
      * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Given string was null or empty, if you explicitly want to create a SecureString with value null use SecureString::forNull()
+     * @expectedExceptionMessage  Given string was null or empty, if you explicitly want to create a Secret with value null use Secret::forNull()
      */
     public function createWithEmptyValueThrowsIllegalArgumentException($value)
     {

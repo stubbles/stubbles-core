@@ -590,7 +590,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function propertiesWithKeyPasswordBecomeInstancesOfSecureString()
     {
         assertInstanceOf(
-                SecureString::class,
+                Secret::class,
                 properties(['foo' => ['password' => 'baz']])->value('foo', 'password')
         );
     }
@@ -603,7 +603,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function propertiesWhereKeyEndsWithPasswordBecomeInstancesOfSecureString()
     {
         assertInstanceOf(
-                SecureString::class,
+                Secret::class,
                 properties(['foo' => ['example.another.password' => 'baz']])
                         ->value('foo', 'example.another.password')
         );
@@ -617,7 +617,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function parseSecureStringValueReturnsSecureStringInstance()
     {
         assertInstanceOf(
-                SecureString::class,
+                Secret::class,
                 properties(['foo' => ['password' => 'baz']])
                         ->parseValue('foo', 'password')
         );
@@ -632,7 +632,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function parseSecureStringThrowsIllegalAccessException()
     {
         assertInstanceOf(
-                SecureString::class,
+                Secret::class,
                 properties(['foo' => ['password' => 'baz']])
                         ->parse('foo', 'password')
         );

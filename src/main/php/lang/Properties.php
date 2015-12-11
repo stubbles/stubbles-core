@@ -40,7 +40,7 @@ class Properties implements \Iterator
         foreach ($propertyData as $section => $values) {
             foreach (array_keys($values) as $key) {
                 if (substr($key, -8) === 'password') {
-                    $propertyData[$section][$key] = SecureString::create($values[$key]);
+                    $propertyData[$section][$key] = Secret::create($values[$key]);
                 }
             }
         }
@@ -208,7 +208,7 @@ class Properties implements \Iterator
     public function parseValue($section, $key, $default = null)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            if ($this->propertyData[$section][$key] instanceof SecureString) {
+            if ($this->propertyData[$section][$key] instanceof Secret) {
                 return $this->propertyData[$section][$key];
             }
 
@@ -237,7 +237,7 @@ class Properties implements \Iterator
             return new Parse(null);
         }
 
-        if ($this->propertyData[$section][$key] instanceof SecureString) {
+        if ($this->propertyData[$section][$key] instanceof Secret) {
             throw new \LogicException('Can not parse fields with passwords');
         }
 

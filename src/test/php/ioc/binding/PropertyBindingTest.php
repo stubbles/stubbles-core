@@ -14,7 +14,7 @@ use stubbles\ioc\Injector;
 use stubbles\lang;
 use stubbles\lang\Mode;
 use stubbles\lang\Properties;
-use stubbles\lang\SecureString;
+use stubbles\lang\Secret;
 /**
  * Class used for tests.
  *
@@ -26,10 +26,10 @@ class Example
     /**
      * constructor
      *
-     * @param  \stubbles\lang\SecureString  $password
+     * @param  \stubbles\lang\Secret  $password
      * @Property('example.password')
      */
-    public function __construct(SecureString $password)
+    public function __construct(Secret $password)
     {
         $this->password = $password;
     }
@@ -199,7 +199,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                 );
         $binder->bindProperties($properties, $this->mode);
         $example = $binder->getInjector()->getInstance(Example::class);
-        assertInstanceOf(SecureString::class, $example->password);
+        assertInstanceOf(Secret::class, $example->password);
         // ensure all references are removed to clean up environment
         // otherwise all *SecureStringTests will fail
         $properties = null;
