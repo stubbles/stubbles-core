@@ -104,9 +104,9 @@ class Rootpath
      * @param   string...  $pathParts
      * @return  string
      */
-    public function to()
+    public function to(...$pathParts)
     {
-        return $this->rootpath . DIRECTORY_SEPARATOR . join(DIRECTORY_SEPARATOR, func_get_args());
+        return $this->rootpath . DIRECTORY_SEPARATOR . join(DIRECTORY_SEPARATOR, $pathParts);
     }
 
     /**
