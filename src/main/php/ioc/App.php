@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\ioc\module\BindingModule;
 use stubbles\ioc\module\Runtime;
 /**
  * Application base class.
@@ -74,10 +75,25 @@ abstract class App
     {
         Runtime::reset();
         self::$projectPath = $projectPath;
-        return BindingFactory::createInjector(
-                        static::getBindingsForApp($className)
-               )
-               ->getInstance($className);
+        $binder = new Binder();
+        foreach (static::getBindingsForApp($className) as $bindingModule) {
+            if (is_string($bindingModule)) {
+                $bindingModule = new $bindingModule();
+            }
+
+            if ($bindingModule instanceof BindingModule) {
+                $bindingModule->configure($binder);
+            } elseif ($bindingModule instanceof \Closure) {
+                $bindingModule($binder);
+            } else {
+                throw new \InvalidArgumentException(
+                        'Given module class ' . get_class($bindingModule)
+                        . ' is not an instance of stubbles\ioc\module\BindingModule'
+                );
+            }
+        }
+
+        return $binder->getInjector()->getInstance($className);
     }
 
     /**

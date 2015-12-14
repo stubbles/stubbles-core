@@ -10,6 +10,7 @@
 namespace stubbles\test\ioc;
 use stubbles\ioc\App;
 use stubbles\ioc\Binder;
+use stubbles\ioc\Injector;
 /**
  * Helper class for ioc tests.
  */
@@ -21,6 +22,8 @@ class AppClassWithBindings extends App
      * @type  string
      */
     private $boundBy;
+
+    public $injector;
 
     public $projectPath;
 
@@ -43,12 +46,15 @@ class AppClassWithBindings extends App
 
     /**
      *
-     * @param  string  $projectPath
+     * @param  \stubbles\ioc\Injector  $injector
+     * @param  string                  $projectPath
+     * @param  string                  $boundBy      optional
      * @Named{projectPath}('stubbles.project.path')
      * @Named{boundBy}('boundBy')
      */
-    public function __construct($projectPath, $boundBy = null)
+    public function __construct(Injector $injector, $projectPath, $boundBy = null)
     {
+        $this->injector    = $injector;
         $this->projectPath = $projectPath;
         $this->boundBy     = $boundBy;
     }

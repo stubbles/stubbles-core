@@ -10,6 +10,7 @@
 namespace stubbles\ioc;
 use stubbles\ioc\module\Runtime;
 use stubbles\test\ioc\AppClassWithBindings;
+use stubbles\test\ioc\AppClassWithInvalidBindingModule;
 use stubbles\test\ioc\AppClassWithoutBindings;
 use stubbles\test\ioc\AppUsingBindingModule;
 /**
@@ -147,5 +148,29 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $module = AppUsingBindingModule::bindHostnameModule();
         $module($binder);
         assertTrue($binder->getInjector()->hasConstant($key));
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     */
+    public function invalidBindingModuleThrowsIllegalArgumentException()
+    {
+        App::createInstance(AppClassWithInvalidBindingModule::class, 'projectPath');
+    }
+
+    /**
+     * @test
+     */
+    public function bindingModulesAreProcessed()
+    {
+        $injector = App::createInstance(
+                AppClassWithBindings::class,
+                'projectPath'
+        )->injector;
+        assertTrue($injector->hasBinding('foo'));
+        assertTrue($injector->hasBinding('bar'));
+        assertTrue($injector->hasBinding(Injector::class));
+        assertSame($injector, $injector->getInstance(Injector::class));
     }
 }
