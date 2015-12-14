@@ -67,7 +67,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function runtimeIsInitializedAfterFirstInstanceCreation()
     {
-        new Runtime($this->root->url());
+        new Runtime();
         assertTrue(Runtime::initialized());
     }
 
@@ -76,7 +76,8 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function registerMethodsShouldBeCalledWithGivenProjectPath()
     {
-        new Runtime($this->root->url(), $this->mode);
+        $runtime = new Runtime($this->mode);
+        $runtime->configure(new Binder(), $this->root->url());
         verify($this->mode, 'registerErrorHandler')
                 ->received($this->root->url());
         verify($this->mode, 'registerExceptionHandler')
@@ -88,9 +89,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function givenModeShouldBeBound()
     {
-        $runtime = new Runtime($this->root->url(), $this->mode);
+        $runtime = new Runtime($this->mode);
         $binder  = new Binder();
-        $runtime->configure($binder);
+        $runtime->configure($binder, $this->root->url());
         assertSame(
                 $this->mode,
                 $binder->getInjector()->getInstance(Mode::class)
@@ -102,9 +103,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function noModeGivenDefaultsToProdMode()
     {
-        $runtime = new Runtime($this->root->url());
+        $runtime = new Runtime();
         $binder  = new Binder();
-        $runtime->configure($binder);
+        $runtime->configure($binder, $this->root->url());
         $injector = $binder->getInjector();
         assertTrue($injector->hasExplicitBinding(Mode::class));
         assertEquals(
@@ -121,9 +122,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function bindsModeProvidedViaCallable()
     {
-        $runtime = new Runtime($this->root->url(), function() { return $this->mode; });
+        $runtime = new Runtime(function() { return $this->mode; });
         $binder  = new Binder();
-        $runtime->configure($binder);
+        $runtime->configure($binder, $this->root->url());
         assertSame(
                 $this->mode,
                 $binder->getInjector()->getInstance(Mode::class)
@@ -141,7 +142,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function createWithNonModeThrowsIllegalArgumentException()
     {
-        new Runtime($this->root->url(), new \stdClass());
+        new Runtime(new \stdClass());
     }
 
     /**
@@ -151,8 +152,8 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function doesNotBindPropertiesWhenConfigFileIsMissing()
     {
         $binder = NewInstance::of(Binder::class);
-        $runtime = new Runtime($this->root->url(), $this->mode);
-        $runtime->configure($binder);
+        $runtime = new Runtime($this->mode);
+        $runtime->configure($binder, $this->root->url());
         verify($binder, 'bindProperties')->wasNeverCalled();
     }
 
@@ -169,8 +170,8 @@ stubbles.number.decimals=4
 stubbles.webapp.xml.serializeMode=true")
                  ->at($this->root);
         $binder  = NewInstance::of(Binder::class);
-        $runtime = new Runtime($this->root->url(), $this->mode);
-        $runtime->configure($binder);
+        $runtime = new Runtime($this->mode);
+        $runtime->configure($binder, $this->root->url());
         verify($binder, 'bindProperties')->wasCalledOnce();
     }
 
@@ -180,8 +181,8 @@ stubbles.webapp.xml.serializeMode=true")
     public function projectPathIsBound()
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->root->url(), $this->mode);
-        $runtime->configure($binder);
+        $runtime = new Runtime($this->mode);
+        $runtime->configure($binder, $this->root->url());
         assertEquals(
                 $this->root->url(),
                 $binder->getInjector()->getConstant('stubbles.project.path')
@@ -220,8 +221,8 @@ stubbles.webapp.xml.serializeMode=true")
     public function pathesShouldBeBoundAsConstant($pathPart, $constantName)
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->root->url(), $this->mode);
-        $runtime->configure($binder);
+        $runtime = new Runtime($this->mode);
+        $runtime->configure($binder, $this->root->url());
         assertEquals(
                 $this->getProjectPath($pathPart),
                 $binder->getInjector()->getConstant($constantName)
@@ -247,8 +248,8 @@ stubbles.webapp.xml.serializeMode=true")
     public function additionalPathTypesShouldBeBound($pathPart, $constantName)
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->root->url(), $this->mode);
-        $runtime->addPathType('user')->configure($binder);
+        $runtime = new Runtime($this->mode);
+        $runtime->addPathType('user')->configure($binder, $this->root->url());
         assertEquals(
                 $this->getProjectPath($pathPart),
                 $binder->getInjector()->getConstant($constantName)

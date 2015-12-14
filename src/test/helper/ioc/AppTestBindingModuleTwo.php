@@ -18,9 +18,10 @@ class AppTestBindingModuleTwo implements BindingModule
     /**
      * configure the binder
      *
-     * @param  Binder  $binder
+     * @param  \stubbles\ioc\Binder  $binder
+     * @param  string                $projectPath  project base path
      */
-    public function configure(Binder $binder)
+    public function configure(Binder $binder, $projectPath)
     {
         $binder->bind('bar')->to('stdClass');
     }

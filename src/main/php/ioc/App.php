@@ -82,9 +82,9 @@ abstract class App
             }
 
             if ($bindingModule instanceof BindingModule) {
-                $bindingModule->configure($binder);
+                $bindingModule->configure($binder, $projectPath);
             } elseif ($bindingModule instanceof \Closure) {
-                $bindingModule($binder);
+                $bindingModule($binder, $projectPath);
             } else {
                 throw new \InvalidArgumentException(
                         'Given module class ' . get_class($bindingModule)
@@ -125,7 +125,7 @@ abstract class App
      */
     protected static function runtime($mode = null)
     {
-        return new Runtime(self::projectPath(), $mode);
+        return new Runtime($mode);
     }
 
     /**

@@ -3,7 +3,8 @@
 
 ### BC breaks
 
-  * Raised minimum required PHP version to 5.6
+  * raised minimum required PHP version to 5.6
+  * changed `stubbles\ioc\module\BindingModule::configure()` to accept a second parameter `$projectPath`
   * deprecated `stubbles\lang\SecureString` in favor of `stubbles\lang\Secret`, will be removed in 8.0.0
   * removed `stubbles\peer\createBsdSocket()`, `stubbles\peer\BsdSocket` was already removed in 6.0.0
 

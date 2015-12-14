@@ -50,12 +50,6 @@ class Runtime implements BindingModule
      */
     private $pathTypes   = ['config', 'log'];
     /**
-     * path to config file
-     *
-     * @type  string
-     */
-    protected $projectPath;
-    /**
      * mode instance to bind
      *
      * @type  \stubbles\lang\Mode
@@ -65,13 +59,11 @@ class Runtime implements BindingModule
     /**
      * constructor
      *
-     * @param   string                        $projectPath  path to project files
-     * @param   \stubbles\lang\Mode|callable  $mode         optional  runtime mode
+     * @param   \stubbles\lang\Mode|callable  $mode  optional  runtime mode
      * @throws  \InvalidArgumentException
      */
-    public function __construct($projectPath, $mode = null)
+    public function __construct($mode = null)
     {
-        $this->projectPath = $projectPath;
         if (null !== $mode) {
             if (is_callable($mode)) {
                 $this->mode = $mode();
@@ -88,8 +80,6 @@ class Runtime implements BindingModule
             $this->mode = $this->getFallbackMode();
         }
 
-        $this->mode->registerErrorHandler($projectPath);
-        $this->mode->registerExceptionHandler($projectPath);
         self::$initialized = true;
     }
 
@@ -124,16 +114,19 @@ class Runtime implements BindingModule
      * configure the binder
      *
      * @param  \stubbles\ioc\Binder  $binder
+     * @param  string                $projectPath  project base path
      */
-    public function configure(Binder $binder)
+    public function configure(Binder $binder, $projectPath)
     {
+        $this->mode->registerErrorHandler($projectPath);
+        $this->mode->registerExceptionHandler($projectPath);
         $binder->bindMode($this->mode);
-        if (file_exists($this->propertiesFile())) {
-            $binder->bindPropertiesFromFile($this->propertiesFile(), $this->mode);
+        if (file_exists($this->propertiesFile($projectPath))) {
+            $binder->bindPropertiesFromFile($this->propertiesFile($projectPath), $this->mode);
         }
 
-        $binder->bindConstant('stubbles.project.path')->to($this->projectPath);
-        foreach ($this->buildPathes($this->projectPath) as $name => $value) {
+        $binder->bindConstant('stubbles.project.path')->to($projectPath);
+        foreach ($this->buildPathes($projectPath) as $name => $value) {
             $binder->bindConstant($name)->to($value);
         }
     }
@@ -143,26 +136,26 @@ class Runtime implements BindingModule
      *
      * @return  string
      */
-    private function propertiesFile()
+    private function propertiesFile($projectPath)
     {
-        return $this->projectPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.ini';
+        return $projectPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.ini';
     }
 
     /**
      * appends directory separator if necessary
      *
-     * @param   string  $path
+     * @param   string  $projectPath
      * @return  string
      */
-    private function buildPathes($path)
+    private function buildPathes($projectPath)
     {
-        if (substr($path, -1) !== DIRECTORY_SEPARATOR) {
-            $path .= DIRECTORY_SEPARATOR;
+        if (substr($projectPath, -1) !== DIRECTORY_SEPARATOR) {
+            $projectPath .= DIRECTORY_SEPARATOR;
         }
 
         $pathes = [];
         foreach ($this->pathTypes as $pathType) {
-            $pathes['stubbles.' . $pathType . '.path'] = $path . $pathType;
+            $pathes['stubbles.' . $pathType . '.path'] = $projectPath . $pathType;
         }
 
         return $pathes;
