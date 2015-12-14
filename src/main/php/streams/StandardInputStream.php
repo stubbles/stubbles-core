@@ -27,15 +27,9 @@ class StandardInputStream extends ResourceInputStream implements Seekable
     /**
      * seek to given offset
      *
-     * Please note that seeking on php://input is only supported since PHP 5.6.
-     * In case the seek is done to offset 0 with Seekable::SET and PHP version
-     * is below PHP 5.6 it will simply reopen the underlying resource. In any
-     * other case a BadMethodCallException will be thrown.
-     *
      * @param   int  $offset  offset to seek to
      * @param   int  $whence  optional  one of Seekable::SET, Seekable::CURRENT or Seekable::END
      * @throws  \LogicException  in case the stream was already closed
-     * @throws  \BadMethodCallException
      */
     public function seek($offset, $whence = Seekable::SET)
     {
@@ -43,13 +37,7 @@ class StandardInputStream extends ResourceInputStream implements Seekable
             throw new \LogicException('Can not read from closed input stream.');
         }
 
-        if (version_compare(PHP_VERSION, '5.6.0', '>=')) {
-            fseek($this->handle, $offset, $whence);
-        } elseif (Seekable::SET === $whence && 0 === $offset) {
-            $this->setHandle(fopen('php://input', 'r'));
-        } else {
-            throw new \BadMethodCallException('Seeking on php://input in versions prior to PHP 5.6 is not possible');
-        }
+        fseek($this->handle, $offset, $whence);
     }
 
     /**

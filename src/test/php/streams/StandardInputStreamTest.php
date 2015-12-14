@@ -49,23 +49,9 @@ class StandardInputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @requires PHP 5.6
      */
     public function canSeekToAnyPosition()
     {
-        $this->standardInputStream->seek(100);
-    }
-
-    /**
-     * @test
-     * @expectedException   BadMethodCallException
-     */
-    public function seekToAnyPositionWithOldPhpVersionsThrowsBadMethodCallException()
-    {
-        if (version_compare(PHP_VERSION, '5.6.0', '>=')) {
-            $this->markTestSkipped();
-        }
-
         $this->standardInputStream->seek(100);
     }
 

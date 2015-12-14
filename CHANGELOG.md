@@ -8,6 +8,11 @@
   * removed `stubbles\peer\createBsdSocket()`, `stubbles\peer\BsdSocket` was already removed in 6.0.0
 
 
+### Other changes
+
+  * removed seeking restrictions on `stubbles\streams\StandardInputStream`
+
+
 6.3.0 (2015-07-01)
 ------------------
 
