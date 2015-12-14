@@ -8,10 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
-use bovigo\callmap;
+use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\InjectionProvider;
-use stubbles\lang;
+use function stubbles\lang\reflect;
 /**
  * Tests for stubbles\ioc\binding\SessionBindingScope.
  *
@@ -61,11 +61,11 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
                 $instance,
                 $this->sessionScope->setSession($this->session)
                         ->getInstance(
-                                lang\reflect('\stdClass'),
+                                reflect('\stdClass'),
                                 $this->provider
                 )
         );
-        callmap\verify($this->provider, 'get')->wasNeverCalled();
+        verify($this->provider, 'get')->wasNeverCalled();
     }
 
     /**
@@ -80,7 +80,7 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
                 $instance,
                 $this->sessionScope->setSession($this->session)
                         ->getInstance(
-                                lang\reflect('\stdClass'),
+                                reflect('\stdClass'),
                                 $this->provider
                 )
         );
@@ -93,7 +93,7 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     public function throwsRuntimeExceptionWhenCreatedWithoutSession()
     {
         $this->sessionScope->getInstance(
-                lang\reflect('\stdClass'),
+                reflect('\stdClass'),
                 $this->provider
         );
     }

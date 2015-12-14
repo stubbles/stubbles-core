@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use bovigo\callmap;
+use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 /**
@@ -58,9 +58,9 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
                         . '/exceptions-' . date('Y-m-d') . '.log'
                 )
         );
-        callmap\verify($this->exceptionHandler, 'header')->wasCalledOnce();
-        callmap\verify($this->exceptionHandler, 'createResponseBody')->wasCalledOnce();
-        callmap\verify($this->exceptionHandler, 'writeBody')->wasCalledOnce();
+        verify($this->exceptionHandler, 'header')->wasCalledOnce();
+        verify($this->exceptionHandler, 'createResponseBody')->wasCalledOnce();
+        verify($this->exceptionHandler, 'writeBody')->wasCalledOnce();
     }
 
     /**

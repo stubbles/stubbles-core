@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use bovigo\callmap;
+use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\test\ioc\AnotherQuestion;
 use stubbles\test\ioc\Answer;
@@ -37,7 +37,7 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
                 $question
         );
         assertSame($answer, $question->getAnswer());
-        callmap\verify($provider, 'get')->received('answer');
+        verify($provider, 'get')->received('answer');
     }
 
     /**

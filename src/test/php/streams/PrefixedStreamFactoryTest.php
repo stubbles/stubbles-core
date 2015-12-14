@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use bovigo\callmap;
+use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 /**
  * Test for stubbles\streams\PrefixedStreamFactory.
@@ -58,7 +58,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
                         ['bar' => 'baz']
                 )
         );
-        callmap\verify($this->streamFactory, 'createInputStream')
+        verify($this->streamFactory, 'createInputStream')
                 ->received('prefix/foo', ['bar' => 'baz']);
     }
 
@@ -78,7 +78,7 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
                         ['bar' => 'baz']
                 )
         );
-        callmap\verify($this->streamFactory, 'createOutputStream')
+        verify($this->streamFactory, 'createOutputStream')
                 ->received('prefix/foo', ['bar' => 'baz']);
     }
 }

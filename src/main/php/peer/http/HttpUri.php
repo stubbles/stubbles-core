@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
-use stubbles\lang;
+use function stubbles\lang\getType;
 use stubbles\peer\HeaderList;
 use stubbles\peer\MalformedUriException;
 use stubbles\peer\ParsedUri;
@@ -91,7 +91,7 @@ abstract class HttpUri extends Uri
 
         throw new \InvalidArgumentException(
                 $name . ' must be a string containing a HTTP URI or an instance of '
-                . get_class() . ', but was ' . lang\getType($value)
+                . get_class() . ', but was ' . getType($value)
         );
     }
 

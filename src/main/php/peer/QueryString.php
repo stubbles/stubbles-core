@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use stubbles\lang;
+use function stubbles\lang\__toString;
 /**
  * Query string handling.
  *
@@ -214,6 +214,6 @@ class QueryString
      */
     public function __toString()
     {
-        return lang\__toString($this);
+        return __toString($this);
     }
 }

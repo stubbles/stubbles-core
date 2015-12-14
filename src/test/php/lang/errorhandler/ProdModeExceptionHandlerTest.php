@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use bovigo\callmap;
+use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 /**
@@ -56,9 +56,9 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $exception                = new \Exception('message');
         $prodModeExceptionHandler = $this->createExceptionHandler('cgi');
         $prodModeExceptionHandler->handleException($exception);
-        callmap\verify($prodModeExceptionHandler, 'header')
+        verify($prodModeExceptionHandler, 'header')
                 ->received('Status: 500 Internal Server Error');
-        callmap\verify($prodModeExceptionHandler, 'writeBody')
+        verify($prodModeExceptionHandler, 'writeBody')
                 ->received('I\'m sorry but I can not fulfill your request. Somewhere someone messed something up.');
     }
 
@@ -73,9 +73,9 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $exception                = new \stubbles\lang\exception\Exception('message');
         $prodModeExceptionHandler = $this->createExceptionHandler('apache');
         $prodModeExceptionHandler->handleException($exception);
-        callmap\verify($prodModeExceptionHandler, 'header')
+        verify($prodModeExceptionHandler, 'header')
                 ->received('HTTP/1.1 500 Internal Server Error');
-        callmap\verify($prodModeExceptionHandler, 'writeBody')
+        verify($prodModeExceptionHandler, 'writeBody')
                 ->received('An error occurred');
     }
 }

@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use bovigo\callmap;
+use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 /**
@@ -87,6 +87,6 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
         $inputStream = NewInstance::of(InputStream::class);
         $abstractDecoratedInputStream = new TestAbstractDecoratedInputStream($inputStream);
         $abstractDecoratedInputStream->close();
-        callmap\verify($inputStream, 'close')->wasCalledOnce();
+        verify($inputStream, 'close')->wasCalledOnce();
     }
 }

@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\test\lang;
+use function stubbles\lang\__toString;
 /**
  * Helper class for the test.
  *
@@ -84,6 +85,6 @@ class SomeObject3
      */
     public function __toString()
     {
-        return \stubbles\lang\__toString($this);
+        return __toString($this);
     }
 }

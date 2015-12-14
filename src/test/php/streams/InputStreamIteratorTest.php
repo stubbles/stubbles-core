@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use bovigo\callmap;
+use function bovigo\callmap\onConsecutiveCalls;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 /**
@@ -59,8 +59,8 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
     {
         $inputStream = NewInstance::of(InputStream::class)
                 ->mapCalls(
-                        ['readLine' => callmap\onConsecutiveCalls('foo', 'bar', 'baz'),
-                         'eof'      => callmap\onConsecutiveCalls(false, false, false, true)
+                        ['readLine' => onConsecutiveCalls('foo', 'bar', 'baz'),
+                         'eof'      => onConsecutiveCalls(false, false, false, true)
                         ]
         );
         $expectedLineNumber = 1;
@@ -79,8 +79,8 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
     {
         $inputStream = NewInstance::of(InputStream::class)
                 ->mapCalls(
-                        ['readLine' => callmap\onConsecutiveCalls('foo', 'bar', 'baz'),
-                         'eof'      => callmap\onConsecutiveCalls(false, false, false, true, true)
+                        ['readLine' => onConsecutiveCalls('foo', 'bar', 'baz'),
+                         'eof'      => onConsecutiveCalls(false, false, false, true, true)
                         ]
         );
         $lines = linesOf($inputStream);

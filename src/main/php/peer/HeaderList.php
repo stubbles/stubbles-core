@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use stubbles\lang;
+use function stubbles\lang\__toString;
 /**
  * Container for list of headers.
  *
@@ -290,6 +290,6 @@ class HeaderList implements \IteratorAggregate
      */
     public function __toString()
     {
-        return lang\__toString($this);
+        return __toString($this);
     }
 }

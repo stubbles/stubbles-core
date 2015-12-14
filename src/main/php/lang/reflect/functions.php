@@ -8,7 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect {
-    use stubbles\lang;
+    use function stubbles\lang\reflect;
+    use function stubbles\lang\reflectConstructor;
     use stubbles\lang\Sequence;
     use stubbles\lang\reflect\annotation\AnnotationCache;
     use stubbles\lang\reflect\annotation\Annotations;
@@ -24,7 +25,7 @@ namespace stubbles\lang\reflect {
      */
     function annotationsOf($reflected, $methodName = null)
     {
-        $reflector = ($reflected instanceof \Reflector) ? $reflected : lang\reflect($reflected, $methodName);
+        $reflector = ($reflected instanceof \Reflector) ? $reflected : reflect($reflected, $methodName);
         $target    = _annotationTarget($reflector);
         if (AnnotationCache::has($target)) {
             return AnnotationCache::get($target);
@@ -57,7 +58,7 @@ namespace stubbles\lang\reflect {
     function annotationsOfConstructor($reflected)
     {
         return annotationsOf(
-                ($reflected instanceof \ReflectionClass) ? $reflected->getConstructor() : lang\reflectConstructor($reflected)
+                ($reflected instanceof \ReflectionClass) ? $reflected->getConstructor() : reflectConstructor($reflected)
         );
     }
 
@@ -157,7 +158,7 @@ namespace stubbles\lang\reflect {
     function methodsOf($class, $filter = null)
     {
         if (!($class instanceof \ReflectionClass)) {
-            $class = lang\reflect($class);
+            $class = reflect($class);
             if (!($class instanceof \ReflectionClass)) {
                 throw new \InvalidArgumentException('Given class must be a class name, a class instance or an instance of \ReflectionClass');
             }
@@ -185,7 +186,7 @@ namespace stubbles\lang\reflect {
     function propertiesOf($class, $filter = null)
     {
         if (!($class instanceof \ReflectionClass)) {
-            $class = lang\reflect($class);
+            $class = reflect($class);
             if (!($class instanceof \ReflectionClass)) {
                 throw new \InvalidArgumentException('Given class must be a class name, a class instance or an instance of \ReflectionClass');
             }
@@ -213,7 +214,7 @@ namespace stubbles\lang\reflect {
     function parametersOf($classOrFunction, $methodName = null)
     {
         if (!($classOrFunction instanceof \ReflectionFunctionAbstract)) {
-            $function = lang\reflect($classOrFunction, $methodName);
+            $function = reflect($classOrFunction, $methodName);
             if (!($function instanceof \ReflectionFunctionAbstract)) {
                 throw new \InvalidArgumentException('Given function must be a function name, a method reference or an instance of \ReflectionFunctionAbstract');
             }

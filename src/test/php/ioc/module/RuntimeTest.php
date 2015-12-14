@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\module;
-use bovigo\callmap;
+use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
 use stubbles\lang\Mode;
@@ -77,9 +77,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function registerMethodsShouldBeCalledWithGivenProjectPath()
     {
         new Runtime($this->root->url(), $this->mode);
-        callmap\verify($this->mode, 'registerErrorHandler')
+        verify($this->mode, 'registerErrorHandler')
                 ->received($this->root->url());
-        callmap\verify($this->mode, 'registerExceptionHandler')
+        verify($this->mode, 'registerExceptionHandler')
                 ->received($this->root->url());
     }
 
@@ -128,9 +128,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
                 $this->mode,
                 $binder->getInjector()->getInstance(Mode::class)
         );
-        callmap\verify($this->mode, 'registerErrorHandler')
+        verify($this->mode, 'registerErrorHandler')
                 ->received($this->root->url());
-        callmap\verify($this->mode, 'registerExceptionHandler')
+        verify($this->mode, 'registerExceptionHandler')
                 ->received($this->root->url());
     }
 
@@ -153,7 +153,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         $binder = NewInstance::of(Binder::class);
         $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($binder);
-        callmap\verify($binder, 'bindProperties')->wasNeverCalled();
+        verify($binder, 'bindProperties')->wasNeverCalled();
     }
 
     /**
@@ -171,7 +171,7 @@ stubbles.webapp.xml.serializeMode=true")
         $binder  = NewInstance::of(Binder::class);
         $runtime = new Runtime($this->root->url(), $this->mode);
         $runtime->configure($binder);
-        callmap\verify($binder, 'bindProperties')->wasCalledOnce();
+        verify($binder, 'bindProperties')->wasCalledOnce();
     }
 
     /**

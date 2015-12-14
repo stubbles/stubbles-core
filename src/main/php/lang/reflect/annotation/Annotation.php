@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
-use stubbles\lang;
+use function stubbles\lang\__toString;
 use stubbles\lang\Parse;
 /**
  * Represents an annotation on the code.
@@ -275,6 +275,6 @@ class Annotation
      */
     public function __toString()
     {
-        return lang\__toString($this);
+        return __toString($this);
     }
 }

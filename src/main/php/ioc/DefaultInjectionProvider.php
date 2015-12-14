@@ -13,7 +13,7 @@ use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
-use stubbles\lang\reflect;
+use function stubbles\lang\reflect\annotationsOf;
 /**
  * Default injection provider.
  *
@@ -115,7 +115,7 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     private function methodBindingName(\ReflectionMethod $method)
     {
-        $annotations = reflect\annotationsOf($method);
+        $annotations = annotationsOf($method);
         if ($annotations->contain('List')) {
             return $annotations->firstNamed('List')->getValue();
         }
@@ -144,8 +144,8 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     private function paramType(\ReflectionMethod $method, \ReflectionParameter $param)
     {
-        $methodAnnotations = reflect\annotationsOf($method);
-        $paramAnnotations  = reflect\annotationsOf($param);
+        $methodAnnotations = annotationsOf($method);
+        $paramAnnotations  = annotationsOf($param);
         $paramClass        = $param->getClass();
         if (null !== $paramClass) {
             if ($methodAnnotations->contain('Property') || $paramAnnotations->contain('Property')) {
@@ -179,7 +179,7 @@ class DefaultInjectionProvider implements InjectionProvider
      */
     private function detectBindingName(\ReflectionParameter $param, $default)
     {
-        $annotations = reflect\annotationsOf($param);
+        $annotations = annotationsOf($param);
         if ($annotations->contain('List')) {
             return $annotations->firstNamed('List')->getValue();
         }

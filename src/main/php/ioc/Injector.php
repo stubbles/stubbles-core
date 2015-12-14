@@ -17,7 +17,7 @@ use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
 use stubbles\ioc\binding\Session;
 use stubbles\lang\Mode;
-use stubbles\lang\reflect;
+use function stubbles\lang\reflect\annotationsOf;
 use stubbles\lang\reflect\annotation\Annotations;
 /**
  * Injector for the IoC functionality.
@@ -282,7 +282,7 @@ class Injector
      */
     private function getAnnotatedBinding(\ReflectionClass $class)
     {
-        $annotations = reflect\annotationsOf($class);
+        $annotations = annotationsOf($class);
         if ($class->isInterface() && $annotations->contain('ImplementedBy')) {
             return $this->bind($class->getName())
                     ->to($this->findImplementation($annotations, $class->getName()));

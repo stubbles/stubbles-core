@@ -11,7 +11,7 @@ namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
 use stubbles\ioc\Injector;
-use stubbles\lang;
+use function stubbles\lang\reflect;
 use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use stubbles\lang\Secret;
@@ -169,7 +169,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsParsedValuesForModeSpecificProperties()
     {
         assertEquals(
-                lang\reflect(__CLASS__),
+                reflect(__CLASS__),
                 $this->propertyBinding->getInstance($this->injector, 'baz')
         );
     }
@@ -182,7 +182,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     {
         $this->mode->mapCalls(['name' => 'DEV']);
         assertEquals(
-                lang\reflect(Properties::class),
+                reflect(Properties::class),
                 $this->propertyBinding->getInstance($this->injector, 'baz')
         );
     }

@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use bovigo\callmap;
+use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryOutputStream;
 /**
@@ -99,6 +99,6 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
                 'iso-8859-1'
         );
         $encodingOutputStream->close();
-        callmap\verify($outputStream, 'close')->wasCalledOnce();
+        verify($outputStream, 'close')->wasCalledOnce();
     }
 }
