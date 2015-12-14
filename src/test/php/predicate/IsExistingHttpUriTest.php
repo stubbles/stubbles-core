@@ -79,7 +79,9 @@ class IsExistingHttpUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
+     * disabled for performance reason, takes 30 seconds whereas all other tests
+     * together only take less then 1 second
+     * test
      */
     public function validHttpUrlWithoutDnsEntryEvaluatesToFalse()
     {
