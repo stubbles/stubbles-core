@@ -17,8 +17,9 @@ use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
 use stubbles\ioc\binding\Session;
 use stubbles\lang\Mode;
-use function stubbles\lang\reflect\annotationsOf;
 use stubbles\lang\reflect\annotation\Annotations;
+
+use function stubbles\lang\reflect\annotationsOf;
 /**
  * Injector for the IoC functionality.
  *

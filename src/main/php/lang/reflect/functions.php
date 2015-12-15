@@ -8,13 +8,13 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect {
-    use function stubbles\lang\reflect;
-    use function stubbles\lang\reflectConstructor;
     use stubbles\lang\Sequence;
     use stubbles\lang\reflect\annotation\AnnotationCache;
     use stubbles\lang\reflect\annotation\Annotations;
     use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
 
+    use function stubbles\lang\reflect;
+    use function stubbles\lang\reflectConstructor;
     /**
      * returns annotations for given reflected
      *

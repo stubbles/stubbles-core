@@ -8,8 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
-use function stubbles\lang\__toString;
 use stubbles\lang\Parse;
+
+use function stubbles\lang\__toString;
 /**
  * Represents an annotation on the code.
  */

@@ -13,6 +13,7 @@ use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
+
 use function stubbles\lang\reflect\annotationsOf;
 /**
  * Default injection provider.
