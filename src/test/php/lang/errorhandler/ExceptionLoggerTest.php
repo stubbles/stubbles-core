@@ -9,6 +9,7 @@
  */
 namespace stubbles\lang\errorhandler;
 use org\bovigo\vfs\vfsStream;
+
 use function stubbles\lang\reflect\annotationsOf;
 use function stubbles\lang\reflect\annotationsOfConstructor;
 /**

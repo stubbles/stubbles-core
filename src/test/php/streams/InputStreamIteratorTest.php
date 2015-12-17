@@ -8,9 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use function bovigo\callmap\onConsecutiveCalls;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
+
+use function bovigo\callmap\onConsecutiveCalls;
 /**
  * Test for stubbles\streams\InputStreamIterator.
  *

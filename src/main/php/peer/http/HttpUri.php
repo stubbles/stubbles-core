@@ -8,12 +8,13 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
-use function stubbles\lang\getType;
 use stubbles\peer\HeaderList;
 use stubbles\peer\MalformedUriException;
 use stubbles\peer\ParsedUri;
 use stubbles\peer\Socket;
 use stubbles\peer\Uri;
+
+use function stubbles\lang\getType;
 /**
  * Class for URIs of scheme hypertext transfer protocol.
  *

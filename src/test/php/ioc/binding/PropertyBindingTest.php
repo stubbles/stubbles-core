@@ -11,10 +11,11 @@ namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
 use stubbles\ioc\Injector;
-use function stubbles\lang\reflect;
 use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use stubbles\lang\Secret;
+
+use function stubbles\lang\reflect;
 /**
  * Class used for tests.
  *

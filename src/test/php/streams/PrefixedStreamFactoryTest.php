@@ -8,8 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
+
+use function bovigo\callmap\verify;
 /**
  * Test for stubbles\streams\PrefixedStreamFactory.
  *

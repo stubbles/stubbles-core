@@ -8,9 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
-use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\InjectionProvider;
+
+use function bovigo\callmap\verify;
 use function stubbles\lang\reflect;
 /**
  * Tests for stubbles\ioc\binding\SessionBindingScope.

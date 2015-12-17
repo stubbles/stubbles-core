@@ -8,9 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\callmap\verify;
 /**
  * Tests for stubbles\lang\errorhandler\ProdModeExceptionHandler.
  *

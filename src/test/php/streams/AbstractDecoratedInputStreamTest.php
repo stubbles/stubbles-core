@@ -8,9 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
+
+use function bovigo\callmap\verify;
 /**
  * Helper class for the test to make abstract class instantiable.
  */

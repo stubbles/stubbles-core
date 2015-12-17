@@ -8,11 +8,12 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\test\ioc\AnotherQuestion;
 use stubbles\test\ioc\Answer;
 use stubbles\test\ioc\MyProviderClass;
+
+use function bovigo\callmap\verify;
 /**
  * Test for stubbles\ioc\Injector with provider binding.
  *

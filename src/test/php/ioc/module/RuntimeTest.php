@@ -8,11 +8,12 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\module;
-use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
 use stubbles\lang\Mode;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\callmap\verify;
 /**
  * Test for stubbles\ioc\module\Runtime.
  *

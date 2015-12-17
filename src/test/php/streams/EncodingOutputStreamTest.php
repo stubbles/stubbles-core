@@ -8,9 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryOutputStream;
+
+use function bovigo\callmap\verify;
 /**
  * Test for stubbles\streams\EncodingOutputStream.
  *

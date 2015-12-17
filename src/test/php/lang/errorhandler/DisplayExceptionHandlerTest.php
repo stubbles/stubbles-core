@@ -8,8 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use function bovigo\callmap\verify;
 use bovigo\callmap\NewInstance;
+
+use function bovigo\callmap\verify;
 /**
  * Tests for stubbles\lang\errorhandler\DisplayExceptionHandler.
  *

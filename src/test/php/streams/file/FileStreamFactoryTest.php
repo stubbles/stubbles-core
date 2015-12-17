@@ -9,6 +9,7 @@
  */
 namespace stubbles\streams\file;
 use org\bovigo\vfs\vfsStream;
+
 use function stubbles\lang\reflect\annotationsOfConstructor;
 /**
  * Test for stubbles\streams\file\FileStreamFactory.
