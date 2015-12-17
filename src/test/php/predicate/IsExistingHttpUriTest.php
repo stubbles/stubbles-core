@@ -9,6 +9,7 @@
  */
 namespace stubbles\predicate;
 use stubbles\peer\http\HttpUri;
+use stubbles\peer\http\CheckdnsrrResult;
 /**
  * Tests for stubbles\predicate\IsExistingHttpUri.
  *
@@ -79,12 +80,11 @@ class IsExistingHttpUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * disabled for performance reason, takes 30 seconds whereas all other tests
-     * together only take less then 1 second
-     * test
+     * @test
      */
     public function validHttpUrlWithoutDnsEntryEvaluatesToFalse()
     {
+        CheckdnsrrResult::$value = false;
         assertFalse(
                 $this->isExistingHttpUri->test('http://stubbles.doesNotExist/')
         );

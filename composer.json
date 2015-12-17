@@ -28,7 +28,8 @@
             "stubbles\\test\\": "src/test/helper"
         },
         "files": [
-            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php",
+            "src/test/helper/functions.php"
         ]
     },
     "extra": {
