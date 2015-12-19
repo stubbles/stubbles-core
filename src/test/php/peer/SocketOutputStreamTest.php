@@ -47,7 +47,7 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function writePassesBytesToSocket()
     {
         assertEquals(3, $this->socketOutputStream->write('foo'));
-        $this->assertEquals('foo', $this->file->getContent());
+        assertEquals('foo', $this->file->getContent());
     }
 
     /**
@@ -56,7 +56,7 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function writeLinePassesBytesToSocketWithLinebreak()
     {
         assertEquals(5, $this->socketOutputStream->writeLine('foo'));
-        $this->assertEquals("foo\r\n", $this->file->getContent());
+        assertEquals("foo\r\n", $this->file->getContent());
     }
 
     /**
@@ -68,7 +68,7 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
                 10,
                 $this->socketOutputStream->writeLines(['foo', 'bar'])
         );
-        $this->assertEquals("foo\r\nbar\r\n", $this->file->getContent());
+        assertEquals("foo\r\nbar\r\n", $this->file->getContent());
     }
 
     /**

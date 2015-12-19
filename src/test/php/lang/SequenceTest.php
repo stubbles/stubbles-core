@@ -141,7 +141,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function mapKeys()
     {
-        $this->assertEquals(
+        assertEquals(
                 [0 => 1, 2 => 2, 4 => 3, 6 => 4],
                 Sequence::of([1, 2, 3, 4])
                         ->mapKeys(function($e) { return $e * 2; })
