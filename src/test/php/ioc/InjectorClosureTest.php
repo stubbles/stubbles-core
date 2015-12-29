@@ -10,6 +10,10 @@
 namespace stubbles\ioc;
 use stubbles\test\ioc\AnotherQuestion;
 use stubbles\test\ioc\Answer;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for stubbles\ioc\Injector with closure binding.
  *
@@ -28,7 +32,7 @@ class InjectorClosureTest extends \PHPUnit_Framework_TestCase
         $answer = new Answer();
         $binder->bind(Answer::class)->toClosure(function() use($answer) { return $answer; });
         $question = $binder->getInjector()->getInstance(AnotherQuestion::class);
-        assertInstanceOf(AnotherQuestion::class, $question);
-        assertSame($answer, $question->getAnswer());
+        assert($question, isInstanceOf(AnotherQuestion::class));
+        assert($question->getAnswer(), isSameAs($answer));
     }
 }

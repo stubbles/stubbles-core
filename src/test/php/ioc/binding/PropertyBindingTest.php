@@ -15,6 +15,11 @@ use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use stubbles\lang\Secret;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isFalse;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isTrue;
 use function stubbles\lang\reflect;
 /**
  * Class used for tests.
@@ -91,7 +96,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueForRuntimeMode()
     {
-        assertTrue($this->propertyBinding->hasProperty('foo.bar'));
+        assert($this->propertyBinding->hasProperty('foo.bar'), isTrue());
     }
 
     /**
@@ -99,9 +104,9 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsProdValueForRuntimeMode()
     {
-        assertEquals(
-                'baz',
-                $this->propertyBinding->getInstance($this->injector, 'foo.bar')
+        assert(
+                $this->propertyBinding->getInstance($this->injector, 'foo.bar'),
+                equals('baz')
         );
     }
 
@@ -111,7 +116,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function hasValueForDifferentRuntimeMode()
     {
         $this->mode->mapCalls(['name' => 'DEV']);
-        assertTrue($this->propertyBinding->hasProperty('foo.bar'));
+        assert($this->propertyBinding->hasProperty('foo.bar'), isTrue());
     }
 
     /**
@@ -120,9 +125,9 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsConfigValueForDifferentRuntimeMode()
     {
         $this->mode->mapCalls(['name' => 'DEV']);
-        assertEquals(
-                'default',
-                $this->propertyBinding->getInstance($this->injector, 'foo.bar')
+        assert(
+                $this->propertyBinding->getInstance($this->injector, 'foo.bar'),
+                equals('default')
         );
     }
 
@@ -131,7 +136,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueWhenNoSpecificForRuntimeModeSet()
     {
-        assertTrue($this->propertyBinding->hasProperty('other'));
+        assert($this->propertyBinding->hasProperty('other'), isTrue());
     }
 
     /**
@@ -139,9 +144,9 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsConfigValueWhenNoSpecificForRuntimeModeSet()
     {
-        assertEquals(
-                'someValue',
-                $this->propertyBinding->getInstance($this->injector, 'other')
+        assert(
+                $this->propertyBinding->getInstance($this->injector, 'other'),
+                equals('someValue')
         );
     }
 
@@ -150,7 +155,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveValueWhenPropertyNotSet()
     {
-        assertFalse($this->propertyBinding->hasProperty('does.not.exist'));
+        assert($this->propertyBinding->hasProperty('does.not.exist'), isFalse());
     }
 
     /**
@@ -169,9 +174,9 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsParsedValuesForModeSpecificProperties()
     {
-        assertEquals(
-                reflect(__CLASS__),
-                $this->propertyBinding->getInstance($this->injector, 'baz')
+        assert(
+                $this->propertyBinding->getInstance($this->injector, 'baz'),
+                equals(reflect(__CLASS__))
         );
     }
 
@@ -182,9 +187,9 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsParsedValuesForCommonProperties()
     {
         $this->mode->mapCalls(['name' => 'DEV']);
-        assertEquals(
-                reflect(Properties::class),
-                $this->propertyBinding->getInstance($this->injector, 'baz')
+        assert(
+                $this->propertyBinding->getInstance($this->injector, 'baz'),
+                equals(reflect(Properties::class))
         );
     }
 
@@ -194,18 +199,22 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function propertyBindingUsedWhenParamHasTypeHintButIsAnnotated()
     {
-        $binder     = new Binder();
-        $properties = new Properties(
-                    ['config' => ['example.password' => 'somePassword']]
-                );
-        $binder->bindProperties($properties, $this->mode);
-        $example = $binder->getInjector()->getInstance(Example::class);
-        assertInstanceOf(Secret::class, $example->password);
-        // ensure all references are removed to clean up environment
-        // otherwise all *SecureStringTests will fail
-        $properties = null;
-        $example->password = null;
-        $binder = null;
-        gc_collect_cycles();
+        try {
+            $binder     = new Binder();
+            $properties = new Properties(
+                        ['config' => ['example.password' => 'somePassword']]
+                    );
+            $binder->bindProperties($properties, $this->mode);
+            $example = $binder->getInjector()->getInstance(Example::class);
+            assert($example->password, isInstanceOf(Secret::class));
+        } finally {
+            // ensure all references are removed to clean up environment
+            // otherwise all *SecretTests will fail
+            unset($properties);
+            $example->password = null;
+            unset($example);
+            unset($binder);
+            gc_collect_cycles();
+        }
     }
 }

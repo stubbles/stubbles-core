@@ -15,6 +15,9 @@ use stubbles\test\ioc\Person;
 use stubbles\test\ioc\Person3;
 use stubbles\test\ioc\Person4;
 use stubbles\test\ioc\Schst;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Test for stubbles\ioc\Injector with the ImplementedBy annotation.
  *
@@ -28,9 +31,9 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     public function createsInstanceFromImplementedByAnnotationIfNoExplicitBindingsSet()
     {
         $binder = new Binder();
-        assertInstanceOf(
-                Schst::class,
-                $binder->getInjector()->getInstance(Person::class)
+        assert(
+                $binder->getInjector()->getInstance(Person::class),
+                isInstanceOf(Schst::class)
         );
     }
 
@@ -41,9 +44,9 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bind(Person::class)->to(Mikey::class);
-        assertInstanceOf(
-                Mikey::class,
-                $binder->getInjector()->getInstance(Person::class)
+        assert(
+                $binder->getInjector()->getInstance(Person::class),
+                isInstanceOf(Mikey::class)
         );
     }
 
@@ -54,9 +57,9 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     public function fallsBackToDefaultImplementedByIfNoModeSet()
     {
         $binder = new Binder();
-        assertInstanceOf(
-                Schst::class,
-                $binder->getInjector()->getInstance(Person3::class)
+        assert(
+                $binder->getInjector()->getInstance(Person3::class),
+                isInstanceOf(Schst::class)
         );
     }
 
@@ -71,9 +74,9 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
         $binder->bindMode(
                 NewInstance::of(Mode::class)->mapCalls(['name' => 'PROD'])
         );
-        assertInstanceOf(
-                Schst::class,
-                $binder->getInjector()->getInstance(Person3::class)
+        assert(
+                $binder->getInjector()->getInstance(Person3::class),
+                isInstanceOf(Schst::class)
         );
     }
 
@@ -88,9 +91,9 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
         $binder->bindMode(
                 NewInstance::of(Mode::class)->mapCalls(['name' => 'DEV'])
         );
-        assertInstanceOf(
-                Mikey::class,
-                $binder->getInjector()->getInstance(Person3::class)
+        assert(
+                $binder->getInjector()->getInstance(Person3::class),
+                isInstanceOf(Mikey::class)
         );
     }
 

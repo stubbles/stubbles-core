@@ -11,6 +11,8 @@ namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\InjectionProvider;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isSameAs;
 use function bovigo\callmap\verify;
 use function stubbles\lang\reflect;
 /**
@@ -52,19 +54,29 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * prepares session with given callmap
+     *
+     * @param  array  $callmap
+     */
+    private function prepareSession(array $callmap)
+    {
+        $this->session->mapCalls($callmap);
+        $this->sessionScope->setSession($this->session);
+    }
+
+    /**
      * @test
      */
     public function returnsInstanceFromSessionIfPresent()
     {
         $instance = new \stdClass();
-        $this->session->mapCalls(['hasValue' => true, 'value' => $instance]);
-        assertSame(
-                $instance,
-                $this->sessionScope->setSession($this->session)
-                        ->getInstance(
-                                reflect('\stdClass'),
-                                $this->provider
-                )
+        $this->prepareSession(['hasValue' => true, 'value' => $instance]);
+        assert(
+                $this->sessionScope->getInstance(
+                        reflect(\stdClass::class),
+                        $this->provider
+                ),
+                isSameAs($instance)
         );
         verify($this->provider, 'get')->wasNeverCalled();
     }
@@ -75,15 +87,14 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     public function createsInstanceIfNotPresent()
     {
         $instance = new \stdClass();
-        $this->session->mapCalls(['hasValue' => false]);
+        $this->prepareSession(['hasValue' => false]);
         $this->provider->mapCalls(['get' => $instance]);
-        assertSame(
-                $instance,
-                $this->sessionScope->setSession($this->session)
-                        ->getInstance(
-                                reflect('\stdClass'),
-                                $this->provider
-                )
+        assert(
+                $this->sessionScope->getInstance(
+                        reflect(\stdClass::class),
+                        $this->provider
+                ),
+                isSameAs($instance)
         );
     }
 
@@ -94,7 +105,7 @@ class SessionBindingScopeTest extends \PHPUnit_Framework_TestCase
     public function throwsRuntimeExceptionWhenCreatedWithoutSession()
     {
         $this->sessionScope->getInstance(
-                reflect('\stdClass'),
+                reflect(\stdClass::class),
                 $this->provider
         );
     }

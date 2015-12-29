@@ -11,7 +11,8 @@
     "require-dev": {
         "mikey179/vfsStream": "^1.6",
         "phpunit/phpunit": "^5.1",
-        "bovigo/callmap": "^1.1"
+        "bovigo/callmap": "^2.0",
+        "bovigo/assert": "^1.2"
     },
     "autoload": {
         "psr-4": {
@@ -28,7 +29,7 @@
             "stubbles\\test\\": "src/test/helper"
         },
         "files": [
-            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php",
+            "vendor/bovigo/assert/src/main/php/functions.php",
             "src/test/helper/functions.php"
         ]
     },

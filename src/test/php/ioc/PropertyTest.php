@@ -12,6 +12,10 @@ use bovigo\callmap\NewInstance;
 use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use stubbles\test\ioc\PropertyReceiver;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for property bindings.
  *
@@ -64,8 +68,8 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     {
         $this->mode->mapCalls(['name' => 'PROD']);
         $propertyReceiver = $this->injector->getInstance(PropertyReceiver::class);
-        assertEquals('baz', $propertyReceiver->foo);
-        assertEquals('someValue', $propertyReceiver->bar);
+        assert($propertyReceiver->foo, equals('baz'));
+        assert($propertyReceiver->bar, equals('someValue'));
     }
 
     /**
@@ -75,8 +79,8 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     {
         $this->mode->mapCalls(['name' => 'DEV']);
         $propertyReceiver = $this->injector->getInstance(PropertyReceiver::class);
-        assertEquals('default', $propertyReceiver->foo);
-        assertEquals('someValue', $propertyReceiver->bar);
+        assert($propertyReceiver->foo, equals('default'));
+        assert($propertyReceiver->bar, equals('someValue'));
     }
 
     /**
@@ -96,9 +100,9 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function propertyInstanceIsBound()
     {
-        assertSame(
-                $this->properties,
-                $this->injector->getInstance(Properties::class, 'config.ini')
+        assert(
+                $this->injector->getInstance(Properties::class, 'config.ini'),
+                isSameAs($this->properties)
         );
     }
 }

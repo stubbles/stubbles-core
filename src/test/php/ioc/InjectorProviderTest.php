@@ -13,6 +13,9 @@ use stubbles\test\ioc\AnotherQuestion;
 use stubbles\test\ioc\Answer;
 use stubbles\test\ioc\MyProviderClass;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 use function bovigo\callmap\verify;
 /**
  * Test for stubbles\ioc\Injector with provider binding.
@@ -33,11 +36,7 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
         $binder->bind(Answer::class)->toProvider($provider);
         $question = $binder->getInjector()
                 ->getInstance(AnotherQuestion::class);
-        assertInstanceOf(
-                AnotherQuestion::class,
-                $question
-        );
-        assertSame($answer, $question->getAnswer());
+        assert($question->getAnswer(), isSameAs($answer));
         verify($provider, 'get')->received('answer');
     }
 
@@ -48,7 +47,7 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
     public function injectWithInvalidProviderClassThrowsException()
     {
         $binder = new Binder();
-        $binder->bind(Answer::class)->toProviderClass('\stdClass');
+        $binder->bind(Answer::class)->toProviderClass(\stdClass::class);
         $binder->getInjector()->getInstance(AnotherQuestion::class);
     }
 
@@ -62,8 +61,7 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
                 ->toProviderClass(MyProviderClass::class);
         $question = $binder->getInjector()
                 ->getInstance(AnotherQuestion::class);
-        assertInstanceOf(AnotherQuestion::class, $question);
-        assertInstanceOf(Answer::class, $question->getAnswer());
+        assert($question->getAnswer(), isInstanceOf(Answer::class));
     }
 
     /**
@@ -78,7 +76,6 @@ class InjectorProviderTest extends \PHPUnit_Framework_TestCase
                 );
         $question = $binder->getInjector()
                 ->getInstance(AnotherQuestion::class);
-        assertInstanceOf(AnotherQuestion::class, $question);
-        assertInstanceOf(Answer::class, $question->getAnswer());
+        assert($question->getAnswer(), isInstanceOf(Answer::class));
     }
 }

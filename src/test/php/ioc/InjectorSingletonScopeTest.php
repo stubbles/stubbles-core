@@ -12,12 +12,16 @@ use stubbles\test\ioc\Number;
 use stubbles\test\ioc\Random;
 use stubbles\test\ioc\RandomSingleton;
 use stubbles\test\ioc\SlotMachine;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for stubbles\ioc\Injector with the singleton scope.
  *
  * @group  ioc
  */
-class InjectorSingletonTest extends \PHPUnit_Framework_TestCase
+class InjectorSingletonScopeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * helper assertion
@@ -27,12 +31,9 @@ class InjectorSingletonTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertSlotMachineIsBuildCorrect(SlotMachine $slot, $numberClass)
     {
-        assertInstanceOf(SlotMachine::class, $slot);
-        assertInstanceOf(Number::class, $slot->number1);
-        assertInstanceOf($numberClass, $slot->number1);
-        assertInstanceOf(Number::class, $slot->number2);
-        assertInstanceOf($numberClass, $slot->number2);
-        $this->identicalTo($slot->number1, $slot->number2);
+        assert($slot->number1, isInstanceOf($numberClass));
+        assert($slot->number2, isInstanceOf($numberClass));
+        assert($slot->number1, isSameAs($slot->number2));
     }
 
     /**
@@ -59,7 +60,7 @@ class InjectorSingletonTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bind(Number::class)
-               ->toClosure(function() { return new \stubbles\test\ioc\Random(); })
+               ->toClosure(function() { return new Random(); })
                ->asSingleton();
         $this->assertSlotMachineIsBuildCorrect(
                 $binder->getInjector()->getInstance(SlotMachine::class),

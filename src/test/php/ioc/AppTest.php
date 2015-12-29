@@ -13,6 +13,12 @@ use stubbles\test\ioc\AppClassWithBindings;
 use stubbles\test\ioc\AppClassWithInvalidBindingModule;
 use stubbles\test\ioc\AppClassWithoutBindings;
 use stubbles\test\ioc\AppUsingBindingModule;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\ioc\App.
  *
@@ -36,7 +42,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function createCreatesInstanceUsingBindings()
     {
         $appCommandWithBindings = AppClassWithBindings::create('projectPath');
-        assertInstanceOf(AppClassWithBindings::class, $appCommandWithBindings);
+        assert($appCommandWithBindings, isInstanceOf(AppClassWithBindings::class));
     }
 
     /**
@@ -48,7 +54,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
                 AppClassWithBindings::class,
                 'projectPath'
         );
-        assertInstanceOf(AppClassWithBindings::class, $appCommandWithBindings);
+        assert($appCommandWithBindings, isInstanceOf(AppClassWithBindings::class));
     }
 
     /**
@@ -56,12 +62,12 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceCreatesInstanceWithoutBindings()
     {
-        assertInstanceOf(
-                AppClassWithoutBindings::class,
+        assert(
                 App::createInstance(
                         AppClassWithoutBindings::class,
                         'projectPath'
-                )
+                ),
+                isInstanceOf(AppClassWithoutBindings::class)
         );
     }
 
@@ -71,9 +77,9 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function projectPathIsBoundWithExplicitBindings()
     {
-        assertEquals(
-                'projectPath',
-                AppClassWithBindings::create('projectPath')->projectPath
+        assert(
+                AppClassWithBindings::create('projectPath')->projectPath,
+                equals('projectPath')
         );
     }
 
@@ -83,9 +89,9 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function projectPathIsBoundWithoutExplicitBindings()
     {
-        assertEquals(
-                'projectPath',
-                AppClassWithoutBindings::create('projectPath')->projectPath
+        assert(
+                AppClassWithoutBindings::create('projectPath')->projectPath,
+                equals('projectPath')
         );
     }
 
@@ -95,9 +101,9 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function canCreateRuntime()
     {
-        assertInstanceOf(
-                Runtime::class,
-                AppUsingBindingModule::callBindRuntime()
+        assert(
+                AppUsingBindingModule::callBindRuntime(),
+                isInstanceOf(Runtime::class)
         );
     }
 
@@ -108,9 +114,9 @@ class AppTest extends \PHPUnit_Framework_TestCase
      */
     public function dynamicBindingViaClosure()
     {
-        assertEquals(
-                'closure',
-                AppClassWithBindings::create('projectPath')->wasBoundBy()
+        assert(
+                AppClassWithBindings::create('projectPath')->wasBoundBy(),
+                equals('closure')
         );
     }
 
@@ -123,7 +129,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $module = AppUsingBindingModule::currentWorkingDirectoryModule();
         $module($binder);
-        assertTrue($binder->getInjector()->hasConstant('stubbles.cwd'));
+        assert($binder->getInjector()->hasConstant('stubbles.cwd'), isTrue());
     }
 
     /**
@@ -147,7 +153,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $module = AppUsingBindingModule::bindHostnameModule();
         $module($binder);
-        assertTrue($binder->getInjector()->hasConstant($key));
+        assert($binder->getInjector()->hasConstant($key), isTrue());
     }
 
     /**
@@ -160,17 +166,28 @@ class AppTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
+     * @return  array
      */
-    public function bindingModulesAreProcessed()
+    public function assertions()
+    {
+        return [
+            [function(Injector $injector) { assert($injector->hasBinding('foo'), isTrue()); }],
+            [function(Injector $injector) { assert($injector->hasBinding('bar'), isTrue()); }],
+            [function(Injector $injector) { assert($injector->hasBinding(Injector::class), isTrue()); }],
+            [function(Injector $injector) { assert($injector->getInstance(Injector::class), isSameAs($injector)); }]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  assertions
+     */
+    public function bindingModulesAreProcessed(callable $assertion)
     {
         $injector = App::createInstance(
                 AppClassWithBindings::class,
                 'projectPath'
         )->injector;
-        assertTrue($injector->hasBinding('foo'));
-        assertTrue($injector->hasBinding('bar'));
-        assertTrue($injector->hasBinding(Injector::class));
-        assertSame($injector, $injector->getInstance(Injector::class));
+        $assertion($injector);
     }
 }
