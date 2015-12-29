@@ -16,9 +16,9 @@ use stubbles\test\ioc\Employee;
 use stubbles\test\ioc\TeamMember;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isFalse;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\ioc with @Named annotation.
  *
@@ -34,9 +34,9 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bind(Employee::class)->named('schst')->to(Boss::class);
         $injector = $binder->getInjector();
-        assert($injector->hasBinding(Employee::class, 'schst'), isTrue());
+        assertTrue($injector->hasBinding(Employee::class, 'schst'));
     }
-    
+
     /**
      * @test
      */
@@ -45,7 +45,7 @@ class InjectorNamedTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $binder->bind(Employee::class)->named('schst')->to(Boss::class);
         $injector = $binder->getInjector();
-        assert($injector->hasBinding(Employee::class), isFalse());
+        assertFalse($injector->hasBinding(Employee::class));
     }
 
     /**

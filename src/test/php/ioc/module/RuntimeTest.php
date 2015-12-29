@@ -14,10 +14,10 @@ use stubbles\lang\Mode;
 use org\bovigo\vfs\vfsStream;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isFalse;
 use function bovigo\assert\predicate\isSameAs;
-use function bovigo\assert\predicate\isTrue;
 use function bovigo\callmap\verify;
 /**
  * Test for stubbles\ioc\module\Runtime.
@@ -64,7 +64,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function runtimeIsNotInitializedWhenNoInstanceCreated()
     {
-        assert(Runtime::initialized(), isFalse());
+        assertFalse(Runtime::initialized());
     }
 
     /**
@@ -74,7 +74,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function runtimeIsInitializedAfterFirstInstanceCreation()
     {
         new Runtime();
-        assert(Runtime::initialized(), isTrue());
+        assertTrue(Runtime::initialized());
     }
 
     /**
@@ -114,7 +114,6 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
         try {
             $runtime->configure($binder, $this->root->url());
             $injector = $binder->getInjector();
-            assert($injector->hasExplicitBinding(Mode::class), isTrue());
             assert($injector->getInstance(Mode::class)->name(), equals('PROD'));
         } finally {
             restore_error_handler();

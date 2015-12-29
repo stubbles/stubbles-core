@@ -12,8 +12,8 @@ use bovigo\callmap\NewInstance;
 use stubbles\ioc\binding\BindingScope;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\isSameAs;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\ioc\Injector with user-defined scope.
  *
@@ -30,7 +30,7 @@ class InjectorUserDefinedScopeTest extends \PHPUnit_Framework_TestCase
         $binder->bind(\stdClass::class)
                 ->to(\stdClass::class)
                 ->in(NewInstance::of(BindingScope::class));
-        assert($binder->getInjector()->hasBinding(\stdClass::class), isTrue());
+        assertTrue($binder->getInjector()->hasBinding(\stdClass::class));
     }
 
     /**

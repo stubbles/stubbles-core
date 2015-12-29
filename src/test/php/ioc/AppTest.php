@@ -15,10 +15,10 @@ use stubbles\test\ioc\AppClassWithoutBindings;
 use stubbles\test\ioc\AppUsingBindingModule;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\ioc\App.
  *
@@ -129,7 +129,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $module = AppUsingBindingModule::currentWorkingDirectoryModule();
         $module($binder);
-        assert($binder->getInjector()->hasConstant('stubbles.cwd'), isTrue());
+        assertTrue($binder->getInjector()->hasConstant('stubbles.cwd'));
     }
 
     /**
@@ -153,7 +153,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $binder = new Binder();
         $module = AppUsingBindingModule::bindHostnameModule();
         $module($binder);
-        assert($binder->getInjector()->hasConstant($key), isTrue());
+        assertTrue($binder->getInjector()->hasConstant($key));
     }
 
     /**
@@ -171,9 +171,9 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function assertions()
     {
         return [
-            [function(Injector $injector) { assert($injector->hasBinding('foo'), isTrue()); }],
-            [function(Injector $injector) { assert($injector->hasBinding('bar'), isTrue()); }],
-            [function(Injector $injector) { assert($injector->hasBinding(Injector::class), isTrue()); }],
+            [function(Injector $injector) { assertTrue($injector->hasBinding('foo')); }],
+            [function(Injector $injector) { assertTrue($injector->hasBinding('bar')); }],
+            [function(Injector $injector) { assertTrue($injector->hasBinding(Injector::class)); }],
             [function(Injector $injector) { assert($injector->getInstance(Injector::class), isSameAs($injector)); }]
         ];
     }

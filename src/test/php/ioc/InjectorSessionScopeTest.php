@@ -14,9 +14,9 @@ use stubbles\test\ioc\Mikey;
 use stubbles\test\ioc\Person2;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\ioc\Injector with the session scope.
  *
@@ -49,7 +49,7 @@ class InjectorSessionScopeTest extends \PHPUnit_Framework_TestCase
      */
     public function canBindToSessionScopeWithoutSession()
     {
-        assert($this->injector->hasBinding(Person2::class), isTrue());
+        assertTrue($this->injector->hasBinding(Person2::class));
     }
 
     /**
@@ -83,12 +83,11 @@ class InjectorSessionScopeTest extends \PHPUnit_Framework_TestCase
      */
     public function setSessionAddsBindingForSession()
     {
-        assert(
+        assertTrue(
                 $this->injector->setSession(
                         NewInstance::of(Session::class),
                         Session::class
-                )->hasExplicitBinding(Session::class),
-                isTrue()
+                )->hasExplicitBinding(Session::class)
         );
     }
 

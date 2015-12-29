@@ -16,10 +16,10 @@ use stubbles\lang\Properties;
 use stubbles\lang\Secret;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isFalse;
 use function bovigo\assert\predicate\isInstanceOf;
-use function bovigo\assert\predicate\isTrue;
 use function stubbles\lang\reflect;
 /**
  * Class used for tests.
@@ -96,7 +96,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueForRuntimeMode()
     {
-        assert($this->propertyBinding->hasProperty('foo.bar'), isTrue());
+        assertTrue($this->propertyBinding->hasProperty('foo.bar'));
     }
 
     /**
@@ -116,7 +116,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function hasValueForDifferentRuntimeMode()
     {
         $this->mode->mapCalls(['name' => 'DEV']);
-        assert($this->propertyBinding->hasProperty('foo.bar'), isTrue());
+        assertTrue($this->propertyBinding->hasProperty('foo.bar'));
     }
 
     /**
@@ -136,7 +136,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueWhenNoSpecificForRuntimeModeSet()
     {
-        assert($this->propertyBinding->hasProperty('other'), isTrue());
+        assertTrue($this->propertyBinding->hasProperty('other'));
     }
 
     /**
@@ -155,7 +155,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveValueWhenPropertyNotSet()
     {
-        assert($this->propertyBinding->hasProperty('does.not.exist'), isFalse());
+        assertFalse($this->propertyBinding->hasProperty('does.not.exist'));
     }
 
     /**

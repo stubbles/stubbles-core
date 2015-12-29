@@ -13,9 +13,9 @@ use stubbles\test\ioc\AnswerConstantProvider;
 use stubbles\test\ioc\Question;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isFalse;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Helper class for the test.
 /**
@@ -51,7 +51,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
      */
     public function checkForNonExistingConstantReturnsFalse()
     {
-        assert(Binder::createInjector()->hasConstant('answer'), isFalse());
+        assertFalse(Binder::createInjector()->hasConstant('answer'));
     }
 
     /**
@@ -71,7 +71,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')->to(42);
-        assert($binder->getInjector()->hasConstant('answer'), isTrue());
+        assertTrue($binder->getInjector()->hasConstant('answer'));
     }
 
     /**
@@ -99,7 +99,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
                                 ->mapCalls(['get' => 42])
                 );
         $injector = $binder->getInjector();
-        assert($injector->hasConstant('answer'), isTrue());
+        assertTrue($injector->hasConstant('answer'));
         assert($injector->getConstant('answer'), equals(42));
         $this->assertConstantInjection($binder->getInjector());
     }
@@ -131,7 +131,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
                         new \ReflectionClass(AnswerConstantProvider::class)
                 );
         $injector = $binder->getInjector();
-        assert($injector->hasConstant('answer'), isTrue());
+        assertTrue($injector->hasConstant('answer'));
         assert($injector->getConstant('answer'), equals(42));
         $this->assertConstantInjection($binder->getInjector());
     }
@@ -147,7 +147,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
         $binder->bindConstant('answer')
                ->toProviderClass(AnswerConstantProvider::class);
         $injector = $binder->getInjector();
-        assert($injector->hasConstant('answer'), isTrue());
+        assertTrue($injector->hasConstant('answer'));
         assert($injector->getConstant('answer'), equals(42));
         $this->assertConstantInjection($binder->getInjector());
     }

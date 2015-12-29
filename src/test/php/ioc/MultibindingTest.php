@@ -15,9 +15,9 @@ use stubbles\test\ioc\Plugin;
 use stubbles\test\ioc\PluginHandler;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isFalse;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for list and map bindings.
  *
@@ -45,10 +45,9 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function injectorReturnsFalseForNonAddedListOnCheck()
     {
-        assert(
+        assertFalse(
                 Binder::createInjector()
-                        ->hasBinding(ListBinding::TYPE, 'listConfig'),
-                isFalse()
+                        ->hasBinding(ListBinding::TYPE, 'listConfig')
         );
     }
 
@@ -62,10 +61,9 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withValue(303)
                 ->withValueFromProvider($this->createProviderForValue(313))
                 ->withValueFromClosure(function() { return 323; });
-        assert(
+        assertTrue(
                 $binder->getInjector()
-                        ->hasBinding(ListBinding::TYPE, 'listConfig'),
-                isTrue()
+                        ->hasBinding(ListBinding::TYPE, 'listConfig')
         );
     }
 
@@ -119,9 +117,8 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function injectorReturnsFalseForNonAddedMapOnCheck()
     {
-        assert(
-                Binder::createInjector()->hasBinding(MapBinding::TYPE, 'mapConfig'),
-                isFalse()
+        assertFalse(
+                Binder::createInjector()->hasBinding(MapBinding::TYPE, 'mapConfig')
         );
     }
 
@@ -135,9 +132,8 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
                 ->withEntry('tb', 303)
                 ->withEntryFromProvider('dd', $this->createProviderForValue(313))
                 ->withEntryFromClosure('hf', function() { return 323; });
-        assert(
-                $binder->getInjector()->hasBinding(MapBinding::TYPE, 'mapConfig'),
-                isTrue()
+        assertTrue(
+                $binder->getInjector()->hasBinding(MapBinding::TYPE, 'mapConfig')
         );
     }
 

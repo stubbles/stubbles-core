@@ -20,11 +20,11 @@ use stubbles\test\ioc\Tire;
 use stubbles\test\ioc\Vehicle;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isFalse;
 use function bovigo\assert\predicate\isInstanceOf;
-use function bovigo\assert\predicate\isNull;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\ioc\Injector.
  *
@@ -44,8 +44,8 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
                     $binder->bind(Vehicle::class)->to(Car::class);
                 }
         );
-        assert($injector->hasBinding(Vehicle::class), isTrue());
-        assert($injector->hasBinding(Tire::class), isTrue());
+        assertTrue($injector->hasBinding(Vehicle::class));
+        assertTrue($injector->hasBinding(Tire::class));
     }
 
     /**
@@ -72,7 +72,7 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     public function doesNotHaveExplicitBindingWhenNotDefined()
     {
         $injector = Binder::createInjector();
-        assert($injector->hasExplicitBinding(Goodyear::class), isFalse());
+        assertFalse($injector->hasExplicitBinding(Goodyear::class));
     }
 
     /**
@@ -91,7 +91,7 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $injector = Binder::createInjector();
         $injector->getInstance(Goodyear::class);
-        assert($injector->hasExplicitBinding(Goodyear::class), isTrue());
+        assertTrue($injector->hasExplicitBinding(Goodyear::class));
     }
 
     /**
@@ -111,7 +111,7 @@ class InjectorBasicTest extends \PHPUnit_Framework_TestCase
     {
         $injector = Binder::createInjector();
         $obj      = $injector->getInstance(ImplicitOptionalDependency::class);
-        assert($obj->getGoodyear(), isNull());
+        assertNull($obj->getGoodyear());
     }
 
     /**
