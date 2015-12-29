@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\peer\ParsedUri.
  *
@@ -24,9 +26,10 @@ class ParsedUriTest extends \PHPUnit_Framework_TestCase
         $parsedUri = new ParsedUri('http://example.com/?foo=bar&baz=303');
         $parsedUri->queryString()->addParam('baz', '313');
         $parsedUri->queryString()->addParam('dummy', 'example');
-        assertEquals(
-                'https://example.com/?foo=bar&baz=313&dummy=example',
-                $parsedUri->transpose(['scheme' => 'https'])->asStringWithoutPort()
+        assert(
+                $parsedUri->transpose(['scheme' => 'https'])
+                        ->asStringWithoutPort(),
+                equals('https://example.com/?foo=bar&baz=313&dummy=example')
         );
     }
 }

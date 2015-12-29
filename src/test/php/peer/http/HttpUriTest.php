@@ -10,13 +10,13 @@
 namespace stubbles\peer\http;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isFalse;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isNotSameAs;
-use function bovigo\assert\predicate\isNull;
 use function bovigo\assert\predicate\isSameAs;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\peer\http\HttpUri.
  *
@@ -82,7 +82,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceFromEmptyStringReturnsNull()
     {
-        assert(HttpUri::fromString(''), isNull());
+        assertNull(HttpUri::fromString(''));
     }
 
     /**
@@ -100,10 +100,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfNoPortGivenInSchemeHttp()
     {
-        assert(
-                HttpUri::fromString('http://example.net/')->hasDefaultPort(),
-                isTrue()
-        );
+        assertTrue(HttpUri::fromString('http://example.net/')->hasDefaultPort());
     }
 
     /**
@@ -112,9 +109,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfDefaultPortGivenInSchemeHttp()
     {
-        assert(
-                HttpUri::fromString('http://example.net:80/')->hasDefaultPort(),
-                isTrue()
+        assertTrue(
+                HttpUri::fromString('http://example.net:80/')->hasDefaultPort()
         );
     }
 
@@ -124,9 +120,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveDefaultPortIfOtherPortGivenInSchemeHttp()
     {
-        assert(
-                HttpUri::fromString('http://example.net:8080/')->hasDefaultPort(),
-                isFalse()
+        assertFalse(
+                HttpUri::fromString('http://example.net:8080/')->hasDefaultPort()
         );
     }
 
@@ -136,9 +131,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfNoPortGivenInSchemeHttps()
     {
-        assert(
-                HttpUri::fromString('https://example.net/')->hasDefaultPort(),
-                isTrue()
+        assertTrue(
+                HttpUri::fromString('https://example.net/')->hasDefaultPort()
         );
     }
 
@@ -148,9 +142,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfDefaultPortGivenInSchemeHttps()
     {
-        assert(
-                HttpUri::fromString('https://example.net:443/')->hasDefaultPort(),
-                isTrue()
+        assertTrue(
+                HttpUri::fromString('https://example.net:443/')->hasDefaultPort()
         );
     }
 
@@ -160,9 +153,8 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveDefaultPortIfOtherPortGivenInSchemeHttps()
     {
-        assert(
-                HttpUri::fromString('https://example.net:8080/')->hasDefaultPort(),
-                isFalse()
+        assertFalse(
+                HttpUri::fromString('https://example.net:8080/')->hasDefaultPort()
         );
     }
 
@@ -208,7 +200,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isHttpIfSchemeIsHttp()
     {
-        assert(HttpUri::fromString('http://example.net/')->isHttp(), isTrue());
+        assertTrue(HttpUri::fromString('http://example.net/')->isHttp());
     }
 
     /**
@@ -217,7 +209,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotHttpIfSchemeIsHttps()
     {
-        assert(HttpUri::fromString('https://example.net/')->isHttp(), isFalse());
+        assertFalse(HttpUri::fromString('https://example.net/')->isHttp());
     }
 
     /**
@@ -226,7 +218,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isHttpsIfSchemeIsHttps()
     {
-        assert(HttpUri::fromString('https://example.net/')->isHttps(), isTrue());
+        assertTrue(HttpUri::fromString('https://example.net/')->isHttps());
     }
 
     /**
@@ -235,7 +227,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotHttpsIfSchemeIsHttp()
     {
-        assert(HttpUri::fromString('http://example.net/')->isHttps(), isFalse());
+        assertFalse(HttpUri::fromString('http://example.net/')->isHttps());
     }
 
     /**
@@ -379,11 +371,10 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function createSocketForHttpDoesNotYieldSocketWithSecureConnection()
     {
-        assert(
+        assertFalse(
                 HttpUri::fromString('http://example.net/')
                        ->createSocket()
-                       ->usesSsl(),
-                isFalse()
+                       ->usesSsl()
         );
     }
     /**
@@ -392,11 +383,10 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function createSocketForHttpsDoesYieldSocketWithSecureConnection()
     {
-        assert(
+        assertTrue(
                 HttpUri::fromString('https://example.net/')
                        ->createSocket()
-                       ->usesSsl(),
-                isTrue()
+                       ->usesSsl()
         );
     }
 

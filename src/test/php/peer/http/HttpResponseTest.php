@@ -11,9 +11,9 @@ namespace stubbles\peer\http;
 use stubbles\streams\memory\MemoryInputStream;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmpty;
+use function bovigo\assert\assertNull;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isEmpty;
-use function bovigo\assert\predicate\isNull;
 /**
  * Test for stubbles\peer\http\HttpResponse.
  *
@@ -176,12 +176,12 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                         ''
                 )
         );
-        assert($httpResponse->statusLine(), isNull());
-        assert($httpResponse->httpVersion(), isNull());
-        assert($httpResponse->statusCode(), isNull());
-        assert($httpResponse->reasonPhrase(), isNull());
-        assert($httpResponse->statusCodeClass(), isNull());
-        assert($httpResponse->body(), isEmpty());
+        assertNull($httpResponse->statusLine());
+        assertNull($httpResponse->httpVersion());
+        assertNull($httpResponse->statusCode());
+        assertNull($httpResponse->reasonPhrase());
+        assertNull($httpResponse->statusCodeClass());
+        assertEmpty($httpResponse->body());
     }
 
     /**
@@ -197,11 +197,11 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                         ''
                 )
         );
-        assert($httpResponse->statusLine(), isNull());
-        assert($httpResponse->httpVersion(), isNull());
-        assert($httpResponse->statusCode(), isNull());
-        assert($httpResponse->reasonPhrase(), isNull());
-        assert($httpResponse->statusCodeClass(), isNull());
-        assert($httpResponse->body(), isEmpty());
+        assertNull($httpResponse->statusLine());
+        assertNull($httpResponse->httpVersion());
+        assertNull($httpResponse->statusCode());
+        assertNull($httpResponse->reasonPhrase());
+        assertNull($httpResponse->statusCodeClass());
+        assertEmpty($httpResponse->body());
     }
 }

@@ -9,12 +9,12 @@
  */
 namespace stubbles\peer\http;
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmpty;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isEmpty;
-use function bovigo\assert\predicate\isFalse;
-use function bovigo\assert\predicate\isNull;
 use function bovigo\assert\predicate\isOfSize;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\peer\http\AcceptHeader.
  *
@@ -44,7 +44,7 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function emptyAcceptHeaderReturnsInstanceWithoutAcceptables()
     {
-        assert(emptyAcceptHeader(), isEmpty());
+        assertEmpty(emptyAcceptHeader());
     }
 
     /**
@@ -122,7 +122,7 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
     {
         $acceptHeader = AcceptHeader::parse($parseValue);
         foreach ($expectedList as $mimeType => $priority) {
-            assert($acceptHeader->hasSharedAcceptables([$mimeType]), isTrue());
+            assertTrue($acceptHeader->hasSharedAcceptables([$mimeType]));
             assert($acceptHeader->priorityFor($mimeType), equals($priority));
         }
     }
@@ -220,10 +220,7 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function findAcceptableWithGreatestPriorityForEmptyListReturnsNull()
     {
-        assert(
-                $this->acceptHeader->findAcceptableWithGreatestPriority(),
-                isNull()
-        );
+        assertNull($this->acceptHeader->findAcceptableWithGreatestPriority());
     }
 
     /**
@@ -265,10 +262,7 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveSharedAcceptablesForEmptyList(array $accepted)
     {
-        assert(
-                $this->acceptHeader->hasSharedAcceptables($accepted),
-                isFalse()
-        );
+        assertFalse($this->acceptHeader->hasSharedAcceptables($accepted));
     }
 
     /**
@@ -289,10 +283,9 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveSharedAcceptablesForNonEqualLists(array $accepted)
     {
-        assert(
+        assertFalse(
                 $this->acceptHeader->addAcceptable('text/html')
-                        ->hasSharedAcceptables($accepted),
-                isFalse()
+                        ->hasSharedAcceptables($accepted)
         );
     }
 
@@ -314,10 +307,9 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function hasSharedAcceptablesForCommonLists()
     {
-        assert(
+        assertTrue(
                 $this->acceptHeader->addAcceptable('text/plain', 0.2)
-                        ->hasSharedAcceptables(['text/plain', 'text/other']),
-                isTrue()
+                        ->hasSharedAcceptables(['text/plain', 'text/other'])
         );
     }
 
@@ -338,12 +330,11 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function findMatchWithGreatestPriorityFromEmptyListReturnsNull()
     {
-        assert(
+        assertNull(
                 $this->acceptHeader->findMatchWithGreatestPriority([
                         'text/plain',
                         'text/other'
-                ]),
-                isNull()
+                ])
         );
     }
 
@@ -352,11 +343,10 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function findMatchWithGreatestPriorityFromAcceptedEmptyListReturnsNull()
     {
-        assert(
+        assertNull(
                 $this->acceptHeader->addAcceptable('text/plain', 0.2)
                         ->addAcceptable('text/html')
-                        ->findMatchWithGreatestPriority([]),
-                isNull()
+                        ->findMatchWithGreatestPriority([])
         );
     }
 
@@ -365,11 +355,10 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function findMatchWithGreatestPriorityForNonMatchingListsReturnsNull()
     {
-        assert(
+        assertNull(
                 $this->acceptHeader->addAcceptable('text/plain', 0.2)
                         ->addAcceptable('text/html')
-                        ->findMatchWithGreatestPriority(['text/foo', 'text/other']),
-                isNull()
+                        ->findMatchWithGreatestPriority(['text/foo', 'text/other'])
         );
     }
 

@@ -11,7 +11,6 @@ namespace stubbles\peer\http;
 use bovigo\callmap\NewInstance;
 use stubbles\peer\HeaderList;
 use stubbles\peer\Stream;
-use stubbles\peer\http\HttpResponse;
 use stubbles\peer\http\HttpUri;
 use stubbles\streams\InputStream;
 use stubbles\streams\memory\MemoryOutputStream;

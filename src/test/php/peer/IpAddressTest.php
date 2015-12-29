@@ -8,6 +8,12 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for stubbles\peer\IpAddress.
  *
@@ -39,7 +45,7 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function createWithLong()
     {
-        assertEquals('127.0.0.1', new IpAddress(2130706433));
+        assert(new IpAddress(2130706433), equals('127.0.0.1'));
     }
 
     /**
@@ -56,7 +62,7 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function castFromCreatesIpAddress($value)
     {
-        assertEquals('127.0.0.1', IpAddress::castFrom($value));
+        assert(IpAddress::castFrom($value), equals('127.0.0.1'));
     }
 
     /**
@@ -65,7 +71,7 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
     public function castFromInstanceReturnsInstance()
     {
         $ipAddress = new IpAddress('127.0.0.1');
-        assertSame($ipAddress, IpAddress::castFrom($ipAddress));
+        assert(IpAddress::castFrom($ipAddress), isSameAs($ipAddress));
     }
 
     /**
@@ -73,10 +79,7 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function asLongReturnsLongValueForIpAddress()
     {
-        assertEquals(
-                2130706433,
-                IpAddress::castFrom('127.0.0.1')->asLong()
-        );
+        assert(IpAddress::castFrom('127.0.0.1')->asLong(), equals(2130706433));
     }
 
     /**
@@ -84,9 +87,9 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function createSocketReturnsSocketInstance()
     {
-        assertInstanceOf(
-                Socket::class,
-                IpAddress::castFrom('127.0.0.1')->createSocket(80)
+        assert(
+                IpAddress::castFrom('127.0.0.1')->createSocket(80),
+                isInstanceOf(Socket::class)
         );
     }
 
@@ -95,9 +98,9 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function createSecureSocketReturnsSocketInstance()
     {
-        assertInstanceOf(
-                Socket::class,
-                IpAddress::castFrom('127.0.0.1')->createSecureSocket(443)
+        assert(
+                IpAddress::castFrom('127.0.0.1')->createSecureSocket(443),
+                isInstanceOf(Socket::class)
         );
     }
 

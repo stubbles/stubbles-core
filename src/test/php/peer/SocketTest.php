@@ -8,6 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Test for stubbles\peer\Socket.
  *
@@ -75,9 +79,9 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     public function connectReturnsStream()
     {
         FsockopenResult::$return = fopen(__FILE__, 'rb');
-        assertInstanceOf(
-                Stream::class,
-                createSocket('localhost', 80)->connect()
+        assert(
+                createSocket('localhost', 80)->connect(),
+                isInstanceOf(Stream::class)
         );
     }
 

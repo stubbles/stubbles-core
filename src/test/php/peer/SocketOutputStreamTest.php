@@ -9,6 +9,9 @@
  */
 namespace stubbles\peer;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\peer\SocketOutputStream.
  *
@@ -46,8 +49,8 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writePassesBytesToSocket()
     {
-        assertEquals(3, $this->socketOutputStream->write('foo'));
-        assertEquals('foo', $this->file->getContent());
+        assert($this->socketOutputStream->write('foo'), equals(3));
+        assert($this->file->getContent(), equals('foo'));
     }
 
     /**
@@ -55,8 +58,8 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinePassesBytesToSocketWithLinebreak()
     {
-        assertEquals(5, $this->socketOutputStream->writeLine('foo'));
-        assertEquals("foo\r\n", $this->file->getContent());
+        assert($this->socketOutputStream->writeLine('foo'), equals(5));
+        assert($this->file->getContent(), equals("foo\r\n"));
     }
 
     /**
@@ -64,11 +67,11 @@ class SocketOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesPassesBytesToSocketWithLinebreak()
     {
-        assertEquals(
-                10,
-                $this->socketOutputStream->writeLines(['foo', 'bar'])
+        assert(
+                $this->socketOutputStream->writeLines(['foo', 'bar']),
+                equals(10)
         );
-        assertEquals("foo\r\nbar\r\n", $this->file->getContent());
+        assert($this->file->getContent(), equals("foo\r\nbar\r\n"));
     }
 
     /**

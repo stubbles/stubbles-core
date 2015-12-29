@@ -9,6 +9,11 @@
  */
 namespace stubbles\peer;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\peer\SocketInputStream.
  *
@@ -34,15 +39,13 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->stream = new Stream(
-                fopen(
-                        vfsStream::newFile('foo.txt')
-                                ->withContent("foo\n")
-                                ->at(vfsStream::setup())
-                                ->url(),
-                        'rb+'
-                )
-        );
+        $this->stream = new Stream(fopen(
+                vfsStream::newFile('foo.txt')
+                        ->withContent("foo\n")
+                        ->at(vfsStream::setup())
+                        ->url(),
+                'rb+'
+        ));
         $this->socketInputStream = new SocketInputStream($this->stream);
     }
 
@@ -51,7 +54,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readFromSocketWithDefaultLength()
     {
-        assertEquals("foo\n", $this->socketInputStream->read());
+        assert($this->socketInputStream->read(), equals("foo\n"));
     }
 
     /**
@@ -59,7 +62,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readFromSocketWithGivenLength()
     {
-        assertEquals('foo', $this->socketInputStream->read(3));
+        assert($this->socketInputStream->read(3), equals('foo'));
     }
 
     /**
@@ -67,7 +70,7 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineFromSocketWithDefaultLength()
     {
-        assertEquals('foo', $this->socketInputStream->readLine());
+        assert($this->socketInputStream->readLine(), equals('foo'));
     }
 
     /**
@@ -76,16 +79,24 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineFromSocketWithGivenLength()
     {
-        assertEquals('foo', $this->socketInputStream->readLine(4));
+        assert($this->socketInputStream->readLine(4), equals('foo'));
     }
 
     /**
      * @test
      */
-    public function noBytesLeft()
+    public function returnsMinus1WhenNoBytesLeft()
     {
         $this->socketInputStream->read();
-        assertEquals(-1, $this->socketInputStream->bytesLeft());
+        assert($this->socketInputStream->bytesLeft(), equals(-1));
+    }
+
+    /**
+     * @test
+     */
+    public function noBytesLeftMeansEof()
+    {
+        $this->socketInputStream->read();
         assertTrue($this->socketInputStream->eof());
     }
 
@@ -94,7 +105,14 @@ class SocketInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function alwaysOneByteLeftWhenNotAtEnd()
     {
-        assertEquals(1, $this->socketInputStream->bytesLeft());
+        assert($this->socketInputStream->bytesLeft(), equals(1));
+    }
+
+    /**
+     * @test
+     */
+    public function positiveAmountOfBytesLeftDoesNotMeanEof()
+    {
         assertFalse($this->socketInputStream->eof());
     }
 

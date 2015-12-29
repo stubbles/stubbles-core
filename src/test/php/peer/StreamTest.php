@@ -11,6 +11,13 @@ namespace stubbles\peer;
 use org\bovigo\vfs\vfsStream;
 use stubbles\streams\InputStream;
 use stubbles\streams\OutputStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for stubbles\peer\Stream.
  *
@@ -59,7 +66,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readReturnsDataOfFirstLine()
     {
-        assertEquals("bar\n", $this->stream->read());
+        assert($this->stream->read(), equals("bar\n"));
     }
 
     /**
@@ -67,7 +74,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineReturnsTrimmedDataOfFirstLine()
     {
-        assertEquals('bar', $this->stream->readLine());
+        assert($this->stream->readLine(), equals('bar'));
     }
 
     /**
@@ -75,7 +82,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readBinaryReturnsData()
     {
-        assertEquals("bar\nbaz", $this->stream->readBinary());
+        assert($this->stream->readBinary(), equals("bar\nbaz"));
     }
 
     /**
@@ -83,8 +90,8 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writesToResource()
     {
-        assertEquals(8, $this->stream->write('yoyoyoyo'));
-        assertEquals('yoyoyoyo', $this->file->getContent());
+        assert($this->stream->write('yoyoyoyo'), equals(8));
+        assert($this->file->getContent(), equals('yoyoyoyo'));
     }
 
     /**
@@ -109,10 +116,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function canBeUsedAsInputStream()
     {
-        assertInstanceOf(
-                InputStream::class,
-                $this->stream->in()
-        );
+        assert($this->stream->in(), isInstanceOf(InputStream::class));
     }
 
     /**
@@ -120,10 +124,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function alwaysReturnsSameInputStream()
     {
-        assertSame(
-                $this->stream->in(),
-                $this->stream->in()
-        );
+        assert($this->stream->in(), isSameAs($this->stream->in()));
     }
 
     /**
@@ -131,10 +132,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function canBeUsedAsOutputStream()
     {
-        assertInstanceOf(
-                OutputStream::class,
-                $this->stream->out()
-        );
+        assert($this->stream->out(), isInstanceOf(OutputStream::class));
     }
 
     /**
@@ -142,10 +140,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
      */
     public function alwaysReturnsSameOutputStream()
     {
-        assertSame(
-                $this->stream->out(),
-                $this->stream->out()
-        );
+        assert($this->stream->out(), isSameAs($this->stream->out()));
     }
 
     /**

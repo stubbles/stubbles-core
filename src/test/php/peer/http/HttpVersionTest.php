@@ -10,10 +10,10 @@
 namespace stubbles\peer\http;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isFalse;
 use function bovigo\assert\predicate\isSameAs;
-use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\peer\http\HttpVersion.
  *
@@ -174,10 +174,9 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualEmptyVersion($empty)
     {
-        assert(
+        assertFalse(
                 HttpVersion::fromString(HttpVersion::HTTP_1_1)
-                        ->equals($empty),
-                isFalse()
+                        ->equals($empty)
         );
     }
 
@@ -186,10 +185,9 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualInvalidVersion()
     {
-        assert(
+        assertFalse(
                 HttpVersion::fromString(HttpVersion::HTTP_1_1)
-                        ->equals('HTTP/404'),
-                isFalse()
+                        ->equals('HTTP/404')
         );
     }
 
@@ -198,10 +196,9 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualWhenMajorVersionDiffers()
     {
-        assert(
+        assertFalse(
                 HttpVersion::fromString(HttpVersion::HTTP_1_1)
-                        ->equals('HTTP/2.0'),
-                isFalse()
+                        ->equals('HTTP/2.0')
         );
     }
 
@@ -210,10 +207,9 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualWhenMinorVersionDiffers()
     {
-        assert(
+        assertFalse(
                 HttpVersion::fromString(HttpVersion::HTTP_1_1)
-                        ->equals(HttpVersion::HTTP_1_0),
-                isFalse()
+                        ->equals(HttpVersion::HTTP_1_0)
         );
     }
 
@@ -222,9 +218,9 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function isEqualWhenMajorAndMinorVersionEqual()
     {
-        assert(
-                HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_1),
-                isTrue()
+        assertTrue(
+                HttpVersion::fromString(HttpVersion::HTTP_1_1)
+                        ->equals(HttpVersion::HTTP_1_1)
         );
     }
 }

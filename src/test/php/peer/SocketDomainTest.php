@@ -8,6 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\peer\SocketDomain.
  *
@@ -60,8 +64,9 @@ class SocketDomainTest extends \PHPUnit_Framework_TestCase
      */
     public function namesAreCorrect($expectedName)
     {
-        assertEquals($expectedName,
-                            SocketDomain::forName($expectedName)->name()
+        assert(
+                SocketDomain::forName($expectedName)->name(),
+                equals($expectedName)
         );
     }
 
@@ -85,8 +90,9 @@ class SocketDomainTest extends \PHPUnit_Framework_TestCase
      */
     public function valuesAreCorrect($expectedValue)
     {
-        assertEquals($expectedValue,
-                            SocketDomain::forValue($expectedValue)->value()
+        assert(
+                SocketDomain::forValue($expectedValue)->value(),
+                equals($expectedValue)
         );
     }
 }
