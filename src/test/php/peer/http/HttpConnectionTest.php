@@ -15,6 +15,10 @@ use stubbles\peer\http\HttpUri;
 use stubbles\peer\http\HttpResponse;
 use stubbles\streams\InputStream;
 use stubbles\streams\memory\MemoryOutputStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Test for stubbles\peer\http\HttpConnection.
  *
@@ -62,164 +66,165 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function initializeGetRequest()
+    public function getReturnsHttpResponse()
     {
-        assertInstanceOf(
-                HttpResponse::class,
+        assert(
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
                         ->referedFrom('http://example.com/')
                         ->withCookie(['foo' => 'bar baz'])
                         ->authorizedAs('user', 'pass')
                         ->usingHeader('X-Binford', 6100)
-                        ->get()
-        );
-        assertEquals(
-                Http::lines(
-                        ['GET /foo/resource?foo=bar HTTP/1.1',
-                         'Host: example.com',
-                         'User-Agent: Stubbles HTTP Client',
-                         'Referer: http://example.com/',
-                         'Cookie: foo=bar+baz;',
-                         'Authorization: BASIC ' . base64_encode('user:pass'),
-                         'X-Binford: 6100',
-                         ''
-                        ]
-                ),
-                $this->memoryOutputStream
+                        ->get(),
+                isInstanceOf(HttpResponse::class)
         );
     }
 
     /**
      * @test
      */
-    public function initializeHeadRequest()
+    public function getWritesProperRequestLines()
     {
-        assertInstanceOf(
-                HttpResponse::class,
+        $this->httpConnection->timeout(2)
+                ->asUserAgent('Stubbles HTTP Client')
+                ->referedFrom('http://example.com/')
+                ->withCookie(['foo' => 'bar baz'])
+                ->authorizedAs('user', 'pass')
+                ->usingHeader('X-Binford', 6100)
+                ->get();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'GET /foo/resource?foo=bar HTTP/1.1',
+                        'Host: example.com',
+                        'User-Agent: Stubbles HTTP Client',
+                        'Referer: http://example.com/',
+                        'Cookie: foo=bar+baz;',
+                        'Authorization: BASIC ' . base64_encode('user:pass'),
+                        'X-Binford: 6100',
+                        ''
+                ))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function headReturnsHttpResponse()
+    {
+        assert(
                 $this->httpConnection->timeout(2)
                             ->asUserAgent('Stubbles HTTP Client')
                             ->referedFrom('http://example.com/')
                             ->withCookie(['foo' => 'bar baz'])
                             ->authorizedAs('user', 'pass')
                             ->usingHeader('X-Binford', 6100)
-                            ->head()
-        );
-        assertEquals(
-                Http::lines(
-                        ['HEAD /foo/resource?foo=bar HTTP/1.1',
-                         'Host: example.com',
-                         'User-Agent: Stubbles HTTP Client',
-                         'Referer: http://example.com/',
-                         'Cookie: foo=bar+baz;',
-                         'Authorization: BASIC ' . base64_encode('user:pass'),
-                         'X-Binford: 6100',
-                         'Connection: close',
-                         ''
-                        ]
-                ),
-                $this->memoryOutputStream
+                            ->head(),
+                isInstanceOf(HttpResponse::class)
         );
     }
 
     /**
      * @test
      */
-    public function initializePostRequest()
+    public function headWritesProperRequestLines()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->httpConnection->timeout(2)
-                        ->asUserAgent('Stubbles HTTP Client')
-                        ->referedFrom('http://example.com/')
-                        ->withCookie(['foo' => 'bar baz'])
-                        ->authorizedAs('user', 'pass')
-                        ->usingHeader('X-Binford', 6100)
-                        ->post('foobar')
-        );
-        assertEquals(
-                Http::lines(
-                        ['POST /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'User-Agent: Stubbles HTTP Client',
-                         'Referer: http://example.com/',
-                         'Cookie: foo=bar+baz;',
-                         'Authorization: BASIC ' . base64_encode('user:pass'),
-                         'X-Binford: 6100',
-                         'Content-Length: 6',
-                         '',
-                         'foobar'
-                        ]
-                ),
-                $this->memoryOutputStream
+        $this->httpConnection->timeout(2)
+                    ->asUserAgent('Stubbles HTTP Client')
+                    ->referedFrom('http://example.com/')
+                    ->withCookie(['foo' => 'bar baz'])
+                    ->authorizedAs('user', 'pass')
+                    ->usingHeader('X-Binford', 6100)
+                    ->head();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'HEAD /foo/resource?foo=bar HTTP/1.1',
+                        'Host: example.com',
+                        'User-Agent: Stubbles HTTP Client',
+                        'Referer: http://example.com/',
+                        'Cookie: foo=bar+baz;',
+                        'Authorization: BASIC ' . base64_encode('user:pass'),
+                        'X-Binford: 6100',
+                        'Connection: close',
+                        ''
+                ))
         );
     }
 
     /**
      * @test
      */
-    public function initializePostRequestUsingPostValues()
+    public function postReturnsHttpResponse()
     {
-        assertInstanceOf(
-                HttpResponse::class,
+        assert(
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
                         ->referedFrom('http://example.com/')
                         ->withCookie(['foo' => 'bar baz'])
                         ->authorizedAs('user', 'pass')
                         ->usingHeader('X-Binford', 6100)
-                        ->post(['foo' => 'bar', 'ba z' => 'dum my'])
-        );
-        assertEquals(
-                Http::lines(
-                        ['POST /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'User-Agent: Stubbles HTTP Client',
-                         'Referer: http://example.com/',
-                         'Cookie: foo=bar+baz;',
-                         'Authorization: BASIC ' . base64_encode('user:pass'),
-                         'X-Binford: 6100',
-                         'Content-Type: application/x-www-form-urlencoded',
-                         'Content-Length: 20',
-                         '',
-                         'foo=bar&ba+z=dum+my&'
-                        ]
-                ),
-                $this->memoryOutputStream
+                        ->post('foobar'),
+                isInstanceOf(HttpResponse::class)
         );
     }
 
     /**
-     * @since  2.0.0
      * @test
      */
-    public function initializePutRequest()
+    public function postWritesProperHttpRequestLinesWithRequestBody()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->httpConnection->timeout(2)
-                        ->asUserAgent('Stubbles HTTP Client')
-                        ->referedFrom('http://example.com/')
-                        ->withCookie(['foo' => 'bar baz'])
-                        ->authorizedAs('user', 'pass')
-                        ->usingHeader('X-Binford', 6100)
-                        ->put('foobar')
+        $this->httpConnection->timeout(2)
+                ->asUserAgent('Stubbles HTTP Client')
+                ->referedFrom('http://example.com/')
+                ->withCookie(['foo' => 'bar baz'])
+                ->authorizedAs('user', 'pass')
+                ->usingHeader('X-Binford', 6100)
+                ->post('foobar');
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'POST /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'User-Agent: Stubbles HTTP Client',
+                        'Referer: http://example.com/',
+                        'Cookie: foo=bar+baz;',
+                        'Authorization: BASIC ' . base64_encode('user:pass'),
+                        'X-Binford: 6100',
+                        'Content-Length: 6',
+                        '',
+                        'foobar'
+                ))
         );
-        assertEquals(
-                Http::lines(
-                        ['PUT /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'User-Agent: Stubbles HTTP Client',
-                         'Referer: http://example.com/',
-                         'Cookie: foo=bar+baz;',
-                         'Authorization: BASIC ' . base64_encode('user:pass'),
-                         'X-Binford: 6100',
-                         'Content-Length: 6',
-                         '',
-                         'foobar'
-                        ]
-                ),
-                $this->memoryOutputStream
+    }
+
+    /**
+     * @test
+     */
+    public function postWritesProperHttpRequestLinesWithRequestValues()
+    {
+        $this->httpConnection->timeout(2)
+                ->asUserAgent('Stubbles HTTP Client')
+                ->referedFrom('http://example.com/')
+                ->withCookie(['foo' => 'bar baz'])
+                ->authorizedAs('user', 'pass')
+                ->usingHeader('X-Binford', 6100)
+                ->post(['foo' => 'bar', 'ba z' => 'dum my']);
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'POST /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'User-Agent: Stubbles HTTP Client',
+                        'Referer: http://example.com/',
+                        'Cookie: foo=bar+baz;',
+                        'Authorization: BASIC ' . base64_encode('user:pass'),
+                        'X-Binford: 6100',
+                        'Content-Type: application/x-www-form-urlencoded',
+                        'Content-Length: 20',
+                        '',
+                        'foo=bar&ba+z=dum+my&'
+                ))
         );
     }
 
@@ -227,31 +232,93 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      * @since  2.0.0
      * @test
      */
-    public function initializeDeleteRequest()
+    public function putReturnsHttpResponse()
     {
-        assertInstanceOf(
-                HttpResponse::class,
+        assert(
                 $this->httpConnection->timeout(2)
                         ->asUserAgent('Stubbles HTTP Client')
                         ->referedFrom('http://example.com/')
                         ->withCookie(['foo' => 'bar baz'])
                         ->authorizedAs('user', 'pass')
                         ->usingHeader('X-Binford', 6100)
-                        ->delete()
+                        ->put('foobar'),
+                isInstanceOf(HttpResponse::class)
         );
-        assertEquals(
-                Http::lines(
-                        ['DELETE /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'User-Agent: Stubbles HTTP Client',
-                         'Referer: http://example.com/',
-                         'Cookie: foo=bar+baz;',
-                         'Authorization: BASIC ' . base64_encode('user:pass'),
-                         'X-Binford: 6100',
-                         ''
-                        ]
-                ),
-                $this->memoryOutputStream
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function putWritesProperHttpRequestLines()
+    {
+        $this->httpConnection->timeout(2)
+                ->asUserAgent('Stubbles HTTP Client')
+                ->referedFrom('http://example.com/')
+                ->withCookie(['foo' => 'bar baz'])
+                ->authorizedAs('user', 'pass')
+                ->usingHeader('X-Binford', 6100)
+                ->put('foobar');
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'PUT /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'User-Agent: Stubbles HTTP Client',
+                        'Referer: http://example.com/',
+                        'Cookie: foo=bar+baz;',
+                        'Authorization: BASIC ' . base64_encode('user:pass'),
+                        'X-Binford: 6100',
+                        'Content-Length: 6',
+                        '',
+                        'foobar'
+                ))
+        );
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function deleteReturnsHttpResponse()
+    {
+        assert(
+                $this->httpConnection->timeout(2)
+                        ->asUserAgent('Stubbles HTTP Client')
+                        ->referedFrom('http://example.com/')
+                        ->withCookie(['foo' => 'bar baz'])
+                        ->authorizedAs('user', 'pass')
+                        ->usingHeader('X-Binford', 6100)
+                        ->delete(),
+                isInstanceOf(HttpResponse::class)
+        );
+    }
+
+    /**
+     * @since  2.0.0
+     * @test
+     */
+    public function deleteWritesProperHttpRequestLines()
+    {
+        $this->httpConnection->timeout(2)
+                ->asUserAgent('Stubbles HTTP Client')
+                ->referedFrom('http://example.com/')
+                ->withCookie(['foo' => 'bar baz'])
+                ->authorizedAs('user', 'pass')
+                ->usingHeader('X-Binford', 6100)
+                ->delete();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'DELETE /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'User-Agent: Stubbles HTTP Client',
+                        'Referer: http://example.com/',
+                        'Cookie: foo=bar+baz;',
+                        'Authorization: BASIC ' . base64_encode('user:pass'),
+                        'X-Binford: 6100',
+                        ''
+                ))
         );
     }
 
@@ -261,9 +328,9 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function functionShortcut()
     {
-        assertInstanceOf(
-                HttpConnection::class,
-                \stubbles\peer\http('http://example.net/')
+        assert(
+                \stubbles\peer\http('http://example.net/'),
+                isInstanceOf(HttpConnection::class)
         );
     }
 }

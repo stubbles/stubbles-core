@@ -8,6 +8,15 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isFalse;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isNotSameAs;
+use function bovigo\assert\predicate\isNull;
+use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\peer\http\HttpUri.
  *
@@ -22,9 +31,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function canCreateInstanceForSchemeHttp()
     {
-        assertInstanceOf(
-                HttpUri::class,
-                HttpUri::fromString('http://example.net/')
+        assert(
+                HttpUri::fromString('http://example.net/'),
+                isInstanceOf(HttpUri::class)
         );
     }
 
@@ -34,9 +43,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function canCreateInstanceForSchemeHttps()
     {
-        assertInstanceOf(
-                HttpUri::class,
-                HttpUri::fromString('https://example.net/')
+        assert(
+                HttpUri::fromString('https://example.net/'),
+                isInstanceOf(HttpUri::class)
         );
     }
 
@@ -73,7 +82,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function createInstanceFromEmptyStringReturnsNull()
     {
-        assertNull(HttpUri::fromString(''));
+        assert(HttpUri::fromString(''), isNull());
     }
 
     /**
@@ -82,10 +91,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function automaticallyAppensSlashAsPathIfNoPathSet()
     {
-        assertEquals(
-                '/',
-                HttpUri::fromString('http://example.net')->path()
-        );
+        assert(HttpUri::fromString('http://example.net')->path(), equals('/'));
     }
 
     /**
@@ -94,8 +100,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfNoPortGivenInSchemeHttp()
     {
-        assertTrue(
-                HttpUri::fromString('http://example.net/')->hasDefaultPort()
+        assert(
+                HttpUri::fromString('http://example.net/')->hasDefaultPort(),
+                isTrue()
         );
     }
 
@@ -105,8 +112,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfDefaultPortGivenInSchemeHttp()
     {
-        assertTrue(
-                HttpUri::fromString('http://example.net:80/')->hasDefaultPort()
+        assert(
+                HttpUri::fromString('http://example.net:80/')->hasDefaultPort(),
+                isTrue()
         );
     }
 
@@ -116,8 +124,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveDefaultPortIfOtherPortGivenInSchemeHttp()
     {
-        assertFalse(
-                HttpUri::fromString('http://example.net:8080/')->hasDefaultPort()
+        assert(
+                HttpUri::fromString('http://example.net:8080/')->hasDefaultPort(),
+                isFalse()
         );
     }
 
@@ -127,8 +136,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfNoPortGivenInSchemeHttps()
     {
-        assertTrue(
-                HttpUri::fromString('https://example.net/')->hasDefaultPort()
+        assert(
+                HttpUri::fromString('https://example.net/')->hasDefaultPort(),
+                isTrue()
         );
     }
 
@@ -138,8 +148,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasDefaultPortIfDefaultPortGivenInSchemeHttps()
     {
-        assertTrue(
-                HttpUri::fromString('https://example.net:443/')->hasDefaultPort()
+        assert(
+                HttpUri::fromString('https://example.net:443/')->hasDefaultPort(),
+                isTrue()
         );
     }
 
@@ -149,8 +160,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveDefaultPortIfOtherPortGivenInSchemeHttps()
     {
-        assertFalse(
-                HttpUri::fromString('https://example.net:8080/')->hasDefaultPort()
+        assert(
+                HttpUri::fromString('https://example.net:8080/')->hasDefaultPort(),
+                isFalse()
         );
     }
 
@@ -160,9 +172,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function getPortReturnsGivenPort()
     {
-        assertEquals(
-                8080,
-                HttpUri::fromString('http://example.net:8080/')->port()
+        assert(
+                HttpUri::fromString('http://example.net:8080/')->port(),
+                equals(8080)
         );
     }
 
@@ -172,9 +184,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function getPortReturns80IfSchemeIsHttp()
     {
-        assertEquals(
-                80,
-                HttpUri::fromString('http://example.net/')->port()
+        assert(
+                HttpUri::fromString('http://example.net/')->port(),
+                equals(80)
         );
     }
 
@@ -184,9 +196,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function getPortReturns443IfSchemeIsHttp()
     {
-        assertEquals(
-                443,
-                HttpUri::fromString('https://example.net/')->port()
+        assert(
+                HttpUri::fromString('https://example.net/')->port(),
+                equals(443)
         );
     }
 
@@ -196,9 +208,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isHttpIfSchemeIsHttp()
     {
-        assertTrue(
-                HttpUri::fromString('http://example.net/')->isHttp()
-        );
+        assert(HttpUri::fromString('http://example.net/')->isHttp(), isTrue());
     }
 
     /**
@@ -207,9 +217,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotHttpIfSchemeIsHttps()
     {
-        assertFalse(
-                HttpUri::fromString('https://example.net/')->isHttp()
-        );
+        assert(HttpUri::fromString('https://example.net/')->isHttp(), isFalse());
     }
 
     /**
@@ -218,9 +226,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isHttpsIfSchemeIsHttps()
     {
-        assertTrue(
-                HttpUri::fromString('https://example.net/')->isHttps()
-        );
+        assert(HttpUri::fromString('https://example.net/')->isHttps(), isTrue());
     }
 
     /**
@@ -229,9 +235,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotHttpsIfSchemeIsHttp()
     {
-        assertFalse(
-                HttpUri::fromString('http://example.net/')->isHttps()
-        );
+        assert(HttpUri::fromString('http://example.net/')->isHttps(), isFalse());
     }
 
     /**
@@ -241,7 +245,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function returnsSameInstanceWhenTransposingHttpToHttp()
     {
         $httpUri = HttpUri::fromString('http://example.net/');
-        assertSame($httpUri, $httpUri->toHttp());
+        assert($httpUri->toHttp(), isSameAs($httpUri));
     }
 
     /**
@@ -251,7 +255,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function returnsDifferentInstanceWhenTransposingHttpToHttps()
     {
         $httpUri = HttpUri::fromString('http://example.net/');
-        assertNotSame($httpUri, $httpUri->toHttps());
+        assert($httpUri->toHttps(), isNotSameAs($httpUri));
     }
 
     /**
@@ -260,11 +264,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function transposingToHttpsLeavesEverythingExceptSchemeAndPort()
     {
-        assertEquals(
-                'https://example.net/foo.php?bar=baz#top',
+        assert(
                 HttpUri::fromString('http://example.net:8080/foo.php?bar=baz#top')
                        ->toHttps()
-                       ->asString()
+                       ->asString(),
+                equals('https://example.net/foo.php?bar=baz#top')
         );
     }
 
@@ -274,11 +278,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function transposingToHttpChangesPort()
     {
-        assertEquals(
-                'http://example.net:8080/foo.php?bar=baz#top',
+        assert(
                 HttpUri::fromString('http://example.net:8080/foo.php?bar=baz#top')
                        ->toHttp()
-                       ->asString()
+                       ->asString(),
+                equals('http://example.net:8080/foo.php?bar=baz#top')
         );
     }
 
@@ -288,11 +292,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function transposingToHttpUsesDefaultPortToDefaultIfDefault()
     {
-        assertEquals(
-                'http://example.net/foo.php?bar=baz#top',
+        assert(
                 HttpUri::fromString('https://example.net/foo.php?bar=baz#top')
                        ->toHttp()
-                       ->asString()
+                       ->asString(),
+                equals('http://example.net/foo.php?bar=baz#top')
         );
     }
 
@@ -303,7 +307,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function returnsSameInstanceWhenTransposingHttpsToHttps()
     {
         $httpUri = HttpUri::fromString('https://example.net/');
-        assertSame($httpUri, $httpUri->toHttps());
+        assert($httpUri->toHttps(), isSameAs($httpUri));
     }
 
     /**
@@ -313,7 +317,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function returnsDifferentInstanceWhenTransposingHttpsToHttp()
     {
         $httpUri = HttpUri::fromString('https://example.net/');
-        assertNotSame($httpUri, $httpUri->toHttp());
+        assert($httpUri->toHttp(), isNotSameAs($httpUri));
     }
 
     /**
@@ -322,11 +326,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function transposingToHttpLeavesEverythingExceptSchemeAndPort()
     {
-        assertEquals(
-                'http://example.net/foo.php?bar=baz#top',
+        assert(
                 HttpUri::fromString('https://example.net:8080/foo.php?bar=baz#top')
                        ->toHttp()
-                       ->asString()
+                       ->asString(),
+                equals('http://example.net/foo.php?bar=baz#top')
         );
     }
 
@@ -336,11 +340,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function transposingToHttpsWithDifferentPort()
     {
-        assertEquals(
-                'https://example.net:8080/foo.php?bar=baz#top',
+        assert(
                 HttpUri::fromString('https://example.net:8080/foo.php?bar=baz#top')
                        ->toHttps()
-                       ->asString()
+                       ->asString(),
+                equals('https://example.net:8080/foo.php?bar=baz#top')
         );
     }
 
@@ -350,11 +354,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function transposingToHttpsUsesDefaultPortIfIsDefaultPort()
     {
-        assertEquals(
-                'https://example.net/foo.php?bar=baz#top',
+        assert(
                 HttpUri::fromString('http://example.net/foo.php?bar=baz#top')
                        ->toHttps()
-                       ->asString()
+                       ->asString(),
+                equals('https://example.net/foo.php?bar=baz#top')
         );
     }
 
@@ -363,9 +367,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function connectCreatesHttpConnection()
     {
-        assertInstanceOf(
-                HttpConnection::class,
-                HttpUri::fromString('http://example.net/')->connect()
+        assert(
+                HttpUri::fromString('http://example.net/')->connect(),
+                isInstanceOf(HttpConnection::class)
         );
     }
 
@@ -375,10 +379,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function createSocketForHttpDoesNotYieldSocketWithSecureConnection()
     {
-        assertFalse(
+        assert(
                 HttpUri::fromString('http://example.net/')
                        ->createSocket()
-                       ->usesSsl()
+                       ->usesSsl(),
+                isFalse()
         );
     }
     /**
@@ -387,10 +392,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function createSocketForHttpsDoesYieldSocketWithSecureConnection()
     {
-        assertTrue(
+        assert(
                 HttpUri::fromString('https://example.net/')
                        ->createSocket()
-                       ->usesSsl()
+                       ->usesSsl(),
+                isTrue()
         );
     }
 
@@ -400,11 +406,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function openSocketUsesDefaultTimeout()
     {
-        assertEquals(
-               5,
+        assert(
                HttpUri::fromString('http://example.net/')
                       ->openSocket()
-                      ->timeout()
+                      ->timeout(),
+                equals(5)
         );
     }
 
@@ -414,11 +420,11 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function openSocketUsesGivenTimeout()
     {
-        assertEquals(
-                2,
+        assert(
                 HttpUri::fromString('http://example.net/')
                        ->openSocket(2)
-                       ->timeout()
+                       ->timeout(),
+                equals(2)
         );
     }
 
@@ -449,9 +455,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function createInstanceWithUserInfoThrowsNoMalformedUriExceptionForRfc2616()
     {
         $uri = 'http://user:password@example.net/';
-        assertEquals(
-                $uri,
-                HttpUri::fromString($uri, Http::RFC_2616)->asString()
+        assert(
+                HttpUri::fromString($uri, Http::RFC_2616)->asString(),
+                equals($uri)
         );
     }
 
@@ -462,7 +468,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function castFromInstanceReturnsInstance()
     {
         $uri = HttpUri::fromString('http://example.net/');
-        assertSame($uri, HttpUri::castFrom($uri));
+        assert(HttpUri::castFrom($uri), isSameAs($uri));
     }
 
     /**
@@ -472,7 +478,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function castFromStringeReturnsInstance()
     {
         $uri = HttpUri::fromString('http://example.net/');
-        assertEquals($uri, HttpUri::castFrom('http://example.net/'));
+        assert(HttpUri::castFrom('http://example.net/'), equals($uri));
     }
 
     /**
@@ -502,10 +508,7 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function createFromPartsWithDefaultPortAndPathAndNoQueryString()
     {
-        assertEquals(
-                'http://localhost/',
-                HttpUri::fromParts('http', 'localhost')
-        );
+        assert(HttpUri::fromParts('http', 'localhost'), equals('http://localhost/'));
     }
 
     /**
@@ -514,9 +517,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function createFromAllParts()
     {
-        assertEquals(
-                'https://localhost:8080/index.php?foo=bar',
-                HttpUri::fromParts('https', 'localhost', 8080, '/index.php', 'foo=bar')
+        assert(
+                HttpUri::fromParts('https', 'localhost', 8080, '/index.php', 'foo=bar'),
+                equals('https://localhost:8080/index.php?foo=bar')
         );
     }
     /**
@@ -525,9 +528,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function fromPartsReturnsInstanceOfHttpUri()
     {
-        assertInstanceOf(
-                HttpUri::class,
-                HttpUri::fromParts('https', 'localhost', 8080, '/index.php', 'foo=bar')
+        assert(
+                HttpUri::fromParts('https', 'localhost', 8080, '/index.php', 'foo=bar'),
+                isInstanceOf(HttpUri::class)
         );
     }
 
@@ -537,9 +540,9 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function withPathExchangesPathCompletely()
     {
-        assertEquals(
-                'http://example.org/bar',
-                HttpUri::fromString('http://example.org/foo')->withPath('/bar')
+        assert(
+                HttpUri::fromString('http://example.org/foo')->withPath('/bar'),
+                equals('http://example.org/bar')
         );
     }
 
@@ -550,9 +553,6 @@ class HttpUriTest extends \PHPUnit_Framework_TestCase
     public function withPathReturnsNewInstance()
     {
         $uri = HttpUri::fromString('http://example.org/foo');
-        assertNotSame(
-                $uri,
-                $uri->withPath('/bar')
-        );
+        assert($uri->withPath('/bar'), isNotSameAs($uri));
     }
 }

@@ -7,6 +7,7 @@
   * changed `stubbles\ioc\module\BindingModule::configure()` to accept an optional second parameter `$projectPath`
   * deprecated `stubbles\lang\SecureString` in favor of `stubbles\lang\Secret`, will be removed in 8.0.0
   * removed `stubbles\peer\createBsdSocket()`, `stubbles\peer\BsdSocket` was already removed in 6.0.0
+  * `stubbles\peer\http\Http::lines()` no longer accepts an array, but an arbitrary amount of strings instead
 
 
 ### Other changes

@@ -8,6 +8,12 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isFalse;
+use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\peer\http\HttpVersion.
  *
@@ -51,7 +57,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function fromStringDetectsCorrectMajorVersion()
     {
-        assertEquals(1, HttpVersion::fromString('HTTP/1.2')->major());
+        assert(HttpVersion::fromString('HTTP/1.2')->major(), equals(1));
     }
 
     /**
@@ -59,7 +65,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function fromStringDetectsCorrectMinorVersion()
     {
-        assertEquals(2, HttpVersion::fromString('HTTP/1.2')->minor());
+        assert(HttpVersion::fromString('HTTP/1.2')->minor(), equals(2));
     }
 
     /**
@@ -128,9 +134,9 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
     public function castToStringReturnsCorrectVersionString()
     {
         $versionString = 'HTTP/1.1';
-        assertEquals(
-                $versionString,
-                (string) HttpVersion::fromString($versionString)
+        assert(
+                (string) HttpVersion::fromString($versionString),
+                equals($versionString)
         );
     }
 
@@ -151,7 +157,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
     public function castFromInstanceReturnsInstance()
     {
         $httpVersion = new HttpVersion(1, 1);
-        assertSame($httpVersion, HttpVersion::castFrom($httpVersion));
+        assert(HttpVersion::castFrom($httpVersion), isSameAs($httpVersion));
     }
 
     /**
@@ -159,10 +165,7 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function castFromStringReturnsInstance()
     {
-        assertEquals(
-                new HttpVersion(1, 1),
-                HttpVersion::castFrom('HTTP/1.1')
-        );
+        assert(HttpVersion::castFrom('HTTP/1.1'), equals(new HttpVersion(1, 1)));
     }
 
     /**
@@ -171,7 +174,11 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualEmptyVersion($empty)
     {
-        assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals($empty));
+        assert(
+                HttpVersion::fromString(HttpVersion::HTTP_1_1)
+                        ->equals($empty),
+                isFalse()
+        );
     }
 
     /**
@@ -179,7 +186,11 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualInvalidVersion()
     {
-        assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals('HTTP/404'));
+        assert(
+                HttpVersion::fromString(HttpVersion::HTTP_1_1)
+                        ->equals('HTTP/404'),
+                isFalse()
+        );
     }
 
     /**
@@ -187,7 +198,11 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualWhenMajorVersionDiffers()
     {
-        assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals('HTTP/2.0'));
+        assert(
+                HttpVersion::fromString(HttpVersion::HTTP_1_1)
+                        ->equals('HTTP/2.0'),
+                isFalse()
+        );
     }
 
     /**
@@ -195,7 +210,11 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotEqualWhenMinorVersionDiffers()
     {
-        assertFalse(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_0));
+        assert(
+                HttpVersion::fromString(HttpVersion::HTTP_1_1)
+                        ->equals(HttpVersion::HTTP_1_0),
+                isFalse()
+        );
     }
 
     /**
@@ -203,6 +222,9 @@ class HttpVersionTest extends \PHPUnit_Framework_TestCase
      */
     public function isEqualWhenMajorAndMinorVersionEqual()
     {
-        assertTrue(HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_1));
+        assert(
+                HttpVersion::fromString(HttpVersion::HTTP_1_1)->equals(HttpVersion::HTTP_1_1),
+                isTrue()
+        );
     }
 }

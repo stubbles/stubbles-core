@@ -15,6 +15,9 @@ use stubbles\peer\http\HttpResponse;
 use stubbles\peer\http\HttpUri;
 use stubbles\streams\InputStream;
 use stubbles\streams\memory\MemoryOutputStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\peer\http\HttpRequest.
  *
@@ -46,12 +49,10 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     private function createHttpRequest($queryString = null)
     {
-        $stream  = NewInstance::stub(Stream::class)
-                ->mapCalls(
-                        ['in'  => NewInstance::of(InputStream::class),
-                         'out' => $this->memoryOutputStream
-                        ]
-        );
+        $stream  = NewInstance::stub(Stream::class)->mapCalls([
+                'in'  => NewInstance::of(InputStream::class),
+                'out' => $this->memoryOutputStream
+        ]);
 
         $uriCalls = [
             'openSocket' => $stream,
@@ -76,19 +77,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function getWritesCorrectRequest()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->get()
-        );
-        assertEquals(
-                Http::lines(
-                        ['GET /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         '',
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->get();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'GET /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        ''
+                ))
         );
     }
 
@@ -98,19 +95,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function getWritesCorrectRequestWithQueryString()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest('foo=bar&baz=1')->get()
-        );
-        assertEquals(
-                Http::lines(
-                        ['GET /foo/resource?foo=bar&baz=1 HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         ''
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest('foo=bar&baz=1')->get();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'GET /foo/resource?foo=bar&baz=1 HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        ''
+                ))
         );
     }
 
@@ -119,19 +112,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function getWritesCorrectRequestWithVersion()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->get(5, HttpVersion::HTTP_1_0)
-        );
-        assertEquals(
-                Http::lines(
-                        ['GET /foo/resource HTTP/1.0',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         ''
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->get(5, HttpVersion::HTTP_1_0);
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'GET /foo/resource HTTP/1.0',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        ''
+                ))
         );
     }
 
@@ -149,20 +138,16 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function headWritesCorrectRequest()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->head()
-        );
-        assertEquals(
-                Http::lines(
-                        ['HEAD /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Connection: close',
-                         ''
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->head();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'HEAD /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Connection: close',
+                        ''
+                ))
         );
     }
 
@@ -172,20 +157,16 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function headWritesCorrectRequestWithQueryString()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest('foo=bar&baz=1')->head()
-        );
-        assertEquals(
-                Http::lines(
-                        ['HEAD /foo/resource?foo=bar&baz=1 HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Connection: close',
-                         ''
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest('foo=bar&baz=1')->head();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'HEAD /foo/resource?foo=bar&baz=1 HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Connection: close',
+                        ''
+                ))
         );
     }
 
@@ -194,20 +175,16 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function headWritesCorrectRequestWithVersion()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->head(5, HttpVersion::HTTP_1_0)
-        );
-        assertEquals(
-                Http::lines(
-                        ['HEAD /foo/resource HTTP/1.0',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Connection: close',
-                         ''
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->head(5, HttpVersion::HTTP_1_0);
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'HEAD /foo/resource HTTP/1.0',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Connection: close',
+                        ''
+                ))
         );
     }
 
@@ -225,21 +202,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequest()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->post('foobar')
-        );
-        assertEquals(
-                Http::lines(
-                        ['POST /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Length: 6',
-                         '',
-                         'foobar',
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->post('foobar');
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'POST /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Length: 6',
+                        '',
+                        'foobar'
+                ))
         );
     }
 
@@ -249,21 +222,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postIgnoresQueryString()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest('foo=bar&baz=1')->post('foobar')
-        );
-        assertEquals(
-                Http::lines(
-                        ['POST /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Length: 6',
-                         '',
-                         'foobar'
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest('foo=bar&baz=1')->post('foobar');
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'POST /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Length: 6',
+                        '',
+                        'foobar'
+                ))
         );
     }
 
@@ -272,21 +241,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestWithVersion()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->post('foobar', 5, HttpVersion::HTTP_1_0)
-        );
-        assertEquals(
-                Http::lines(
-                        ['POST /foo/resource HTTP/1.0',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Length: 6',
-                         '',
-                         'foobar'
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->post('foobar', 5, HttpVersion::HTTP_1_0);
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'POST /foo/resource HTTP/1.0',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Length: 6',
+                        '',
+                        'foobar'
+                ))
         );
     }
 
@@ -295,21 +260,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingEmptyPostValues()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->post([])
-        );
-        assertEquals(
-                Http::lines(
-                        ['POST /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Type: application/x-www-form-urlencoded',
-                         'Content-Length: 0',
-                         ''
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->post([]);
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'POST /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Type: application/x-www-form-urlencoded',
+                        'Content-Length: 0',
+                        ''
+                ))
         );
     }
 
@@ -318,22 +279,18 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingPostValues()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my'])
-        );
-        assertEquals(
-                Http::lines(
-                        ['POST /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Type: application/x-www-form-urlencoded',
-                         'Content-Length: 20',
-                         '',
-                         'foo=bar&ba+z=dum+my&'
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my']);
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'POST /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Type: application/x-www-form-urlencoded',
+                        'Content-Length: 20',
+                        '',
+                        'foo=bar&ba+z=dum+my&'
+                ))
         );
     }
 
@@ -342,26 +299,22 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function postWritesCorrectRequestUsingPostValuesWithVersion()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->post(
-                        ['foo' => 'bar', 'ba z' => 'dum my'],
-                        5,
-                        HttpVersion::HTTP_1_0
-                )
+        $this->createHttpRequest()->post(
+                ['foo' => 'bar', 'ba z' => 'dum my'],
+                5,
+                HttpVersion::HTTP_1_0
         );
-        assertEquals(
-                Http::lines(
-                        ['POST /foo/resource HTTP/1.0',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Type: application/x-www-form-urlencoded',
-                         'Content-Length: 20',
-                         '',
-                         'foo=bar&ba+z=dum+my&'
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'POST /foo/resource HTTP/1.0',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Type: application/x-www-form-urlencoded',
+                        'Content-Length: 20',
+                        '',
+                        'foo=bar&ba+z=dum+my&'
+                ))
         );
     }
 
@@ -380,21 +333,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function putWritesCorrectRequest()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->put('foobar')
-        );
-        assertEquals(
-                Http::lines(
-                        ['PUT /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Length: 6',
-                         '',
-                         'foobar'
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->put('foobar');
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'PUT /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Length: 6',
+                        '',
+                        'foobar'
+                ))
         );
     }
 
@@ -404,21 +353,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function putIgnoresQueryString()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest('foo=bar&baz=1')->put('foobar')
-        );
-        assertEquals(
-                Http::lines(
-                        ['PUT /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Length: 6',
-                         '',
-                         'foobar'
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest('foo=bar&baz=1')->put('foobar');
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'PUT /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Length: 6',
+                        '',
+                        'foobar'
+                ))
         );
     }
 
@@ -428,21 +373,17 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function putWritesCorrectRequestWithVersion()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->put('foobar', 5, HttpVersion::HTTP_1_0)
-        );
-        assertEquals(
-                Http::lines(
-                        ['PUT /foo/resource HTTP/1.0',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         'Content-Length: 6',
-                         '',
-                         'foobar'
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->put('foobar', 5, HttpVersion::HTTP_1_0);
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'PUT /foo/resource HTTP/1.0',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        'Content-Length: 6',
+                        '',
+                        'foobar'
+                ))
         );
     }
 
@@ -462,19 +403,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function deleteWritesCorrectRequest()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->delete()
-        );
-        assertEquals(
-                Http::lines(
-                        ['DELETE /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         '',
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->delete();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'DELETE /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        ''
+                ))
         );
     }
 
@@ -484,19 +421,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function deleteIgnoresQueryString()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest('foo=bar&baz=1')->delete()
-        );
-        assertEquals(
-                Http::lines(
-                        ['DELETE /foo/resource HTTP/1.1',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         ''
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest('foo=bar&baz=1')->delete();
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'DELETE /foo/resource HTTP/1.1',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        ''
+                ))
         );
     }
 
@@ -506,19 +439,15 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function deleteWritesCorrectRequestWithVersion()
     {
-        assertInstanceOf(
-                HttpResponse::class,
-                $this->createHttpRequest()->delete(5, HttpVersion::HTTP_1_0)
-        );
-        assertEquals(
-                Http::lines(
-                        ['DELETE /foo/resource HTTP/1.0',
-                         'Host: example.com',
-                         'X-Binford: 6100',
-                         ''
-                        ]
-                ),
-                (string) $this->memoryOutputStream
+        $this->createHttpRequest()->delete(5, HttpVersion::HTTP_1_0);
+        assert(
+                $this->memoryOutputStream,
+                equals(Http::lines(
+                        'DELETE /foo/resource HTTP/1.0',
+                        'Host: example.com',
+                        'X-Binford: 6100',
+                        ''
+                ))
         );
     }
 

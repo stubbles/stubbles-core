@@ -8,6 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isNotOfSize;
 /**
  * Test for stubbles\peer\http\Http.
  *
@@ -88,9 +92,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function detectCorrectStatusClass($statusCode, $statusClass)
     {
-        assertEquals($statusClass,
-                            Http::statusClassFor($statusCode)
-        );
+        assert(Http::statusClassFor($statusCode), equals($statusClass));
     }
 
     /**
@@ -98,7 +100,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfStatusCodes()
     {
-        assertNotCount(0, Http::statusCodes());
+        assert(Http::statusCodes(), isNotOfSize(0));
     }
 
     /**
@@ -122,9 +124,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsCorrectReasonPhrase($statusCode, $reasonPhrase)
     {
-        assertEquals($reasonPhrase,
-                            Http::reasonPhraseFor($statusCode)
-        );
+        assert(Http::reasonPhraseFor($statusCode), equals($reasonPhrase));
     }
 
     /**
@@ -141,9 +141,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function addsLineEnding()
     {
-        assertEquals('foo' . Http::END_OF_LINE,
-                            Http::line('foo')
-        );
+        assert(Http::line('foo'), equals('foo' . Http::END_OF_LINE));
     }
 
     /**
@@ -151,9 +149,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function emptyLineReturnsLineEndingOnly()
     {
-        assertEquals(Http::END_OF_LINE,
-                            Http::emptyLine()
-        );
+        assert(Http::emptyLine(), equals(Http::END_OF_LINE));
     }
 
     /**
@@ -162,22 +158,23 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function linesConvertsAllLines()
     {
-        assertEquals(
-                Http::line('HEAD /foo/resource HTTP/1.1')
-                . Http::line('Host: example.com')
-                . Http::line('Connection: close')
-                . Http::emptyLine()
-                . 'bodyline1'
-                . 'bodyline2',
+        assert(
                 Http::lines(
-                        [
                             'HEAD /foo/resource HTTP/1.1',
                             'Host: example.com',
                             'Connection: close',
                             '',
                             'bodyline1',
                             'bodyline2'
-                        ])
+                ),
+                equals(
+                        Http::line('HEAD /foo/resource HTTP/1.1')
+                        . Http::line('Host: example.com')
+                        . Http::line('Connection: close')
+                        . Http::emptyLine()
+                        . 'bodyline1'
+                        . 'bodyline2'
+                )
         );
     }
 }

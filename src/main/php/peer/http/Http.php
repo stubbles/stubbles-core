@@ -248,7 +248,7 @@ class Http
      * @return  string
      * @since   4.0.0
      */
-    public static function lines(array $lines)
+    public static function lines(...$lines)
     {
         $head = true;
         return join(
