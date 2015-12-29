@@ -11,6 +11,8 @@ namespace stubbles\streams;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\onConsecutiveCalls;
 /**
  * Test for stubbles\streams\InputStreamIterator.
@@ -28,8 +30,8 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
         $expectedLineNumber = 1;
         $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
         foreach (linesOf(new MemoryInputStream("foo\nbar\nbaz\n")) as $lineNumber => $line) {
-            assertEquals($expectedLineNumber, $lineNumber);
-            assertEquals($expectedLine[$expectedLineNumber], $line);
+            assert($lineNumber, equals($expectedLineNumber));
+            assert($line, equals($expectedLine[$expectedLineNumber]));
             $expectedLineNumber++;
         }
     }
@@ -47,8 +49,8 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
         $expectedLineNumber = 1;
         $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
         foreach ($lines as $lineNumber => $line) {
-            assertEquals($expectedLineNumber, $lineNumber);
-            assertEquals($expectedLine[$expectedLineNumber], $line);
+            assert($lineNumber, equals($expectedLineNumber));
+            assert($line, equals($expectedLine[$expectedLineNumber]));
             $expectedLineNumber++;
         }
     }
@@ -58,17 +60,15 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
      */
     public function canIterateOverNonSeekableInputStream()
     {
-        $inputStream = NewInstance::of(InputStream::class)
-                ->mapCalls(
-                        ['readLine' => onConsecutiveCalls('foo', 'bar', 'baz'),
-                         'eof'      => onConsecutiveCalls(false, false, false, true)
-                        ]
-        );
+        $inputStream = NewInstance::of(InputStream::class)->mapCalls([
+                'readLine' => onConsecutiveCalls('foo', 'bar', 'baz'),
+                'eof'      => onConsecutiveCalls(false, false, false, true)
+        ]);
         $expectedLineNumber = 1;
         $expectedLine = [1 => 'foo', 2 => 'bar', 3 => 'baz', 4 => ''];
         foreach (linesOf($inputStream) as $lineNumber => $line) {
-            assertEquals($expectedLineNumber, $lineNumber);
-            assertEquals($expectedLine[$expectedLineNumber], $line);
+            assert($lineNumber, equals($expectedLineNumber));
+            assert($line, equals($expectedLine[$expectedLineNumber]));
             $expectedLineNumber++;
         }
     }
@@ -78,12 +78,10 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
      */
     public function canNotRewindNonSeekableInputStream()
     {
-        $inputStream = NewInstance::of(InputStream::class)
-                ->mapCalls(
-                        ['readLine' => onConsecutiveCalls('foo', 'bar', 'baz'),
-                         'eof'      => onConsecutiveCalls(false, false, false, true, true)
-                        ]
-        );
+        $inputStream = NewInstance::of(InputStream::class)->mapCalls([
+                'readLine' => onConsecutiveCalls('foo', 'bar', 'baz'),
+                'eof'      => onConsecutiveCalls(false, false, false, true, true)
+        ]);
         $lines = linesOf($inputStream);
         foreach ($lines as $lineNumber => $line) {
             // do nothing
@@ -94,6 +92,6 @@ class InputStreamIteratorTest extends \PHPUnit_Framework_TestCase
             $count++;
         }
 
-        assertEquals(0, $count);
+        assert($count, equals(0));
     }
 }

@@ -11,6 +11,9 @@ namespace stubbles\streams;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
  * Helper class for the test to make abstract class instantiable.
@@ -53,7 +56,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readCallsDecoratedStream()
     {
-        assertEquals("foo\n", $this->abstractDecoratedInputStream->read());
+        assert($this->abstractDecoratedInputStream->read(), equals("foo\n"));
     }
 
     /**
@@ -61,7 +64,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineCallsDecoratedStream()
     {
-        assertEquals('foo', $this->abstractDecoratedInputStream->readLine());
+        assert($this->abstractDecoratedInputStream->readLine(), equals('foo'));
     }
 
     /**
@@ -69,7 +72,7 @@ class AbstractDecoratedInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bytesLeftCallsDecoratedStream()
     {
-        assertEquals(4, $this->abstractDecoratedInputStream->bytesLeft());
+        assert($this->abstractDecoratedInputStream->bytesLeft(), equals(4));
     }
 
     /**

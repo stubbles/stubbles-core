@@ -10,6 +10,9 @@
 namespace stubbles\streams\filter;
 use stubbles\predicate\Predicate;
 use stubbles\streams\memory\MemoryInputStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\filter\FilteredInputStream.
  *
@@ -53,7 +56,7 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readReturnsEmptyStringIfChunkIsFiltered()
     {
-        assertEquals('', $this->filteredInputStream->read());
+        assert($this->filteredInputStream->read(), equals(''));
     }
 
     /**
@@ -61,7 +64,7 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineReturnsUnfilteredLinesOnly()
     {
-        assertEquals('bar', $this->filteredInputStream->readLine());
+        assert($this->filteredInputStream->readLine(), equals('bar'));
     }
 
     /**

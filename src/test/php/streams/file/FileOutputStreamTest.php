@@ -9,6 +9,11 @@
  */
 namespace stubbles\streams\file;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\file\FileOutputStream.
  *
@@ -38,26 +43,41 @@ class FileOutputStreamTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      */
-    public function constructWithString()
+    public function constructWithStringCreatesFile()
     {
-        assertFalse(file_exists($this->fileUrl));
-        $fileOutputStream = new FileOutputStream($this->fileUrl);
+        new FileOutputStream($this->fileUrl);
         assertTrue(file_exists($this->fileUrl));
-        $fileOutputStream->write('foo');
-        assertEquals('foo', file_get_contents($this->fileUrl));
     }
 
     /**
      * @test
      */
-    public function constructWithStringDelayed()
+    public function constructWithStringDelayedDoesNotCreateFile()
     {
+        new FileOutputStream($this->fileUrl, 'wb', true);
         assertFalse(file_exists($this->fileUrl));
+    }
+
+    /**
+     * construct with string as argument
+     *
+     * @test
+     */
+    public function constructWithString()
+    {
+        $fileOutputStream = new FileOutputStream($this->fileUrl);
+        $fileOutputStream->write('foo');
+        assert(file_get_contents($this->fileUrl), equals('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function constructWithStringDelayedCreatesFileOnWrite()
+    {
         $fileOutputStream = new FileOutputStream($this->fileUrl, 'wb', true);
-        assertFalse(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
         assertTrue(file_exists($this->fileUrl));
-        assertEquals('foo', file_get_contents($this->fileUrl));
     }
 
     /**
@@ -75,11 +95,9 @@ class FileOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function constructWithResource()
     {
-        assertFalse(file_exists($this->fileUrl));
         $fileOutputStream = new FileOutputStream(fopen($this->fileUrl, 'wb'));
-        assertTrue(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
-        assertEquals('foo', file_get_contents($this->fileUrl));
+        assert(file_get_contents($this->fileUrl), equals('foo'));
     }
 
     /**

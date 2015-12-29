@@ -10,6 +10,10 @@
 namespace stubbles\streams;
 use org\bovigo\vfs\vfsStream;
 use stubbles\lang\Sequence;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Tests for stubbles\streams\*().
  *
@@ -27,8 +31,8 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $root       = vfsStream::setup();
         $this->file = vfsStream::newFile('test.txt')
-                               ->withContent("foo\nfoo\n\n")
-                               ->at($root);
+                ->withContent("foo\nfoo\n\n")
+                ->at($root);
     }
 
     /**
@@ -36,10 +40,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function linesOfReturnsSequence()
     {
-        assertInstanceOf(
-                Sequence::class,
-                linesOf($this->file->url())
-        );
+        assert(linesOf($this->file->url()), isInstanceOf(Sequence::class));
     }
 
     /**
@@ -49,7 +50,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function nonEmptyLinesOfReturnsNonEmptyLinesOnly()
     {
         foreach (nonEmptyLinesOf($this->file->url()) as $line) {
-            assertEquals('foo', $line);
+            assert($line, equals('foo'));
         }
     }
 }

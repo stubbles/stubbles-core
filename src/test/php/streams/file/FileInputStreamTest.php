@@ -10,6 +10,9 @@
 namespace stubbles\streams\file;
 use stubbles\streams\Seekable;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\file\FileInputStream.
  *
@@ -32,7 +35,7 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     public function constructWithString()
     {
         $fileInputStream = new FileInputStream(vfsStream::url('home/test.txt'));
-        assertEquals('foo', $fileInputStream->readLine());
+        assert($fileInputStream->readLine(), equals('foo'));
     }
 
     /**
@@ -50,7 +53,7 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     public function constructWithResource()
     {
         $fileInputStream = new FileInputStream(fopen(vfsStream::url('home/test.txt'), 'rb'));
-        assertEquals('foo', $fileInputStream->readLine());
+        assert($fileInputStream->readLine(), equals('foo'));
     }
 
     /**
@@ -97,8 +100,8 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $fileInputStream = new FileInputStream(vfsStream::url('home/test.txt'));
         $fileInputStream->seek(1, Seekable::CURRENT);
-        assertEquals(1, $fileInputStream->tell());
-        assertEquals('oo', $fileInputStream->readLine());
+        assert($fileInputStream->tell(), equals(1));
+        assert($fileInputStream->readLine(), equals('oo'));
     }
 
     /**
@@ -108,8 +111,8 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $fileInputStream = new FileInputStream(vfsStream::url('home/test.txt'));
         $fileInputStream->seek(-2, Seekable::END);
-        assertEquals(1, $fileInputStream->tell());
-        assertEquals('oo', $fileInputStream->readLine());
+        assert($fileInputStream->tell(), equals(1));
+        assert($fileInputStream->readLine(), equals('oo'));
     }
 
     /**

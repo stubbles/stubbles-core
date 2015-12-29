@@ -10,6 +10,10 @@
 namespace stubbles\streams\file;
 use org\bovigo\vfs\vfsStream;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 use function stubbles\lang\reflect\annotationsOfConstructor;
 /**
  * Test for stubbles\streams\file\FileStreamFactory.
@@ -57,14 +61,14 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $annotations = annotationsOfConstructor($this->fileStreamFactory);
         assertTrue($annotations->contain('Named'));
-        assertEquals(
-                'stubbles.filemode',
-                $annotations->named('Named')[0]->getName()
+        assert(
+                $annotations->named('Named')[0]->getName(),
+                equals('stubbles.filemode')
         );
         assertTrue($annotations->contain('Property'));
-        assertEquals(
-                'stubbles.filemode',
-                $annotations->named('Property')[0]->getName()
+        assert(
+                $annotations->named('Property')[0]->getName(),
+                equals('stubbles.filemode')
         );
     }
 
@@ -76,7 +80,7 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
         $fileInputStream = $this->fileStreamFactory->createInputStream(vfsStream::url('home/in.txt'),
                                                                        ['filemode' => 'rb']
                            );
-        assertEquals('foo', $fileInputStream->readLine());
+        assert($fileInputStream->readLine(), equals('foo'));
     }
 
     /**
@@ -84,8 +88,10 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createInputStreamWithoutOptions()
     {
-        $fileInputStream = $this->fileStreamFactory->createInputStream(vfsStream::url('home/in.txt'));
-        assertEquals('foo', $fileInputStream->readLine());
+        $fileInputStream = $this->fileStreamFactory->createInputStream(
+                vfsStream::url('home/in.txt')
+        );
+        assert($fileInputStream->readLine(), equals('foo'));
     }
 
     /**
@@ -93,11 +99,13 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStreamWithFilemodeOption()
     {
-        assertFalse(file_exists($this->fileUrl));
-        $fileOutputStream = $this->fileStreamFactory->createOutputStream($this->fileUrl, ['filemode' => 'wb']);
+        $fileOutputStream = $this->fileStreamFactory->createOutputStream(
+                $this->fileUrl,
+                ['filemode' => 'wb']
+        );
         assertTrue(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
-        assertEquals('foo', file_get_contents($this->fileUrl));
+        assert(file_get_contents($this->fileUrl), equals('foo'));
     }
 
     /**
@@ -105,14 +113,15 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStreamWithFilemodeOptionAndDirectoryOptionSetToTrue()
     {
-        assertFalse(file_exists($this->fileUrl));
-        $fileOutputStream = $this->fileStreamFactory->createOutputStream($this->fileUrl, ['filemode'             => 'wb',
-                                                                                          'createDirIfNotExists' => true
-                                                                                         ]
-                                                      );
+        $fileOutputStream = $this->fileStreamFactory->createOutputStream(
+                $this->fileUrl,
+                ['filemode'             => 'wb',
+                 'createDirIfNotExists' => true
+                ]
+        );
         assertTrue(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
-        assertEquals('foo', file_get_contents($this->fileUrl));
+        assert(file_get_contents($this->fileUrl), equals('foo'));
     }
 
     /**
@@ -131,8 +140,10 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStreamWithDirectoryOptionSetToFalseThrowsExceptionIfDirectoryDoesNotExist()
     {
-        assertFalse(file_exists($this->fileUrl2));
-        $this->fileStreamFactory->createOutputStream($this->fileUrl2, ['createDirIfNotExists' => false]);
+        $this->fileStreamFactory->createOutputStream(
+                $this->fileUrl2,
+                ['createDirIfNotExists' => false]
+        );
     }
 
     /**
@@ -140,12 +151,14 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStreamWithDirectoryOptionSetToTrueCreatesDirectoryWithDefaultPermissions()
     {
-        assertFalse(file_exists($this->fileUrl2));
-        $fileOutputStream = $this->fileStreamFactory->createOutputStream($this->fileUrl2, ['createDirIfNotExists' => true]);
+        $fileOutputStream = $this->fileStreamFactory->createOutputStream(
+                $this->fileUrl2,
+                ['createDirIfNotExists' => true]
+        );
         assertTrue(file_exists($this->fileUrl2));
         $fileOutputStream->write('foo');
-        assertEquals('foo', file_get_contents($this->fileUrl2));
-        assertEquals(0700, $this->root->getChild('test')->getPermissions());
+        assert(file_get_contents($this->fileUrl2), equals('foo'));
+        assert($this->root->getChild('test')->getPermissions(), equals(0700));
     }
 
     /**
@@ -153,15 +166,16 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStreamWithDirectoryOptionSetToTrueCreatesDirectoryWithOptionsPermissions()
     {
-        assertFalse(file_exists($this->fileUrl2));
-        $fileOutputStream = $this->fileStreamFactory->createOutputStream($this->fileUrl2, ['createDirIfNotExists' => true,
-                                                                                           'dirPermissions'       => 0666
-                                                                                          ]
-                                                      );
+        $fileOutputStream = $this->fileStreamFactory->createOutputStream(
+                $this->fileUrl2,
+                ['createDirIfNotExists' => true,
+                 'dirPermissions'       => 0666
+                ]
+        );
         assertTrue(file_exists($this->fileUrl2));
         $fileOutputStream->write('foo');
-        assertEquals('foo', file_get_contents($this->fileUrl2));
-        assertEquals(0666, $this->root->getChild('test')->getPermissions());
+        assert(file_get_contents($this->fileUrl2), equals('foo'));
+        assert($this->root->getChild('test')->getPermissions(), equals(0666));
     }
 
     /**
@@ -169,12 +183,14 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStreamWithDelayedOption()
     {
-        assertFalse(file_exists($this->fileUrl));
-        $fileOutputStream = $this->fileStreamFactory->createOutputStream($this->fileUrl, ['delayed' => true]);
+        $fileOutputStream = $this->fileStreamFactory->createOutputStream(
+                $this->fileUrl,
+                ['delayed' => true]
+        );
         assertFalse(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
         assertTrue(file_exists($this->fileUrl));
-        assertEquals('foo', file_get_contents($this->fileUrl));
+        assert(file_get_contents($this->fileUrl), equals('foo'));
     }
 
     /**
@@ -182,10 +198,11 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStreamWithoutOptions()
     {
-        assertFalse(file_exists($this->fileUrl));
-        $fileOutputStream = $this->fileStreamFactory->createOutputStream($this->fileUrl);
+        $fileOutputStream = $this->fileStreamFactory->createOutputStream(
+                $this->fileUrl
+        );
         assertTrue(file_exists($this->fileUrl));
         $fileOutputStream->write('foo');
-        assertEquals('foo', file_get_contents($this->fileUrl));
+        assert(file_get_contents($this->fileUrl), equals('foo'));
     }
 }

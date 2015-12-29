@@ -11,6 +11,9 @@ namespace stubbles\streams;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryInputStream;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
  * Test for stubbles\streams\DecodingInputStream.
@@ -49,10 +52,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function knowsGivenCharset()
     {
-        assertEquals(
-                'iso-8859-1',
-                $this->decodingInputStream->getCharset()
-        );
+        assert($this->decodingInputStream->getCharset(), equals('iso-8859-1'));
     }
 
     /**
@@ -60,7 +60,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readReturnsDecodedDataFromDecoratedStream()
     {
-        assertEquals("hällö\n", $this->decodingInputStream->read());
+        assert($this->decodingInputStream->read(), equals("hällö\n"));
     }
 
     /**
@@ -68,7 +68,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readLineReturnsDecodedLineFromDecoratedStream()
     {
-        assertEquals('hällö', $this->decodingInputStream->readLine());
+        assert($this->decodingInputStream->readLine(), equals('hällö'));
     }
 
     /**
@@ -76,7 +76,7 @@ class DecodingInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bytesLeftReturnsBytesLeftFromDecoratedStream()
     {
-        assertEquals(6, $this->decodingInputStream->bytesLeft());
+        assert($this->decodingInputStream->bytesLeft(), equals(6));
     }
 
     /**

@@ -9,6 +9,11 @@
  */
 namespace stubbles\streams;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * Helper class for the test.
  */
@@ -59,8 +64,6 @@ jjj')
     }
 
     /**
-     * try to create an instance with an invalid handle
-     *
      * @test
      * @expectedException  InvalidArgumentException
      */
@@ -70,73 +73,82 @@ jjj')
     }
 
     /**
-     * read data from resource
-     *
+     * @test
+     */
+    public function hasBytesLeftWhenOpenedAtStart()
+    {
+        assert($this->resourceInputStream->bytesLeft(), equals(13));
+    }
+
+    /**
+     * @test
+     */
+    public function isNotAtEofWhenOpenedAtStart()
+    {
+        assertFalse($this->resourceInputStream->eof());
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoBytesLeftWhenEverythingRead()
+    {
+        $this->resourceInputStream->read();
+        assert($this->resourceInputStream->bytesLeft(), equals(0));
+    }
+
+    /**
      * @test
      */
     public function read()
     {
-        assertEquals(13, $this->resourceInputStream->bytesLeft());
-        assertEquals("foobarbaz\njjj", $this->resourceInputStream->read());
-        assertEquals(0, $this->resourceInputStream->bytesLeft());
+        assert($this->resourceInputStream->read(), equals("foobarbaz\njjj"));
     }
 
     /**
-     * read data from resource
-     *
      * @test
      */
     public function readBytes()
     {
-        assertEquals(13, $this->resourceInputStream->bytesLeft());
-        assertEquals('foobar', $this->resourceInputStream->read(6));
-        assertEquals(7, $this->resourceInputStream->bytesLeft());
+        assert($this->resourceInputStream->read(6), equals('foobar'));
     }
 
     /**
-     * read data from resource
-     *
+     * @test
+     */
+    public function hasBytesLeftWhenNotEverythingRead()
+    {
+        $this->resourceInputStream->read(6);
+        assert($this->resourceInputStream->bytesLeft(), equals(7));
+    }
+
+    /**
      * @test
      */
     public function readLine()
     {
-        assertEquals(13, $this->resourceInputStream->bytesLeft());
-        assertEquals('foobarbaz', $this->resourceInputStream->readLine());
-        assertEquals(3, $this->resourceInputStream->bytesLeft());
+        assert($this->resourceInputStream->readLine(), equals('foobarbaz'));
     }
 
     /**
-     * check end of file pointer
-     *
      * @test
      */
-    public function endOfFile()
+    public function hasReachedEofWhenEverythingRead()
     {
-        assertFalse($this->resourceInputStream->eof());
         $this->resourceInputStream->read();
         assertTrue($this->resourceInputStream->eof());
-        assertEquals('', $this->resourceInputStream->read());
-        assertEquals('', $this->resourceInputStream->read());
     }
 
     /**
-     * check end of file pointer
-     *
      * @test
      */
-    public function endOfFileReadLine()
+    public function readAfterEofReturnsEmptyString()
     {
-        assertFalse($this->resourceInputStream->eof());
-        assertEquals('foobarbaz', $this->resourceInputStream->readLine());
-        assertFalse($this->resourceInputStream->eof());
-        assertEquals('jjj', $this->resourceInputStream->readLine());
-        assertTrue($this->resourceInputStream->eof());
-        assertEquals('', $this->resourceInputStream->readLine());
+        $this->resourceInputStream->read();
+        assert($this->resourceInputStream->read(), equals(''));
     }
 
     /**
-     * trying to read fails after resource was closed
-     *
      * @test
      * @expectedException  LogicException
      */
@@ -147,8 +159,6 @@ jjj')
     }
 
     /**
-     * trying to read fails after resource was closed
-     *
      * @test
      * @expectedException  LogicException
      */
@@ -159,8 +169,6 @@ jjj')
     }
 
     /**
-     * trying to ask for left bytes to read fails after resource was closed
-     *
      * @test
      * @expectedException  LogicException
      */
@@ -171,8 +179,6 @@ jjj')
     }
 
     /**
-     * trying to read fails after resource was closed
-     *
      * @test
      * @expectedException  stubbles\lang\exception\IOException
      */
@@ -183,8 +189,6 @@ jjj')
     }
 
     /**
-     * trying to read fails after resource was closed
-     *
      * @test
      * @expectedException  stubbles\lang\exception\IOException
      */
@@ -195,8 +199,6 @@ jjj')
     }
 
     /**
-     * trying to ask for left bytes to read fails after resource was closed
-     *
      * @test
      * @expectedException  LogicException
      */

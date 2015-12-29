@@ -34,7 +34,7 @@ class StandardInputStream extends ResourceInputStream implements Seekable
     public function seek($offset, $whence = Seekable::SET)
     {
         if (null === $this->handle) {
-            throw new \LogicException('Can not read from closed input stream.');
+            throw new \LogicException('Can not seek on closed input stream.');
         }
 
         fseek($this->handle, $offset, $whence);
@@ -50,7 +50,7 @@ class StandardInputStream extends ResourceInputStream implements Seekable
     public function tell()
     {
         if (null === $this->handle) {
-            throw new \LogicException('Can not read from closed input stream');
+            throw new \LogicException('No position available for closed input stream');
         }
 
         $position = ftell($this->handle);

@@ -8,6 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\streams\memory;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Test for stubbles\streams\memory\MemoryStreamFactory.
  *
@@ -37,8 +41,8 @@ class MemoryStreamFactoryTest extends \PHPUnit_Framework_TestCase
     public function createInputStream()
     {
         $memoryInputStream = $this->memoryStreamFactory->createInputStream('buffer');
-        assertInstanceOf(MemoryInputStream::class, $memoryInputStream);
-        assertEquals('buffer', $memoryInputStream->readLine());
+        assert($memoryInputStream, isInstanceOf(MemoryInputStream::class));
+        assert($memoryInputStream->readLine(), equals('buffer'));
     }
 
     /**
@@ -46,9 +50,9 @@ class MemoryStreamFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function createOutputStream()
     {
-        assertInstanceOf(
-                MemoryOutputStream::class,
-                $this->memoryStreamFactory->createOutputStream('buffer')
+        assert(
+                $this->memoryStreamFactory->createOutputStream('buffer'),
+                isInstanceOf(MemoryOutputStream::class)
         );
     }
 }

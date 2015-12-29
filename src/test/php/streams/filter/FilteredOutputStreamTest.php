@@ -10,6 +10,9 @@
 namespace stubbles\streams\filter;
 use stubbles\predicate\Predicate;
 use stubbles\streams\memory\MemoryOutputStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\filter\FilteredOutputStream.
  *
@@ -53,8 +56,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function dataPassingTheFilterShouldBeWritten()
     {
-        assertEquals(3, $this->filteredOutputStream->write('foo'));
-        assertEquals('foo', $this->memory->buffer());
+        assert($this->filteredOutputStream->write('foo'), equals(3));
+        assert($this->memory->buffer(), equals('foo'));
     }
 
     /**
@@ -62,8 +65,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function dataNotPassingTheFilterShouldNotBeWritten()
     {
-        assertEquals(0, $this->filteredOutputStream->write('bar'));
-        assertEquals('', $this->memory->buffer());
+        assert($this->filteredOutputStream->write('bar'), equals(0));
+        assert($this->memory->buffer(), equals(''));
     }
 
     /**
@@ -71,8 +74,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function dataPassingTheFilterShouldBeWrittenAsLine()
     {
-        assertEquals(4, $this->filteredOutputStream->writeLine('foo'));
-        assertEquals("foo\n", $this->memory->buffer());
+        assert($this->filteredOutputStream->writeLine('foo'), equals(4));
+        assert($this->memory->buffer(), equals("foo\n"));
     }
 
     /**
@@ -80,8 +83,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function dataNotPassingTheFilterShouldNotBeWrittenAsLine()
     {
-        assertEquals(0, $this->filteredOutputStream->writeLine('bar'));
-        assertEquals('', $this->memory->buffer());
+        assert($this->filteredOutputStream->writeLine('bar'), equals(0));
+        assert($this->memory->buffer(), equals(''));
     }
 
     /**
@@ -90,8 +93,8 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesProcessesOnlyLinesSatisfyingFilter()
     {
-        assertEquals(4, $this->filteredOutputStream->writeLines(['foo', 'bar']));
-        assertEquals("foo\n", $this->memory->buffer());
+        assert($this->filteredOutputStream->writeLines(['foo', 'bar']), equals(4));
+        assert($this->memory->buffer(), equals("foo\n"));
     }
 
     /**

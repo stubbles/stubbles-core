@@ -11,6 +11,8 @@ namespace stubbles\streams;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryOutputStream;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
  * Test for stubbles\streams\EncodingOutputStream.
@@ -49,10 +51,7 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function knowsGivenCharset()
     {
-        assertEquals(
-                'iso-8859-1',
-                $this->encodingOutputStream->getCharset()
-        );
+        assert($this->encodingOutputStream->getCharset(), equals('iso-8859-1'));
     }
 
     /**
@@ -60,8 +59,8 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeEncodesBytesBeforePassedToDecoratedStream()
     {
-        assertEquals(5, $this->encodingOutputStream->write('hällö'));
-        assertEquals(utf8_decode('hällö'), $this->memory->buffer());
+        assert($this->encodingOutputStream->write('hällö'), equals(5));
+        assert($this->memory->buffer(), equals(utf8_decode('hällö')));
     }
 
     /**
@@ -69,8 +68,8 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineEncodesBytesBeforePassedToDecoratedStream()
     {
-        assertEquals(6, $this->encodingOutputStream->writeLine('hällö'));
-        assertEquals(utf8_decode("hällö\n"), $this->memory->buffer());
+        assert($this->encodingOutputStream->writeLine('hällö'), equals(6));
+        assert($this->memory->buffer(), equals(utf8_decode("hällö\n")));
     }
 
     /**
@@ -79,14 +78,11 @@ class EncodingOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesEncodesBytesBeforePassedToDecoratedStream()
     {
-        assertEquals(
-                12,
-                $this->encodingOutputStream->writeLines(['hällö', 'wörld'])
+        assert(
+                $this->encodingOutputStream->writeLines(['hällö', 'wörld']),
+                equals(12)
         );
-        assertEquals(
-                utf8_decode("hällö\nwörld\n"),
-                $this->memory->buffer()
-        );
+        assert($this->memory->buffer(), equals(utf8_decode("hällö\nwörld\n")));
     }
 
     /**

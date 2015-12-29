@@ -8,6 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\StandardOutputStream.
  *
@@ -24,7 +27,7 @@ class StandardOutputStreamTest extends \PHPUnit_Framework_TestCase
         $out = new StandardOutputStream();
         ob_start();
         $out->write('foo');
-        assertEquals('foo', ob_get_contents());
+        assert(ob_get_contents(), equals('foo'));
         ob_end_clean();
     }
 }

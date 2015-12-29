@@ -9,6 +9,9 @@
  */
 namespace stubbles\streams;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Helper class for the test.
  */
@@ -116,8 +119,8 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
-        assertEquals(9, $resourceOutputStream->write('foobarbaz'));
-        assertEquals('foobarbaz', $file->getContent());
+        assert($resourceOutputStream->write('foobarbaz'), equals(9));
+        assert($file->getContent(), equals('foobarbaz'));
     }
 
     /**
@@ -127,8 +130,8 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
-        assertEquals(11, $resourceOutputStream->writeLine('foobarbaz'));
-        assertEquals("foobarbaz\r\n", $file->getContent());
+        assert($resourceOutputStream->writeLine('foobarbaz'), equals(11));
+        assert($file->getContent(), equals("foobarbaz\r\n"));
     }
 
     /**
@@ -139,7 +142,10 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $file = vfsStream::newFile('test.txt')->at($this->root);
         $resourceOutputStream = new TestResourceOutputStream(fopen(vfsStream::url('root/test.txt'), 'w'));
-        assertEquals(15, $resourceOutputStream->writeLines(['foo', 'bar', 'baz']));
-        assertEquals("foo\r\nbar\r\nbaz\r\n", $file->getContent());
+        assert(
+                $resourceOutputStream->writeLines(['foo', 'bar', 'baz']),
+                equals(15)
+        );
+        assert($file->getContent(), equals("foo\r\nbar\r\nbaz\r\n"));
     }
 }

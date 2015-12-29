@@ -8,6 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\streams\memory;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\memory\MemoryOutputStream.
  *
@@ -36,7 +40,7 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bufferIsInitiallyEmpty()
     {
-        assertEquals('', $this->memoryOutputStream->buffer());
+        assert($this->memoryOutputStream->buffer(), equals(''));
     }
 
     /**
@@ -45,7 +49,7 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function conversionToStringOnEmptyBufferReturnsEmptyString()
     {
-        assertEquals('', (string) $this->memoryOutputStream);
+        assert((string) $this->memoryOutputStream, equals(''));
     }
 
     /**
@@ -55,7 +59,15 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function conversionToStringOnWrittenBufferReturnsBufferContents()
     {
         $this->memoryOutputStream->write('hello');
-        assertEquals('hello', (string) $this->memoryOutputStream);
+        assert((string) $this->memoryOutputStream, equals('hello'));
+    }
+
+    /**
+     * @test
+     */
+    public function writeReturnsAmountOfBytesWritten()
+    {
+        assert($this->memoryOutputStream->write('hello'), equals(5));
     }
 
     /**
@@ -63,8 +75,16 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeWritesBytesIntoBuffer()
     {
-        assertEquals(5, $this->memoryOutputStream->write('hello'));
-        assertEquals('hello', $this->memoryOutputStream->buffer());
+        $this->memoryOutputStream->write('hello');
+        assert($this->memoryOutputStream->buffer(), equals('hello'));
+    }
+
+    /**
+     * @test
+     */
+    public function writeLineReturnsAmountOfBytesWritten()
+    {
+        assert($this->memoryOutputStream->writeLine('hello'), equals(6));
     }
 
     /**
@@ -72,8 +92,20 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineWritesBytesIntoBuffer()
     {
-        assertEquals(6, $this->memoryOutputStream->writeLine('hello'));
-        assertEquals("hello\n", $this->memoryOutputStream->buffer());
+        $this->memoryOutputStream->writeLine('hello');
+        assert($this->memoryOutputStream->buffer(), equals("hello\n"));
+    }
+
+    /**
+     * @test
+     * @since  3.2.0
+     */
+    public function writeLinesReturnsAmountOfBytesWritten()
+    {
+        assert(
+                $this->memoryOutputStream->writeLines(['hello', 'world']),
+                equals(12)
+        );
     }
 
     /**
@@ -82,8 +114,8 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesWritesBytesIntoBuffer()
     {
-        assertEquals(12, $this->memoryOutputStream->writeLines(['hello', 'world']));
-        assertEquals("hello\nworld\n", $this->memoryOutputStream->buffer());
+        $this->memoryOutputStream->writeLines(['hello', 'world']);
+        assert($this->memoryOutputStream->buffer(), equals("hello\nworld\n"));
     }
 
     /**

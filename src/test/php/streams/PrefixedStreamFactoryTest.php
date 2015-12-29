@@ -10,6 +10,8 @@
 namespace stubbles\streams;
 use bovigo\callmap\NewInstance;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isSameAs;
 use function bovigo\callmap\verify;
 /**
  * Test for stubbles\streams\PrefixedStreamFactory.
@@ -52,12 +54,12 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
         $this->streamFactory->mapCalls(
                 ['createInputStream' => $inputStream]
         );
-        assertSame(
-                $inputStream,
+        assert(
                 $this->prefixedStreamFactory->createInputStream(
                         'foo',
                         ['bar' => 'baz']
-                )
+                ),
+                isSameAs($inputStream)
         );
         verify($this->streamFactory, 'createInputStream')
                 ->received('prefix/foo', ['bar' => 'baz']);
@@ -72,12 +74,12 @@ class PrefixedStreamFactoryTest extends \PHPUnit_Framework_TestCase
         $this->streamFactory->mapCalls(
                 ['createOutputStream' => $outputStream]
         );
-        assertSame(
-                $outputStream,
+        assert(
                 $this->prefixedStreamFactory->createOutputStream(
                         'foo',
                         ['bar' => 'baz']
-                )
+                ),
+                isSameAs($outputStream)
         );
         verify($this->streamFactory, 'createOutputStream')
                 ->received('prefix/foo', ['bar' => 'baz']);

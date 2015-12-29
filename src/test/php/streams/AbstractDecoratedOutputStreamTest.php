@@ -11,6 +11,8 @@ namespace stubbles\streams;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\memory\MemoryOutputStream;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
  * Helper class for the test to make abstract class instantiable.
@@ -53,11 +55,11 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCallsDecoratedStream()
     {
-        assertEquals(
-                3,
-                $this->abstractDecoratedOutputStream->write('foo')
+        assert(
+                $this->abstractDecoratedOutputStream->write('foo'),
+                equals(3)
         );
-        assertEquals('foo', $this->memory->buffer());
+        assert($this->memory->buffer(), equals('foo'));
     }
 
     /**
@@ -65,11 +67,11 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLineCallsDecoratedStream()
     {
-        assertEquals(
-                4,
-                $this->abstractDecoratedOutputStream->writeLine('foo')
+        assert(
+                $this->abstractDecoratedOutputStream->writeLine('foo'),
+                equals(4)
         );
-        assertEquals("foo\n", $this->memory->buffer());
+        assert($this->memory->buffer(), equals("foo\n"));
     }
 
     /**
@@ -78,11 +80,11 @@ class AbstractDecoratedOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function writeLinesCallsDecoratedStream()
     {
-        assertEquals(
-                8,
-                $this->abstractDecoratedOutputStream->writeLines(['foo', 'bar'])
+        assert(
+                $this->abstractDecoratedOutputStream->writeLines(['foo', 'bar']),
+                equals(8)
         );
-        assertEquals("foo\nbar\n", $this->memory->buffer());
+        assert($this->memory->buffer(), equals("foo\nbar\n"));
     }
 
     /**
