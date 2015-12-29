@@ -14,7 +14,7 @@ use function stubbles\lang\__toString;
  *
  * @api
  */
-class HeaderList implements \IteratorAggregate
+class HeaderList implements \IteratorAggregate, \Countable
 {
     /**
      * list of headers
@@ -276,8 +276,20 @@ class HeaderList implements \IteratorAggregate
      * returns amount of headers
      *
      * @return  int
+     * @deprecated  since 7.0.0, use count() or count($headerlist) instead, will be removed with 8.0.0
      */
     public function size()
+    {
+        return $this->count();
+    }
+
+    /**
+     * returns amount of headers
+     *
+     * @return  int
+     * @since   7.0.0
+     */
+    public function count()
     {
         return count($this->headers);
     }
