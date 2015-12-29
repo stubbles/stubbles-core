@@ -86,6 +86,12 @@ class Binder
         return $this->addBinding(new ClassBinding($interface, $this->scopes));
     }
 
+    /**
+     * binds mode
+     *
+     * @param  \stubbles\lang\Mode  $mode
+     * @since  6.0.0
+     */
     public function bindMode(Mode $mode)
     {
         $this->mode = $mode;
@@ -179,5 +185,22 @@ class Binder
     public function getInjector()
     {
         return new Injector($this->mode, $this->bindings, $this->scopes);
+    }
+
+    /**
+     * creates injector instance with bindings
+     *
+     * @param   callable  ...$applyBindings  optional  callables which accept instances of stubbles\ioc\Binder
+     * @return  \stubbles\ioc\Injector
+     * @since   7.0.0
+     */
+    public static function createInjector(callable ...$applyBindings)
+    {
+        $self = new self();
+        foreach ($applyBindings as $applyBinding) {
+            $applyBinding($self);
+        }
+
+        return $self->getInjector();
     }
 }

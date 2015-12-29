@@ -45,9 +45,8 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function injectorReturnsFalseForNonAddedListOnCheck()
     {
-        $binder = new Binder();
         assert(
-                $binder->getInjector()
+                Binder::createInjector()
                         ->hasBinding(ListBinding::TYPE, 'listConfig'),
                 isFalse()
         );
@@ -76,8 +75,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function injectorRetrievesNonAddedListThrowsBindingException()
     {
-        $binder = new Binder();
-        $binder->getInjector()->getInstance(ListBinding::TYPE, 'listConfig');
+        Binder::createInjector()->getInstance(ListBinding::TYPE, 'listConfig');
     }
 
     /**
@@ -121,9 +119,8 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function injectorReturnsFalseForNonAddedMapOnCheck()
     {
-        $binder = new Binder();
         assert(
-                $binder->getInjector()->hasBinding(MapBinding::TYPE, 'mapConfig'),
+                Binder::createInjector()->hasBinding(MapBinding::TYPE, 'mapConfig'),
                 isFalse()
         );
     }
@@ -150,8 +147,7 @@ class MultibindingTest extends \PHPUnit_Framework_TestCase
      */
     public function injectorRetrievesNonAddedMapThrowsBindingException()
     {
-        $binder = new Binder();
-        $binder->getInjector()->getInstance(MapBinding::TYPE, 'mapConfig');
+        Binder::createInjector()->getInstance(MapBinding::TYPE, 'mapConfig');
     }
 
     /**

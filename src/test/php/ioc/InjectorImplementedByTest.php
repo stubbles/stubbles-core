@@ -30,9 +30,8 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
      */
     public function createsInstanceFromImplementedByAnnotationIfNoExplicitBindingsSet()
     {
-        $binder = new Binder();
         assert(
-                $binder->getInjector()->getInstance(Person::class),
+                Binder::createInjector()->getInstance(Person::class),
                 isInstanceOf(Schst::class)
         );
     }
@@ -56,9 +55,8 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
      */
     public function fallsBackToDefaultImplementedByIfNoModeSet()
     {
-        $binder = new Binder();
         assert(
-                $binder->getInjector()->getInstance(Person3::class),
+                Binder::createInjector()->getInstance(Person3::class),
                 isInstanceOf(Schst::class)
         );
     }
@@ -118,7 +116,6 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
      */
     public function throwsBindingExceptionWhenNoFallbackSpecifiedAndNoModeSet()
     {
-        $binder = new Binder();
-        $binder->getInjector()->getInstance(Person4::class);
+        Binder::createInjector()->getInstance(Person4::class);
     }
 }

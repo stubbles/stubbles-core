@@ -11,6 +11,7 @@
 
 ### Other changes
 
+  * added `stubbles\ioc\Binder::createInjector(callable ...$applyBindings)`
   * removed seeking restrictions on `stubbles\streams\StandardInputStream`
 
 

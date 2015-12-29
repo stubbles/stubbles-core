@@ -27,9 +27,8 @@ class InjectorProvidedByTest extends \PHPUnit_Framework_TestCase
      */
     public function annotatedProviderClassIsUsedWhenNoExplicitBindingSpecified()
     {
-        $binder = new Binder();
         assert(
-                $binder->getInjector()->getInstance(Person2::class),
+                Binder::createInjector()->getInstance(Person2::class),
                 isInstanceOf(Schst::class)
         );
     }

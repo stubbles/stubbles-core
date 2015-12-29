@@ -51,8 +51,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
      */
     public function checkForNonExistingConstantReturnsFalse()
     {
-        $binder = new Binder();
-        assert($binder->getInjector()->hasConstant('answer'), isFalse());
+        assert(Binder::createInjector()->hasConstant('answer'), isFalse());
     }
 
     /**
@@ -61,8 +60,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
      */
     public function retrieveNonExistingConstantThrowsBindingException()
     {
-        $binder = new Binder();
-        $binder->getInjector()->getConstant('answer');
+        Binder::createInjector()->getConstant('answer');
     }
 
     /**
