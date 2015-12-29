@@ -11,6 +11,11 @@ namespace stubbles\ioc;
 use bovigo\callmap\NewInstance;
 use stubbles\test\ioc\AnswerConstantProvider;
 use stubbles\test\ioc\Question;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isFalse;
+use function bovigo\assert\predicate\isTrue;
 /**
  * Helper class for the test.
 /**
@@ -28,8 +33,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     private function assertConstantInjection(Injector $injector)
     {
         $question = $injector->getInstance(Question::class);
-        assertInstanceOf(Question::class, $question);
-        assertEquals(42, $question->getAnswer());
+        assert($question, equals(new Question(42)));
     }
 
     /**
@@ -48,7 +52,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     public function checkForNonExistingConstantReturnsFalse()
     {
         $binder = new Binder();
-        assertFalse($binder->getInjector()->hasConstant('answer'));
+        assert($binder->getInjector()->hasConstant('answer'), isFalse());
     }
 
     /**
@@ -69,7 +73,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')->to(42);
-        assertTrue($binder->getInjector()->hasConstant('answer'));
+        assert($binder->getInjector()->hasConstant('answer'), isTrue());
     }
 
     /**
@@ -80,7 +84,7 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bindConstant('answer')->to(42);
-        assertEquals(42, $binder->getInjector()->getConstant('answer'));
+        assert($binder->getInjector()->getConstant('answer'), equals(42));
     }
 
     /**
@@ -97,8 +101,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
                                 ->mapCalls(['get' => 42])
                 );
         $injector = $binder->getInjector();
-        assertTrue($injector->hasConstant('answer'));
-        assertEquals(42, $injector->getConstant('answer'));
+        assert($injector->hasConstant('answer'), isTrue());
+        assert($injector->getConstant('answer'), equals(42));
         $this->assertConstantInjection($binder->getInjector());
     }
 
@@ -129,8 +133,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
                         new \ReflectionClass(AnswerConstantProvider::class)
                 );
         $injector = $binder->getInjector();
-        assertTrue($injector->hasConstant('answer'));
-        assertEquals(42, $injector->getConstant('answer'));
+        assert($injector->hasConstant('answer'), isTrue());
+        assert($injector->getConstant('answer'), equals(42));
         $this->assertConstantInjection($binder->getInjector());
     }
 
@@ -145,8 +149,8 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
         $binder->bindConstant('answer')
                ->toProviderClass(AnswerConstantProvider::class);
         $injector = $binder->getInjector();
-        assertTrue($injector->hasConstant('answer'));
-        assertEquals(42, $injector->getConstant('answer'));
+        assert($injector->hasConstant('answer'), isTrue());
+        assert($injector->getConstant('answer'), equals(42));
         $this->assertConstantInjection($binder->getInjector());
     }
 
@@ -161,5 +165,4 @@ class InjectorConstantTest extends \PHPUnit_Framework_TestCase
         $binder->bindConstant('answer')->toClosure(function() { return 42; });
         $this->assertConstantInjection($binder->getInjector());
     }
-
 }

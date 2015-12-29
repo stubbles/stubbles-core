@@ -9,6 +9,10 @@
  */
 namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for stubbles\ioc\binding\BindingScopes
  *
@@ -23,9 +27,9 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
     public function createsSingletonScopeIfNonePassed()
     {
         $bindingScopes = new BindingScopes();
-        assertInstanceOf(
-                SingletonBindingScope::class,
-                $bindingScopes->singleton()
+        assert(
+                $bindingScopes->singleton(),
+                isInstanceOf(SingletonBindingScope::class)
         );
     }
 
@@ -35,8 +39,8 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
     public function usesPassedSingletonScope()
     {
         $singletonScope = NewInstance::of(BindingScope::class);
-        $bindingScopes = new BindingScopes($singletonScope);
-        assertSame($singletonScope, $bindingScopes->singleton());
+        $bindingScopes  = new BindingScopes($singletonScope);
+        assert($bindingScopes->singleton(), isSameAs($singletonScope));
     }
 
     /**
@@ -44,8 +48,8 @@ class BindingScopesTest extends \PHPUnit_Framework_TestCase
      */
     public function usesPassedSessionScope()
     {
-        $sessionScope = NewInstance::of(BindingScope::class);
+        $sessionScope  = NewInstance::of(BindingScope::class);
         $bindingScopes = new BindingScopes(null, $sessionScope);
-        assertSame($sessionScope, $bindingScopes->session());
+        assert($bindingScopes->session(), isSameAs($sessionScope));
     }
 }

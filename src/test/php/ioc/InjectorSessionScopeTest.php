@@ -12,12 +12,17 @@ use bovigo\callmap\NewInstance;
 use stubbles\ioc\binding\Session;
 use stubbles\test\ioc\Mikey;
 use stubbles\test\ioc\Person2;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\predicate\isTrue;
 /**
  * Test for stubbles\ioc\Injector with the session scope.
  *
  * @group  ioc
  */
-class InjectorSessionTest extends \PHPUnit_Framework_TestCase
+class InjectorSessionScopeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * binder instance to be used in tests
@@ -44,9 +49,7 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function canBindToSessionScopeWithoutSession()
     {
-        assertTrue(
-                $this->injector->hasBinding(Person2::class)
-        );
+        assert($this->injector->hasBinding(Person2::class), isTrue());
     }
 
     /**
@@ -67,10 +70,10 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     {
         $session = NewInstance::of(Session::class)
                 ->mapCalls(['hasValue' => false]);
-        assertInstanceOf(
-                Mikey::class,
+        assert(
                 $this->injector->setSession($session)
-                        ->getInstance(Person2::class)
+                        ->getInstance(Person2::class),
+                isInstanceOf(Mikey::class)
         );
     }
 
@@ -80,11 +83,12 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
      */
     public function setSessionAddsBindingForSession()
     {
-        assertTrue(
+        assert(
                 $this->injector->setSession(
                         NewInstance::of(Session::class),
                         Session::class
-                )->hasExplicitBinding(Session::class)
+                )->hasExplicitBinding(Session::class),
+                isTrue()
         );
     }
 
@@ -95,12 +99,12 @@ class InjectorSessionTest extends \PHPUnit_Framework_TestCase
     public function setSessionAddsBindingForSessionAsSingleton()
     {
         $session = NewInstance::of(Session::class);
-        assertSame(
-                $session,
+        assert(
                 $this->injector->setSession(
                         $session,
                         Session::class
-                )->getInstance(Session::class)
+                )->getInstance(Session::class),
+                isSameAs($session)
         );
     }
 }

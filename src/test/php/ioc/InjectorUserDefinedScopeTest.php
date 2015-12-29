@@ -10,12 +10,16 @@
 namespace stubbles\ioc;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\binding\BindingScope;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\predicate\isTrue;
 /**
- * Test for stubbles\ioc\Injector with the session scope.
+ * Test for stubbles\ioc\Injector with user-defined scope.
  *
  * @group  ioc
  */
-class InjectorOtherTest extends \PHPUnit_Framework_TestCase
+class InjectorUserDefinedScopeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -23,10 +27,10 @@ class InjectorOtherTest extends \PHPUnit_Framework_TestCase
     public function hasBindingWhenBoundToOtherScope()
     {
         $binder = new Binder();
-        $binder->bind('\stdClass')
-                ->to('\stdClass')
+        $binder->bind(\stdClass::class)
+                ->to(\stdClass::class)
                 ->in(NewInstance::of(BindingScope::class));
-        assertTrue($binder->getInjector()->hasBinding('\stdClass'));
+        assert($binder->getInjector()->hasBinding(\stdClass::class), isTrue());
     }
 
     /**
@@ -36,11 +40,14 @@ class InjectorOtherTest extends \PHPUnit_Framework_TestCase
     {
         $binder   = new Binder();
         $instance = new \stdClass();
-        $binder->bind('\stdClass')
-                ->to('\stdClass')
+        $binder->bind(\stdClass::class)
+                ->to(\stdClass::class)
                 ->in(NewInstance::of(BindingScope::class)
                         ->mapCalls(['getInstance' => $instance])
         );
-        assertSame($instance, $binder->getInjector()->getInstance('\stdClass'));
+        assert(
+                $binder->getInjector()->getInstance(\stdClass::class),
+                isSameAs($instance)
+        );
     }
 }

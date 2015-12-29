@@ -11,6 +11,9 @@ namespace stubbles\ioc;
 use stubbles\test\ioc\Mikey;
 use stubbles\test\ioc\Person2;
 use stubbles\test\ioc\Schst;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Test for stubbles\ioc\Injector with the ProvidedBy annotation.
  *
@@ -25,9 +28,9 @@ class InjectorProvidedByTest extends \PHPUnit_Framework_TestCase
     public function annotatedProviderClassIsUsedWhenNoExplicitBindingSpecified()
     {
         $binder = new Binder();
-        assertInstanceOf(
-                Schst::class,
-                $binder->getInjector()->getInstance(Person2::class)
+        assert(
+                $binder->getInjector()->getInstance(Person2::class),
+                isInstanceOf(Schst::class)
         );
     }
 
@@ -38,9 +41,9 @@ class InjectorProvidedByTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $binder->bind(Person2::class)->to(Mikey::class);
-        assertInstanceOf(
-                Mikey::class,
-                $binder->getInjector()->getInstance(Person2::class)
+        assert(
+                $binder->getInjector()->getInstance(Person2::class),
+                isInstanceOf(Mikey::class)
         );
     }
 }
