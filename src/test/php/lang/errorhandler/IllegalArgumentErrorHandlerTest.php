@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 /**
  * Tests for nstubbles\lang\errorhandler\IllegalArgumentErrorHandler
  *

@@ -10,6 +10,10 @@
 namespace stubbles\lang\errorhandler;
 use bovigo\callmap\NewInstance;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
  * Tests for stubbles\lang\errorhandler\CompositeErrorHandler
@@ -110,9 +114,9 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->errorHandler1->mapCalls(['isResponsible' => false]);
         $this->errorHandler2->mapCalls(['isResponsible' => false]);
         $this->errorHandler3->mapCalls(['isResponsible' => false]);
-        assertEquals(
-                ErrorHandler::CONTINUE_WITH_PHP_INTERNAL_HANDLING,
-                $this->compositeErrorHandler->handle(1, 'foo')
+        assert(
+                $this->compositeErrorHandler->handle(1, 'foo'),
+                equals(ErrorHandler::CONTINUE_WITH_PHP_INTERNAL_HANDLING)
         );
     }
 
@@ -122,15 +126,18 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsStopIfErrorIsSuppressableAndSuppressedByGlobalErrorReporting()
     {
         $oldLevel = error_reporting(0);
-        $this->errorHandler1->mapCalls(['isResponsible' => false]);
-        $this->errorHandler2->mapCalls(
-                ['isResponsible' => true, 'isSupressable' => true]
-        );
-        assertEquals(
-                ErrorHandler::STOP_ERROR_HANDLING,
-                $this->compositeErrorHandler->handle(1, 'foo')
-        );
-        error_reporting($oldLevel);
+        try {
+            $this->errorHandler1->mapCalls(['isResponsible' => false]);
+            $this->errorHandler2->mapCalls(
+                    ['isResponsible' => true, 'isSupressable' => true]
+            );
+            assert(
+                    $this->compositeErrorHandler->handle(1, 'foo'),
+                    equals(ErrorHandler::STOP_ERROR_HANDLING)
+            );
+        } finally {
+            error_reporting($oldLevel);
+        }
     }
 
     /**
@@ -139,19 +146,22 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsResultOfResponsibleErrorHandlerIfErrorReportingDisabled()
     {
         $oldLevel = error_reporting(0);
-        $this->errorHandler1->mapCalls(['isResponsible' => false]);
-        $this->errorHandler2->mapCalls(
-                ['isResponsible' => true,
-                 'isSupressable' => false,
-                 'handle'        => ErrorHandler::STOP_ERROR_HANDLING
-                ]
-        );
-        assertEquals(
-                ErrorHandler::STOP_ERROR_HANDLING,
-                $this->compositeErrorHandler->handle(1, 'foo')
-        );
-        verify($this->errorHandler3, 'isResponsible')->wasNeverCalled();
-        error_reporting($oldLevel);
+        try {
+            $this->errorHandler1->mapCalls(['isResponsible' => false]);
+            $this->errorHandler2->mapCalls(
+                    ['isResponsible' => true,
+                     'isSupressable' => false,
+                     'handle'        => ErrorHandler::STOP_ERROR_HANDLING
+                    ]
+            );
+            assert(
+                    $this->compositeErrorHandler->handle(1, 'foo'),
+                    equals(ErrorHandler::STOP_ERROR_HANDLING)
+            );
+            verify($this->errorHandler3, 'isResponsible')->wasNeverCalled();
+        } finally {
+            error_reporting($oldLevel);
+        }
     }
 
     /**
@@ -160,17 +170,20 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function handleSignalsResultOfResponsibleErrorHandlerIfErrorReportingEnabled()
     {
         $oldLevel = error_reporting(E_ALL);
-        $this->errorHandler1->mapCalls(['isResponsible' => false]);
-        $this->errorHandler2->mapCalls(
-                ['isResponsible' => true,
-                 'isSupressable' => false,
-                 'handle'        => ErrorHandler::STOP_ERROR_HANDLING
-                ]
-        );
-        assertEquals(
-                ErrorHandler::STOP_ERROR_HANDLING,
-                $this->compositeErrorHandler->handle(1, 'foo')
-        );
-        error_reporting($oldLevel);
+        try {
+            $this->errorHandler1->mapCalls(['isResponsible' => false]);
+            $this->errorHandler2->mapCalls(
+                    ['isResponsible' => true,
+                     'isSupressable' => false,
+                     'handle'        => ErrorHandler::STOP_ERROR_HANDLING
+                    ]
+            );
+            assert(
+                    $this->compositeErrorHandler->handle(1, 'foo'),
+                    equals(ErrorHandler::STOP_ERROR_HANDLING)
+            );
+        } finally {
+            error_reporting($oldLevel);
+        }
     }
 }

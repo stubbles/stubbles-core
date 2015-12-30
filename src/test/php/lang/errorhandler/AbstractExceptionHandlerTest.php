@@ -10,7 +10,12 @@
 namespace stubbles\lang\errorhandler;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
+use stubbles\lang\exception\Exception;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
  * Tests for stubbles\lang\errorhandler\AbstractExceptionHandler.
@@ -43,13 +48,17 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->exceptionHandler = NewInstance::of(
                 AbstractExceptionHandler::class,
                 [vfsStream::url('root')]
-        )->mapCalls(['header' => false, 'createResponseBody' => false, 'writeBody' => false]);
+        )->mapCalls([
+                'header'             => null,
+                'createResponseBody' => null,
+                'writeBody'          => null
+        ]);
     }
 
     /**
      * @test
      */
-    public function loggingDisabledFillsResponseOnly()
+    public function loggingDisabledDoesNotCreateLogfile()
     {
         $this->exceptionHandler->disableLogging()
                 ->handleException(new \Exception());
@@ -59,6 +68,29 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
                         . '/exceptions-' . date('Y-m-d') . '.log'
                 )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function loggingNotDisabledCreatesLogfile()
+    {
+        $this->exceptionHandler->handleException(new \Exception());
+        assertTrue(
+                $this->root->hasChild(
+                        'log/errors/' . date('Y') . '/' . date('m')
+                        . '/exceptions-' . date('Y-m-d') . '.log'
+                )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function loggingDisabledFillsResponseOnly()
+    {
+        $this->exceptionHandler->disableLogging()
+                ->handleException(new \Exception());
         verify($this->exceptionHandler, 'header')->wasCalledOnce();
         verify($this->exceptionHandler, 'createResponseBody')->wasCalledOnce();
         verify($this->exceptionHandler, 'writeBody')->wasCalledOnce();
@@ -71,22 +103,15 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->exceptionHandler->handleException(new \Exception('exception message'));
         $line = __LINE__ - 1;
-
-        assertTrue(
-                $this->root->hasChild(
-                        'log/errors/' . date('Y') . '/' . date('m')
-                        . '/exceptions-' . date('Y-m-d') . '.log'
-                )
-        );
-        assertEquals(
-                '|Exception|exception message|' . __FILE__ . '|' . $line . "||||\n",
+        assert(
                 substr(
                         $this->root->getChild(
                                 'log/errors/' . date('Y') . '/' . date('m')
                                 . '/exceptions-' . date('Y-m-d') . '.log'
                         )->getContent(),
                         19
-                )
+                ),
+                equals('|Exception|exception message|' . __FILE__ . '|' . $line . "||||\n")
         );
 
     }
@@ -96,26 +121,21 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function handleChainedExceptionLogsExceptionDataOfChainedAndCause()
     {
-        $exception = new \stubbles\lang\exception\Exception('chained exception', new \Exception('exception message'), 303);
+        $exception = new Exception('chained exception', new \Exception('exception message'), 303);
         $line      = __LINE__ - 1;
-
         $this->exceptionHandler->handleException($exception);
-        assertTrue(
-                $this->root->hasChild(
-                        'log/errors/' . date('Y') . '/' . date('m')
-                        . '/exceptions-' . date('Y-m-d') . '.log'
-                )
-        );
-        assertEquals(
-                '|stubbles\lang\exception\Exception|chained exception|'
-                . __FILE__ . '|' . $line . '|Exception|exception message|'
-                . __FILE__ . '|' . $line . "\n",
+        assert(
                 substr(
                         $this->root->getChild(
                                 'log/errors/' . date('Y') . '/' . date('m')
                                 . '/exceptions-' . date('Y-m-d') . '.log'
                         )->getContent(),
                         19
+                ),
+                equals(
+                        '|stubbles\lang\exception\Exception|chained exception|'
+                        . __FILE__ . '|' . $line . '|Exception|exception message|'
+                        . __FILE__ . '|' . $line . "\n"
                 )
         );
     }
@@ -123,36 +143,30 @@ class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function handleShouldCreateLogDirectoryWithDefaultModeIfNotExists()
+    public function createsLogDirectoryWithDefaultPermissionsIfNotExists()
     {
         $exception = new \Exception('exception message');
         $this->exceptionHandler->handleException($exception);
-        assertTrue(
-                $this->root->hasChild('log/errors/' . date('Y') . '/' . date('m'))
-        );
-        assertEquals(
-                0700,
+        assert(
                 $this->root->getChild(
                         'log/errors/' . date('Y') . '/' . date('m')
-                )->getPermissions()
+                )->getPermissions(),
+                equals(0700)
         );
     }
 
     /**
      * @test
      */
-    public function handleShouldCreateLogDirectoryWithChangedModeIfNotExists()
+    public function createLogDirectoryWithChangedPermissionsIfNotExists()
     {
         $exception = new \Exception('exception message');
         $this->exceptionHandler->setFilemode(0777)->handleException($exception);
-        assertTrue(
-                $this->root->hasChild('log/errors/' . date('Y') . '/' . date('m'))
-        );
-        assertEquals(
-                0777,
+        assert(
                 $this->root->getChild(
                         'log/errors/' . date('Y') . '/' . date('m')
-                )->getPermissions()
+                )->getPermissions(),
+                equals(0777)
         );
     }
 }

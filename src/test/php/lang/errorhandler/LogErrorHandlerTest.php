@@ -9,6 +9,11 @@
  */
 namespace stubbles\lang\errorhandler;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\errorhandler\LogErrorHandler.
  *
@@ -29,6 +34,23 @@ class LogErrorHandlerTest extends \PHPUnit_Framework_TestCase
      * @type  org\bovigo\vfs\vfsStreamDirectory
      */
     private $root;
+    /**
+     * @type  string
+     */
+    private static $logPath;
+    /**
+     * @type  string
+     */
+    private static $logFile;
+
+    /**
+     * set up test environment
+     */
+    public static function setUpBeforeClass()
+    {
+        self::$logPath = 'log/errors/' . date('Y') . '/' . date('m');
+        self::$logFile = 'php-error-' . date('Y-m-d') . '.log';
+    }
 
     /**
      * set up test environment
@@ -58,53 +80,62 @@ class LogErrorHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function stopsErrorHandlingWhenHandled()
+    {
+        assert(
+                $this->logErrorHandler->handle(E_WARNING, 'message', __FILE__, __LINE__),
+                equals(ErrorHandler::STOP_ERROR_HANDLING)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function handleErrorCreatesLogfile()
+    {
+        $this->logErrorHandler->handle(E_WARNING, 'message', __FILE__, __LINE__);
+        assertTrue($this->root->hasChild(self::$logPath . '/' . self::$logFile));
+    }
+
+    /**
+     * @test
+     */
     public function handleErrorShouldLogTheError()
     {
         $line = __LINE__;
-        assertTrue($this->logErrorHandler->handle(E_WARNING, 'message', __FILE__, $line));
-        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/php-error-' . date('Y-m-d') . '.log'));
-        assertEquals('|' . E_WARNING . '|E_WARNING|message|' . __FILE__ . '|' . $line . "\n",
-                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/php-error-' . date('Y-m-d') . '.log')
-                                              ->getContent(),
-                                   19
-                            )
+        $this->logErrorHandler->handle(E_WARNING, 'message', __FILE__, $line);
+        assert(
+                substr(
+                        $this->root->getChild(self::$logPath . '/' . self::$logFile)
+                                ->getContent(),
+                        19
+                ),
+                equals('|' . E_WARNING . '|E_WARNING|message|' . __FILE__ . '|' . $line . "\n")
         );
     }
 
     /**
      * @test
      */
-    public function handleShouldCreateLogDirectoryWithDefaultModeIfNotExists()
+    public function handleShouldCreateLogDirectoryWithDefaultPermissionsIfNotExists()
     {
-        assertTrue($this->logErrorHandler->handle(E_WARNING, 'message', __FILE__, __LINE__));
-        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m')));
-        assertEquals(0700, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
-    }
-
-    /**
-     * @test
-     */
-    public function handleErrorShouldLogTheErrorWhenTargetChanged()
-    {
-        $line = __LINE__;
-        assertTrue($this->logErrorHandler->handle(313, 'message', __FILE__, $line)
-        );
-        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/php-error-' . date('Y-m-d') . '.log'));
-        assertEquals('|313|unknown|message|' . __FILE__ . '|' . $line . "\n",
-                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/php-error-' . date('Y-m-d') . '.log')
-                                       ->getContent(),
-                                   19
-                            )
+        $this->logErrorHandler->handle(E_WARNING, 'message', __FILE__, __LINE__);
+        assert(
+                $this->root->getChild(self::$logPath)->getPermissions(),
+                equals(0700)
         );
     }
 
     /**
      * @test
      */
-    public function handleShouldCreateLogDirectoryWithChangedModeIfNotExists()
+    public function handleShouldCreateLogDirectoryWithChangedPermissionsIfNotExists()
     {
-        assertTrue($this->logErrorHandler->setFilemode(0777)->handle(E_WARNING, 'message', __FILE__, __LINE__));
-        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m')));
-        assertEquals(0777, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
+        $this->logErrorHandler->setFilemode(0777)
+                ->handle(E_WARNING, 'message', __FILE__, __LINE__);
+        assert(
+                $this->root->getChild(self::$logPath)->getPermissions(),
+                equals(0777)
+        );
     }
 }

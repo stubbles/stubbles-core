@@ -9,7 +9,11 @@
  */
 namespace stubbles\lang\errorhandler;
 use org\bovigo\vfs\vfsStream;
+use stubbles\lang\exception\Exception;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 use function stubbles\lang\reflect\annotationsOf;
 use function stubbles\lang\reflect\annotationsOfConstructor;
 /**
@@ -33,7 +37,23 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
      * @type  org\bovigo\vfs\vfsStreamDirectory
      */
     private $root;
+    /**
+     * @type  string
+     */
+    private static $logPath;
+    /**
+     * @type  string
+     */
+    private static $logFile;
 
+    /**
+     * set up test environment
+     */
+    public static function setUpBeforeClass()
+    {
+        self::$logPath = 'log/errors/' . date('Y') . '/' . date('m');
+        self::$logFile = 'exceptions-' . date('Y-m-d') . '.log';
+    }
 
     /**
      * set up test environment
@@ -50,9 +70,7 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnClass()
     {
-        assertTrue(
-                annotationsOf($this->exceptionLogger)->contain('Singleton')
-        );
+        assertTrue(annotationsOf($this->exceptionLogger)->contain('Singleton'));
     }
 
     /**
@@ -63,10 +81,19 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
     {
         $annotations = annotationsOfConstructor($this->exceptionLogger);
         assertTrue($annotations->contain('Named'));
-        assertEquals(
-                'stubbles.project.path',
-                $annotations->named('Named')[0]->getName()
+        assert(
+                $annotations->named('Named')[0]->getName(),
+                equals('stubbles.project.path')
         );
+    }
+
+    /**
+     * @test
+     */
+    public function logsExceptionDataCreatesLogfile()
+    {
+        $this->exceptionLogger->log(new \Exception('exception message'));
+        assertTrue($this->root->hasChild(self::$logPath . '/' . self::$logFile));
     }
 
     /**
@@ -76,13 +103,13 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
     {
         $this->exceptionLogger->log(new \Exception('exception message'));
         $line = __LINE__ - 1;
-
-        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log'));
-        assertEquals('|Exception|exception message|' . __FILE__ . '|' . $line . "||||\n",
-                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log')
-                                              ->getContent(),
-                                   19
-                            )
+        assert(
+                substr(
+                        $this->root->getChild(self::$logPath . '/' . self::$logFile)
+                                ->getContent(),
+                        19
+                ),
+                equals('|Exception|exception message|' . __FILE__ . '|' . $line . "||||\n")
         );
 
     }
@@ -92,16 +119,16 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function logsExceptionDataOfChainedAndCause()
     {
-        $exception = new \stubbles\lang\exception\Exception('chained exception', new \Exception('exception message'), 303);
+        $exception = new Exception('chained exception', new \Exception('exception message'), 303);
         $line      = __LINE__ - 1;
-
         $this->exceptionLogger->log($exception);
-        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log'));
-        assertEquals('|stubbles\lang\exception\Exception|chained exception|' . __FILE__ . '|' . $line . '|Exception|exception message|' . __FILE__ . '|' . $line . "\n",
-                            substr($this->root->getChild('log/errors/' . date('Y') . '/' . date('m') . '/exceptions-' . date('Y-m-d') . '.log')
-                                              ->getContent(),
-                                   19
-                            )
+        assert(
+                substr(
+                        $this->root->getChild(self::$logPath . '/' . self::$logFile)
+                                ->getContent(),
+                        19
+                ),
+                equals('|stubbles\lang\exception\Exception|chained exception|' . __FILE__ . '|' . $line . '|Exception|exception message|' . __FILE__ . '|' . $line . "\n")
         );
     }
 
@@ -111,11 +138,11 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
     public function createsLogDirectoryWithDefaultModeIfNotExists()
     {
         $exception = new \Exception('exception message');
-        $line      = __LINE__ - 1;
-
         $this->exceptionLogger->log($exception);
-        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m')));
-        assertEquals(0700, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
+        assert(
+                $this->root->getChild(self::$logPath)->getPermissions(),
+                equals(0700)
+        );
     }
 
     /**
@@ -124,10 +151,10 @@ class ExceptionLoggerTest extends \PHPUnit_Framework_TestCase
     public function createsLogDirectoryWithChangedModeIfNotExists()
     {
         $exception = new \Exception('exception message');
-        $line      = __LINE__ - 1;
-
         $this->exceptionLogger->setFilemode(0777)->log($exception);
-        assertTrue($this->root->hasChild('log/errors/' . date('Y') . '/' . date('m')));
-        assertEquals(0777, $this->root->getChild('log/errors/' . date('Y') . '/' . date('m'))->getPermissions());
+        assert(
+                $this->root->getChild(self::$logPath)->getPermissions(),
+                equals(0777)
+        );
     }
 }
