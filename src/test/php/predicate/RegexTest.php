@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\predicate\Regex.
  *
@@ -35,8 +37,8 @@ class RegexTest extends \PHPUnit_Framework_TestCase
      */
     public function validValueEvaluatesToTrue($regex, $value)
     {
-        $regex = new Regex($regex);
-        assertTrue($regex($value));
+        $matches = new Regex($regex);
+        assertTrue($matches($value));
     }
 
     /**
@@ -60,8 +62,8 @@ class RegexTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidValueEvaluatesToFalse($regex, $value)
     {
-        $regex = new Regex($regex);
-        assertFalse($regex($value));
+        $matches = new Regex($regex);
+        assertFalse($matches($value));
     }
 
     /**

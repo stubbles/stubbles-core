@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\predicate\IsMailAddress.
  *
@@ -83,11 +85,22 @@ class IsMailAddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
+     * @return  array
      */
-    public function validatesIndependendOfLowerOrUpperCase()
+    public function mailAddressesWithDifferentCase()
     {
-        assertTrue($this->isMailAddress->test('Example@example.ORG'));
-        assertTrue($this->isMailAddress->test('Example.Foo.Bar@EXAMPLE.org'));
+        return [
+            ['Example@example.ORG'],
+            ['Example.Foo.Bar@EXAMPLE.org']
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  mailAddressesWithDifferentCase
+     */
+    public function validatesIndependendOfLowerOrUpperCase($mailAddress)
+    {
+        assertTrue($this->isMailAddress->test($mailAddress));
     }
 }

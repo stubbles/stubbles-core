@@ -9,6 +9,9 @@
  */
 namespace stubbles\predicate;
 use stubbles\peer\http\HttpUri;
+
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\predicate\IsHttpUri.
  *
@@ -73,9 +76,7 @@ class IsHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function validHttpUrlWithDnsEntryEvaluatesToTrue($value)
     {
-        assertTrue(
-                $this->isHttpUri->test($value)
-        );
+        assertTrue($this->isHttpUri->test($value));
     }
 
     /**
@@ -95,8 +96,6 @@ class IsHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function validHttpUrlWithoutDnsEntryEvaluatesToTrue($value)
     {
-        assertTrue(
-                $this->isHttpUri->test($value)
-        );
+        assertTrue($this->isHttpUri->test($value));
     }
 }

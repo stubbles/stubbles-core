@@ -8,6 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Helper class for the test.
  */
@@ -38,7 +42,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function castFromWithPredicateReturnsInstance()
     {
         $predicate = new FooPredicate();
-        assertSame($predicate, Predicate::castFrom($predicate));
+        assert(Predicate::castFrom($predicate), isSameAs($predicate));
     }
 
     /**
@@ -46,9 +50,9 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
      */
     public function castFromWithCallableReturnsCallablePredicate()
     {
-        assertInstanceOf(
-                CallablePredicate::class,
-                Predicate::castFrom(function($value) { return 'foo' === $value; })
+        assert(
+                Predicate::castFrom(function($value) { return 'foo' === $value; }),
+                isInstanceOf(CallablePredicate::class)
         );
     }
 
@@ -76,9 +80,9 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function asWellAsReturnsAndPredicate()
     {
         $predicate = new FooPredicate();
-        assertInstanceOf(
-                AndPredicate::class,
-                $predicate->asWellAs(function($value) { return 'foo' === $value; })
+        assert(
+                $predicate->asWellAs(function($value) { return 'foo' === $value; }),
+                isInstanceOf(AndPredicate::class)
         );
     }
 
@@ -88,9 +92,9 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function orElseReturnsOrPredicate()
     {
         $predicate = new FooPredicate();
-        assertInstanceOf(
-                OrPredicate::class,
-                $predicate->orElse(function($value) { return 'foo' === $value; })
+        assert(
+                $predicate->orElse(function($value) { return 'foo' === $value; }),
+                isInstanceOf(OrPredicate::class)
         );
     }
 
@@ -100,9 +104,6 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     public function negateReturnsNegatePredicate()
     {
         $predicate = new FooPredicate();
-        assertInstanceOf(
-                NegatePredicate::class,
-                $predicate->negate()
-        );
+        assert($predicate->negate(), isInstanceOf(NegatePredicate::class));
     }
 }

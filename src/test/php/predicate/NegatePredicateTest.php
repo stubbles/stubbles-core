@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 /**
  * Test for stubbles\predicate\NegatePredicate.
  *
@@ -17,11 +19,30 @@ namespace stubbles\predicate;
 class NegatePredicateTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * set up test environment
+     */
+    public function createNegatePredicate()
+    {
+        return new NegatePredicate(
+                function($value) { return 'foo' === $value; }
+        );
+    }
+
+    /**
      * @test
      */
-    public function negatesWrappedPredicate()
+    public function falseBecomesTrue()
     {
-        $negatePredicate = new NegatePredicate(function($value) { return 'foo' === $value; });
+        $negatePredicate = $this->createNegatePredicate();
         assertTrue($negatePredicate('bar'));
+    }
+
+    /**
+     * @test
+     */
+    public function trueBecomesFalse()
+    {
+        $negatePredicate = $this->createNegatePredicate();
+        assertFalse($negatePredicate('foo'));
     }
 }

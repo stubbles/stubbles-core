@@ -9,6 +9,9 @@
  */
 namespace stubbles\predicate;
 use stubbles\peer\IpAddress;
+
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\predicate\IsIpV6Address.
  *

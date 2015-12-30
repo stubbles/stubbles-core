@@ -10,6 +10,9 @@
 namespace stubbles\predicate;
 use stubbles\peer\http\HttpUri;
 use stubbles\peer\http\CheckdnsrrResult;
+
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\predicate\IsExistingHttpUri.
  *
@@ -74,9 +77,7 @@ class IsExistingHttpUriTest extends \PHPUnit_Framework_TestCase
      */
     public function validHttpUrlWithDnsEntryEvaluatesToTrue($value)
     {
-        assertTrue(
-                $this->isExistingHttpUri->test($value)
-        );
+        assertTrue($this->isExistingHttpUri->test($value));
     }
 
     /**
