@@ -12,6 +12,9 @@ use stubbles\test\lang\SomeObject1;
 use stubbles\test\lang\SomeObject2;
 use stubbles\test\lang\SomeObject3;
 use stubbles\test\lang\SomeObject4;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\__toString().
  *
@@ -26,13 +29,13 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
      *
      * @type  SomeObject1
      */
-    protected $someObject1;
+    private $someObject1;
     /**
      * instance 2 to be used for tests
      *
      * @type  SomeObject2
      */
-    protected $someObject2;
+    private $someObject2;
 
     /**
      * set up test environment
@@ -51,8 +54,9 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
     {
         $baseObject3 = new SomeObject3($this->someObject1, $this->someObject2, 'foo');
         $baseObject3->aResource = fopen(__FILE__, 'rb');
-        assertEquals(
-                'stubbles\\test\lang\SomeObject3 {
+        assert(
+                (string) $baseObject3,
+                equals('stubbles\\test\lang\SomeObject3 {
     foo(stubbles\\test\lang\SomeObject1): stubbles\\test\lang\SomeObject1 {
         bar(integer): 5
     }
@@ -65,8 +69,7 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
     baz(string): foo
     aResource(resource[stream]): resource
 }
-',
-                (string) $baseObject3
+')
         );
         fclose($baseObject3->aResource);
     }
@@ -76,11 +79,11 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
      */
     public function stringRepresentationWithNoProperties()
     {
-        assertEquals(
-                'stubbles\\test\lang\SomeObject4 {
+        assert(
+                __toString(new SomeObject4()),
+                equals('stubbles\\test\lang\SomeObject4 {
 }
-',
-                __toString(new SomeObject4())
+')
         );
     }
 
@@ -91,13 +94,13 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
     {
         $object = new SomeObject1();
         $object->foo = ['bar' => 'baz'];
-        assertEquals(
-                'stubbles\\test\lang\SomeObject1 {
+        assert(
+                (string) $object,
+                equals('stubbles\\test\lang\SomeObject1 {
     bar(integer): 5
     foo(array): [..](1)
 }
-',
-                (string) $object
+')
         );
     }
 
@@ -106,12 +109,12 @@ class ToStringTest extends \PHPUnit_Framework_TestCase
      */
     public function toStringWithSimpleDataType()
     {
-        assertEquals(
-                '{
+        assert(
+                __toString(5),
+                equals('{
     (integer): 5
 }
-',
-                __toString(5)
+')
         );
     }
 }

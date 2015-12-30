@@ -16,6 +16,9 @@
  */
 namespace stubbles\lang;
 use stubbles\test\sequence\Employee;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\Collectors.
  *
@@ -42,12 +45,12 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      */
     public function joiningNames()
     {
-        assertEquals(
-                'Timm, Alex, Dude',
+        assert(
                 Sequence::of($this->people)
                         ->map(function(Employee $e) { return $e->name(); })
                         ->collect()
-                        ->byJoining()
+                        ->byJoining(),
+                equals('Timm, Alex, Dude')
         );
     }
 
@@ -56,12 +59,12 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      */
     public function joiningNamesWithSemicolon()
     {
-        assertEquals(
-                'Timm;Alex;Dude',
+        assert(
                 Sequence::of($this->people)
                         ->map(function(Employee $e) { return $e->name(); })
                         ->collect()
-                        ->byJoining(';')
+                        ->byJoining(';'),
+                equals('Timm;Alex;Dude')
         );
     }
 
@@ -70,12 +73,12 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      */
     public function joiningNamesWithPrefixAndSuffix()
     {
-        assertEquals(
-                '(Timm, Alex, Dude)',
+        assert(
                 Sequence::of($this->people)
                         ->map(function(Employee $e) { return $e->name(); })
                         ->collect()
-                        ->byJoining(', ', '(', ')')
+                        ->byJoining(', ', '(', ')'),
+                equals('(Timm, Alex, Dude)')
         );
     }
 
@@ -83,11 +86,14 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function groupingBy() {
-        assertEquals(
-                ['B' => [$this->people[1549]], 'I' => [$this->people[1552], $this->people[6100]]],
+        assert(
                 Sequence::of($this->people)
                         ->collect()
-                        ->inGroups(function(Employee $e) { return $e->department(); })
+                        ->inGroups(function(Employee $e) { return $e->department(); }),
+                equals([
+                        'B' => [$this->people[1549]],
+                        'I' => [$this->people[1552], $this->people[6100]]
+                ])
         );
     }
 
@@ -95,14 +101,14 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function groupingByWithSummingOfYears() {
-        assertEquals(
-                ['B' => 15, 'I' => 18],
+        assert(
                 Sequence::of($this->people)
                         ->collect()
                         ->inGroups(
                                 function(Employee $e) { return $e->department(); },
                                 Collector::forSum(function(Employee $e) { return $e->years(); })
-                          )
+                          ),
+                equals(['B' => 15, 'I' => 18])
         );
     }
 
@@ -110,14 +116,14 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function groupingByWithAveragingOfYears() {
-        assertEquals(
-                ['B' => 15, 'I' => 9],
+        assert(
                 Sequence::of($this->people)
                         ->collect()
                         ->inGroups(
                                 function(Employee $e) { return $e->department(); },
                                 Collector::forAverage(function(Employee $e) { return $e->years(); })
-                        )
+                        ),
+                equals(['B' => 15, 'I' => 9])
         );
     }
 
@@ -125,11 +131,14 @@ class CollectorsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function partitioningBy() {
-        assertEquals(
-                [true => [$this->people[1549], $this->people[1552]], false => [$this->people[6100]]],
+        assert(
                 Sequence::of($this->people)
                         ->collect()
-                        ->inPartitions(function(Employee $e) { return $e->years() > 10; })
+                        ->inPartitions(function(Employee $e) { return $e->years() > 10; }),
+                equals([
+                        true  => [$this->people[1549], $this->people[1552]],
+                        false => [$this->people[6100]]
+                ])
         );
     }
 }

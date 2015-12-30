@@ -9,6 +9,11 @@
  */
 namespace stubbles\lang;
 use stubbles\peer\http\HttpUri;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
 /**
  * Helper class for the test.
  */
@@ -65,7 +70,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toIntReturnsValueCastedToInteger($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toInt($stringToParse));
+        assert(Parse::toInt($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -78,7 +83,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asIntReturnsValueCastedToInteger($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->asInt());
+        assert($parse->asInt(), equals($expectedResult));
     }
 
     /**
@@ -95,7 +100,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->defaultingTo('foo')->asInt());
+        assert($parse->defaultingTo('foo')->asInt(), equals($expectedResult));
     }
 
     /**
@@ -131,7 +136,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toFloatReturnsValueCastedToFloat($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toFloat($stringToParse));
+        assert(Parse::toFloat($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -144,7 +149,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asFloatReturnsValueCastedToFloat($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->asFloat());
+        assert($parse->asFloat(), equals($expectedResult));
     }
 
     /**
@@ -161,7 +166,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->defaultingTo('foo')->asFloat());
+        assert($parse->defaultingTo('foo')->asFloat(), equals($expectedResult));
     }
 
     /**
@@ -201,7 +206,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toBoolReturnsValueCastedToBool($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toBool($stringToParse));
+        assert(Parse::toBool($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -214,7 +219,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asBoolReturnsValueCastedToBool($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->asBool($stringToParse));
+        assert($parse->asBool($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -231,7 +236,10 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->defaultingTo('foo')->asBool($stringToParse));
+        assert(
+                $parse->defaultingTo('foo')->asBool($stringToParse),
+                equals($expectedResult)
+        );
     }
 
     /**
@@ -270,7 +278,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toListReturnsValueCastedToList($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toList($stringToParse));
+        assert(Parse::toList($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -283,7 +291,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asListReturnsValueCastedToList($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->asList($stringToParse));
+        assert($parse->asList($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -300,9 +308,9 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertEquals(
-                $expectedResult,
-                $parse->defaultingTo('foo')->asList($stringToParse)
+        assert(
+                $parse->defaultingTo('foo')->asList($stringToParse),
+                equals($expectedResult)
         );
     }
 
@@ -339,7 +347,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toMapReturnsValueCastedToMap($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toMap($stringToParse));
+        assert(Parse::toMap($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -352,7 +360,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asMapReturnsValueCastedToMap($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->asMap($stringToParse));
+        assert($parse->asMap($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -369,9 +377,9 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertEquals(
-                $expectedResult,
-                $parse->defaultingTo('foo')->asMap($stringToParse)
+        assert(
+                $parse->defaultingTo('foo')->asMap($stringToParse),
+                equals($expectedResult)
         );
     }
 
@@ -404,7 +412,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toRangeReturnsValueCastedToRange($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toRange($stringToParse));
+        assert(Parse::toRange($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -417,7 +425,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asRangeReturnsValueCastedToRange($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->asRange($stringToParse));
+        assert($parse->asRange($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -434,9 +442,9 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertEquals(
-                $expectedResult,
-                $parse->defaultingTo('foo')->asRange($stringToParse)
+        assert(
+                $parse->defaultingTo('foo')->asRange($stringToParse),
+                equals($expectedResult)
         );
     }
 
@@ -463,7 +471,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toClassReturnsValueCastedToClassInstance($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toClass($stringToParse));
+        assert(Parse::toClass($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -476,7 +484,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asClassReturnsValueCastedToClassInstance($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->asClass($stringToParse));
+        assert($parse->asClass($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -493,7 +501,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->defaultingTo('foo')->asClass($stringToParse));
+        assert($parse->defaultingTo('foo')->asClass($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -560,7 +568,10 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toClassnameReturnsClassnameOfExistingClass()
     {
-        assertEquals(__CLASS__, Parse::toClassname(__CLASS__ . '::class'));
+        assert(
+                Parse::toClassname(__CLASS__ . '::class'),
+                equals(__CLASS__)
+        );
     }
 
     /**
@@ -600,7 +611,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asClassnameReturnsClassnameOfExistingClass()
     {
         $parse = new Parse(__CLASS__ . '::class');
-        assertEquals(__CLASS__, $parse->asClassname());
+        assert($parse->asClassname(), equals(__CLASS__));
     }
 
     /**
@@ -625,7 +636,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toEnumReturnsValueCastedToEnumInstance($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toEnum($stringToParse));
+        assert(Parse::toEnum($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -638,7 +649,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function asEnumReturnsValueCastedToEnumInstance($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->asEnum($stringToParse));
+        assert($parse->asEnum($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -655,7 +666,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertEquals($expectedResult, $parse->defaultingTo('foo')->asEnum($stringToParse));
+        assert($parse->defaultingTo('foo')->asEnum($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -731,7 +742,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      */
     public function toTypeReturnsValueCastedToRecognizedType($expectedResult, $stringToParse)
     {
-        assertEquals($expectedResult, Parse::toType($stringToParse));
+        assert(Parse::toType($stringToParse), equals($expectedResult));
     }
 
     /**
@@ -740,7 +751,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function userDefinedRecognitionWithSuccessReturnsValueFromUserDefinedConversion()
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } }, 'binford');
-        assertEquals('More power!', Parse::toType('Binford 6100'));
+        assert(Parse::toType('Binford 6100'), equals('More power!'));
     }
 
     /**
@@ -749,7 +760,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function userDefinedRecognitionWithoutSuccessReturnsValueAsString()
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } }, 'binford');
-        assertEquals('Binford 610', Parse::toType('Binford 610'));
+        assert(Parse::toType('Binford 610'), equals('Binford 610'));
     }
 
     /**
@@ -790,7 +801,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function parseNullReturnsNull($expected, $method)
     {
         $parse = new Parse(null);
-        assertEquals($expected, $parse->$method());
+        assert($parse->$method(), equals($expected));
     }
 
     /**
@@ -804,6 +815,6 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function parseNullWithDefaultReturnsDefault($expected, $method)
     {
         $parse = new Parse(null);
-        assertEquals('foo', $parse->defaultingTo('foo')->$method());
+        assert($parse->defaultingTo('foo')->$method(), equals('foo'));
     }
 }

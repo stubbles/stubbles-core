@@ -8,6 +8,11 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Concrete instance of stubbles\lang\Enum.
  */
@@ -35,6 +40,7 @@ class TestEnumWithoutValues extends Enum
         self::$BAR = new self('BAR');
     }
 }
+TestEnumWithoutValues::init();
 /**
  * Concrete instance of stubbles\lang\Enum.
  */
@@ -62,6 +68,7 @@ class TestEnumWithValues extends Enum
         self::$BAR = new self('BAR', 20);
     }
 }
+TestEnumWithValues::init();
 /**
  * Tests for stubbles\lang\Enum.
  *
@@ -71,23 +78,25 @@ class TestEnumWithValues extends Enum
 class EnumTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * set up test environment
+     * @return  array
      */
-    public function setUp()
+    public function enumValues()
     {
-        TestEnumWithoutValues::init();
-        TestEnumWithValues::init();
+        return [
+                ['FOO', TestEnumWithoutValues::class],
+                ['BAR', TestEnumWithoutValues::class],
+                ['FOO', TestEnumWithValues::class],
+                ['BAR', TestEnumWithValues::class]
+        ];
     }
 
     /**
      * @test
+     * @dataProvider  enumValues
      */
-    public function nameEqualsGivenName()
+    public function nameEqualsGivenName($name, $enumClass)
     {
-        assertEquals('FOO', TestEnumWithoutValues::$FOO->name());
-        assertEquals('BAR', TestEnumWithoutValues::$BAR->name());
-        assertEquals('FOO', TestEnumWithValues::$FOO->name());
-        assertEquals('BAR', TestEnumWithValues::$BAR->name());
+        assert($enumClass::$$name->name(), equals($name));
     }
 
     /**
@@ -95,8 +104,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function valueEqualsNameIfNoValueGiven()
     {
-        assertEquals('FOO', TestEnumWithoutValues::$FOO->value());
-        assertEquals('BAR', TestEnumWithoutValues::$BAR->value());
+        assert(TestEnumWithoutValues::$FOO->value(), equals('FOO'));
     }
 
     /**
@@ -104,8 +112,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function valueEqualsGivenValue()
     {
-        assertEquals(10, TestEnumWithValues::$FOO->value());
-        assertEquals(20, TestEnumWithValues::$BAR->value());
+        assert(TestEnumWithValues::$FOO->value(), equals(10));
     }
 
     /**
@@ -113,7 +120,9 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function instanceEqualsItself()
     {
-        assertTrue(TestEnumWithoutValues::$FOO->equals(TestEnumWithoutValues::$FOO));
+        assertTrue(
+                TestEnumWithoutValues::$FOO->equals(TestEnumWithoutValues::$FOO)
+        );
     }
 
     /**
@@ -121,8 +130,12 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function instanceDoesNotEqualOtherInstance()
     {
-        assertFalse(TestEnumWithoutValues::$FOO->equals(TestEnumWithoutValues::$BAR));
-        assertFalse(TestEnumWithoutValues::$BAR->equals(TestEnumWithoutValues::$FOO));
+        assertFalse(
+                TestEnumWithoutValues::$FOO->equals(TestEnumWithoutValues::$BAR)
+        );
+        assertFalse(
+                TestEnumWithoutValues::$BAR->equals(TestEnumWithoutValues::$FOO)
+        );
     }
 
     /**
@@ -134,29 +147,25 @@ class EnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
+     * @return  array
      */
-    public function toStringReturnsRepresentationWithoutValues()
+    public function stringRepresentations()
     {
-        assertEquals("stubbles\lang\TestEnumWithoutValues {\n    FOO\n    FOO\n}\n",
-                            (string) TestEnumWithoutValues::$FOO
-        );
-        assertEquals("stubbles\lang\TestEnumWithoutValues {\n    BAR\n    BAR\n}\n",
-                            (string) TestEnumWithoutValues::$BAR
-        );
+        return [
+                [TestEnumWithoutValues::$FOO, TestEnumWithoutValues::class . " {\n    FOO\n    FOO\n}\n"],
+                [TestEnumWithoutValues::$BAR, TestEnumWithoutValues::class . " {\n    BAR\n    BAR\n}\n"],
+                [TestEnumWithValues::$FOO, TestEnumWithValues::class . " {\n    FOO\n    10\n}\n"],
+                [TestEnumWithValues::$BAR, TestEnumWithValues::class . " {\n    BAR\n    20\n}\n"]
+        ];
     }
 
     /**
      * @test
+     * @dataProvider  stringRepresentations
      */
-    public function toStringReturnsRepresentationWithValues()
+    public function toStringReturnsRepresentation($instance, $representation)
     {
-        assertEquals("stubbles\lang\TestEnumWithValues {\n    FOO\n    10\n}\n",
-                            (string) TestEnumWithValues::$FOO
-        );
-        assertEquals("stubbles\lang\TestEnumWithValues {\n    BAR\n    20\n}\n",
-                            (string) TestEnumWithValues::$BAR
-        );
+        assert((string) $instance, equals($representation));
     }
 
     /**
@@ -173,8 +182,10 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function forNameReturnsEnumInstanceWithGivenName()
     {
-        assertSame(TestEnumWithoutValues::$FOO, TestEnumWithoutValues::forName('FOO'));
-        assertSame(TestEnumWithoutValues::$BAR, TestEnumWithoutValues::forName('BAR'));
+        assert(
+                TestEnumWithoutValues::forName('FOO'),
+                isSameAs(TestEnumWithoutValues::$FOO)
+        );
     }
 
     /**
@@ -195,8 +206,10 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function forValueWithoutValues()
     {
-        assertSame(TestEnumWithoutValues::$FOO, TestEnumWithoutValues::forValue('FOO'));
-        assertSame(TestEnumWithoutValues::$BAR, TestEnumWithoutValues::forValue('BAR'));
+        assert(
+                TestEnumWithoutValues::forValue('FOO'),
+                isSameAs(TestEnumWithoutValues::$FOO)
+        );
     }
 
     /**
@@ -206,8 +219,10 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function forValueWithValues()
     {
-        assertSame(TestEnumWithValues::$FOO, TestEnumWithValues::forValue(10));
-        assertSame(TestEnumWithValues::$BAR, TestEnumWithValues::forValue(20));
+        assert(
+                TestEnumWithValues::forValue(10),
+                isSameAs(TestEnumWithValues::$FOO)
+        );
     }
 
     /**
@@ -233,8 +248,9 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function instancesReturnsListOfAllEnumInstances()
     {
-        assertEquals([TestEnumWithoutValues::$FOO, TestEnumWithoutValues::$BAR],
-                            TestEnumWithoutValues::instances()
+        assert(
+                TestEnumWithoutValues::instances(),
+                equals([TestEnumWithoutValues::$FOO, TestEnumWithoutValues::$BAR])
         );
     }
 
@@ -243,7 +259,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function namesOfReturnsListOfNamesOfEnum()
     {
-        assertEquals(['FOO', 'BAR'], TestEnumWithoutValues::namesOf());
+        assert(TestEnumWithoutValues::namesOf(), equals(['FOO', 'BAR']));
     }
 
     /**
@@ -251,8 +267,9 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function valuesOfWithoutValuesReturnsMapOfValues()
     {
-        assertEquals(['FOO' => 'FOO', 'BAR' => 'BAR'],
-                            TestEnumWithoutValues::valuesOf()
+        assert(
+                TestEnumWithoutValues::valuesOf(),
+                equals(['FOO' => 'FOO', 'BAR' => 'BAR'])
         );
     }
 
@@ -261,8 +278,9 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function valuesOfWithValuesReturnsMapOfValues()
     {
-        assertEquals(['FOO' => 10, 'BAR' => 20],
-                            TestEnumWithValues::valuesOf()
+        assert(
+                TestEnumWithValues::valuesOf(),
+                equals(['FOO' => 10, 'BAR' => 20])
         );
     }
 }

@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\lang\DefaultMode.
  *

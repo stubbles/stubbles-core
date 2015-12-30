@@ -26,7 +26,10 @@ class PeekTest extends \PHPUnit_Framework_TestCase
     public function peekCallsValueConsumerWithCurrentValueOnIteration()
     {
         $result = '';
-        $peek = new Peek(new \ArrayIterator(['foo', 'bar', 'baz']), function($value) use(&$result) { $result = $result . $value; });
+        $peek = new Peek(
+                new \ArrayIterator(['foo', 'bar', 'baz']),
+                function($value) use(&$result) { $result = $result . $value; }
+        );
         foreach ($peek as $value) {
             // do nothing
         }
@@ -40,7 +43,11 @@ class PeekTest extends \PHPUnit_Framework_TestCase
     public function peekCallsKeyConsumerWithCurrentKeyOnIteration()
     {
         $result = '';
-        $peek = new Peek(new \ArrayIterator(['foo' => 303, 'bar' => 404, 'baz' => 505]), function() { }, function($key) use(&$result) { $result = $result . $key; });
+        $peek = new Peek(
+                new \ArrayIterator(['foo' => 303, 'bar' => 404, 'baz' => 505]),
+                function() { },
+                function($key) use(&$result) { $result = $result . $key; }
+        );
         foreach ($peek as $key => $value) {
             // do nothing
         }
@@ -54,7 +61,11 @@ class PeekTest extends \PHPUnit_Framework_TestCase
     public function keyConsumerIsNotCalledWhenNoKeyInForeachRequested()
     {
         $i = 0;
-        $peek = new Peek(new \ArrayIterator(['foo' => 303, 'bar' => 404, 'baz' => 505]), function() { }, function() { $this->fail('Key consumer is not expected to be called'); });
+        $peek = new Peek(
+                new \ArrayIterator(['foo' => 303, 'bar' => 404, 'baz' => 505]),
+                function() { },
+                function() { fail('Key consumer is not expected to be called'); }
+        );
         foreach ($peek as $value) {
             $i++;
         }

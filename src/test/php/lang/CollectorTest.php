@@ -16,6 +16,9 @@
  */
 namespace stubbles\lang;
 use stubbles\test\sequence\Employee;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\Collector.
  *
@@ -42,12 +45,12 @@ class CollectorTest extends \PHPUnit_Framework_TestCase
      */
     public function toList()
     {
-        assertEquals(
-                ['Timm', 'Alex', 'Dude'],
+        assert(
                 Sequence::of($this->people)
                         ->map(function($e) { return $e->name(); })
                         ->collect()
-                        ->inList()
+                        ->inList(),
+                equals(['Timm', 'Alex', 'Dude'])
         );
     }
 
@@ -56,14 +59,14 @@ class CollectorTest extends \PHPUnit_Framework_TestCase
      */
     public function toMapUsesGivenKeyAndValueSelector()
     {
-        assertEquals(
-                [1549 => 'Timm', 1552 => 'Alex', 6100 => 'Dude'],
+        assert(
                 Sequence::of($this->people)
                         ->collect()
                         ->inMap(
                             function(Employee $e) { return $e->id(); },
                             function(Employee $e) { return $e->name(); }
-                )
+                ),
+                equals([1549 => 'Timm', 1552 => 'Alex', 6100 => 'Dude'])
         );
     }
 
@@ -72,9 +75,9 @@ class CollectorTest extends \PHPUnit_Framework_TestCase
      */
     public function toMapPassesKeyAndValueWhenNoSelectorProvided()
     {
-        assertEquals(
-                $this->people,
-                Sequence::of($this->people)->collect()->inMap()
+        assert(
+                Sequence::of($this->people)->collect()->inMap(),
+                equals($this->people)
         );
     }
 }

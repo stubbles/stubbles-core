@@ -15,6 +15,14 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\doesNotContain;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Base class tests for stubbles\lang\SecureString.
  *
@@ -51,7 +59,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function lengthOfNullStringIsZero()
     {
-        assertEquals(0, SecureString::forNull()->length());
+        assert(SecureString::forNull()->length(), equals(0));
     }
 
     /**
@@ -95,9 +103,9 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function varExportNotRevealingPayload()
     {
-        assertNotContains(
-                'payload',
-                var_export(SecureString::create('payload'), true)
+        assert(
+                var_export(SecureString::create('payload'), true),
+                doesNotContain('payload')
         );
     }
 
@@ -111,10 +119,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        assertNotContains(
-                'payload',
-                $output
-        );
+        assert($output, doesNotContain('payload'));
     }
 
     /**
@@ -128,19 +133,16 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        assertNotContains(
-                'length',
-                $output
-        );
+        assert($output, doesNotContain('length'));
     }
 
     /**
      * @test
      */
     public function stringCastNotRevealingPayload() {
-        assertNotContains(
-                'payload',
-                (string) SecureString::create('payload')
+        assert(
+                (string) SecureString::create('payload'),
+                doesNotContain('payload')
         );
     }
 
@@ -149,9 +151,9 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function arrayCastNotRevealingPayload()
     {
-        assertNotContains(
-                'payload',
-                var_export((array)SecureString::create('payload'), true)
+        assert(
+                var_export((array)SecureString::create('payload'), true),
+                doesNotContain('payload')
         );
     }
 
@@ -160,9 +162,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function isContainedReturnsTrueWhenEncryptionDoesNotFail()
     {
-        assertTrue(
-                SecureString::create('payload')->isContained()
-        );
+        assertTrue(SecureString::create('payload')->isContained());
     }
 
     /**
@@ -170,10 +170,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function unveilRevealsOriginalData()
     {
-        assertEquals(
-                'payload',
-                SecureString::create('payload')->unveil()
-        );
+        assert(SecureString::create('payload')->unveil(), equals('payload'));
     }
 
     /**
@@ -181,10 +178,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function lengthReturnsStringLengthOfOriginalData()
     {
-        assertEquals(
-                7,
-                SecureString::create('payload')->length()
-        );
+        assert(SecureString::create('payload')->length(), equals(7));
     }
 
     /**
@@ -200,9 +194,9 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
      */
     public function substringWithValidStartReturnsNewInstance()
     {
-        assertEquals(
-                'lo',
-                SecureString::create('payload')->substring(3, 2)->unveil()
+        assert(
+                SecureString::create('payload')->substring(3, 2)->unveil(),
+                equals('lo')
         );
     }
 
@@ -221,10 +215,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     public function bigData()
     {
         $data = str_repeat('*', 1024000);
-        assertEquals(
-                $data,
-                SecureString::create($data)->unveil()
-        );
+        assert(SecureString::create($data)->unveil(), equals($data));
     }
 
     /**
@@ -233,10 +224,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
     public function createFromSecureStringReturnsInstance()
     {
         $secureString = SecureString::create('payload');
-        assertSame(
-                $secureString,
-                SecureString::create($secureString)
-        );
+        assert(SecureString::create($secureString), isSameAs($secureString));
     }
 
     /**
@@ -248,7 +236,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
         try {
             $secureString = SecureString::create('payload');
         } catch (\Exception $e) {
-            $this->fail('Exception thrown where no exception may be thrown');
+            fail('Exception thrown where no exception may be thrown');
         }
 
         assertFalse($secureString->isContained());
@@ -264,7 +252,7 @@ abstract class SecureStringTest extends \PHPUnit_Framework_TestCase
         try {
             $secureString = SecureString::create('payload');
         } catch (\Exception $e) {
-            $this->fail('Exception thrown where no exception may be thrown');
+            fail('Exception thrown where no exception may be thrown');
         }
 
         $secureString->unveil();

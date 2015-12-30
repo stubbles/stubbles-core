@@ -16,6 +16,12 @@
  */
 namespace stubbles\lang;
 use stubbles\streams\memory\MemoryOutputStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isOfSize;
 /**
  * Tests for stubbles\lang\Sequence.
  *
@@ -51,7 +57,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     private function assertSequence($expected, Sequence $sequence, $message= '!=')
     {
-        assertEquals($expected, $sequence->values(), $message);
+        assert($sequence->values(), equals($expected), $message);
     }
 
     /**
@@ -141,11 +147,11 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function mapKeys()
     {
-        assertEquals(
-                [0 => 1, 2 => 2, 4 => 3, 6 => 4],
+        assert(
                 Sequence::of([1, 2, 3, 4])
                         ->mapKeys(function($e) { return $e * 2; })
-                        ->data()
+                        ->data(),
+                equals([0 => 1, 2 => 2, 4 => 3, 6 => 4])
         );
     }
 
@@ -169,7 +175,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function sequenceIsCountable($expectedLength, $elements)
     {
-        assertEquals($expectedLength, count(Sequence::of($elements)));
+        assert(Sequence::of($elements), isOfSize($expectedLength));
     }
 
     /**
@@ -192,9 +198,9 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function sum($expectedResult, $elements)
     {
-        assertEquals(
-                $expectedResult,
-                Sequence::of($elements)->reduce()->toSum()
+        assert(
+                Sequence::of($elements)->reduce()->toSum(),
+                equals($expectedResult)
         );
     }
 
@@ -218,9 +224,9 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function min($expectedResult, $elements)
     {
-        assertEquals(
-                $expectedResult,
-                Sequence::of($elements)->reduce()->toMin()
+        assert(
+                Sequence::of($elements)->reduce()->toMin(),
+                equals($expectedResult)
         );
     }
 
@@ -244,9 +250,9 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function max($expectedResult, $elements)
     {
-        assertEquals(
-                $expectedResult,
-                Sequence::of($elements)->reduce()->toMax()
+        assert(
+                Sequence::of($elements)->reduce()->toMax(),
+                equals($expectedResult)
         );
     }
 
@@ -260,7 +266,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                         ->reduce(
                                 function($a, $b)
                                 {
-                                    $this->fail('Should not be called');
+                                    fail('Should not be called');
                                 }
                         )
         );
@@ -271,16 +277,16 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceReturnsIdentityForEmptyInput()
     {
-        assertEquals(
-                -1,
+        assert(
                 Sequence::of([])
                         ->reduce(
                                 function($a, $b)
                                 {
-                                    $this->fail('Should not be called');
+                                    fail('Should not be called');
                                 },
                                 -1
-                        )
+                        ),
+                equals(-1)
         );
     }
 
@@ -289,10 +295,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceUsedForSumming()
     {
-        assertEquals(
-                10,
+        assert(
                 Sequence::of([1, 2, 3, 4])
-                        ->reduce(function($a, $b) { return $a + $b; })
+                        ->reduce(function($a, $b) { return $a + $b; }),
+                equals(10)
         );
     }
 
@@ -301,7 +307,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceUsedForMaxWithNativeMaxFunction()
     {
-        assertEquals(10, Sequence::of([7, 1, 10, 3])->reduce('max'));
+        assert(Sequence::of([7, 1, 10, 3])->reduce('max'), equals(10));
     }
 
     /**
@@ -309,10 +315,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function reduceUsedForConcatenation()
     {
-        assertEquals(
-                'Hello World',
+        assert(
                 Sequence::of(['Hello', ' ', 'World'])
-                        ->reduce(function($a, $b) { return $a . $b; })
+                        ->reduce(function($a, $b) { return $a . $b; }),
+                equals('Hello World')
         );
     }
 
@@ -327,7 +333,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                                 function() { return ['total' => 0, 'sum' => 0]; },
                                 function(&$result, $element) { $result['total']++; $result['sum'] += $element; }
         );
-        assertEquals(2.5, $result['sum'] / $result['total']);
+        assert($result['sum'] / $result['total'], equals(2.5));
     }
 
     /**
@@ -342,7 +348,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                                 function(&$result, $arg) { $result .= ', '.$arg; },
                                 function($result) { return substr($result, 2); }
         );
-        assertEquals('a, b, c', $result);
+        assert($result, equals('a, b, c'));
     }
 
     /**
@@ -358,7 +364,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function firstReturnsFirstArrayElement()
     {
-        assertEquals(1, Sequence::of([1, 2, 3])->first());
+        assert(Sequence::of([1, 2, 3])->first(), equals(1));
     }
 
     /**
@@ -366,10 +372,33 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function eachOnEmptyInput()
     {
-        assertEquals(
-                0,
+        assert(
                 Sequence::of([])
-                        ->each(function() { $this->fail('Should not be called'); })
+                        ->each(function() { fail('Should not be called'); }),
+                equals(0)
+        );
+    }
+
+    /**
+     * @return  array
+     */
+    public function eachWithDifferentAmount()
+    {
+        return [
+                [4, function() { /* intentionally empty */ }],
+                [2, function($e) { if ('b' === $e) { return false; }}]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  eachWithDifferentAmount
+     */
+    public function eachReturnsAmountOfElementsForWhichCallableWasExecuted($expected, $callable)
+    {
+        assert(
+                Sequence::of(['a', 'b', 'c', 'd'])->each($callable),
+                equals($expected)
         );
     }
 
@@ -379,12 +408,9 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function eachAppliesGivenCallableForAllElements()
     {
         $collect = [];
-        assertEquals(
-                4,
-                Sequence::of(['a', 'b', 'c', 'd'])
-                        ->each(function($e) use(&$collect) { $collect[] = $e; })
-        );
-        assertEquals(['a', 'b', 'c', 'd'], $collect);
+        Sequence::of(['a', 'b', 'c', 'd'])
+                ->each(function($e) use(&$collect) { $collect[] = $e; });
+        assert($collect, equals(['a', 'b', 'c', 'd']));
     }
 
     /**
@@ -393,12 +419,9 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function eachStopsWhenCallableReturnsFalse()
     {
         $collect = [];
-        assertEquals(
-                2,
-                Sequence::of(['a', 'b', 'c', 'd'])
-                        ->each(function($e) use(&$collect) { $collect[] = $e; if ('b' === $e) { return false; }})
-        );
-        assertEquals(['a', 'b'], $collect);
+        Sequence::of(['a', 'b', 'c', 'd'])
+                ->each(function($e) use(&$collect) { $collect[] = $e; if ('b' === $e) { return false; }});
+        assert($collect, equals(['a', 'b']));
     }
 
     /**
@@ -408,7 +431,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     {
         $out = new MemoryOutputStream();
         Sequence::of([1, 2, 3, 4])->each([$out, 'write']);
-        assertEquals('1234', $out);
+        assert($out, equals('1234'));
     }
 
     /**
@@ -420,7 +443,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
         Sequence::of([1, 2, 3, 4])->peek('var_export')->reduce()->toSum();
         $bytes = ob_get_contents();
         ob_end_clean();
-        assertEquals('1234', $bytes);
+        assert($bytes, equals('1234'));
     }
 
     /**
@@ -435,7 +458,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
                 ->toSum();
         $bytes = ob_get_contents();
         ob_end_clean();
-        assertEquals("'a'0'b'1'c'2'd'3", $bytes);
+        assert($bytes, equals("'a'0'b'1'c'2'd'3"));
     }
 
     /**
@@ -580,7 +603,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
         foreach (Sequence::of(['foo' => 1, 'bar' => 2, 'baz' => 3]) as $key => $element) {
           $result[$key] = $element;
         }
-        assertEquals(['foo' => 1, 'bar' => 2, 'baz' => 3], $result);
+        assert($result, equals(['foo' => 1, 'bar' => 2, 'baz' => 3]));
     }
 
     /**
@@ -588,9 +611,10 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function dataReturnsCompleteDataAsArray()
     {
-        assertEquals(
-                ['foo' => 'bar', 'baz' => 303],
-                Sequence::of(new \ArrayIterator(['foo' => 'bar', 'baz' => 303]))->data()
+        assert(
+                Sequence::of(new \ArrayIterator(['foo' => 'bar', 'baz' => 303]))
+                        ->data(),
+                equals(['foo' => 'bar', 'baz' => 303])
         );
     }
 
@@ -628,9 +652,9 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
      */
     public function canBeSerializedToJson()
     {
-        assertEquals(
-                '{"one":1,"0":2,"three":3,"1":4}',
-                json_encode(Sequence::of(['one' => 1, 2, 'three' => 3, 4]))
+        assert(
+                json_encode(Sequence::of(['one' => 1, 2, 'three' => 3, 4])),
+                equals('{"one":1,"0":2,"three":3,"1":4}')
         );
     }
 }

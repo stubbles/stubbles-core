@@ -11,6 +11,13 @@ namespace stubbles\lang;
 use stubbles\lang\reflect\annotation\Annotation;
 use stubbles\lang\reflect\annotation\AnnotationCache;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Tests for stubbles\lang\*().
  *
@@ -86,9 +93,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function lastErrorMessageShouldContainLastError()
     {
         @file_get_contents(__DIR__ . '/doesNotExist.txt');
-        assertEquals(
-                'file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory',
-                exception\lastErrorMessage()
+        assert(
+                exception\lastErrorMessage(),
+                equals('file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory')
         );
     }
 
@@ -98,9 +105,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectWithMethodNameReturnsReflectionMethod()
     {
-        assertInstanceOf(
-                'ReflectionMethod',
-                reflect(__CLASS__, __FUNCTION__)
+        assert(
+                reflect(__CLASS__, __FUNCTION__),
+                isInstanceOf(\ReflectionMethod::class)
         );
     }
 
@@ -110,10 +117,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectWithClassNameReturnsReflectionClass()
     {
-        assertInstanceOf(
-                'ReflectionClass',
-                reflect(__CLASS__)
-        );
+        assert(reflect(__CLASS__), isInstanceOf(\ReflectionClass::class));
     }
 
     /**
@@ -122,10 +126,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectWithClassInstanceReturnsReflectionObject()
     {
-        assertInstanceOf(
-                'ReflectionObject',
-                reflect($this)
-        );
+        assert(reflect($this), isInstanceOf(\ReflectionObject::class));
     }
 
     /**
@@ -134,9 +135,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectWithFunctionNameReturnsReflectionFunction()
     {
-        assertInstanceOf(
-                'ReflectionFunction',
-                reflect('stubbles\lang\reflect')
+        assert(
+                reflect('stubbles\lang\reflect'),
+                isInstanceOf(\ReflectionFunction::class)
         );
     }
 
@@ -156,10 +157,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectInterface()
     {
-        assertInstanceOf(
-                'ReflectionClass',
-                reflect(Mode::class)
-        );
+        assert(reflect(Mode::class), isInstanceOf(\ReflectionClass::class));
     }
 
     /**
@@ -187,9 +185,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectCallbackWithInstanceReturnsReflectionMethod()
     {
-        assertInstanceOf(
-                'ReflectionMethod',
-                reflect([$this, __FUNCTION__])
+        assert(
+                reflect([$this, __FUNCTION__]),
+                isInstanceOf(\ReflectionMethod::class)
         );
     }
 
@@ -199,9 +197,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectCallbackWithClassnameReturnsReflectionMethod()
     {
-        assertInstanceOf(
-                'ReflectionMethod',
-                reflect([__CLASS__, __FUNCTION__])
+        assert(
+                reflect([__CLASS__, __FUNCTION__]),
+                isInstanceOf(\ReflectionMethod::class)
         );
     }
 
@@ -211,9 +209,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectClosureReturnsReflectionObject()
     {
-        assertInstanceOf(
-                'ReflectionObject',
-                reflect(function() { })
+        assert(
+                reflect(function() { }),
+                isInstanceOf(\ReflectionObject::class)
         );
     }
 
@@ -224,7 +222,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function ensureCallableDoesNotChangeClosures()
     {
         $closure = function() { return true; };
-        assertSame($closure, ensureCallable($closure));
+        assert(ensureCallable($closure), isSameAs($closure));
     }
 
     /**
@@ -234,7 +232,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function ensureCallableDoesNotChangeCallbackWithInstance()
     {
         $callback = [$this, __FUNCTION__];
-        assertSame($callback, ensureCallable($callback));
+        assert(ensureCallable($callback), isSameAs($callback));
     }
 
     /**
@@ -244,7 +242,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function ensureCallableDoesNotChangeCallbackWithStaticMethod()
     {
         $callback = [__CLASS__, 'invalidValues'];
-        assertSame($callback, ensureCallable($callback));
+        assert(ensureCallable($callback), isSameAs($callback));
     }
 
     /**
@@ -253,9 +251,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function ensureCallableDoesNotWrapUserlandFunction()
     {
-        assertSame(
-                'stubbles\lang\ensureCallable',
-                ensureCallable('stubbles\lang\ensureCallable')
+        assert(
+                ensureCallable('stubbles\lang\ensureCallable'),
+                isSameAs('stubbles\lang\ensureCallable')
         );
     }
 
@@ -265,7 +263,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function ensureCallableWrapsInternalFunction()
     {
-        assertInstanceOf('\Closure', ensureCallable('strlen'));
+        assert(ensureCallable('strlen'), isInstanceOf(\Closure::class));
     }
 
     /**
@@ -274,7 +272,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function ensureCallableAlwaysReturnsSameClosureForSameFunction()
     {
-        assertSame(ensureCallable('strlen'), ensureCallable('strlen'));
+        assert(ensureCallable('strlen'), isSameAs(ensureCallable('strlen')));
     }
 
     /**
@@ -284,6 +282,6 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function ensureCallableReturnsClosureThatPassesArgumentsAndReturnsValue()
     {
         $strlen = ensureCallable('strlen');
-        assertEquals(3, $strlen('foo'));
+        assert($strlen('foo'), equals(3));
     }
 }

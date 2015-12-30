@@ -9,6 +9,12 @@
  */
 namespace stubbles\lang;
 use stubbles\streams\InputStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\contains;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Tests for stubbles\lang\ResourceLoader.
  *
@@ -39,7 +45,8 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     public function isAnnotatedAsSingleton()
     {
         assertTrue(
-                reflect\annotationsOf($this->resourceLoader)->contain('Singleton')
+                reflect\annotationsOf($this->resourceLoader)
+                        ->contain('Singleton')
         );
     }
 
@@ -69,9 +76,9 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function openLocalResourceReturnsInputStream()
     {
-        assertInstanceOf(
-                InputStream::class,
-                $this->resourceLoader->open('lang/stubbles.ini')
+        assert(
+                $this->resourceLoader->open('lang/stubbles.ini'),
+                isInstanceOf(InputStream::class)
         );
 
     }
@@ -82,9 +89,9 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function loadLocalResourceWithoutLoaderReturnsContent()
     {
-        assertEquals(
-                "[foo]\nbar=\"baz\"\n",
-                $this->resourceLoader->load('lang/stubbles.ini')
+        assert(
+                $this->resourceLoader->load('lang/stubbles.ini'),
+                equals("[foo]\nbar=\"baz\"\n")
         );
     }
 
@@ -94,8 +101,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function loadLocalResourceWithLoaderReturnsLoaderResult()
     {
-        assertEquals(
-                'foo',
+        assert(
                 $this->resourceLoader->load(
                         'lang/stubbles.ini',
                         function($resource)
@@ -107,7 +113,8 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
                             );
                             return 'foo';
                         }
-                )
+                ),
+                equals('foo')
         );
     }
 
@@ -117,9 +124,9 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function openResourceWithCompletePathInRootReturnsInputStream()
     {
-        assertInstanceOf(
-                InputStream::class,
-                $this->resourceLoader->open(__FILE__)
+        assert(
+                $this->resourceLoader->open(__FILE__),
+                isInstanceOf(InputStream::class)
         );
     }
 
@@ -129,9 +136,9 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function loadResourceWithCompletePathInRootWithoutLoaderReturnsContent()
     {
-        assertContains(
-                'loadResourceWithCompletePathInRootReturnsContent()',
-                $this->resourceLoader->load(__FILE__)
+        assert(
+                $this->resourceLoader->load(__FILE__),
+                contains('loadResourceWithCompletePathInRootReturnsContent()')
         );
     }
 
@@ -142,8 +149,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     public function loadLocalWithCompletePathWithLoaderReturnsLoaderResult()
     {
         $rootpath = new Rootpath();
-        assertEquals(
-                'foo',
+        assert(
                 $this->resourceLoader->load(
                         $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini'),
                         function($resource) use($rootpath)
@@ -154,7 +160,8 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
                             );
                             return 'foo';
                         }
-                )
+                ),
+                equals('foo')
         );
     }
 
@@ -205,14 +212,15 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfAllResourceUrisForExistingFile()
     {
-        assertEquals(
-                [(new Rootpath()) . DIRECTORY_SEPARATOR
-                 . 'src' . DIRECTORY_SEPARATOR
-                 . 'main' . DIRECTORY_SEPARATOR
-                 . 'resources' . DIRECTORY_SEPARATOR
-                 . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini'
-                ],
-                $this->resourceLoader->availableResourceUris('lang/stubbles.ini')
+        assert(
+                $this->resourceLoader->availableResourceUris('lang/stubbles.ini'),
+                equals([
+                        (new Rootpath()) . DIRECTORY_SEPARATOR
+                        . 'src' . DIRECTORY_SEPARATOR
+                        . 'main' . DIRECTORY_SEPARATOR
+                        . 'resources' . DIRECTORY_SEPARATOR
+                        . 'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini'
+                ])
         );
     }
 
@@ -221,9 +229,9 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsEmptyListOfAllResourceUrisForNonExistingFile()
     {
-        assertEquals(
-                [],
-                $this->resourceLoader->availableResourceUris('doesnot.exist')
+        assert(
+                $this->resourceLoader->availableResourceUris('doesnot.exist'),
+                equals([])
         );
     }
 }

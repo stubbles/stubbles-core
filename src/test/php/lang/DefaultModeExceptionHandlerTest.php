@@ -9,6 +9,10 @@
  */
 namespace stubbles\lang;
 use stubbles\lang\errorhandler\ExceptionHandler;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Mock class to be used as exception handler.
  */
@@ -94,11 +98,10 @@ class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function registerExceptionHandlerWithClassNameReturnsCreatedInstance()
     {
-        assertEquals(
-                '/tmp',
+        assert(
                 $this->defaultMode->setExceptionHandler(ModeExceptionHandler::class)
-                        ->registerExceptionHandler('/tmp')
-                        ->getProjectPath()
+                        ->registerExceptionHandler('/tmp'),
+                isInstanceOf(ModeExceptionHandler::class)
         );
     }
 
@@ -108,10 +111,10 @@ class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     public function registerExceptionHandlerWithInstanceReturnsGivenInstance()
     {
         $exceptionHandler = new ModeExceptionHandler('/tmp');
-        assertSame(
-                $exceptionHandler,
+        assert(
                 $this->defaultMode->setExceptionHandler($exceptionHandler)
-                        ->registerExceptionHandler('/tmp')
+                        ->registerExceptionHandler('/tmp'),
+                isSameAs($exceptionHandler)
         );
     }
 }

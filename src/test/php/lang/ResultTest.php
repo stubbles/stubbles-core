@@ -8,6 +8,11 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Tests for stubbles\lang\Result.
  *
@@ -22,10 +27,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function resultOfNullIsAlwaysSame()
     {
-        assertSame(
-                Result::of(null),
-                Result::of(null)
-        );
+        assert(Result::of(null), isSameAs(Result::of(null)));
     }
 
     /**
@@ -49,7 +51,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function valueReturnsResultValue()
     {
-        assertEquals(303, Result::of(303)->value());
+        assert(Result::of(303)->value(), equals(303));
     }
 
     /**
@@ -57,9 +59,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function filterOnResultOfNullReturnsResultOfNull()
     {
-        assertSame(
-                Result::of(null),
-                Result::of(null)->filter(function($value) { return true; })
+        assert(
+                Result::of(null)->filter(function($value) { return true; }),
+                isSameAs(Result::of(null))
         );
     }
 
@@ -68,9 +70,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function filterOnResultOfNonNullReturnsResultOfNullWhenPredicateDenies()
     {
-        assertSame(
-                Result::of(null),
-                Result::of(303)->filter(function($value) { return false; })
+        assert(
+                Result::of(303)->filter(function($value) { return false; }),
+                isSameAs(Result::of(null))
         );
     }
 
@@ -80,9 +82,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     public function filterOnResultOfNonNullReturnsResultWhenPredicateApproves()
     {
         $result = Result::of(303);
-        assertSame(
-                $result,
-                $result->filter(function($value) { return true; })
+        assert(
+                $result->filter(function($value) { return true; }),
+                isSameAs($result)
         );
     }
 
@@ -91,9 +93,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function mapResultOfNullReturnsResultOfNull()
     {
-        assertSame(
-                Result::of(null),
-                Result::of(null)->map(function($value) { return 909; })
+        assert(
+                Result::of(null)->map(function($value) { return 909; }),
+                isSameAs(Result::of(null))
         );
     }
 
@@ -102,9 +104,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function mapResultOfNonNullReturnsMappedResult()
     {
-        assertEquals(
-                Result::of(909),
-                Result::of(303)->map(function($value) { return 909; })
+        assert(
+                Result::of(303)->map(function($value) { return 909; }),
+                equals(Result::of(909))
         );
     }
 
@@ -113,7 +115,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function whenNullOnResultOfNullReturnsOther()
     {
-        assertEquals(909, Result::of(null)->whenNull(909)->value());
+        assert(Result::of(null)->whenNull(909)->value(), equals(909));
     }
 
     /**
@@ -121,7 +123,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function whenNullOnResultOfNonNullReturnsValue()
     {
-        assertEquals(303, Result::of(303)->whenNull(909)->value());
+        assert(Result::of(303)->whenNull(909)->value(), equals(303));
     }
 
     /**
@@ -129,11 +131,11 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function applyhenNullOnResultOfNullReturnsOther()
     {
-        assertEquals(
-                909,
+        assert(
                 Result::of(null)
                         ->applyWhenNull(function() { return 909; })
-                        ->value()
+                        ->value(),
+                equals(909)
         );
     }
 
@@ -142,11 +144,11 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function applyWhenNullOnResultOfNonNullReturnsValue()
     {
-        assertEquals(
-                303,
+        assert(
                 Result::of(303)
                         ->applyWhenNull(function() { return 909; })
-                        ->value()
+                        ->value(),
+                equals(303)
         );
     }
 
@@ -196,7 +198,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function whenEmptyOnResultOfEmptyReturnsOther($value)
     {
-        assertEquals(909, Result::of($value)->whenEmpty(909)->value());
+        assert(Result::of($value)->whenEmpty(909)->value(), equals(909));
     }
 
     /**
@@ -207,7 +209,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function whenEmptyOnResultOfNonEmptyReturnsValue($value)
     {
-        assertEquals($value, Result::of($value)->whenEmpty(909)->value());
+        assert(Result::of($value)->whenEmpty(909)->value(), equals($value));
     }
 
     /**
@@ -218,11 +220,11 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function applyhenEmptyOnResultOfEmptyReturnsOther($value)
     {
-        assertEquals(
-                909,
+        assert(
                 Result::of($value)
                         ->applyWhenEmpty(function() { return 909; })
-                        ->value()
+                        ->value(),
+                equals(909)
         );
     }
 
@@ -234,11 +236,11 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function applyWhenEmptyOnResultOfNonEmptyReturnsValue($value)
     {
-        assertEquals(
-                $value,
+        assert(
                 Result::of($value)
                         ->applyWhenEmpty(function() { return 909; })
-                        ->value()
+                        ->value(),
+                equals($value)
         );
     }
 }

@@ -9,6 +9,10 @@
  */
 namespace stubbles\lang;
 use stubbles\lang\errorhandler\ErrorHandler;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Mock class to be used as error handler.
  */
@@ -128,11 +132,10 @@ class ModeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function registerErrorHandlerWithClassNameReturnsCreatedInstance()
     {
-        assertEquals(
-                '/tmp',
+        assert(
                 $this->defaultMode->setErrorHandler(ModeErrorHandler::class)
-                        ->registerErrorHandler('/tmp')
-                        ->getProjectPath()
+                        ->registerErrorHandler('/tmp'),
+                isInstanceOf(ModeErrorHandler::class)
         );
     }
 
@@ -142,10 +145,10 @@ class ModeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function registerErrorHandlerWithInstanceReturnsGivenInstance()
     {
         $errorHandler = new ModeErrorHandler('/tmp');
-        assertSame(
-                $errorHandler,
+        assert(
                 $this->defaultMode->setErrorHandler($errorHandler)
-                        ->registerErrorHandler('/tmp')
+                        ->registerErrorHandler('/tmp'),
+                isSameAs($errorHandler)
         );
     }
 }

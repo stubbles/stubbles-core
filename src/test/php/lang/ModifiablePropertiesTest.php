@@ -9,6 +9,11 @@
  */
 namespace stubbles\lang;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Tests for stubbles\lang\ModifiableProperties.
  *
@@ -50,15 +55,23 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function setNonExistingSectionAddsSection()
+    public function setNonExistingSectionEnsuresSectionIsContained()
     {
         assertTrue(
                 $this->modifiableProperties->setSection('doesNotExist', ['foo' => 'bar'])
                         ->containSection('doesNotExist')
         );
-        assertEquals(
-                ['foo' => 'bar'],
-                $this->modifiableProperties->section('doesNotExist')
+    }
+
+    /**
+     * @test
+     */
+    public function setNonExistingSectionAddsSection()
+    {
+        assert(
+                $this->modifiableProperties->setSection('doesNotExist', ['foo' => 'bar'])
+                        ->section('doesNotExist'),
+                equals(['foo' => 'bar'])
         );
     }
 
@@ -67,10 +80,21 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setExistingSectionReplacesSection()
     {
-        assertEquals(
-                ['foo' => 'bar'],
+        assert(
                 $this->modifiableProperties->setSection('empty', ['foo' => 'bar'])
-                        ->section('empty')
+                        ->section('empty'),
+                equals(['foo' => 'bar'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setNonExistingValueForNonExistingSectionEnsuresSectionIsContained()
+    {
+        assertTrue(
+                $this->modifiableProperties->setValue('doesNotExist', 'foo', 'bar')
+                        ->containSection('doesNotExist')
         );
     }
 
@@ -79,13 +103,10 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setNonExistingValueForNonExistingSectionAddsSectionAndValue()
     {
-        assertTrue(
+        assert(
                 $this->modifiableProperties->setValue('doesNotExist', 'foo', 'bar')
-                        ->containSection('doesNotExist')
-        );
-        assertEquals(
-                ['foo' => 'bar'],
-                $this->modifiableProperties->section('doesNotExist')
+                        ->section('doesNotExist'),
+                equals(['foo' => 'bar'])
         );
     }
 
@@ -94,14 +115,15 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setNonExistingValueForExistingSectionAddsValueToSection()
     {
-        assertEquals(
-                ['stringValue' => 'bar',
-                 'intValue'    => '303',
-                 'floatValue'  => '3.13',
-                 'boolValue'   => 'true'
-                ],
+        assert(
                 $this->modifiableProperties->setValue('scalar', 'stringValue', 'bar')
-                        ->section('scalar')
+                        ->section('scalar'),
+                equals([
+                        'stringValue' => 'bar',
+                        'intValue'    => '303',
+                        'floatValue'  => '3.13',
+                        'boolValue'   => 'true'
+                ])
         );
     }
 
@@ -110,10 +132,10 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setExistingValueForExistingSectionReplacesValueInSection()
     {
-        assertEquals(
-                ['foo' => 'bar'],
+        assert(
                 $this->modifiableProperties->setValue('empty', 'foo', 'bar')
-                        ->section('empty')
+                        ->section('empty'),
+                equals(['foo' => 'bar'])
         );
     }
 
@@ -122,10 +144,10 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setBooleanTrueTransformsToPropertyStorage()
     {
-        assertEquals(
-                ['foo' => 'true'],
+        assert(
                 $this->modifiableProperties->setBooleanValue('empty', 'foo', true)
-                        ->section('empty')
+                        ->section('empty'),
+                equals(['foo' => 'true'])
         );
     }
 
@@ -134,10 +156,10 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setBooleanFalseTransformsToPropertyStorage()
     {
-        assertEquals(
-                ['foo' => 'false'],
+        assert(
                 $this->modifiableProperties->setBooleanValue('empty', 'foo', false)
-                        ->section('empty')
+                        ->section('empty'),
+                equals(['foo' => 'false'])
         );
     }
 
@@ -146,10 +168,10 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setArrayValueTransformsToPropertyStorage()
     {
-        assertEquals(
-                ['foo' => '1|2|3'],
+        assert(
                 $this->modifiableProperties->setArrayValue('empty', 'foo', [1, 2, 3])
-                        ->section('empty')
+                        ->section('empty'),
+                equals(['foo' => '1|2|3'])
         );
     }
 
@@ -158,13 +180,13 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setHashValueTransformsToPropertyStorage()
     {
-        assertEquals(
-                ['foo' => '1:10|2:20|3:30'],
+        assert(
                 $this->modifiableProperties->setHashValue(
                         'empty',
                         'foo',
                         [1 => 10, 2 => 20, 3 => 30]
-                )->section('empty')
+                )->section('empty'),
+                equals(['foo' => '1:10|2:20|3:30'])
         );
     }
 
@@ -173,13 +195,13 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setIntegerRangeValueTransformsToPropertyStorage()
     {
-        assertEquals(
-                ['foo' => '1..5'],
+        assert(
                 $this->modifiableProperties->setRangeValue(
                         'empty',
                         'foo',
                         [1, 2, 3, 4, 5]
-                )->section('empty')
+                )->section('empty'),
+                equals(['foo' => '1..5'])
         );
     }
 
@@ -188,13 +210,13 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setReverseIntegerRangeValueTransformsToPropertyStorage()
     {
-        assertEquals(
-                ['foo' => '5..1'],
+        assert(
                 $this->modifiableProperties->setRangeValue(
                         'empty',
                         'foo',
                         [5, 4, 3, 2, 1]
-                )->section('empty')
+                )->section('empty'),
+                equals(['foo' => '5..1'])
         );
     }
 
@@ -203,13 +225,13 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setCharacterRangeValueTransformsToPropertyStorage()
     {
-        assertEquals(
-                ['foo' => 'a..e'],
+        assert(
                 $this->modifiableProperties->setRangeValue(
                         'empty',
                         'foo',
                         ['a', 'b', 'c', 'd', 'e']
-                )->section('empty')
+                )->section('empty'),
+                equals(['foo' => 'a..e'])
         );
     }
 
@@ -218,13 +240,13 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setReverseCharacterRangeValueTransformsToPropertyStorage()
     {
-        assertEquals(
-                ['foo' => 'e..a'],
+        assert(
                 $this->modifiableProperties->setRangeValue(
                         'empty',
                         'foo',
                         ['e', 'd', 'c', 'b', 'a']
-                )->section('empty')
+                )->section('empty'),
+                equals(['foo' => 'e..a'])
         );
     }
 
@@ -260,9 +282,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
                  ->at($root)
                  ->withContent("[foo]\nbar=baz");
         $properties = ModifiableProperties::fromFile(vfsStream::url('config/test.ini'));
-        assertInstanceOf(ModifiableProperties::class, $properties);
-        assertTrue($properties->containSection('foo'));
-        assertEquals(['bar' => 'baz'], $properties->section('foo'));
+        assert($properties->section('foo'), equals(['bar' => 'baz']));
     }
 
     /**
@@ -284,9 +304,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
     public function validIniStringReturnsInstance()
     {
         $properties = ModifiableProperties::fromString("[foo]\nbar=baz");
-        assertInstanceOf(ModifiableProperties::class, $properties);
-        assertTrue($properties->containSection('foo'));
-        assertEquals(['bar' => 'baz'], $properties->section('foo'));
+        assert($properties->section('foo'), equals(['bar' => 'baz']));
     }
 
     /**
@@ -295,9 +313,9 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function mergeReturnsModifiableProperties()
     {
-        assertInstanceOf(
-                ModifiableProperties::class,
-                $this->modifiableProperties->merge(new Properties([]))
+        assert(
+                $this->modifiableProperties->merge(new Properties([])),
+                isInstanceOf(ModifiableProperties::class)
         );
     }
 
@@ -307,9 +325,9 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function unmodifiableTurnsModifiableIntoNonModifiableProperties()
     {
-        assertInstanceOf(
-                Properties::class,
-                $this->modifiableProperties->unmodifiable()
+        assert(
+                $this->modifiableProperties->unmodifiable(),
+                isInstanceOf(Properties::class)
         );
     }
 }
