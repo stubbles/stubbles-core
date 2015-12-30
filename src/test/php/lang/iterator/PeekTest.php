@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\lang\iterator;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\iterator\Peek.
  *
@@ -29,7 +31,7 @@ class PeekTest extends \PHPUnit_Framework_TestCase
             // do nothing
         }
 
-        assertEquals('foobarbaz', $result);
+        assert($result, equals('foobarbaz'));
     }
 
     /**
@@ -43,7 +45,7 @@ class PeekTest extends \PHPUnit_Framework_TestCase
             // do nothing
         }
 
-        assertEquals('foobarbaz', $result);
+        assert($result, equals('foobarbaz'));
     }
 
     /**
@@ -57,6 +59,6 @@ class PeekTest extends \PHPUnit_Framework_TestCase
             $i++;
         }
 
-        assertEquals(3, $i);
+        assert($i, equals(3));
     }
 }

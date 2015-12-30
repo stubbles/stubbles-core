@@ -9,6 +9,12 @@
  */
 namespace stubbles\lang\reflect\annotation;
 use org\bovigo\vfs\vfsStream;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\hasKey;
 /**
  * Test for stubbles\lang\reflect\annotation\AnnotationCache.
  *
@@ -54,9 +60,19 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
         AnnotationCache::put($annotations);
         AnnotationCache::__shutdown();
         assertTrue(file_exists(vfsStream::url('root/annotations.cache')));
+    }
+
+    /**
+     * @test
+     */
+    public function cacheFileContainsSerializedAnnotationData()
+    {
+        $annotations = new Annotations('someTarget');
+        AnnotationCache::put($annotations);
+        AnnotationCache::__shutdown();
         $data = unserialize(file_get_contents(vfsStream::url('root/annotations.cache')));
-        assertTrue(isset($data['someTarget']));
-        assertEquals($annotations, unserialize($data['someTarget']));
+        assert($data, hasKey('someTarget'));
+        assert(unserialize($data['someTarget']), equals($annotations));
     }
 
     /**

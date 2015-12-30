@@ -8,6 +8,11 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for stubbles\lang\reflect\annotation\Annotations.
  *
@@ -47,8 +52,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function containsAddedAnnotation()
     {
         assertTrue(
-                $this->annotations->add(new Annotation('foo'))
-                                  ->contain('foo')
+                $this->annotations->add(new Annotation('foo'))->contain('foo')
         );
     }
 
@@ -59,8 +63,8 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     {
         assertTrue(
                 $this->annotations->add(new Annotation('foo'))
-                                  ->add(new Annotation('foo'))
-                                  ->contain('foo')
+                        ->add(new Annotation('foo'))
+                        ->contain('foo')
         );
     }
 
@@ -71,11 +75,11 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function firstNamedReturnsFirstAddedAnnotationWithThisName()
     {
         $first = new Annotation('foo');
-        assertSame(
-                $first,
+        assert(
                 $this->annotations->add($first)
-                                  ->add(new Annotation('foo'))
-                                  ->firstNamed('foo')
+                        ->add(new Annotation('foo'))
+                        ->firstNamed('foo'),
+                isSameAs($first)
         );
     }
 
@@ -94,10 +98,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsEmptyListIfNoneOfThisTypeAdded()
     {
-        assertEquals(
-                [],
-                $this->annotations->named('foo')
-        );
+        assert($this->annotations->named('foo'), equals([]));
     }
 
     /**
@@ -105,14 +106,12 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsAllAnnotationsOfThisType()
     {
-        assertEquals(
-                [new Annotation('foo'),
-                 new Annotation('foo')
-                ],
+        assert(
                 $this->annotations->add(new Annotation('foo'))
-                                  ->add(new Annotation('bar'))
-                                  ->add(new Annotation('foo'))
-                                  ->named('foo')
+                        ->add(new Annotation('bar'))
+                        ->add(new Annotation('foo'))
+                        ->named('foo'),
+                equals([new Annotation('foo'), new Annotation('foo')])
         );
     }
 
@@ -121,15 +120,16 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsAllAnnotations()
     {
-        assertEquals(
-                [new Annotation('foo'),
-                 new Annotation('foo'),
-                 new Annotation('bar')
-                ],
+        assert(
                 $this->annotations->add(new Annotation('foo'))
-                                  ->add(new Annotation('bar'))
-                                  ->add(new Annotation('foo'))
-                                  ->all()
+                        ->add(new Annotation('bar'))
+                        ->add(new Annotation('foo'))
+                        ->all(),
+                equals([
+                        new Annotation('foo'),
+                        new Annotation('foo'),
+                        new Annotation('bar')
+                ])
         );
     }
 
@@ -139,14 +139,14 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function canIteratorOverAllAnnotations()
     {
         $this->annotations->add(new Annotation('foo'))
-                          ->add(new Annotation('bar'))
-                          ->add(new Annotation('foo'));
+                ->add(new Annotation('bar'))
+                ->add(new Annotation('foo'));
         $types = [];
         foreach ($this->annotations as $annotation) {
             $types[] = $annotation->getAnnotationName();
         }
 
-        assertEquals(['foo', 'foo', 'bar'], $types);
+        assert($types, equals(['foo', 'foo', 'bar']));
     }
 
 }

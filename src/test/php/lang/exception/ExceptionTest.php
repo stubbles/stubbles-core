@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\lang\exception;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\exception\Exception.
  *
@@ -17,27 +19,14 @@ namespace stubbles\lang\exception;
 class ExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * instance to be used for tests
-     *
-     * @type  Exception
-     */
-    private $exception;
-
-    /**
-     * set up test environment
-     */
-    public function setUp()
-    {
-        $this->exception = new Exception('message');
-    }
-
-    /**
      * @test
      */
     public function toStringResult()
     {
-        assertEquals("stubbles\lang\\exception\Exception {\n    message(string): message\n    file(string): " . __FILE__ . "\n    line(integer): " . $this->exception->getLine() . "\n    code(integer): 0\n    stacktrace(string): " . $this->exception->getTraceAsString() . "\n}\n",
-                            (string) $this->exception
+        $exception = new Exception('message');
+        assert(
+                (string) $exception,
+                equals("stubbles\lang\\exception\Exception {\n    message(string): message\n    file(string): " . __FILE__ . "\n    line(integer): " . $exception->getLine() . "\n    code(integer): 0\n    stacktrace(string): " . $exception->getTraceAsString() . "\n}\n")
         );
     }
 }

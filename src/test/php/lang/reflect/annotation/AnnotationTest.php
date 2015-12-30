@@ -9,6 +9,12 @@
  */
 namespace stubbles\lang\reflect\annotation;
 use stubbles\lang\Enum;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isOfType;
 /**
  * Helper class for the test.
  */
@@ -48,10 +54,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsGivenTargetName()
     {
-        assertEquals(
-                'someFunction()',
-                $this->createAnnotation()->target()
-        );
+        assert($this->createAnnotation()->target(), equals('someFunction()'));
     }
 
     /**
@@ -79,12 +82,8 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function returnsSpecialValueForAllMethodCallsWithGet()
     {
         $annotation = $this->createSingleValueAnnotation('bar');
-        assertEquals('bar',
-                            $annotation->getFoo()
-        );
-        assertEquals('bar',
-                            $annotation->getOther()
-        );
+        assert($annotation->getFoo(), equals('bar'));
+        assert($annotation->getOther(), equals('bar'));
     }
 
     /**
@@ -126,7 +125,8 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function returnsTrueOnCheckForSetProperty()
     {
         assertTrue(
-                $this->createAnnotation(['foo' => 'hello'])->hasValueByName('foo')
+                $this->createAnnotation(['foo' => 'hello'])
+                        ->hasValueByName('foo')
         );
     }
 
@@ -147,9 +147,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsDefaultForUnsetProperty()
     {
-        assertEquals(
-                'bar',
-                $this->createAnnotation()->getValueByName('foo', 'bar')
+        assert(
+                $this->createAnnotation()->getValueByName('foo', 'bar'),
+                equals('bar')
         );
     }
 
@@ -160,9 +160,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsValueForSetProperty()
     {
-        assertEquals(
-                'hello',
-                $this->createAnnotation(['foo' => 'hello'])->getValueByName('foo')
+        assert(
+                $this->createAnnotation(['foo' => 'hello'])->getValueByName('foo'),
+                equals('hello')
         );
     }
 
@@ -187,9 +187,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsValueOfGetProperty()
     {
-        assertEquals(
-                'bar',
-                $this->createAnnotation(['foo' => 'bar'])->getFoo()
+        assert(
+                $this->createAnnotation(['foo' => 'bar'])->getFoo(),
+                equals('bar')
         );
     }
 
@@ -198,9 +198,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsFirstArgumentIfGetPropertyNotSet()
     {
-        assertEquals(
-                'bar',
-                $this->createAnnotation()->getFoo('bar')
+        assert(
+                $this->createAnnotation()->getFoo('bar'),
+                equals('bar')
         );
     }
 
@@ -250,9 +250,8 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function returnTrueForPropertyCheckIfPropertySet()
     {
-        $annotation = $this->createAnnotation(['foo' => 'bar', 'baz' => 'true']);
+        $annotation = $this->createAnnotation(['foo' => 'bar']);
         assertTrue($annotation->hasFoo());
-        assertTrue($annotation->hasBaz());
     }
 
     /**
@@ -261,7 +260,6 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function returnFalseForPropertyCheckIfPropertyNotSet()
     {
         assertFalse($this->createAnnotation()->hasFoo());
-        assertFalse($this->createAnnotation()->hasBaz());
     }
 
     /**
@@ -269,9 +267,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function canAccessPropertyAsMethod()
     {
-        assertEquals(
-                'bar',
-                $this->createAnnotation(['foo' => 'bar'])->foo()
+        assert(
+                $this->createAnnotation(['foo' => 'bar'])->foo(),
+                equals('bar')
         );
     }
 
@@ -314,9 +312,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesValuesToTypes($expected, $stringValue)
     {
-        assertEquals(
-                $expected,
-                $this->createAnnotation(['foo' => $stringValue])->foo()
+        assert(
+                $this->createAnnotation(['foo' => $stringValue])->foo(),
+                equals($expected)
         );
     }
 
@@ -330,9 +328,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesValuesToTypesWithGet($expected, $stringValue)
     {
-        assertEquals(
-                $expected,
-                $this->createAnnotation(['foo' => $stringValue])->getFoo()
+        assert(
+                $this->createAnnotation(['foo' => $stringValue])->getFoo(),
+                equals($expected)
         );
     }
 
@@ -346,9 +344,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesValuesToTypesWithGetValueByName($expected, $stringValue)
     {
-        assertEquals(
-                $expected,
-                $this->createAnnotation(['foo' => $stringValue])->getValueByName('foo')
+        assert(
+                $this->createAnnotation(['foo' => $stringValue])->getValueByName('foo'),
+                equals($expected)
         );
     }
 
@@ -362,9 +360,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function parsesValuesToTypesWithSingleValue($expected, $stringValue)
     {
-        assertEquals(
-                $expected,
-                $this->createSingleValueAnnotation($stringValue)->getValue()
+        assert(
+                $this->createSingleValueAnnotation($stringValue)->getValue(),
+                equals($expected)
         );
     }
 
@@ -374,9 +372,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function canBeCastedToString()
     {
-        assertInternalType(
-                'string',
-                (string) $this->createAnnotation(['foo' => 'value'])
+        assert(
+                (string) $this->createAnnotation(['foo' => 'value']),
+                isOfType('string')
         );
     }
 
@@ -409,6 +407,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      */
     public function parseReturnsValueCastedToRecognizedType($expected, $value, $type)
     {
-        assertEquals($expected, $this->createAnnotation(['foo' => $value])->parse('foo')->$type());
+        assert(
+                $this->createAnnotation(['foo' => $value])->parse('foo')->$type(),
+                equals($expected)
+        );
     }
 }

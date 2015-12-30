@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\lang\exception;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\exception\FileNotFoundException.
  *
@@ -23,9 +25,9 @@ class FileNotFoundExceptionTest extends \PHPUnit_Framework_TestCase
     public function fileNameIsUsedForErrorMessage()
     {
         $fnfe = new FileNotFoundException('example.txt');
-        assertEquals(
-                'The file example.txt could not be found or is not readable.',
-                $fnfe->getMessage()
+        assert(
+                $fnfe->getMessage(),
+                equals('The file example.txt could not be found or is not readable.')
         );
     }
 }

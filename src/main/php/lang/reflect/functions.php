@@ -167,8 +167,9 @@ namespace stubbles\lang\reflect {
         return Sequence::of(
                 null === $filter ? $class->getMethods() : $class->getMethods($filter)
         )->mapKeys(
-                function($key, \ReflectionMethod $method)
+                function($key, \ReflectionMethod $method = null)
                 {
+                    if (null === $method) { var_dump($key); return $key; }
                     return $method->getName();
                 }
         );

@@ -8,6 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\lang\iterator;
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\iterator\Generator.
  *
@@ -33,9 +35,9 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $result[$key] = $value;
         }
 
-        assertEquals(
-                [0 => 2, 1 => 4, 2 => 6, 3 => 8, 4 => 10, 5 => 12, 6 => 14],
-                $result
+        assert(
+                $result,
+                equals([0 => 2, 1 => 4, 2 => 6, 3 => 8, 4 => 10, 5 => 12, 6 => 14])
         );
     }
 
@@ -59,7 +61,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $result2[$key] = $value;
         }
 
-        assertEquals($result1, $result2);
+        assert($result1, equals($result2));
     }
 
     /**
@@ -71,12 +73,11 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         foreach (Generator::infinite(0, function($value) { return $value + 2; }) as $key => $value) {
             if (1000 > $key) {
                 $i++;
-                assertEquals($key * 2, $value);
             } else {
                 break;
             }
         }
 
-        assertEquals(1000, $i);
+        assert($i, equals(1000));
     }
 }
