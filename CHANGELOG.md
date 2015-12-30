@@ -15,6 +15,7 @@
 
   * added `stubbles\ioc\Binder::createInjector(callable ...$applyBindings)`
   * removed seeking restrictions on `stubbles\streams\StandardInputStream`
+  * fixed `stubbles\lang\iterator\MappingIterator` calling value- and key-mapper when end of iteration reached
 
 
 6.3.0 (2015-07-01)

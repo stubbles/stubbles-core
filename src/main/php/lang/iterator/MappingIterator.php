@@ -55,6 +55,10 @@ class MappingIterator extends \IteratorIterator
      */
     public function current()
     {
+        if (!$this->valid()) {
+            return null;
+        }
+
         if (null === $this->valueMapper) {
             return parent::current();
         }
@@ -70,6 +74,10 @@ class MappingIterator extends \IteratorIterator
      */
     public function key()
     {
+        if (!$this->valid()) {
+            return null;
+        }
+
         if (null === $this->keyMapper) {
             return parent::key();
         }

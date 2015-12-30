@@ -8,6 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\lang\iterator;
+use function bovigo\assert\assert;
+use function bovigo\assert\fail;
+use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\lang\iterator\MappingIterator.
  *
@@ -33,11 +36,11 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
     public function mapsValueOnIteration()
     {
         $mapping = new MappingIterator(
-                new \ArrayIterator(['foo', 'bar', 'baz']),
-                function($value) { return 'mappedValue'; }
+                new \ArrayIterator(['foo']),
+                function($value) { return 'bar'; }
         );
         foreach ($mapping as $value) {
-            assertEquals('mappedValue', $value);
+            assert($value, equals('bar'));
         }
     }
 
@@ -47,11 +50,11 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
     public function valueMapperCanOptionallyReceiveKey()
     {
         $mapping = new MappingIterator(
-                new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
-                function($value, $key) { assertEquals($value, $key); return 'mappedValue'; }
+                new \ArrayIterator(['foo' => 'bar']),
+                function($value, $key) { return $key; }
         );
         foreach ($mapping as $value) {
-            // intentionally empty
+            assert($value, equals('foo'));
         }
     }
 
@@ -62,12 +65,12 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
     public function keyMapperCanOptionallyReceiveValue()
     {
         $mapping = new MappingIterator(
-                new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
+                new \ArrayIterator(['foo' => 'bar']),
                 null,
-                function($key, $value) { assertEquals($value, $key); return 'mappedKey'; }
+                function($key, $value) { return $value; }
         );
-        foreach ($mapping as $value) {
-            // intentionally empty
+        foreach ($mapping as $key => $value) {
+            assert($key, equals('bar'));
         }
     }
 
@@ -77,8 +80,8 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
     public function valueMapperReceivesUnmappedKey()
     {
         $mapping = new MappingIterator(
-                new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
-                function($value, $key) { assertEquals($value, $key); return 'mappedValue'; },
+                new \ArrayIterator(['foo' => 'bar']),
+                function($value, $key) { assert($key, equals('foo')); return 'mappedValue'; },
                 function($key) { return 'mappedKey'; }
         );
         foreach ($mapping as $key => $value) {
@@ -93,9 +96,9 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
     public function keyMapperReceivesUnmappedValue()
     {
         $mapping = new MappingIterator(
-                new \ArrayIterator(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz']),
+                new \ArrayIterator(['foo' => 'bar']),
                 function($value) { return 'mappedValue'; },
-                function($key, $value) { assertEquals($value, $key); return 'mappedKey'; }
+                function($key, $value) { assert($value, equals('bar')); return 'mappedKey'; }
         );
         foreach ($mapping as $key => $value) {
             // intentionally empty
@@ -118,7 +121,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
             $values[] = $value;
         }
 
-        assertEquals([303, 808, '909'], $values);
+        assert($values, equals([303, 808, '909']));
     }
 
     /**
@@ -135,7 +138,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
             $keys[] = $key;
         }
 
-        assertEquals(['foo', 'bar', 'baz'], $keys);
+        assert($keys, equals(['foo', 'bar', 'baz']));
     }
 
     /**
@@ -149,7 +152,38 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase
                 function($key) { return 'mappedKey'; }
         );
         foreach ($mapping as $key => $value) {
-            assertEquals('mappedKey', $key);
+            $keys[] = $key;
         }
+
+        assert($keys, equals(['mappedKey', 'mappedKey', 'mappedKey']));
+    }
+
+    /**
+     * @test
+     * @since  7.0.0
+     */
+    public function doesNotCallValueMapperWhenEndOfIteratorReached()
+    {
+        $mapping = new MappingIterator(
+                new \ArrayIterator(['foo' => 303]),
+                function() { fail('Should never be called'); }
+        );
+        $mapping->next();
+        assertNull($mapping->current());
+    }
+
+    /**
+     * @test
+     * @since  7.0.0
+     */
+    public function doesNotCallKeyMapperWhenEndOfIteratorReached()
+    {
+        $mapping = new MappingIterator(
+                new \ArrayIterator(['foo' => 303]),
+                function() { fail('Value mapper never be called'); },
+                function() { fail('Key mapper never be called'); }
+        );
+        $mapping->next();
+        assertNull($mapping->key());
     }
 }

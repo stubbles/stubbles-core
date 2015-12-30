@@ -14,12 +14,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-assert.git",
-                "reference": "ea6632807e0e31e70de98de19cd66754c605c840"
+                "reference": "5ba92d9de59067be28bddbd103b0e9855c4ca2ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/ea6632807e0e31e70de98de19cd66754c605c840",
-                "reference": "ea6632807e0e31e70de98de19cd66754c605c840",
+                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/5ba92d9de59067be28bddbd103b0e9855c4ca2ba",
+                "reference": "5ba92d9de59067be28bddbd103b0e9855c4ca2ba",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Provides assertions for unit tests.",
-            "time": "2015-12-29 20:24:58"
+            "time": "2015-12-30 12:06:24"
         },
         {
             "name": "bovigo/callmap",
