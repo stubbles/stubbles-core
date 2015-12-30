@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\predicate;
+use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 /**
  * Test for stubbles\predicate\AndPredicate.

@@ -12,6 +12,7 @@ use stubbles\lang\Enum;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isOfType;

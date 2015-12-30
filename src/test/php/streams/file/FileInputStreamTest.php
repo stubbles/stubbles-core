@@ -84,13 +84,13 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
     public function seek_SET()
     {
         $fileInputStream = new FileInputStream(vfsStream::url('home/test.txt'));
-        assertEquals(0, $fileInputStream->tell());
+        assert($fileInputStream->tell(), equals(0));
         $fileInputStream->seek(2);
-        assertEquals(2, $fileInputStream->tell());
-        assertEquals('o', $fileInputStream->readLine());
+        assert($fileInputStream->tell(), equals(2));
+        assert($fileInputStream->readLine(), equals('o'));
         $fileInputStream->seek(0, Seekable::SET);
-        assertEquals(0, $fileInputStream->tell());
-        assertEquals('foo', $fileInputStream->readLine());
+        assert($fileInputStream->tell(), equals(0));
+        assert($fileInputStream->readLine(), equals('foo'));
     }
 
     /**

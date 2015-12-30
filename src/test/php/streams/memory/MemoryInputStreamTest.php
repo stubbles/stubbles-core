@@ -12,6 +12,7 @@ use stubbles\streams\Seekable;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 /**
@@ -81,10 +82,10 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function hasRNoBytesLeftWhenEverythingWasRead()
+    public function hasNoBytesLeftWhenEverythingWasRead()
     {
         $this->memoryInputStream->read();
-        assertEquals(0, $this->memoryInputStream->bytesLeft());
+        assert($this->memoryInputStream->bytesLeft(), equals(0));
     }
 
     /**
@@ -93,7 +94,7 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     public function pointerIsAtLastPositionWhenEverythingWasRead()
     {
         $this->memoryInputStream->read();
-        assertEquals(11, $this->memoryInputStream->tell());
+        assert($this->memoryInputStream->tell(), equals(11));
     }
 
     /**
@@ -157,7 +158,7 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $this->memoryInputStream->readLine();
         $this->memoryInputStream->readLine();
-        assertEquals(0, $this->memoryInputStream->bytesLeft());
+        assert($this->memoryInputStream->bytesLeft(), equals(0));
     }
 
     /**
@@ -167,7 +168,7 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $this->memoryInputStream->readLine();
         $this->memoryInputStream->readLine();
-        assertEquals(11, $this->memoryInputStream->tell());
+        assert($this->memoryInputStream->tell(), equals(11));
     }
 
     /**
@@ -205,8 +206,8 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     public function seekCanSetAbsolutePosition()
     {
         $this->memoryInputStream->seek(6);
-        assertEquals(6, $this->memoryInputStream->tell());
-        assertEquals(5, $this->memoryInputStream->bytesLeft());
+        assert($this->memoryInputStream->tell(), equals(6));
+        assert($this->memoryInputStream->bytesLeft(), equals(5));
     }
 
     /**
@@ -218,8 +219,8 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     {
         $this->memoryInputStream->read(4);
         $this->memoryInputStream->seek(2, Seekable::CURRENT);
-        assertEquals(6, $this->memoryInputStream->tell());
-        assertEquals(5, $this->memoryInputStream->bytesLeft());
+        assert($this->memoryInputStream->tell(), equals(6));
+        assert($this->memoryInputStream->bytesLeft(), equals(5));
     }
 
     /**
@@ -228,8 +229,8 @@ class MemoryInputStreamTest extends \PHPUnit_Framework_TestCase
     public function seekCanSetPositionFromEnd()
     {
         $this->memoryInputStream->seek(-5, Seekable::END);
-        assertEquals(6, $this->memoryInputStream->tell());
-        assertEquals(5, $this->memoryInputStream->bytesLeft());
+        assert($this->memoryInputStream->tell(), equals(6));
+        assert($this->memoryInputStream->bytesLeft(), equals(5));
     }
 
     /**

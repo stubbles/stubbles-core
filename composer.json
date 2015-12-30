@@ -29,7 +29,6 @@
             "stubbles\\test\\": "src/test/helper"
         },
         "files": [
-            "vendor/bovigo/assert/src/main/php/functions.php",
             "src/test/helper/functions.php"
         ]
     },

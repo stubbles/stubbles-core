@@ -9,6 +9,7 @@
  */
 namespace stubbles\lang\iterator;
 use function bovigo\assert\assert;
+use function bovigo\assert\assertNull;
 use function bovigo\assert\fail;
 use function bovigo\assert\predicate\equals;
 /**

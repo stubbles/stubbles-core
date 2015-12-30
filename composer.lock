@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cb937a3fc32cd38bc27a69726bcbad18",
+    "hash": "62edb7932de1c123f88eb4b54be52428",
     "content-hash": "3eb626afbfba55eb04f075106ec04f52",
     "packages": [],
     "packages-dev": [
@@ -14,12 +14,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-assert.git",
-                "reference": "5ba92d9de59067be28bddbd103b0e9855c4ca2ba"
+                "reference": "656ebc0d9685c7ffc271e6fcfefb3e904643478d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/5ba92d9de59067be28bddbd103b0e9855c4ca2ba",
-                "reference": "5ba92d9de59067be28bddbd103b0e9855c4ca2ba",
+                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/656ebc0d9685c7ffc271e6fcfefb3e904643478d",
+                "reference": "656ebc0d9685c7ffc271e6fcfefb3e904643478d",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Provides assertions for unit tests.",
-            "time": "2015-12-30 12:06:24"
+            "time": "2015-12-30 12:35:24"
         },
         {
             "name": "bovigo/callmap",

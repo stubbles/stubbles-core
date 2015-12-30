@@ -107,9 +107,9 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
                         function($resource)
                         {
                             $rootpath = new Rootpath();
-                            assertEquals(
-                                    $resource,
-                                    $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini')
+                            assert(
+                                    $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini'),
+                                    equals($resource)
                             );
                             return 'foo';
                         }
@@ -154,9 +154,9 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
                         $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini'),
                         function($resource) use($rootpath)
                         {
-                            assertEquals(
-                                    $resource,
-                                    $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini')
+                            assert(
+                                    $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini'),
+                                    equals($resource)
                             );
                             return 'foo';
                         }
