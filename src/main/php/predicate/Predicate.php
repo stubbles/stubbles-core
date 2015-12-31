@@ -13,6 +13,8 @@ namespace stubbles\predicate;
  *
  * @api
  * @since  4.0.0
+ * @method  \stubbles\predicate\Predicate  and(\stubbles\predicate\Predicate|callable $predicate)
+ * @method  \stubbles\predicate\Predicate  or(\stubbles\predicate\Predicate|callable $predicate)
  */
 abstract class Predicate
 {
@@ -60,6 +62,7 @@ abstract class Predicate
      *
      * @param   \stubbles\predicate\Predicate|callable  $other
      * @return  \stubbles\predicate\Predicate
+     * @deprecated  since 7.0.0, use or($other) instead, will be removed with 8.0.0
      */
     public function asWellAs($other)
     {
@@ -71,10 +74,37 @@ abstract class Predicate
      *
      * @param   \stubbles\predicate\Predicate|callable  $other
      * @return  \stubbles\predicate\Predicate
+     * @deprecated  since 7.0.0, use or($other) instead, will be removed with 8.0.0
      */
     public function orElse($other)
     {
         return new OrPredicate($this, self::castFrom($other));
+    }
+
+    /**
+     * provide utility methods "and" and "or" to combine predicates
+     *
+     * @param   string   $method
+     * @param   mixed[]  $arguments
+     * @return  \stubbles\predicate\Predicate
+     * @throws  \BadMethodCallException
+     * @since   1.4.0
+     */
+    public function __call($method, $arguments)
+    {
+        switch ($method) {
+            case 'and':
+                return $this->asWellAs(...$arguments);
+
+            case 'or':
+                return $this->orElse(...$arguments);
+
+            default:
+                throw new \BadMethodCallException(
+                        'Call to undefined method '
+                        . get_class($this) . '->' . $method . '()'
+                );
+        }
     }
 
     /**

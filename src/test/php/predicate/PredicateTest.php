@@ -81,7 +81,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     {
         $predicate = new FooPredicate();
         assert(
-                $predicate->asWellAs(function($value) { return 'foo' === $value; }),
+                $predicate->and(function($value) { return 'foo' === $value; }),
                 isInstanceOf(AndPredicate::class)
         );
     }
@@ -93,7 +93,7 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     {
         $predicate = new FooPredicate();
         assert(
-                $predicate->orElse(function($value) { return 'foo' === $value; }),
+                $predicate->or(function($value) { return 'foo' === $value; }),
                 isInstanceOf(OrPredicate::class)
         );
     }
@@ -105,5 +105,15 @@ class PredicateTest extends \PHPUnit_Framework_TestCase
     {
         $predicate = new FooPredicate();
         assert($predicate->negate(), isInstanceOf(NegatePredicate::class));
+    }
+
+    /**
+     * @test
+     * @expectedException  BadMethodCallException
+     * @since  7.0.0
+     */
+    public function callToUndefinedMethodThrowsBadMethodCallException()
+    {
+        (new FooPredicate())->noWay();
     }
 }
