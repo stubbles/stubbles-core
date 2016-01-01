@@ -7,8 +7,9 @@
  *
  * @package  stubbles
  */
-namespace stubbles\ioc\module;
+namespace stubbles;
 use stubbles\ioc\Binder;
+use stubbles\ioc\module\BindingModule;
 use stubbles\lang\Mode;
 /**
  * Binding module to configure the binder with a runtime mode.

@@ -10,7 +10,6 @@
 namespace stubbles;
 use stubbles\ioc\Binder;
 use stubbles\ioc\module\BindingModule;
-use stubbles\ioc\module\Runtime;
 /**
  * Application base class.
  */
@@ -120,13 +119,13 @@ abstract class App
      * creates mode binding module
      *
      * @api
-     * @param   \stubbles\lang\Mode|callable  $mode  optional  runtime mode
-     * @return  \stubbles\ioc\module\Runtime
+     * @param   \stubbles\Environment|callable  $environment  optional  current environment
+     * @return  \stubbles\Runtime
      * @since   2.0.0
      */
-    protected static function runtime($mode = null)
+    protected static function runtime($environment = null)
     {
-        return new Runtime($mode);
+        return new Runtime($environment);
     }
 
     /**

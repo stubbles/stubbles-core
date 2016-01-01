@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\ioc\module;
+namespace stubbles;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
 use stubbles\lang\Mode;
@@ -22,8 +22,7 @@ use function bovigo\callmap\verify;
 /**
  * Test for stubbles\ioc\module\Runtime.
  *
- * @group  ioc
- * @group  ioc_module
+ * @group  app
  */
 class RuntimeTest extends \PHPUnit_Framework_TestCase
 {

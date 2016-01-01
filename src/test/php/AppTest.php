@@ -10,7 +10,6 @@
 namespace stubbles;
 use stubbles\ioc\Binder;
 use stubbles\ioc\Injector;
-use stubbles\ioc\module\Runtime;
 use stubbles\test\AppClassWithBindings;
 use stubbles\test\AppClassWithInvalidBindingModule;
 use stubbles\test\AppClassWithoutBindings;

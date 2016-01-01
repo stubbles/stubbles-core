@@ -12,6 +12,7 @@
   * deprecated `stubbles\predicate\Predicate::asWellAs()` in favor of `stubbles\predicate\Predicate::and()`, will be removed with 8.0.0
   * deprecated `stubbles\predicate\Predicate::orElse()` in favor of `stubbles\predicate\Predicate::or()`, will be removed with 8.0.0
   * deprecated `stubbles\ioc\App`, use `stubbles\App` instead, will be removed with 8.0.0
+  * moved `stubbles\ioc\modules\Runtime` to `stubbles\Runtime`
 
 
 ### Other changes
