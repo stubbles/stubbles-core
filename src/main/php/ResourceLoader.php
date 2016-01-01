@@ -8,8 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles;
-use stubbles\lang\exception\FileNotFoundException;
 use stubbles\streams\file\FileInputStream;
+use stubbles\streams\file\FileNotFound;
 /**
  * Class to load resources from arbitrary locations.
  *
@@ -92,14 +92,14 @@ class ResourceLoader
      *
      * @param   string  $resource
      * @return  string
-     * @throws  \stubbles\lang\exception\FileNotFoundException
+     * @throws  \stubbles\streams\file\FileNotFound
      * @throws  \InvalidArgumentException
      */
     private function checkedPathFor($resource)
     {
         $completePath = $this->completePath($resource);
         if (!file_exists($completePath)) {
-            throw new FileNotFoundException($completePath);
+            throw new FileNotFound('Resource ' . $completePath . ' not found');
         }
 
         if (!$this->rootpath->contains($completePath)) {

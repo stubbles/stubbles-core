@@ -50,7 +50,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @expectedException  stubbles\streams\file\FileNotFound
      * @since  4.0.0
      */
     public function openNonExistingResourceThrowsFileNotFoundException()
@@ -60,7 +60,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @expectedException  stubbles\streams\file\FileNotFound
      * @since  4.0.0
      */
     public function loadNonExistingResourceThrowsFileNotFoundException()
@@ -165,7 +165,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @expectedException  stubbles\streams\file\FileNotFound
      * @since  4.0.0
      */
     public function openResourceWithCompletePathOutsideRootThrowsFileNotFoundException()
@@ -175,7 +175,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @expectedException  stubbles\streams\file\FileNotFound
      * @since  4.0.0
      */
     public function loadResourceWithCompletePathOutsideRootThrowsFileNotFoundExceptionException()
