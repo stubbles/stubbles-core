@@ -19,7 +19,7 @@ namespace stubbles;
 class Result
 {
     /**
-     * @type  \stubbles\lang\Result
+     * @type  \stubbles\Result
      */
     private static $null;
     /**
@@ -49,7 +49,7 @@ class Result
      * static constructor
      *
      * @param   mixed   $value  actual result value
-     * @return  \stubbles\lang\Result
+     * @return  \stubbles\Result
      */
     public static function of($value)
     {
@@ -104,7 +104,7 @@ class Result
      * value is a null result.
      *
      * @param   callable  $predicate
-     * @return  \stubbles\lang\Result
+     * @return  \stubbles\Result
      */
     public function filter(callable $predicate)
     {
@@ -121,7 +121,7 @@ class Result
      * In case the value is null the return value still is a null result.
      *
      * @param   callable  $mapper
-     * @return  \stubbles\lang\Result
+     * @return  \stubbles\Result
      */
     public function map(callable $mapper)
     {
@@ -136,7 +136,7 @@ class Result
      * returns the result if value is present, or result of other
      *
      * @param   mixed  $other
-     * @return  \stubbles\lang\Result
+     * @return  \stubbles\Result
      */
     public function whenNull($other)
     {
@@ -151,7 +151,7 @@ class Result
      * returns the result if value is present, or the result of applied other
      *
      * @param   callable  $other
-     * @return  \stubbles\lang\Result
+     * @return  \stubbles\Result
      */
     public function applyWhenNull(callable $other)
     {
@@ -166,7 +166,7 @@ class Result
      * returns the result if value is not empty, or result of other
      *
      * @param   mixed  $other
-     * @return  \stubbles\lang\Result
+     * @return  \stubbles\Result
      * @since   6.2.0
      */
     public function whenEmpty($other)
@@ -182,7 +182,7 @@ class Result
      * returns the result if value is not empty, or the result of applied other
      *
      * @param   callable  $other
-     * @return  \stubbles\lang\Result
+     * @return  \stubbles\Result
      * @since   6.2.0
      */
     public function applyWhenEmpty(callable $other)
