@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use bovigo\callmap\NewInstance;
-use stubbles\lang\Mode;
 use stubbles\test\ioc\Mikey;
 use stubbles\test\ioc\Person;
 use stubbles\test\ioc\Person3;
@@ -53,7 +51,7 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
      * @test
      * @since  6.0.0
      */
-    public function fallsBackToDefaultImplementedByIfNoModeSet()
+    public function fallsBackToDefaultImplementedByIfNoEnvironmentSet()
     {
         assert(
                 Binder::createInjector()->getInstance(Person3::class),
@@ -69,11 +67,10 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     {
 
         $binder = new Binder();
-        $binder->bindMode(
-                NewInstance::of(Mode::class)->mapCalls(['name' => 'PROD'])
-        );
         assert(
-                $binder->getInjector()->getInstance(Person3::class),
+                $binder->setEnvironment('PROD')
+                        ->getInjector()
+                        ->getInstance(Person3::class),
                 isInstanceOf(Schst::class)
         );
     }
@@ -86,11 +83,10 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     {
 
         $binder = new Binder();
-        $binder->bindMode(
-                NewInstance::of(Mode::class)->mapCalls(['name' => 'DEV'])
-        );
         assert(
-                $binder->getInjector()->getInstance(Person3::class),
+                $binder->setEnvironment('DEV')
+                        ->getInjector()
+                        ->getInstance(Person3::class),
                 isInstanceOf(Mikey::class)
         );
     }
@@ -103,10 +99,9 @@ class InjectorImplementedByTest extends \PHPUnit_Framework_TestCase
     public function throwsBindingExceptionWhenNoFallbackSpecified()
     {
         $binder = new Binder();
-        $binder->bindMode(
-                NewInstance::of(Mode::class)->mapCalls(['name' => 'PROD'])
-        );
-        $binder->getInjector()->getInstance(Person4::class);
+        $binder->setEnvironment('PROD')
+                ->getInjector()
+                ->getInstance(Person4::class);
     }
 
     /**

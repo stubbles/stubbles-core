@@ -120,9 +120,13 @@ class Runtime implements BindingModule
     {
         $this->mode->registerErrorHandler($projectPath);
         $this->mode->registerExceptionHandler($projectPath);
-        $binder->bindMode($this->mode);
+        $binder->setEnvironment($this->mode->name())
+                ->bind(Mode::class)->toInstance($this->mode);
         if (file_exists($this->propertiesFile($projectPath))) {
-            $binder->bindPropertiesFromFile($this->propertiesFile($projectPath), $this->mode);
+            $binder->bindPropertiesFromFile(
+                    $this->propertiesFile($projectPath),
+                    $this->mode->name()
+            );
         }
 
         $binder->bindConstant('stubbles.project.path')->to($projectPath);

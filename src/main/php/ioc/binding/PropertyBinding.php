@@ -9,7 +9,6 @@
  */
 namespace stubbles\ioc\binding;
 use stubbles\ioc\Injector;
-use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 /**
  * Provides properties, partially based on current runtime mode.
@@ -29,22 +28,22 @@ class PropertyBinding implements Binding
      */
     private $properties;
     /**
-     * current runtime mode
+     * current environment
      *
-     * @type  Mode
+     * @type  string
      */
-    private $mode;
+    private $environment;
 
     /**
      * constructor
      *
      * @param  \stubbles\lang\Properties  $properties
-     * @param  \stubbles\lang\Mode        $mode
+     * @param  string                     $environment  current environment
      */
-    public function __construct(Properties $properties, Mode $mode)
+    public function __construct(Properties $properties, $environment)
     {
-        $this->properties = $properties;
-        $this->mode       = $mode;
+        $this->properties  = $properties;
+        $this->environment = $environment;
     }
 
     /**
@@ -55,7 +54,7 @@ class PropertyBinding implements Binding
      */
     public function hasProperty($name)
     {
-        if ($this->properties->containValue($this->mode->name(), $name)) {
+        if ($this->properties->containValue($this->environment, $name)) {
             return true;
         }
 
@@ -72,15 +71,15 @@ class PropertyBinding implements Binding
      */
     public function getInstance(Injector $injector, $name)
     {
-        if ($this->properties->containValue($this->mode->name(), $name)) {
-            return $this->properties->parseValue($this->mode->name(), $name);
+        if ($this->properties->containValue($this->environment, $name)) {
+            return $this->properties->parseValue($this->environment, $name);
         }
 
         if ($this->properties->containValue('config', $name)) {
             return $this->properties->parseValue('config', $name);
         }
 
-        throw new BindingException('Missing property ' . $name . ' in runtime mode ' . $this->mode->name());
+        throw new BindingException('Missing property ' . $name . ' for environment ' . $this->environment);
     }
 
     /**

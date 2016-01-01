@@ -11,7 +11,6 @@ namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
 use stubbles\ioc\Binder;
 use stubbles\ioc\Injector;
-use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use stubbles\lang\Secret;
 
@@ -50,23 +49,11 @@ class Example
 class PropertyBindingTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  PropertyBinding
-     */
-    private $propertyBinding;
-    /**
      * mocked injector
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
     private $injector;
-    /**
-     * mocked runtime mode
-     *
-     * @type  \stubbles\lang\Mode
-     */
-    private $mode;
 
     /**
      * set up test environment
@@ -74,9 +61,17 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->injector = NewInstance::of(Injector::class);
-        $this->mode     = NewInstance::of(Mode::class)
-                ->mapCalls(['name' => 'PROD']);
-        $this->propertyBinding = new PropertyBinding(
+    }
+
+    /**
+     * creates instance for given environment
+     *
+     * @param   string  $environment
+     * @return  \stubbles\ioc\binding\PropertyBinding
+     */
+    private function createPropertyBinding($environment = 'PROD')
+    {
+        return new PropertyBinding(
                 new Properties(['PROD'   => ['foo.bar' => 'baz',
                                              'baz'     => __CLASS__ . '.class'
                                             ],
@@ -86,7 +81,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
                                             ]
                                ]
                 ),
-                $this->mode
+                $environment
 
         );
     }
@@ -96,7 +91,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueForRuntimeMode()
     {
-        assertTrue($this->propertyBinding->hasProperty('foo.bar'));
+        assertTrue($this->createPropertyBinding()->hasProperty('foo.bar'));
     }
 
     /**
@@ -105,7 +100,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsProdValueForRuntimeMode()
     {
         assert(
-                $this->propertyBinding->getInstance($this->injector, 'foo.bar'),
+                $this->createPropertyBinding()->getInstance($this->injector, 'foo.bar'),
                 equals('baz')
         );
     }
@@ -115,8 +110,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueForDifferentRuntimeMode()
     {
-        $this->mode->mapCalls(['name' => 'DEV']);
-        assertTrue($this->propertyBinding->hasProperty('foo.bar'));
+        assertTrue($this->createPropertyBinding('DEV')->hasProperty('foo.bar'));
     }
 
     /**
@@ -124,9 +118,8 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsConfigValueForDifferentRuntimeMode()
     {
-        $this->mode->mapCalls(['name' => 'DEV']);
         assert(
-                $this->propertyBinding->getInstance($this->injector, 'foo.bar'),
+                $this->createPropertyBinding('DEV')->getInstance($this->injector, 'foo.bar'),
                 equals('default')
         );
     }
@@ -136,7 +129,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function hasValueWhenNoSpecificForRuntimeModeSet()
     {
-        assertTrue($this->propertyBinding->hasProperty('other'));
+        assertTrue($this->createPropertyBinding()->hasProperty('other'));
     }
 
     /**
@@ -145,7 +138,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsConfigValueWhenNoSpecificForRuntimeModeSet()
     {
         assert(
-                $this->propertyBinding->getInstance($this->injector, 'other'),
+                $this->createPropertyBinding()->getInstance($this->injector, 'other'),
                 equals('someValue')
         );
     }
@@ -155,17 +148,17 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotHaveValueWhenPropertyNotSet()
     {
-        assertFalse($this->propertyBinding->hasProperty('does.not.exist'));
+        assertFalse($this->createPropertyBinding()->hasProperty('does.not.exist'));
     }
 
     /**
      * @test
      * @expectedException  stubbles\ioc\binding\BindingException
-     * @expectedExceptionMessage  Missing property does.not.exist in runtime mode PROD
+     * @expectedExceptionMessage  Missing property does.not.exist for environment PROD
      */
     public function throwsBindingExceptionWhenPropertyNotSet()
     {
-        $this->propertyBinding->getInstance($this->injector, 'does.not.exist');
+        $this->createPropertyBinding()->getInstance($this->injector, 'does.not.exist');
     }
 
     /**
@@ -175,7 +168,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
     public function returnsParsedValuesForModeSpecificProperties()
     {
         assert(
-                $this->propertyBinding->getInstance($this->injector, 'baz'),
+                $this->createPropertyBinding()->getInstance($this->injector, 'baz'),
                 equals(reflect(__CLASS__))
         );
     }
@@ -186,9 +179,8 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsParsedValuesForCommonProperties()
     {
-        $this->mode->mapCalls(['name' => 'DEV']);
         assert(
-                $this->propertyBinding->getInstance($this->injector, 'baz'),
+                $this->createPropertyBinding('DEV')->getInstance($this->injector, 'baz'),
                 equals(reflect(Properties::class))
         );
     }
@@ -204,7 +196,7 @@ class PropertyBindingTest extends \PHPUnit_Framework_TestCase
             $properties = new Properties(
                         ['config' => ['example.password' => 'somePassword']]
                     );
-            $binder->bindProperties($properties, $this->mode);
+            $binder->bindProperties($properties, 'PROD');
             $example = $binder->getInjector()->getInstance(Example::class);
             assert($example->password, isInstanceOf(Secret::class));
         } finally {

@@ -15,7 +15,6 @@ use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
-use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 /**
  * Binder for the IoC functionality.
@@ -25,9 +24,9 @@ use stubbles\lang\Properties;
 class Binder
 {
     /**
-     * @type  \stubbles\lang\Mode
+     * @type  string
      */
-    private $mode;
+    private $environment;
     /**
      * list of available binding scopes
      *
@@ -87,41 +86,45 @@ class Binder
     }
 
     /**
-     * binds mode
+     * set environment for bindings
      *
-     * @param  \stubbles\lang\Mode  $mode
-     * @since  6.0.0
+     * @param   string  $environment
+     * @return  \stubbles\ioc\Binder
+     * @since   6.0.0
      */
-    public function bindMode(Mode $mode)
+    public function setEnvironment($environment)
     {
-        $this->mode = $mode;
-        $this->bind(Mode::class)->toInstance($mode);
+        $this->environment = $environment;
+        return $this;
     }
 
     /**
      * binds properties from given properties file
      *
-     * @param   string               $propertiesFile  file where properties are stored
-     * @param   \stubbles\lang\Mode  $mode
+     * @param   string   $propertiesFile  file where properties are stored
+     * @param   string   $environment     name of current environment
      * @return  \stubbles\lang\Properties
      * @since   4.0.0
      */
-    public function bindPropertiesFromFile($propertiesFile, Mode $mode)
+    public function bindPropertiesFromFile($propertiesFile, $environment)
     {
-        return $this->bindProperties(Properties::fromFile($propertiesFile), $mode);
+        return $this->bindProperties(
+                Properties::fromFile($propertiesFile),
+                $environment
+        );
     }
 
     /**
      * binds properties
      *
      * @param   \stubbles\lang\Properties  $properties
-     * @param   \stubbles\lang\Mode        $mode
+     * @param   string                     $environment  name of current environment
      * @return  \stubbles\lang\Properties
      * @since   3.4.0
      */
-    public function bindProperties(Properties $properties, Mode $mode)
+    public function bindProperties(Properties $properties, $environment)
     {
-        $this->addBinding(new PropertyBinding($properties, $mode));
+        $this->addBinding(new PropertyBinding($properties, $environment));
         $this->bind(Properties::class)
              ->named('config.ini')
              ->toInstance($properties);
@@ -184,7 +187,7 @@ class Binder
      */
     public function getInjector()
     {
-        return new Injector($this->mode, $this->bindings, $this->scopes);
+        return new Injector($this->environment, $this->bindings, $this->scopes);
     }
 
     /**

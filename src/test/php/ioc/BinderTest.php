@@ -115,10 +115,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
     {
         $properties = new Properties([]);
         assert(
-                $this->binder->bindProperties(
-                        $properties,
-                        NewInstance::of(Mode::class)
-                ),
+                $this->binder->bindProperties($properties, 'PROD'),
                 isSameAs($properties)
         );
     }
@@ -134,10 +131,7 @@ class BinderTest extends \PHPUnit_Framework_TestCase
                 ->at(vfsStream::setup());
         $properties = new Properties(['config' => ['foo' => 'bar']]);
         assert(
-                $this->binder->bindPropertiesFromFile(
-                        $file->url(),
-                        NewInstance::of(Mode::class)
-                ),
+                $this->binder->bindPropertiesFromFile($file->url(), 'PROD'),
                 equals($properties)
         );
     }

@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use bovigo\callmap\NewInstance;
-use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use stubbles\test\ioc\PropertyReceiver;
 
@@ -25,23 +23,11 @@ use function bovigo\assert\predicate\isSameAs;
 class PropertyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * injector to create instance
-     *
-     * @type  Injector
-     */
-    private $injector;
-    /**
      * properties to be bound
      *
      * @type  \stubbles\lang\Properties
      */
     private $properties;
-    /**
-     * mocked runtime mode
-     *
-     * @type  \stubbles\lang\Mode
-     */
-    private $mode;
 
     /**
      * set up test environment
@@ -55,19 +41,29 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
                              ]
                 ]
         );
-        $this->mode = NewInstance::of(Mode::class);
-        $binder = new Binder();
-        $binder->bindProperties($this->properties, $this->mode);
-        $this->injector = $binder->getInjector();
     }
+
+    /**
+     * create injector instance
+     *
+     * @param   string  $environment  optional
+     * @return  \stubbles\ioc\Injector
+     */
+    private function createInjector($environment = 'PROD')
+    {
+        $binder = new Binder();
+        $binder->bindProperties($this->properties, $environment);
+        return $binder->getInjector();
+    }
+
 
     /**
      * @test
      */
     public function setsCorrectPropertiesInRuntimeModeWithSpecificProperties()
     {
-        $this->mode->mapCalls(['name' => 'PROD']);
-        $propertyReceiver = $this->injector->getInstance(PropertyReceiver::class);
+        $propertyReceiver = $this->createInjector('PROD')
+                ->getInstance(PropertyReceiver::class);
         assert($propertyReceiver->foo, equals('baz'));
         assert($propertyReceiver->bar, equals('someValue'));
     }
@@ -77,8 +73,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function setsCorrectPropertiesInRuntimeModeWithDefaultProperties()
     {
-        $this->mode->mapCalls(['name' => 'DEV']);
-        $propertyReceiver = $this->injector->getInstance(PropertyReceiver::class);
+        $propertyReceiver = $this->createInjector('DEV')->getInstance(PropertyReceiver::class);
         assert($propertyReceiver->foo, equals('default'));
         assert($propertyReceiver->bar, equals('someValue'));
     }
@@ -101,7 +96,10 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     public function propertyInstanceIsBound()
     {
         assert(
-                $this->injector->getInstance(Properties::class, 'config.ini'),
+                $this->createInjector()->getInstance(
+                        Properties::class,
+                        'config.ini'
+                ),
                 isSameAs($this->properties)
         );
     }

@@ -16,7 +16,6 @@ use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
 use stubbles\ioc\binding\Session;
-use stubbles\lang\Mode;
 use stubbles\lang\reflect\annotation\Annotations;
 
 use function stubbles\lang\reflect\annotationsOf;
@@ -28,9 +27,9 @@ use function stubbles\lang\reflect\annotationsOf;
 class Injector
 {
     /**
-     * @type  \stubbles\lang\Mode
+     * @type  string
      */
-    private $mode;
+    private $environment;
     /**
      * index for faster access to bindings
      *
@@ -57,15 +56,15 @@ class Injector
     /**
      * constructor
      *
-     * @param  \stubbles\lang\Mode                  $mode      optional
-     * @param  \stubbles\ioc\binding\Binding[]      $bindings  optional
-     * @param  \stubbles\ioc\binding\BindingScopes  $scopes    optional
+     * @param  string                               $environment  optional  name of current environment
+     * @param  \stubbles\ioc\binding\Binding[]      $bindings     optional
+     * @param  \stubbles\ioc\binding\BindingScopes  $scopes       optional
      * @since  1.5.0
      */
-    public function __construct(Mode $mode = null, array $bindings = [], BindingScopes $scopes = null)
+    public function __construct($environment = null, array $bindings = [], BindingScopes $scopes = null)
     {
-        $this->mode   = $mode;
-        $this->scopes = $scopes !== null ? $scopes : new BindingScopes();
+        $this->environment = $environment;
+        $this->scopes      = $scopes !== null ? $scopes : new BindingScopes();
         foreach ($bindings as $binding) {
             $this->index[$binding->getKey()] = $binding;
         }
@@ -311,7 +310,7 @@ class Injector
         $implementation = null;
         foreach ($annotations->named('ImplementedBy') as $annotation) {
             /* @var $annotation \stubbles\lang\reflect\annotation\Annotation */
-            if (null !== $this->mode && $annotation->hasValueByName('mode') && strtoupper($annotation->getMode()) === $this->mode->name()) {
+            if (null !== $this->environment && $annotation->hasValueByName('mode') && strtoupper($annotation->getMode()) === $this->environment) {
                 $implementation = $annotation->getClass();
             } elseif (!$annotation->hasValueByName('mode') && null == $implementation) {
                 $implementation = $annotation->getClass();
