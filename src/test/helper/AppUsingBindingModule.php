@@ -9,7 +9,6 @@
  */
 namespace stubbles\test;
 use stubbles\App;
-use stubbles\lang\Mode;
 /**
  * Helper class to test binding module creations.
  *
@@ -21,12 +20,12 @@ class AppUsingBindingModule extends App
     /**
      * creates mode binding module
      *
-     * @param   \stubbles\lang\Mode  $mode  runtime mode
+     * @param   \stubbles\Environment  $environment  runtime mode
      * @return  \stubbles\ioc\module\Runtime
      */
-    public static function callBindRuntime(Mode $mode = null)
+    public static function callBindRuntime(Environment $environment = null)
     {
-        return self::runtime($mode);
+        return self::runtime($environment);
     }
 
     /**

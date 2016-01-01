@@ -8,31 +8,18 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use stubbles\Environment;
 /**
  * Handlings for different runtime modes of Stubbles.
  *
  * The mode instance contains information about which exception handler and
  * which error handler should be used, else well as whether caching is enabled
  * or not.
+ *
+ * @deprecated  since 7.0.0, use stubbles\Environment, will be removed with 8.0.0
  */
-interface Mode
+interface Mode extends Environment
 {
-    /**
-     * constant for enabled cache
-     */
-    const CACHE_ENABLED  = true;
-    /**
-     * constant for disabled cache
-     */
-    const CACHE_DISABLED = false;
-    /**
-     * returns the name of the mode
-     *
-     * @api
-     * @return  string
-     */
-    public function name();
-
     /**
      * sets the exception handler to given class and method name
      *
@@ -45,18 +32,6 @@ interface Mode
     public function setExceptionHandler($class, $methodName);
 
     /**
-     * registers exception handler for current mode
-     *
-     * Return value depends on registration: if no exception handler set return
-     * value will be false, if registered handler was an instance the handler
-     * instance will be returned, and true in any other case.
-     *
-     * @param   string       $projectPath  path to project
-     * @return  bool|object
-     */
-    public function registerExceptionHandler($projectPath);
-
-    /**
      * sets the error handler to given class and method name
      *
      * To register the new error handler call registerErrorHandler().
@@ -66,24 +41,4 @@ interface Mode
      * @return  \stubbles\lang\Mode
      */
     public function setErrorHandler($class, $methodName);
-
-    /**
-     * registers error handler for current mode
-     *
-     * Return value depends on registration: if no error handler set return value
-     * will be false, if registered handler was an instance the handler instance
-     * will be returned, and true in any other case.
-     *
-     * @param   string       $projectPath  path to project
-     * @return  bool|object
-     */
-    public function registerErrorHandler($projectPath);
-
-    /**
-     * checks whether cache is enabled or not
-     *
-     * @api
-     * @return  bool
-     */
-    public function isCacheEnabled();
 }

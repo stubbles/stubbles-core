@@ -10,7 +10,6 @@
 namespace stubbles\lang;
 use stubbles\lang\errorhandler\DefaultErrorHandler;
 use stubbles\lang\errorhandler\DisplayExceptionHandler;
-use stubbles\lang\errorhandler\ProdModeExceptionHandler;
 /**
  * Handlings for different runtime modes of Stubbles.
  *
@@ -55,6 +54,8 @@ use stubbles\lang\errorhandler\ProdModeExceptionHandler;
  * Please be aware that you still need to register the exception/error handler,
  * this is not done automatically, regardless whether you set your own ones or
  * not. Use registerExceptionHandler() and registerErrorHandler() to do so.
+ *
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class DefaultMode implements Mode
 {
@@ -119,13 +120,12 @@ class DefaultMode implements Mode
      * - caching enabled
      *
      * @api
-     * @return  Mode
+     * @return  \stubbles\Environment
+     * @deprecated  since 7.0.0, use stubbles\environments\Production instead
      */
     public static function prod()
     {
-        return self::create('PROD', Mode::CACHE_ENABLED)
-                   ->setExceptionHandler(ProdModeExceptionHandler::class)
-                   ->setErrorHandler(DefaultErrorHandler::class);
+        return new \stubbles\environments\Production();
     }
 
     /**
@@ -169,12 +169,12 @@ class DefaultMode implements Mode
      * - caching disabled
      *
      * @api
-     * @return  Mode
+     * @return  \stubbles\Environment
+     * @deprecated  since 7.0.0, use stubbles\environments\Development instead
      */
     public static function dev()
     {
-        return self::create('DEV', MODE::CACHE_DISABLED)
-                   ->setExceptionHandler(DisplayExceptionHandler::class);
+        return new \stubbles\environments\Development();
     }
 
     /**

@@ -29,6 +29,13 @@ class MyEnum extends Enum
 }
 MyEnum::__static();
 /**
+ * Helper interface for the test.
+ */
+interface SomeInterface
+{
+    // intentionally empty
+}
+/**
  * Tests for stubbles\lang\Parse.
  *
  * @group  lang
@@ -455,7 +462,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [new \ReflectionClass($this), __CLASS__ . '.class'],
-            [new \ReflectionClass(Mode::class), Mode::class . '.class'],
+            [new \ReflectionClass(SomeInterface::class), SomeInterface::class . '.class'],
             [null, null],
             [null, ''],
             [null, 'other']

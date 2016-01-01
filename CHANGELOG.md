@@ -12,6 +12,10 @@
   * deprecated `stubbles\predicate\Predicate::asWellAs()` in favor of `stubbles\predicate\Predicate::and()`, will be removed with 8.0.0
   * deprecated `stubbles\predicate\Predicate::orElse()` in favor of `stubbles\predicate\Predicate::or()`, will be removed with 8.0.0
   * deprecated `stubbles\ioc\App`, use `stubbles\App` instead, will be removed with 8.0.0
+  * deprecated `stubbles\lang\Mode` use `stubbles\Environment` instead, will be removed with 8.0.0
+  * deprecated `stubbles\lang\DefaultMode::prod()` use `stubbles\environments\Production` instead, will be removed with 8.0.0
+  * deprecated `stubbles\lang\DefaultMode::dev()` use `stubbles\environments\Development` instead, will be removed with 8.0.0
+  * deprecated `stubbles\lang\DefaultMode`, will be removed with 8.0.0
   * moved `stubbles\ioc\modules\Runtime` to `stubbles\Runtime`
 
 

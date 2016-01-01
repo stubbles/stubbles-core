@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
+use stubbles\Environment;
 use stubbles\lang\reflect\annotation\Annotation;
 use stubbles\lang\reflect\annotation\AnnotationCache;
 use org\bovigo\vfs\vfsStream;
@@ -157,7 +158,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectInterface()
     {
-        assert(reflect(Mode::class), isInstanceOf(\ReflectionClass::class));
+        assert(reflect(Environment::class), isInstanceOf(\ReflectionClass::class));
     }
 
     /**

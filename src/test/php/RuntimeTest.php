@@ -29,9 +29,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     /**
      * mocked mode instance
      *
-     * @type  \stubbles\lang\Mode
+     * @type  \stubbles\Environment
      */
-    private $mode;
+    private $environment;
     /**
      * root path
      *
@@ -44,8 +44,9 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->root = vfsStream::setup('projects');
-        $this->mode = NewInstance::of(Mode::class);
+        $this->root        = vfsStream::setup('projects');
+        // TODO: switch this to Environment::class with 8.0.0
+        $this->environment = NewInstance::of(Mode::class);
         Runtime::reset();
     }
 
@@ -81,39 +82,39 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
      */
     public function registerMethodsShouldBeCalledWithGivenProjectPath()
     {
-        $runtime = new Runtime($this->mode);
+        $runtime = new Runtime($this->environment);
         $runtime->configure(new Binder(), $this->root->url());
-        verify($this->mode, 'registerErrorHandler')
+        verify($this->environment, 'registerErrorHandler')
                 ->received($this->root->url());
-        verify($this->mode, 'registerExceptionHandler')
+        verify($this->environment, 'registerExceptionHandler')
                 ->received($this->root->url());
     }
 
     /**
      * @test
      */
-    public function givenModeShouldBeBound()
+    public function givenEnvironmentShouldBeBound()
     {
-        $runtime = new Runtime($this->mode);
+        $runtime = new Runtime($this->environment);
         $binder  = new Binder();
         $runtime->configure($binder, $this->root->url());
         assert(
-                $binder->getInjector()->getInstance(Mode::class),
-                isSameAs($this->mode)
+                $binder->getInjector()->getInstance(Environment::class),
+                isSameAs($this->environment)
         );
     }
 
     /**
      * @test
      */
-    public function noModeGivenDefaultsToProdMode()
+    public function noEnvironmentGivenDefaultsToProdEnvironment()
     {
         $runtime = new Runtime();
         $binder  = new Binder();
         try {
             $runtime->configure($binder, $this->root->url());
             $injector = $binder->getInjector();
-            assert($injector->getInstance(Mode::class)->name(), equals('PROD'));
+            assert($injector->getInstance(Environment::class)->name(), equals('PROD'));
         } finally {
             restore_error_handler();
             restore_exception_handler();
@@ -122,20 +123,35 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @since  4.0.0
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
-    public function bindsModeProvidedViaCallable()
+    public function givenModeShouldBeBound()
     {
-        $runtime = new Runtime(function() { return $this->mode; });
+        $runtime = new Runtime($this->environment);
         $binder  = new Binder();
         $runtime->configure($binder, $this->root->url());
         assert(
                 $binder->getInjector()->getInstance(Mode::class),
-                isSameAs($this->mode)
+                isSameAs($this->environment)
         );
-        verify($this->mode, 'registerErrorHandler')
+    }
+
+    /**
+     * @test
+     * @since  4.0.0
+     */
+    public function bindsEnvironmentProvidedViaCallable()
+    {
+        $runtime = new Runtime(function() { return $this->environment; });
+        $binder  = new Binder();
+        $runtime->configure($binder, $this->root->url());
+        assert(
+                $binder->getInjector()->getInstance(Mode::class),
+                isSameAs($this->environment)
+        );
+        verify($this->environment, 'registerErrorHandler')
                 ->received($this->root->url());
-        verify($this->mode, 'registerExceptionHandler')
+        verify($this->environment, 'registerExceptionHandler')
                 ->received($this->root->url());
     }
 
@@ -156,7 +172,7 @@ class RuntimeTest extends \PHPUnit_Framework_TestCase
     public function doesNotBindPropertiesWhenConfigFileIsMissing()
     {
         $binder = NewInstance::of(Binder::class);
-        $runtime = new Runtime($this->mode);
+        $runtime = new Runtime($this->environment);
         $runtime->configure($binder, $this->root->url());
         verify($binder, 'bindProperties')->wasNeverCalled();
     }
@@ -174,7 +190,7 @@ stubbles.number.decimals=4
 stubbles.webapp.xml.serializeMode=true")
                  ->at($this->root);
         $binder  = NewInstance::of(Binder::class);
-        $runtime = new Runtime($this->mode);
+        $runtime = new Runtime($this->environment);
         $runtime->configure($binder, $this->root->url());
         verify($binder, 'bindProperties')->wasCalledOnce();
     }
@@ -185,7 +201,7 @@ stubbles.webapp.xml.serializeMode=true")
     public function projectPathIsBound()
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->mode);
+        $runtime = new Runtime($this->environment);
         $runtime->configure($binder, $this->root->url());
         assert(
                 $binder->getInjector()->getConstant('stubbles.project.path'),
@@ -225,7 +241,7 @@ stubbles.webapp.xml.serializeMode=true")
     public function pathesShouldBeBoundAsConstant($pathPart, $constantName)
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->mode);
+        $runtime = new Runtime($this->environment);
         $runtime->configure($binder, $this->root->url());
         assert(
                 $binder->getInjector()->getConstant($constantName),
@@ -255,7 +271,7 @@ stubbles.webapp.xml.serializeMode=true")
     public function additionalPathTypesShouldBeBound($pathPart, $constantName)
     {
         $binder  = new Binder();
-        $runtime = new Runtime($this->mode);
+        $runtime = new Runtime($this->environment);
         $runtime->addPathType('user')->configure($binder, $this->root->url());
         assert(
                 $binder->getInjector()->getConstant($constantName),

@@ -8,11 +8,12 @@
  * @package  stubbles
  */
 namespace stubbles;
+use stubbles\environments\Production;
 use stubbles\ioc\Binder;
 use stubbles\ioc\module\BindingModule;
 use stubbles\lang\Mode;
 /**
- * Binding module to configure the binder with a runtime mode.
+ * Binding module to configure the binder with a runtime environment.
  */
 class Runtime implements BindingModule
 {
@@ -51,47 +52,49 @@ class Runtime implements BindingModule
      */
     private $pathTypes   = ['config', 'log'];
     /**
-     * mode instance to bind
+     * current environment we are running in
      *
-     * @type  \stubbles\lang\Mode
+     * @type  \stubbles\Environment
      */
-    protected $mode;
+    protected $environment;
 
     /**
      * constructor
      *
-     * @param   \stubbles\lang\Mode|callable  $mode  optional  runtime mode
+     * If no environment is passed it will fallback to the default environment.
+     *
+     * @param   \stubbles\Environment|callable  $environment  optional  current environment
      * @throws  \InvalidArgumentException
      */
-    public function __construct($mode = null)
+    public function __construct($environment = null)
     {
-        if (null !== $mode) {
-            if (is_callable($mode)) {
-                $this->mode = $mode();
-            } elseif ($mode instanceof Mode) {
-                $this->mode = $mode;
+        if (null !== $environment) {
+            if (is_callable($environment)) {
+                $this->environment = $environment();
+            } elseif ($environment instanceof Environment) {
+                $this->environment = $environment;
             } else {
                 throw new \InvalidArgumentException(
-                        'Invalid mode, must either be an instance of'
-                        . ' stubbles\lang\Mode or a callable returning such an'
-                        . ' instance'
+                        'Invalid environment, must either be an instance of '
+                        . Environment::class . ' or a callable returning such '
+                        . 'an instance'
                 );
             }
         } else {
-            $this->mode = $this->getFallbackMode();
+            $this->environment = $this->getFallbackMode();
         }
 
         self::$initialized = true;
     }
 
     /**
-     * returns fallback mode
+     * returns fallback environment
      *
-     * @return  \stubbles\lang\Mode
+     * @return  \stubbles\Environment
      */
     protected function getFallbackMode()
     {
-        return \stubbles\lang\DefaultMode::prod();
+        return new Production();
     }
 
     /**
@@ -119,14 +122,18 @@ class Runtime implements BindingModule
      */
     public function configure(Binder $binder, $projectPath = null)
     {
-        $this->mode->registerErrorHandler($projectPath);
-        $this->mode->registerExceptionHandler($projectPath);
-        $binder->setEnvironment($this->mode->name())
-                ->bind(Mode::class)->toInstance($this->mode);
+        $this->environment->registerErrorHandler($projectPath);
+        $this->environment->registerExceptionHandler($projectPath);
+        $binder->setEnvironment($this->environment->name())
+                ->bind(Environment::class)->toInstance($this->environment);
+        if ($this->environment instanceof Mode) {
+            $binder->bind(Mode::class)->toInstance($this->environment);
+        }
+
         if (file_exists($this->propertiesFile($projectPath))) {
             $binder->bindPropertiesFromFile(
                     $this->propertiesFile($projectPath),
-                    $this->mode->name()
+                    $this->environment->name()
             );
         }
 

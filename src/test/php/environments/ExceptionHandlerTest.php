@@ -7,74 +7,57 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang;
+namespace stubbles\environments;
+use bovigo\callmap\NewInstance;
+use stubbles\Environment;
 use stubbles\lang\errorhandler\ExceptionHandler;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
 /**
- * Mock class to be used as exception handler.
+ * Helper class for the test.
  */
-class ModeExceptionHandler implements ExceptionHandler
+abstract class ExeptionHandlerEnvironment implements Environment
 {
-    /**
-     * path to project
-     *
-     * @type  string
-     */
-    protected $projectPath;
+    use Handler;
 
     /**
-     * constructor
+     * sets the exception handler to given class and method name
      *
-     * @param  string  $projectPath  path to project
+     * To register the new exception handler call registerExceptionHandler().
+     *
+     * @param   string|object  $class        name or instance of exception handler class
+     * @param   string         $methodName   name of exception handler method
+     * @return  \stubbles\Environment
      */
-    public function __construct($projectPath)
+    public function useExceptionHandler($class, $methodName = 'handleException')
     {
-        $this->projectPath = $projectPath;
+        return $this->setExceptionHandler($class, $methodName);
     }
-
-    /**
-     * returns path to project
-     *
-     * @return  string
-     */
-    public function getProjectPath()
-    {
-        return $this->projectPath;
-    }
-
-    /**
-     * handles the exception
-     *
-     * @param  \Exception  $exception  the uncatched exception
-     */
-    public function handleException(\Exception $exception) { }
 }
 /**
- * Tests for stubbles\lang\DefaultMode.
+ * Tests for stubbles\environments\Handler.
  *
  * Contains all tests which require restoring the previous exception handler.
  *
- * @group       lang
- * @deprecated  since 7.0.0, will be removed with 8.0.0
+ * @group   environments
  */
-class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
+class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  DefaultMode
+     * @type  \stubbles\Environment
      */
-    protected $defaultMode;
+    protected $environment;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->defaultMode = new DefaultMode('FOO', Mode::CACHE_DISABLED);
+        $this->environment = NewInstance::of(ExeptionHandlerEnvironment::class);
     }
 
     /**
@@ -91,7 +74,7 @@ class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function registerExceptionHandlerWithInvalidClassThrowsIllegalArgumentException()
     {
-        $this->defaultMode->setExceptionHandler(404);
+        $this->environment->useExceptionHandler(404);
     }
 
     /**
@@ -99,10 +82,11 @@ class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function registerExceptionHandlerWithClassNameReturnsCreatedInstance()
     {
+        $exceptionHandlerClass = NewInstance::classname(ExceptionHandler::class);
         assert(
-                $this->defaultMode->setExceptionHandler(ModeExceptionHandler::class)
+                $this->environment->useExceptionHandler($exceptionHandlerClass)
                         ->registerExceptionHandler('/tmp'),
-                isInstanceOf(ModeExceptionHandler::class)
+                isInstanceOf($exceptionHandlerClass)
         );
     }
 
@@ -111,9 +95,9 @@ class DefaultModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function registerExceptionHandlerWithInstanceReturnsGivenInstance()
     {
-        $exceptionHandler = new ModeExceptionHandler('/tmp');
+        $exceptionHandler = NewInstance::of(ExceptionHandler::class);
         assert(
-                $this->defaultMode->setExceptionHandler($exceptionHandler)
+                $this->environment->useExceptionHandler($exceptionHandler)
                         ->registerExceptionHandler('/tmp'),
                 isSameAs($exceptionHandler)
         );
