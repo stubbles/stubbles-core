@@ -24,7 +24,6 @@
     * moved `stubbles\lang\Result` to `stubbles\Result`
     * moved `stubbles\lang\Rootpath` to `stubbles\Rootpath`
   * deprecated several classes and functions, will be removed with 8.0.0:
-    * `stubbles\lang\exception\ConfigurationException`
     * `stubbles\lang\properties()`
     * `stubbles\lang\parseProperties()`
     * `stubbles\lang\parsePropertiesFile()`
@@ -32,8 +31,10 @@
     * `stubbles\lang\errorhandler\ErrorHandler`
     * `stubbles\lang\errorhandler\ExceptionHandler`
     * `stubbles\lang\DefaultMode`
+    * everything in `stubbles\lang\exception`
   * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
+  * all methods which threw `stubbles\lang\exception\FileNotFoundException` now throw `stubbles\streams\file\FileNotFound`
 
 
 ### Other changes
