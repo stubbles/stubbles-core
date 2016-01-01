@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\test\ioc;
+namespace stubbles\test;
 use stubbles\ioc\Binder;
 use stubbles\ioc\module\BindingModule;
 /**

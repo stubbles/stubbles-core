@@ -7,8 +7,8 @@
  *
  * @package  stubbles
  */
-namespace stubbles\test\ioc;
-use stubbles\ioc\App;
+namespace stubbles\test;
+use stubbles\App;
 use stubbles\lang\Mode;
 /**
  * Helper class to test binding module creations.

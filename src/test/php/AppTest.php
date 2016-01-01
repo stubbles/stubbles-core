@@ -7,12 +7,14 @@
  *
  * @package  stubbles
  */
-namespace stubbles\ioc;
+namespace stubbles;
+use stubbles\ioc\Binder;
+use stubbles\ioc\Injector;
 use stubbles\ioc\module\Runtime;
-use stubbles\test\ioc\AppClassWithBindings;
-use stubbles\test\ioc\AppClassWithInvalidBindingModule;
-use stubbles\test\ioc\AppClassWithoutBindings;
-use stubbles\test\ioc\AppUsingBindingModule;
+use stubbles\test\AppClassWithBindings;
+use stubbles\test\AppClassWithInvalidBindingModule;
+use stubbles\test\AppClassWithoutBindings;
+use stubbles\test\AppUsingBindingModule;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertTrue;
@@ -20,9 +22,9 @@ use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isSameAs;
 /**
- * Test for stubbles\ioc\App.
+ * Test for stubbles\App.
  *
- * @group  ioc
+ * @group  app
  */
 class AppTest extends \PHPUnit_Framework_TestCase
 {
