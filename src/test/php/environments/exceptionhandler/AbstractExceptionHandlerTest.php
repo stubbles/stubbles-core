@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\exceptionhandler;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 use stubbles\lang\exception\Exception;
@@ -18,17 +18,17 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
- * Tests for stubbles\lang\errorhandler\AbstractExceptionHandler.
+ * Tests for stubbles\environments\exceptionhandler\AbstractExceptionHandler.
  *
- * @group  lang
- * @group  lang_errorhandler
+ * @group  environments
+ * @group  environments_exceptionhandler
  */
 class AbstractExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  \stubbles\lang\errorhandler\AbstractExceptionHandler
+     * @type  \stubbles\environments\exceptionhandler\AbstractExceptionHandler
      */
     private $exceptionHandler;
     /**

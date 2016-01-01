@@ -7,20 +7,34 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments;
 /**
- * Error handler for illegal arguments.
- *
- * This error handler is responsible for errors of type E_RECOVERABLE_ERROR which denote that
- * a type hint has been infringed with an argument of another type. If such an error is detected
- * an stubIllegalArgumentException will be thrown.
- *
- * @internal
+ * Container for a collection of PHP error handlers.
  */
-class IllegalArgumentErrorHandler implements ErrorHandler
+class ErrorHandlers implements ErrorHandler
 {
     /**
+     * list of registered error handlers
+     *
+     * @type  \stubbles\environments\ErrorHandler[]
+     */
+    private $errorHandlers = [];
+
+    /**
+     * adds an error handler to the collection
+     *
+     * @param  \stubbles\environments\ErrorHandler  $errorHandler
+     */
+    public function addErrorHandler(ErrorHandler $errorHandler)
+    {
+        $this->errorHandlers[] = $errorHandler;
+    }
+
+    /**
      * checks whether this error handler is responsible for the given error
+     *
+     * This method is called in case the level is 0. It decides whether the
+     * error has to be handled or if it can be omitted.
      *
      * @param   int     $level    level of the raised error
      * @param   string  $message  error message
@@ -31,18 +45,17 @@ class IllegalArgumentErrorHandler implements ErrorHandler
      */
     public function isResponsible($level, $message, $file = null, $line = null, array $context = [])
     {
-        if (E_RECOVERABLE_ERROR != $level) {
-            return false;
+        foreach ($this->errorHandlers as $errorHandler) {
+            if ($errorHandler->isResponsible($level, $message, $file, $line, $context) == true) {
+                return true;
+            }
         }
 
-        return (bool) preg_match('/Argument [0-9]+ passed to [a-zA-Z0-9_\\\\]+::[a-zA-Z0-9_]+\(\) must be an instance of [a-zA-Z0-9_\\\\]+, [a-zA-Z0-9_\\\\]+ given/', $message);
+        return false;
     }
 
     /**
      * checks whether this error is supressable
-     *
-     * This method is called in case the level is 0. A type hint infringement
-     * is never supressable.
      *
      * @param   int     $level    level of the raised error
      * @param   string  $message  error message
@@ -53,7 +66,13 @@ class IllegalArgumentErrorHandler implements ErrorHandler
      */
     public function isSupressable($level, $message, $file = null, $line = null, array $context = [])
     {
-        return false;
+        foreach ($this->errorHandlers as $errorHandler) {
+            if ($errorHandler->isSupressable($level, $message, $file, $line, $context) == false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -65,12 +84,21 @@ class IllegalArgumentErrorHandler implements ErrorHandler
      * @param   int     $line     line number the error was raised at
      * @param   array   $context  array of every variable that existed in the scope the error was triggered in
      * @return  bool    true if error message should populate $php_errormsg, else false
-     * @throws  \InvalidArgumentException
      */
     public function handle($level, $message, $file = null, $line = null, array $context = [])
     {
-        throw new \InvalidArgumentException(
-                $message . ' @ ' . $file . ' on line ' . $line
-        );
+        $errorReporting = error_reporting();
+        foreach ($this->errorHandlers as $errorHandler) {
+            if ($errorHandler->isResponsible($level, $message, $file, $line, $context)) {
+                // if function/method was called with prepended @ and error is supressable
+                if (0 == $errorReporting && $errorHandler->isSupressable($level, $message, $file, $line, $context)) {
+                    return ErrorHandler::STOP_ERROR_HANDLING;
+                }
+
+                return $errorHandler->handle($level, $message, $file, $line, $context);
+            }
+        }
+
+        return ErrorHandler::CONTINUE_WITH_PHP_INTERNAL_HANDLING;
     }
 }

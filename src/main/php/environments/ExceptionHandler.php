@@ -7,16 +7,18 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
-use stubbles\environments\ExceptionHandler as NewExceptionHandler;
+namespace stubbles\environments;
 /**
  * Interface for exception handlers.
  *
- * @api
  * @see  http://php.net/set_exception_handler
- * @deprecated  since 7.0.0, use will be removed with 8.0.0
  */
-interface ExceptionHandler extends NewExceptionHandler
+interface ExceptionHandler
 {
-    // intentionally empty
+    /**
+     * handles the exception
+     *
+     * @param  \Exception  $exception  the uncatched exception
+     */
+    public function handleException(\Exception $exception);
 }

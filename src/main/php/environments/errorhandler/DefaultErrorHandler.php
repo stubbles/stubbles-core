@@ -7,20 +7,21 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\errorhandler;
+use stubbles\environments\ErrorHandlers;
 /**
  * Default collection of PHP error handlers.
  *
  * The collection consists of:
  *  - IllegalArgumentErrorHandler
- *      throws a stubIllegalArgumentException in case of an E_RECOVERABLE saying
+ *      throws a InvalidArgumentException in case of an E_RECOVERABLE saying
  *      that a type hint was violated
  *  - LogErrorHandler
  *      logs all remaining errors into the logfile php-errors with log level error
  *
  * @internal
  */
-class DefaultErrorHandler extends CompositeErrorHandler
+class DefaultErrorHandler extends ErrorHandlers
 {
     /**
      * constructor
@@ -29,7 +30,7 @@ class DefaultErrorHandler extends CompositeErrorHandler
      */
     public function __construct($projectPath)
     {
-        $this->addErrorHandler(new IllegalArgumentErrorHandler($projectPath));
+        $this->addErrorHandler(new InvalidArgument($projectPath));
         $this->addErrorHandler(new LogErrorHandler($projectPath));
     }
 }

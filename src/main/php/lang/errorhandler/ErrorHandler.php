@@ -8,59 +8,15 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
+use stubbles\environments\ErrorHandler as NewErrorHandler;
 /**
  * Interface for PHP error handlers.
  *
  * @api
  * @see  http://php.net/set_error_handler
+ * @deprecated  since 7.0.0, use will be removed with 8.0.0
  */
-interface ErrorHandler
+interface ErrorHandler extends NewErrorHandler
 {
-    /**
-     * constant to signal that php's internal error handling should take over
-     */
-    const CONTINUE_WITH_PHP_INTERNAL_HANDLING = false;
-    /**
-     * constant to signal error handling should be stopped
-     */
-    const STOP_ERROR_HANDLING                 = true;
-
-    /**
-     * checks whether this error handler is responsible for the given error
-     *
-     * @param   int     $level    level of the raised error
-     * @param   string  $message  error message
-     * @param   string  $file     filename that the error was raised in
-     * @param   int     $line     line number the error was raised at
-     * @param   array   $context  array of every variable that existed in the scope the error was triggered in
-     * @return  bool    true if error handler is responsible, else false
-     */
-    public function isResponsible($level, $message, $file = null, $line = null, array $context = []);
-
-    /**
-     * checks whether this error is supressable
-     *
-     * This method is called in case the level is 0. It decides whether the
-     * error has to be handled or if it can be omitted.
-     *
-     * @param   int     $level    level of the raised error
-     * @param   string  $message  error message
-     * @param   string  $file     filename that the error was raised in
-     * @param   int     $line     line number the error was raised at
-     * @param   array   $context  array of every variable that existed in the scope the error was triggered in
-     * @return  bool    true if error is supressable, else false
-     */
-    public function isSupressable($level, $message, $file = null, $line = null, array $context = []);
-
-    /**
-     * handles the given error
-     *
-     * @param   int     $level    level of the raised error
-     * @param   string  $message  error message
-     * @param   string  $file     filename that the error was raised in
-     * @param   int     $line     line number the error was raised at
-     * @param   array   $context  array of every variable that existed in the scope the error was triggered in
-     * @return  bool    true if error message should populate $php_errormsg, else false
-     */
-    public function handle($level, $message, $file = null, $line = null, array $context = []);
+    // intentionally empty
 }

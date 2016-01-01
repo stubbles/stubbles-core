@@ -9,7 +9,7 @@
  */
 namespace stubbles\environments;
 use stubbles\Environment;
-use stubbles\lang\errorhandler\DisplayExceptionHandler;
+use stubbles\environments\exceptionhandler\DisplayException;
 /**
  * Represents development environment.
  *
@@ -27,7 +27,7 @@ class Development implements Environment
      */
     public function __construct()
     {
-        $this->setExceptionHandler(DisplayExceptionHandler::class);
+        $this->setExceptionHandler(DisplayException::class);
     }
 
     /**

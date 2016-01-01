@@ -7,16 +7,16 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\exceptionhandler;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 
 use function bovigo\callmap\verify;
 /**
- * Tests for stubbles\lang\errorhandler\ProdModeExceptionHandler.
+ * Tests for stubbles\environments\exceptionhandler\ProdModeExceptionHandler.
  *
- * @group  lang
- * @group  lang_errorhandler
+ * @group  environments
+ * @group  environments_exceptionhandler
  */
 class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,7 +38,7 @@ class stubProdModeExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * creates instance to test
      *
-     * @return  stubbles\lang\errorhandler\ProdModExceptionHandler
+     * @return  stubbles\environments\exceptionhandler\ProdModExceptionHandler
      */
     public function createExceptionHandler($sapi)
     {

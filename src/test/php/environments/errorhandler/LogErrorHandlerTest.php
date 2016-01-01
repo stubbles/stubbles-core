@@ -7,25 +7,26 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\errorhandler;
 use org\bovigo\vfs\vfsStream;
+use stubbles\environments\ErrorHandler;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 /**
- * Tests for stubbles\lang\errorhandler\LogErrorHandler.
+ * Tests for stubbles\environments\errorhandler\LogErrorHandler.
  *
- * @group  lang
- * @group  lang_errorhandler
+ * @group  environments
+ * @group  environments_errorhandler
  */
 class LogErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  LogErrorHandler
+     * @type  \stubbles\environments\errorhandler\LogErrorHandler
      */
     private $logErrorHandler;
     /**

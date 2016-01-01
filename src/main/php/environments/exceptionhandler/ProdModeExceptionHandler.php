@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\exceptionhandler;
 /**
  * Exception handler for production mode: fills the response with an error document.
  *

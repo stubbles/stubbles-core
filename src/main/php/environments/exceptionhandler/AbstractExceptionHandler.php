@@ -7,7 +7,9 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\exceptionhandler;
+use stubbles\environments\ExceptionHandler;
+use stubbles\environments\ExceptionLogger;
 /**
  * Abstract base implementation for exception handlers, containing logging of exceptions.
  *
@@ -34,9 +36,9 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
      */
     private $loggingEnabled = true;
     /**
-     * directory to log errors into
+     * logger for exceptions
      *
-     * @type  string
+     * @type  \stubbles\environments\ExceptionLogger
      */
     private $exceptionLogger;
 

@@ -9,8 +9,8 @@
  */
 namespace stubbles\environments;
 use stubbles\Environment;
-use stubbles\lang\errorhandler\DefaultErrorHandler;
-use stubbles\lang\errorhandler\ProdModeExceptionHandler;
+use stubbles\environments\errorhandler\DefaultErrorHandler;
+use stubbles\environments\exceptionhandler\ProdModeExceptionHandler;
 /**
  * Represents production environment.
  *

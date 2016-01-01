@@ -17,6 +17,10 @@
   * deprecated `stubbles\lang\DefaultMode::dev()` use `stubbles\environments\Development` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\DefaultMode`, will be removed with 8.0.0
   * moved `stubbles\ioc\modules\Runtime` to `stubbles\Runtime`
+  * deprecated `stubbles\lang\errorhandler\CompositeErrorHandler`, will be removed with 8.0.0
+  * deprecated `stubbles\lang\errorhandler\ErrorHandler`, will be removed with 8.0.0
+  * deprecated `stubbles\lang\errorhandler\ExceptionHandler`, will be removed with 8.0.0
+  * deprecated `stubbles\lang\errorhandler\ExceptionLogger`, use `stubbles\environments\ExceptionLogger` instead, will be removed with 8.0.0
 
 
 ### Other changes

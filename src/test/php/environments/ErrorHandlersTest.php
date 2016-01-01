@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments;
 use bovigo\callmap\NewInstance;
 
 use function bovigo\assert\assert;
@@ -16,35 +16,35 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
- * Tests for stubbles\lang\errorhandler\CompositeErrorHandler
+ * Tests for stubbles\environments\ErrorHandlers
  *
- * @group  lang
- * @group  lang_errorhandler
+ * @group  environments
+ * @group  environments_errorhandler
  */
-class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
+class ErrorHandlersTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  CompositeErrorHandler
+     * @type  ErrorHandlers
      */
-    protected $compositeErrorHandler;
+    protected $errorHandlers;
     /**
      * a mocked error handler
      *
-     * @type  \stubbles\lang\errorhandler\ErrorHandler
+     * @type  \stubbles\environments\ErrorHandler
      */
     protected $errorHandler1;
     /**
      * a mocked error handler
      *
-     * @type  \stubbles\lang\errorhandler\ErrorHandler
+     * @type  \stubbles\environments\ErrorHandler
      */
     protected $errorHandler2;
     /**
      * a mocked error handler
      *
-     * @type  \stubbles\lang\errorhandler\ErrorHandler
+     * @type  \stubbles\environments\ErrorHandler
      */
     protected $errorHandler3;
 
@@ -53,13 +53,13 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->compositeErrorHandler = new CompositeErrorHandler();
+        $this->errorHandlers = new ErrorHandlers();
         $this->errorHandler1 = NewInstance::of(ErrorHandler::class);
-        $this->compositeErrorHandler->addErrorHandler($this->errorHandler1);
+        $this->errorHandlers->addErrorHandler($this->errorHandler1);
         $this->errorHandler2 = NewInstance::of(ErrorHandler::class);
-        $this->compositeErrorHandler->addErrorHandler($this->errorHandler2);
+        $this->errorHandlers->addErrorHandler($this->errorHandler2);
         $this->errorHandler3 = NewInstance::of(ErrorHandler::class);
-        $this->compositeErrorHandler->addErrorHandler($this->errorHandler3);
+        $this->errorHandlers->addErrorHandler($this->errorHandler3);
     }
 
     /**
@@ -69,7 +69,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->errorHandler1->mapCalls(['isResponsible' => false]);
         $this->errorHandler2->mapCalls(['isResponsible' => true]);
-        assertTrue($this->compositeErrorHandler->isResponsible(1, 'foo'));
+        assertTrue($this->errorHandlers->isResponsible(1, 'foo'));
         verify($this->errorHandler3, 'isResponsible')->wasNeverCalled();
      }
 
@@ -81,7 +81,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->errorHandler1->mapCalls(['isResponsible' => false]);
         $this->errorHandler2->mapCalls(['isResponsible' => false]);
         $this->errorHandler3->mapCalls(['isResponsible' => false]);
-        assertFalse($this->compositeErrorHandler->isResponsible(1, 'foo'));
+        assertFalse($this->errorHandlers->isResponsible(1, 'foo'));
     }
 
     /**
@@ -91,7 +91,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->errorHandler1->mapCalls(['isSupressable' => true]);
         $this->errorHandler2->mapCalls(['isSupressable' => false]);
-        assertFalse($this->compositeErrorHandler->isSupressable(1, 'foo'));
+        assertFalse($this->errorHandlers->isSupressable(1, 'foo'));
         verify($this->errorHandler3, 'isSupressable')->wasNeverCalled();
     }
 
@@ -103,7 +103,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->errorHandler1->mapCalls(['isSupressable' => true]);
         $this->errorHandler2->mapCalls(['isSupressable' => true]);
         $this->errorHandler3->mapCalls(['isSupressable' => true]);
-        assertTrue($this->compositeErrorHandler->isSupressable(1, 'foo'));
+        assertTrue($this->errorHandlers->isSupressable(1, 'foo'));
     }
 
     /**
@@ -115,7 +115,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->errorHandler2->mapCalls(['isResponsible' => false]);
         $this->errorHandler3->mapCalls(['isResponsible' => false]);
         assert(
-                $this->compositeErrorHandler->handle(1, 'foo'),
+                $this->errorHandlers->handle(1, 'foo'),
                 equals(ErrorHandler::CONTINUE_WITH_PHP_INTERNAL_HANDLING)
         );
     }
@@ -132,7 +132,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
                     ['isResponsible' => true, 'isSupressable' => true]
             );
             assert(
-                    $this->compositeErrorHandler->handle(1, 'foo'),
+                    $this->errorHandlers->handle(1, 'foo'),
                     equals(ErrorHandler::STOP_ERROR_HANDLING)
             );
         } finally {
@@ -155,7 +155,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
                     ]
             );
             assert(
-                    $this->compositeErrorHandler->handle(1, 'foo'),
+                    $this->errorHandlers->handle(1, 'foo'),
                     equals(ErrorHandler::STOP_ERROR_HANDLING)
             );
             verify($this->errorHandler3, 'isResponsible')->wasNeverCalled();
@@ -179,7 +179,7 @@ class CompositeErrorHandlerTest extends \PHPUnit_Framework_TestCase
                     ]
             );
             assert(
-                    $this->compositeErrorHandler->handle(1, 'foo'),
+                    $this->errorHandlers->handle(1, 'foo'),
                     equals(ErrorHandler::STOP_ERROR_HANDLING)
             );
         } finally {

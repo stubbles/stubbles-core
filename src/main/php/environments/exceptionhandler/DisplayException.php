@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\exceptionhandler;
 /**
  * Exception handler that displays the exception message nicely formated in the response.
  *
@@ -15,7 +15,7 @@ namespace stubbles\lang\errorhandler;
  *
  * @internal
  */
-class DisplayExceptionHandler extends AbstractExceptionHandler
+class DisplayException extends AbstractExceptionHandler
 {
     /**
      * creates response body with useful data for display

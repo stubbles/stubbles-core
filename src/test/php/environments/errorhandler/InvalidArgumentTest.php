@@ -7,30 +7,30 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\errorhandler;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 /**
- * Tests for nstubbles\lang\errorhandler\IllegalArgumentErrorHandler
+ * Tests for stubbles\environments\errorhandler\InvalidArgument
  *
- * @group  lang
- * @group  lang_errorhandler
+ * @group  environments
+ * @group  environments_errorhandler
  */
-class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
+class InvalidArgumentTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  IllegalArgumentErrorHandler
+     * @type  \stubbles\environments\errorhandler\InvalidArgument
      */
-    protected $illegalArgumentErrorHandler;
+    protected $invalidArgument;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->illegalArgumentErrorHandler = new IllegalArgumentErrorHandler();
+        $this->invalidArgument = new InvalidArgument();
     }
 
     /**
@@ -38,7 +38,7 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotResponsibleForNonRecoverableErrors()
     {
-        assertFalse($this->illegalArgumentErrorHandler->isResponsible(E_NOTICE, 'foo'));
+        assertFalse($this->invalidArgument->isResponsible(E_NOTICE, 'foo'));
     }
 
     /**
@@ -46,7 +46,7 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isNotResponsibleForAllRecoverableErrors()
     {
-        assertFalse($this->illegalArgumentErrorHandler->isResponsible(E_RECOVERABLE_ERROR, 'foo'));
+        assertFalse($this->invalidArgument->isResponsible(E_RECOVERABLE_ERROR, 'foo'));
     }
 
     /**
@@ -54,7 +54,11 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function isResponsibleForRecoverableErrorsWithArgumentPassingErrorMessage()
     {
-        assertTrue($this->illegalArgumentErrorHandler->isResponsible(E_RECOVERABLE_ERROR, 'Argument 1 passed to \\some\\package\\Class::method() must be an instance of other\\package\\AnotherClass, string given'));
+        assertTrue($this->invalidArgument->isResponsible(
+                E_RECOVERABLE_ERROR,
+                'Argument 1 passed to \\some\\package\\Class::method() must be'
+                . ' an instance of other\\package\\AnotherClass, string given'
+        ));
     }
 
     /**
@@ -62,7 +66,7 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function illegalArgumentsAreNeverSuppressable()
     {
-        assertFalse($this->illegalArgumentErrorHandler->isSupressable(E_RECOVERABLE_ERROR, 'foo'));
+        assertFalse($this->invalidArgument->isSupressable(E_RECOVERABLE_ERROR, 'foo'));
     }
 
     /**
@@ -71,6 +75,6 @@ class IllegalArgumentErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function handleThrowsIllegalArgumentException()
     {
-        $this->illegalArgumentErrorHandler->handle(E_RECOVERABLE_ERROR, 'foo');
+        $this->invalidArgument->handle(E_RECOVERABLE_ERROR, 'foo');
     }
 }

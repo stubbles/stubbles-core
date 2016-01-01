@@ -7,7 +7,8 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\errorhandler;
+use stubbles\environments\ErrorHandler;
 /**
  * Error handler that logs all errors.
  *
@@ -59,7 +60,9 @@ class LogErrorHandler implements ErrorHandler
      */
     public function __construct($projectPath)
     {
-        $this->logDir = $projectPath . DIRECTORY_SEPARATOR . 'log' . DIRECTORY_SEPARATOR . 'errors' . DIRECTORY_SEPARATOR . '{Y}' . DIRECTORY_SEPARATOR . '{M}';
+        $this->logDir = $projectPath . DIRECTORY_SEPARATOR . 'log'
+                . DIRECTORY_SEPARATOR . 'errors' . DIRECTORY_SEPARATOR
+                . '{Y}' . DIRECTORY_SEPARATOR . '{M}';
     }
 
     /**
@@ -131,7 +134,11 @@ class LogErrorHandler implements ErrorHandler
             mkdir($logDir, $this->filemode, true);
         }
 
-        error_log($logData . "\n", 3, $logDir . DIRECTORY_SEPARATOR . 'php-error-' . date('Y-m-d') . '.log');
+        error_log(
+                $logData . "\n",
+                3,
+                $logDir . DIRECTORY_SEPARATOR . 'php-error-' . date('Y-m-d') . '.log'
+        );
         return ErrorHandler::STOP_ERROR_HANDLING;
     }
 

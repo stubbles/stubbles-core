@@ -7,27 +7,27 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang\errorhandler;
+namespace stubbles\environments\exceptionhandler;
 use bovigo\callmap\NewInstance;
 
 use function bovigo\callmap\verify;
 /**
- * Tests for stubbles\lang\errorhandler\DisplayExceptionHandler.
+ * Tests for stubbles\environments\exceptionhandler\DisplayExceptionHandler.
  *
- * @group  lang
- * @group  lang_errorhandler
+ * @group  environments
+ * @group  environments_exceptionhandler
  */
-class DisplayExceptionHandlerTest extends \PHPUnit_Framework_TestCase
+class DisplayExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * creates instance to test
      *
-     * @return  \stubbles\lang\errorhandler\DisplayExceptionHandler
+     * @return  \stubbles\environments\exceptionhandler\DisplayExceptionHandler
      */
     public function createExceptionHandler($sapi)
     {
         $displayExceptionHandler = NewInstance::of(
-                DisplayExceptionHandler::class,
+                DisplayException::class,
                 ['/tmp', $sapi]
         )->mapCalls(['header' => false, 'writeBody' => false]);
         return $displayExceptionHandler->disableLogging();

@@ -8,8 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\lang\errorhandler\DefaultErrorHandler;
-use stubbles\lang\errorhandler\DisplayExceptionHandler;
+use stubbles\environments\errorhandler\DefaultErrorHandler;
+use stubbles\environments\exceptionhandler\DisplayException;
 /**
  * Handlings for different runtime modes of Stubbles.
  *
@@ -141,7 +141,7 @@ class DefaultMode implements Mode
     public static function test()
     {
         return self::create('TEST', MODE::CACHE_ENABLED)
-                   ->setExceptionHandler(DisplayExceptionHandler::class)
+                   ->setExceptionHandler(DisplayException::class)
                    ->setErrorHandler(DefaultErrorHandler::class);
     }
 
@@ -158,7 +158,7 @@ class DefaultMode implements Mode
     public static function stage()
     {
         return self::create('STAGE', MODE::CACHE_DISABLED)
-                   ->setExceptionHandler(DisplayExceptionHandler::class);
+                   ->setExceptionHandler(DisplayException::class);
     }
 
     /**
