@@ -13,6 +13,7 @@ use stubbles\ioc\InjectionProvider;
 use stubbles\ioc\Injector;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\ioc\binding\MapBinding.
@@ -58,10 +59,7 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsEmptyListIfNothingAdded()
     {
-        assert(
-                $this->mapBinding->getInstance($this->injector, 'int'),
-                equals([])
-        );
+        assertEmptyArray($this->mapBinding->getInstance($this->injector, 'int'));
     }
 
     /**
@@ -69,12 +67,11 @@ class MapBindingTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsTypedEmptyListIfNothingAdded()
     {
-        assert(
+        assertEmptyArray(
                 $this->mapBinding->getInstance(
                         $this->injector,
                         new \ReflectionClass(\stdClass::class)
-                ),
-                equals([])
+                )
         );
     }
 

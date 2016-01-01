@@ -11,6 +11,7 @@ namespace stubbles\lang;
 use stubbles\streams\InputStream;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
@@ -229,9 +230,8 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsEmptyListOfAllResourceUrisForNonExistingFile()
     {
-        assert(
-                $this->resourceLoader->availableResourceUris('doesnot.exist'),
-                equals([])
+        assertEmptyArray(
+                $this->resourceLoader->availableResourceUris('doesnot.exist')
         );
     }
 }

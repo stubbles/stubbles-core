@@ -11,6 +11,7 @@ namespace stubbles\lang;
 use org\bovigo\vfs\vfsStream;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
@@ -152,7 +153,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function sectionWithoutDefaultValueReturnsEmptyArrayIfSectionDoesNotExist()
     {
-        assert($this->properties->section('doesNotExist'), equals([]));
+        assertEmptyArray($this->properties->section('doesNotExist'));
     }
 
     /**
@@ -417,7 +418,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $resultProperties = $properties1->merge($properties2);
         assert(
                 $resultProperties,
-                isNotSameAs($properties1)->asWellAs(isNotSameAs($properties2))
+                isNotSameAs($properties1)->and(isNotSameAs($properties2))
         );
     }
 

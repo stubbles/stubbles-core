@@ -11,6 +11,7 @@ namespace stubbles\streams\memory;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertNull;
+use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\memory\MemoryOutputStream.
@@ -40,7 +41,7 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function bufferIsInitiallyEmpty()
     {
-        assert($this->memoryOutputStream->buffer(), equals(''));
+        assertEmptyString($this->memoryOutputStream->buffer());
     }
 
     /**
@@ -49,7 +50,7 @@ class MemoryOutputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function conversionToStringOnEmptyBufferReturnsEmptyString()
     {
-        assert((string) $this->memoryOutputStream, equals(''));
+        assertEmptyString((string) $this->memoryOutputStream);
     }
 
     /**

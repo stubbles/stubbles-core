@@ -11,6 +11,7 @@ namespace stubbles\streams;
 use org\bovigo\vfs\vfsStream;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
@@ -145,7 +146,7 @@ jjj')
     public function readAfterEofReturnsEmptyString()
     {
         $this->resourceInputStream->read();
-        assert($this->resourceInputStream->read(), equals(''));
+        assertEmptyString($this->resourceInputStream->read());
     }
 
     /**

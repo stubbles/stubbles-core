@@ -12,6 +12,7 @@ use stubbles\predicate\Predicate;
 use stubbles\streams\memory\MemoryOutputStream;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\filter\FilteredOutputStream.
@@ -66,7 +67,7 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function dataNotPassingTheFilterShouldNotBeWritten()
     {
         assert($this->filteredOutputStream->write('bar'), equals(0));
-        assert($this->memory->buffer(), equals(''));
+        assertEmptyString($this->memory->buffer());
     }
 
     /**
@@ -84,7 +85,7 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
     public function dataNotPassingTheFilterShouldNotBeWrittenAsLine()
     {
         assert($this->filteredOutputStream->writeLine('bar'), equals(0));
-        assert($this->memory->buffer(), equals(''));
+        assertEmptyString($this->memory->buffer());
     }
 
     /**

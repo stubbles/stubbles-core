@@ -11,6 +11,7 @@ namespace stubbles\lang;
 use org\bovigo\vfs\vfsStream;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
@@ -156,13 +157,19 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      */
     public function listOfSourcePathesIsEmptyIfNoAutoloaderPresent()
     {
-        assert(Rootpath::castFrom(__DIR__)->sourcePathes(), equals([]));
+        assertEmptyArray(Rootpath::castFrom(__DIR__)->sourcePathes());
     }
 
+    /**
+     * returns path to test resources
+     *
+     * @param   string  $last
+     * @return  \stubbles\lang\Rootpath
+     */
     private function rootpathToTestResources($last)
     {
         return Rootpath::castFrom(
-                Rootpath::castFrom(null)
+                (new Rootpath())
                         ->to('src', 'test', 'resources', 'rootpath', $last)
         );
     }

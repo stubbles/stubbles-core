@@ -10,6 +10,7 @@
 namespace stubbles\peer\http;
 use function bovigo\assert\assert;
 use function bovigo\assert\assertEmpty;
+use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
@@ -271,10 +272,7 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function sharedAcceptablesForEmptyListReturnsEmptyArray($accepted)
     {
-        assert(
-                $this->acceptHeader->getSharedAcceptables($accepted),
-                equals([])
-        );
+        assertEmptyArray($this->acceptHeader->getSharedAcceptables($accepted));
     }
 
     /**
@@ -295,10 +293,9 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function sharedAcceptablesForNonEqualListsReturnsEmptyArray($accepted)
     {
-        assert(
+        assertEmptyArray(
                 $this->acceptHeader->addAcceptable('text/html')
-                        ->getSharedAcceptables($accepted),
-                equals([])
+                        ->getSharedAcceptables($accepted)
         );
     }
 

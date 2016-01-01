@@ -9,6 +9,7 @@
  */
 namespace stubbles\peer;
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
@@ -99,7 +100,7 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
      */
     public function buildEmptQueryStringReturnsEmptyString()
     {
-        assert($this->emptyQueryString->build(), equals(''));
+        assertEmptyString($this->emptyQueryString->build());
     }
 
     /**

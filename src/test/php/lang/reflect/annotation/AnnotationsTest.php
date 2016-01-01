@@ -9,6 +9,7 @@
  */
 namespace stubbles\lang\reflect\annotation;
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
@@ -98,7 +99,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsEmptyListIfNoneOfThisTypeAdded()
     {
-        assert($this->annotations->named('foo'), equals([]));
+        assertEmptyArray($this->annotations->named('foo'));
     }
 
     /**

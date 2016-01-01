@@ -10,6 +10,7 @@
 namespace stubbles\peer;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
@@ -155,10 +156,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasEmptyUser()
     {
-        assert(
-                Uri::fromString('ftp://@stubbles.net')->user(),
-                equals('')
-        );
+        assertEmptyString(Uri::fromString('ftp://@stubbles.net')->user());
     }
 
     /**
@@ -166,10 +164,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasEmptyUserEvenIfDefaultChanged()
     {
-        assert(
-                Uri::fromString('ftp://@stubbles.net')->user('other'),
-                equals('')
-        );
+        assertEmptyString(Uri::fromString('ftp://@stubbles.net')->user('other'));
     }
 
     /**
@@ -226,9 +221,8 @@ class UriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasEmptyPassword()
     {
-        assert(
-                Uri::fromString('ftp://mikey:@stubbles.net')->password(),
-                equals('')
+        assertEmptyString(
+                Uri::fromString('ftp://mikey:@stubbles.net')->password()
         );
     }
 
@@ -237,9 +231,8 @@ class UriTest extends \PHPUnit_Framework_TestCase
      */
     public function hasEmptyPasswordEvenIfDefaultChanged()
     {
-        assert(
-                Uri::fromString('ftp://mikey:@stubbles.net')->password('other'),
-                equals('')
+        assertEmptyString(
+                Uri::fromString('ftp://mikey:@stubbles.net')->password('other')
         );
     }
 

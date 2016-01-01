@@ -12,6 +12,7 @@ use stubbles\predicate\Predicate;
 use stubbles\streams\memory\MemoryInputStream;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\streams\filter\FilteredInputStream.
@@ -56,7 +57,7 @@ class FilteredInputStreamTest extends \PHPUnit_Framework_TestCase
      */
     public function readReturnsEmptyStringIfChunkIsFiltered()
     {
-        assert($this->filteredInputStream->read(), equals(''));
+        assertEmptyString($this->filteredInputStream->read());
     }
 
     /**
