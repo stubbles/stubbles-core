@@ -10,6 +10,8 @@
 namespace stubbles\lang\exception;
 /**
  * Exception to be thrown in case any component has not been configured correctly
+ *
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class ConfigurationException extends Exception
 {

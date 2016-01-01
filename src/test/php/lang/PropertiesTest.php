@@ -361,7 +361,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  UnexpectedValueException
      */
     public function invalidIniFileThrowsIOException()
     {

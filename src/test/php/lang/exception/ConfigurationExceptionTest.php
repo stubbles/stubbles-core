@@ -13,6 +13,7 @@ namespace stubbles\lang\exception;
  *
  * @group  lang
  * @group  lang_exception
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class ConfigurationExceptionTest extends \PHPUnit_Framework_TestCase
 {

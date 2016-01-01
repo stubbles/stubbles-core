@@ -261,7 +261,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  UnexpectedValueException
      */
     public function invalidIniFileThrowsException()
     {
