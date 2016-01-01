@@ -80,28 +80,6 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @since  3.4.2
-     */
-    public function lastErrorMessageShouldBeNullByDefault()
-    {
-        assertNull(exception\lastErrorMessage());
-    }
-
-    /**
-     * @test
-     * @since  3.4.2
-     */
-    public function lastErrorMessageShouldContainLastError()
-    {
-        @file_get_contents(__DIR__ . '/doesNotExist.txt');
-        assert(
-                exception\lastErrorMessage(),
-                equals('file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory')
-        );
-    }
-
-    /**
-     * @test
      * @since  4.0.0
      */
     public function reflectWithMethodNameReturnsReflectionMethod()
