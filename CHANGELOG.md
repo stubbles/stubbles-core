@@ -21,6 +21,8 @@
   * deprecated `stubbles\lang\errorhandler\ErrorHandler`, will be removed with 8.0.0
   * deprecated `stubbles\lang\errorhandler\ExceptionHandler`, will be removed with 8.0.0
   * deprecated `stubbles\lang\errorhandler\ExceptionLogger`, use `stubbles\environments\ExceptionLogger` instead, will be removed with 8.0.0
+  * moved `stubbles\lang\ResourceLoader` to `stubbles\ResourceLoader`, old class definition will be removed with 8.0.0
+  * moved `stubbles\lang\Rootpath` to `stubbles\Rootpath`, old class definition will be removed with 8.0.0
 
 
 ### Other changes

@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang;
+namespace stubbles;
 use stubbles\streams\InputStream;
 
 use function bovigo\assert\assert;
@@ -16,19 +16,19 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
+use function stubbles\lang\reflect\annotationsOf;
 /**
- * Tests for stubbles\lang\ResourceLoader.
+ * Tests for stubbles\ResourceLoader.
  *
  * @since  1.6.0
- * @group  lang
- * @group  lang_core
+ * @group  app
  */
 class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  ResourceLoader
+     * @type  \stubbles\ResourceLoader
      */
     private $resourceLoader;
 
@@ -45,10 +45,7 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function isAnnotatedAsSingleton()
     {
-        assertTrue(
-                reflect\annotationsOf($this->resourceLoader)
-                        ->contain('Singleton')
-        );
+        assertTrue(annotationsOf($this->resourceLoader)->contain('Singleton'));
     }
 
     /**

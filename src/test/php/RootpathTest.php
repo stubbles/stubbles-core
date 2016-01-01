@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang;
+namespace stubbles;
 use org\bovigo\vfs\vfsStream;
 
 use function bovigo\assert\assert;
@@ -20,8 +20,7 @@ use function bovigo\assert\predicate\isSameAs;
  * Tests for stubbles\lang\Rootpath.
  *
  * @since  4.0.0
- * @group  lang
- * @group  lang_core
+ * @group  app
  */
 class RootpathTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,7 +31,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
     {
         assert(
                 (string) new Rootpath(),
-                equals(realpath(__DIR__ . '/../../../../'))
+                equals(realpath(__DIR__ . '/../../../'))
         );
     }
 
@@ -89,7 +88,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
     {
         assert(
                 (string) Rootpath::castFrom(null),
-                equals(realpath(__DIR__ . '/../../../../'))
+                equals(realpath(__DIR__ . '/../../../'))
         );
     }
 
@@ -117,7 +116,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
     {
         assert(
                 (string) Rootpath::castFrom(null)
-                        ->to('src', 'test', 'php', 'lang', 'RootpathTest.php'),
+                        ->to('src', 'test', 'php', 'RootpathTest.php'),
                 equals(__FILE__)
         );
     }
