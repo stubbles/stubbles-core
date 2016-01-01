@@ -22,6 +22,7 @@
   * deprecated `stubbles\lang\errorhandler\ExceptionHandler`, will be removed with 8.0.0
   * deprecated `stubbles\lang\errorhandler\ExceptionLogger`, use `stubbles\environments\ExceptionLogger` instead, will be removed with 8.0.0
   * moved `stubbles\lang\ResourceLoader` to `stubbles\ResourceLoader`, old class definition will be removed with 8.0.0
+  * moved `stubbles\lang\Result` to `stubbles\Result`, old class definition will be removed with 8.0.0
   * moved `stubbles\lang\Rootpath` to `stubbles\Rootpath`, old class definition will be removed with 8.0.0
   * deprecated `stubbles\lang\exception\ConfigurationException` will be removed with 8.0.0
   * `stubbles\lang\Properties::fromFile()` now throws a `\UnexpectedValueException` instead of `stubbles\lang\exception\IOException`

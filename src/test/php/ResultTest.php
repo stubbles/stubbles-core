@@ -7,18 +7,17 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang;
+namespace stubbles;
 use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
 /**
- * Tests for stubbles\lang\Result.
+ * Tests for stubbles\Result.
  *
  * @since  6.0.0
- * @group  lang
- * @group  lang_core
+ * @group  types
  */
 class ResultTest extends \PHPUnit_Framework_TestCase
 {
