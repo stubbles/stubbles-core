@@ -14,8 +14,7 @@ namespace stubbles\predicate;
  * The predicate uses preg_match() and checks if the value occurs exactly
  * one time. Please make sure that the supplied regular expression contains
  * correct delimiters, they will not be applied automatically. The test()
- * method throws a stubbles\lang\exception\RuntimeException in case the regular
- * expression is invalid.
+ * method throws a \RuntimeException in case the regular expression is invalid.
  *
  * @api
  * @since  4.0.0
