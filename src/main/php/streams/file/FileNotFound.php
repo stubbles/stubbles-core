@@ -13,5 +13,14 @@ namespace stubbles\streams\file;
  */
 class FileNotFound extends \Exception
 {
-    // intentionally empty
+    /**
+     * constructor
+     *
+     * @param  string                    $message
+     * @param  \stubbles\peer\Exception  $previous
+     */
+    public function __construct($message, \Exception $previous = null)
+    {
+        parent::__construct($message, 0, $previous);
+    }
 }

@@ -8,11 +8,19 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
-use stubbles\lang\exception\Exception;
 /**
  * Exception to be thrown in case a binding is invalid or missing
  */
-class BindingException extends Exception
+class BindingException extends \Exception
 {
-    // intentionally empty
+    /**
+     * constructor
+     *
+     * @param  string                    $message
+     * @param  \stubbles\peer\Exception  $previous
+     */
+    public function __construct($message, \Exception $previous = null)
+    {
+        parent::__construct($message, 0, $previous);
+    }
 }

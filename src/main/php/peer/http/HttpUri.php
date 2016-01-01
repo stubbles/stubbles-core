@@ -51,7 +51,7 @@ abstract class HttpUri extends Uri
      * @param   string  $uriString  string to create instance from
      * @param   string  $rfc        optional  RFC to base validation on, defaults to Http::RFC_7230
      * @return  \stubbles\peer\http\HttpUri
-     * @throws  \stubbles\lang\exception\MalformedUriException
+     * @throws  \stubbles\peer\MalformedUriException
      */
     public static function fromString($uriString, $rfc = Http::RFC_7230)
     {
@@ -101,7 +101,7 @@ abstract class HttpUri extends Uri
      *
      * @param   string  $rfc
      * @return  bool
-     * @throws  \stubbles\lang\exception\MalformedUriException
+     * @throws  \stubbles\peer\MalformedUriException
      */
     private function isValidForRfc($rfc)
     {
