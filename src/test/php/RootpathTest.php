@@ -17,7 +17,7 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
 /**
- * Tests for stubbles\lang\Rootpath.
+ * Tests for stubbles\Rootpath.
  *
  * @since  4.0.0
  * @group  app
@@ -163,7 +163,7 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
      * returns path to test resources
      *
      * @param   string  $last
-     * @return  \stubbles\lang\Rootpath
+     * @return  \stubbles\Rootpath
      */
     private function rootpathToTestResources($last)
     {

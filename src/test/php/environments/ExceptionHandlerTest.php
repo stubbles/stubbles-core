@@ -10,7 +10,7 @@
 namespace stubbles\environments;
 use bovigo\callmap\NewInstance;
 use stubbles\Environment;
-use stubbles\lang\errorhandler\ExceptionHandler;
+use stubbles\environments\exceptionhandler\ExceptionHandler;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\isInstanceOf;

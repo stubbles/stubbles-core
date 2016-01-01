@@ -11,7 +11,7 @@ namespace stubbles;
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
 /**
- * Tests for stubbles\lang\*().
+ * Tests for stubbles\*().
  *
  * @since  3.1.0
  * @group  lang

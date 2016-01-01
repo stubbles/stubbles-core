@@ -25,7 +25,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     /**
      * properties to be bound
      *
-     * @type  \stubbles\lang\Properties
+     * @type  \stubbles\Properties
      */
     private $properties;
 
