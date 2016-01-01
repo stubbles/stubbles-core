@@ -7,8 +7,10 @@
  *
  * @package  stubbles
  */
-namespace stubbles\lang;
+namespace stubbles;
 use org\bovigo\vfs\vfsStream;
+use stubbles\lang\Parse;
+use stubbles\lang\Secret;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertEmptyArray;
@@ -19,10 +21,9 @@ use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isNotSameAs;
 /**
- * Tests for stubbles\lang\Properties.
+ * Tests for stubbles\Properties.
  *
- * @group  lang
- * @group  lang_core
+ * @group  types
  */
 class PropertiesTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,7 +39,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->properties = properties(
+        $this->properties = new Properties(
                 ['scalar' => ['stringValue' => 'This is a string',
                               'intValue1'   => '303',
                               'intValue2'   => 303,
@@ -356,7 +357,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function fromNonExistantFileThrowsFileNotFoundException()
     {
-        parsePropertiesFile(__DIR__ . '/doesNotExist.ini');
+        Properties::fromFile(__DIR__ . '/doesNotExist.ini');
     }
 
     /**
@@ -369,7 +370,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('invalid.ini')
                  ->at($root)
                  ->withContent("[invalid{");
-        parsePropertiesFile(vfsStream::url('config/invalid.ini'));
+        Properties::fromFile(vfsStream::url('config/invalid.ini'));
     }
 
     /**
@@ -381,7 +382,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('test.ini')
                  ->at($root)
                  ->withContent("[foo]\nbar=baz");
-        $properties = parsePropertiesFile(vfsStream::url('config/test.ini'));
+        $properties = Properties::fromFile(vfsStream::url('config/test.ini'));
         assert($properties->section('foo'), equals(['bar' => 'baz']));
     }
 
@@ -393,7 +394,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIniStringThrowsException()
     {
-        parseProperties("[invalid{");
+        Properties::fromString("[invalid{");
     }
 
     /**
@@ -403,7 +404,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function validIniStringReturnsInstance()
     {
-        $properties = parseProperties("[foo]\nbar=baz");
+        $properties = Properties::fromString("[foo]\nbar=baz");
         assert($properties->section('foo'), equals(['bar' => 'baz']));
     }
 
@@ -413,8 +414,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function mergeMergesTwoPropertiesInstancesAndReturnsNewInstance()
     {
-        $properties1 = properties(['foo' => ['bar' => 'baz']]);
-        $properties2 = properties(['bar' => ['bar' => 'baz']]);
+        $properties1 = new Properties(['foo' => ['bar' => 'baz']]);
+        $properties2 = new Properties(['bar' => ['bar' => 'baz']]);
         $resultProperties = $properties1->merge($properties2);
         assert(
                 $resultProperties,
@@ -428,8 +429,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function mergeMergesProperties()
     {
-        $properties1 = properties(['foo' => ['bar' => 'baz']]);
-        $properties2 = properties(['bar' => ['bar' => 'baz']]);
+        $properties1 = new Properties(['foo' => ['bar' => 'baz']]);
+        $properties2 = new Properties(['bar' => ['bar' => 'baz']]);
         $resultProperties = $properties1->merge($properties2);
         assert($resultProperties->section('foo'), equals(['bar' => 'baz']));
         assert($resultProperties->section('bar'), equals(['bar' => 'baz']));
@@ -441,11 +442,11 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function mergeOverwritesSectionsOfMergingInstanceWithThoseFromMergedInstance()
     {
-        $properties1 = properties(['foo' => ['bar' => 'baz'],
+        $properties1 = new Properties(['foo' => ['bar' => 'baz'],
                                    'bar' => ['baz' => 'foo']
                                   ]
                        );
-        $properties2 = properties(['bar' => ['bar' => 'baz']]);
+        $properties2 = new Properties(['bar' => ['bar' => 'baz']]);
         $resultProperties = $properties1->merge($properties2);
         assert($resultProperties->section('foo'), equals(['bar' => 'baz']));
         assert($resultProperties->section('bar'), equals(['bar' => 'baz']));
@@ -459,7 +460,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function propertiesWithKeyPasswordBecomeInstancesOfSecureString()
     {
         assert(
-                properties(['foo' => ['password' => 'baz']])
+                (new Properties(['foo' => ['password' => 'baz']]))
                         ->value('foo', 'password'),
                 isInstanceOf(Secret::class)
         );
@@ -473,7 +474,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function propertiesWhereKeyEndsWithPasswordBecomeInstancesOfSecureString()
     {
         assert(
-                properties(['foo' => ['example.another.password' => 'baz']])
+                (new Properties(['foo' => ['example.another.password' => 'baz']]))
                         ->value('foo', 'example.another.password'),
                 isInstanceOf(Secret::class)
         );
@@ -487,7 +488,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function parseSecureStringValueReturnsSecureStringInstance()
     {
         assert(
-                properties(['foo' => ['password' => 'baz']])
+                (new Properties(['foo' => ['password' => 'baz']]))
                         ->parseValue('foo', 'password'),
                 isInstanceOf(Secret::class)
         );
@@ -502,7 +503,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function parseSecureStringThrowsIllegalAccessException()
     {
         assert(
-                properties(['foo' => ['password' => 'baz']])
+                (new Properties(['foo' => ['password' => 'baz']]))
                         ->parse('foo', 'password'),
                 isInstanceOf(Secret::class)
         );

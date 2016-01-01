@@ -18,6 +18,7 @@ namespace stubbles\lang {
      * @return  \stubbles\lang\Properties
      * @since   3.1.0
      * @api
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     function properties(array $propertyData = [])
     {
@@ -31,6 +32,7 @@ namespace stubbles\lang {
      * @return  \stubbles\lang\Properties
      * @since   3.1.0
      * @api
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     function parseProperties($propertyString)
     {
@@ -44,6 +46,7 @@ namespace stubbles\lang {
      * @return  \stubbles\lang\Properties
      * @since   3.1.0
      * @api
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     function parsePropertiesFile($propertiesFile)
     {

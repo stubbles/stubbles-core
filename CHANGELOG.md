@@ -1,4 +1,4 @@
-7.0.0 (201?-??-??)
+7.0.0 (2016-??-??)
 ------------------
 
 ### BC breaks
@@ -15,17 +15,23 @@
   * deprecated `stubbles\lang\Mode` use `stubbles\Environment` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\DefaultMode::prod()` use `stubbles\environments\Production` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\DefaultMode::dev()` use `stubbles\environments\Development` instead, will be removed with 8.0.0
-  * deprecated `stubbles\lang\DefaultMode`, will be removed with 8.0.0
   * moved `stubbles\ioc\modules\Runtime` to `stubbles\Runtime`
-  * deprecated `stubbles\lang\errorhandler\CompositeErrorHandler`, will be removed with 8.0.0
-  * deprecated `stubbles\lang\errorhandler\ErrorHandler`, will be removed with 8.0.0
-  * deprecated `stubbles\lang\errorhandler\ExceptionHandler`, will be removed with 8.0.0
   * deprecated `stubbles\lang\errorhandler\ExceptionLogger`, use `stubbles\environments\ExceptionLogger` instead, will be removed with 8.0.0
-  * moved `stubbles\lang\ResourceLoader` to `stubbles\ResourceLoader`, old class definition will be removed with 8.0.0
-  * moved `stubbles\lang\Result` to `stubbles\Result`, old class definition will be removed with 8.0.0
-  * moved `stubbles\lang\Rootpath` to `stubbles\Rootpath`, old class definition will be removed with 8.0.0
-  * deprecated `stubbles\lang\exception\ConfigurationException` will be removed with 8.0.0
-  * `stubbles\lang\Properties::fromFile()` now throws a `\UnexpectedValueException` instead of `stubbles\lang\exception\IOException`
+  * moved classes and functions from `stubbles\lang` to `stubbles`, old class definition will be removed with 8.0.0
+    * moved `stubbles\lang\Properties` to `stubbles\Properties`
+      * `stubbles\Properties::fromFile()` now throws a `\UnexpectedValueException` instead of `stubbles\lang\exception\IOException`
+    * moved `stubbles\lang\ResourceLoader` to `stubbles\ResourceLoader`
+    * moved `stubbles\lang\Result` to `stubbles\Result`
+    * moved `stubbles\lang\Rootpath` to `stubbles\Rootpath`
+  * deprecated several classes and functions, will be removed with 8.0.0:
+    * `stubbles\lang\exception\ConfigurationException`
+    * `stubbles\lang\properties()`
+    * `stubbles\lang\parseProperties()`
+    * `stubbles\lang\parsePropertiesFile()`
+    * `stubbles\lang\errorhandler\CompositeErrorHandler`
+    * `stubbles\lang\errorhandler\ErrorHandler`
+    * `stubbles\lang\errorhandler\ExceptionHandler`
+    * `stubbles\lang\DefaultMode`
   * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
 
