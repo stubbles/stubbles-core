@@ -368,6 +368,7 @@ namespace stubbles\lang\exception {
      *
      * @return  string
      * @since   3.4.2
+     * @deprecated  since 7.0.0, use stubbles\lastErrorMessage() instead
      */
     function lastErrorMessage()
     {
