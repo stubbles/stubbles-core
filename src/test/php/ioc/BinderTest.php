@@ -14,7 +14,6 @@ use stubbles\ioc\binding\ClassBinding;
 use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
-use stubbles\lang\Mode;
 use stubbles\lang\Properties;
 use bovigo\callmap\NewInstance;
 
