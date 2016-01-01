@@ -353,9 +353,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @expectedException  stubbles\streams\file\FileNotFound
      */
-    public function fromNonExistantFileThrowsFileNotFoundException()
+    public function fromNonExistantFileThrowsFileNotFound()
     {
         Properties::fromFile(__DIR__ . '/doesNotExist.ini');
     }
@@ -389,6 +389,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException  InvalidArgumentException
+     * @expectedExceptionMessage  Property string contains errors and can not be parsed: syntax error, unexpected $end
      * @since  2.0.0
      * @group  bug213
      */

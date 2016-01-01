@@ -252,7 +252,7 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\FileNotFoundException
+     * @expectedException  stubbles\streams\file\FileNotFound
      */
     public function fromNonExistantFileThrowsException()
     {

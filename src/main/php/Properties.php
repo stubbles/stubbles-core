@@ -10,7 +10,7 @@
 namespace stubbles;
 use stubbles\lang\Parse;
 use stubbles\lang\Secret;
-use stubbles\lang\exception\FileNotFoundException;
+use stubbles\streams\file\FileNotFound;
 /**
  * Class to read and parse properties.
  *
@@ -63,7 +63,8 @@ class Properties implements \Iterator
         $propertyData = @parse_ini_string($propertyString, true);
         if (false === $propertyData) {
             throw new \InvalidArgumentException(
-                    'Property string contains errors and can not be parsed.'
+                    'Property string contains errors and can not be parsed: '
+                    . lastErrorMessage()->value()
             );
         }
 
@@ -76,13 +77,13 @@ class Properties implements \Iterator
      * @api
      * @param   string  $propertiesFile  full path to file containing properties
      * @return  \stubbles\Properties
-     * @throws  \stubbles\lang\exception\FileNotFoundException  if file can not be found or is not readable
-     * @throws  \UnexpectedValueException                       if file contains errors and can not be parsed
+     * @throws  \stubbles\streams\file\FileNotFound  if file can not be found or is not readable
+     * @throws  \UnexpectedValueException            if file contains errors and can not be parsed
      */
     public static function fromFile($propertiesFile)
     {
         if (!file_exists($propertiesFile) || !is_readable($propertiesFile)) {
-            throw new FileNotFoundException($propertiesFile);
+            throw new FileNotFound('Property file ' . $propertiesFile . ' not found');
         }
 
         $propertyData = @parse_ini_file($propertiesFile, true);
