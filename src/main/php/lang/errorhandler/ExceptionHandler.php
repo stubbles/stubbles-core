@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use stubbles\environments\ExceptionHandler as NewExceptionHandler;
+use stubbles\environments\exceptionhandler\ExceptionHandler as NewExceptionHandler;
 /**
  * Interface for exception handlers.
  *

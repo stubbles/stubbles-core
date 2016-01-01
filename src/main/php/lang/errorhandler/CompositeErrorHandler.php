@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\errorhandler;
-use stubbles\environments\ErrorHandlers;
+use stubbles\environments\errorhandler\ErrorHandlers;
 /**
  * Container for a collection of PHP error handlers.
  *

@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\environments;
+namespace stubbles\environments\errorhandler;
 /**
  * Interface for PHP error handlers.
  *

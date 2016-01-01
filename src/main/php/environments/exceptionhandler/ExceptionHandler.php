@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\environments;
+namespace stubbles\environments\exceptionhandler;
 /**
  * Interface for exception handlers.
  *

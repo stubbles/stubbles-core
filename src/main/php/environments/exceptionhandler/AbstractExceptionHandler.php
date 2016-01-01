@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\environments\exceptionhandler;
-use stubbles\environments\ExceptionHandler;
 use stubbles\environments\ExceptionLogger;
 /**
  * Abstract base implementation for exception handlers, containing logging of exceptions.

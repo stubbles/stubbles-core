@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\environments\errorhandler;
-use stubbles\environments\ErrorHandler;
 /**
  * Error handler that logs all errors.
  *

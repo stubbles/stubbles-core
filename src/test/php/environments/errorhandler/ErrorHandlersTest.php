@@ -7,7 +7,7 @@
  *
  * @package  stubbles
  */
-namespace stubbles\environments;
+namespace stubbles\environments\errorhandler;
 use bovigo\callmap\NewInstance;
 
 use function bovigo\assert\assert;
@@ -16,7 +16,7 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
 /**
- * Tests for stubbles\environments\ErrorHandlers
+ * Tests for stubbles\environments\errorhandler\ErrorHandlers
  *
  * @group  environments
  * @group  environments_errorhandler
@@ -32,19 +32,19 @@ class ErrorHandlersTest extends \PHPUnit_Framework_TestCase
     /**
      * a mocked error handler
      *
-     * @type  \stubbles\environments\ErrorHandler
+     * @type  \stubbles\environments\errorhandler\ErrorHandler
      */
     protected $errorHandler1;
     /**
      * a mocked error handler
      *
-     * @type  \stubbles\environments\ErrorHandler
+     * @type  \stubbles\environments\errorhandler\ErrorHandler
      */
     protected $errorHandler2;
     /**
      * a mocked error handler
      *
-     * @type  \stubbles\environments\ErrorHandler
+     * @type  \stubbles\environments\errorhandler\ErrorHandler
      */
     protected $errorHandler3;
 

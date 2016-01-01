@@ -9,7 +9,6 @@
  */
 namespace stubbles\environments\errorhandler;
 use org\bovigo\vfs\vfsStream;
-use stubbles\environments\ErrorHandler;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
