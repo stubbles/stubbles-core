@@ -9,9 +9,9 @@
  */
 namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
+use stubbles\Properties;
 use stubbles\ioc\Binder;
 use stubbles\ioc\Injector;
-use stubbles\lang\Properties;
 use stubbles\lang\Secret;
 
 use function bovigo\assert\assert;

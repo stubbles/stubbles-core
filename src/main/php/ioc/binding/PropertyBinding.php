@@ -8,8 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\ioc\binding;
+use stubbles\Properties;
 use stubbles\ioc\Injector;
-use stubbles\lang\Properties;
 /**
  * Provides properties, partially based on current runtime mode.
  *
@@ -24,7 +24,7 @@ class PropertyBinding implements Binding
     /**
      * actual properties
      *
-     * @type  \stubbles\lang\Properties
+     * @type  \stubbles\Properties
      */
     private $properties;
     /**
@@ -37,7 +37,7 @@ class PropertyBinding implements Binding
     /**
      * constructor
      *
-     * @param  \stubbles\lang\Properties  $properties
+     * @param  \stubbles\Properties  $properties
      * @param  string                     $environment  current environment
      */
     public function __construct(Properties $properties, $environment)

@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
+use stubbles\Properties;
 use stubbles\ioc\binding\Binding;
 use stubbles\ioc\binding\BindingScopes;
 use stubbles\ioc\binding\ClassBinding;
@@ -15,7 +16,6 @@ use stubbles\ioc\binding\ConstantBinding;
 use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
-use stubbles\lang\Properties;
 /**
  * Binder for the IoC functionality.
  *
@@ -103,7 +103,7 @@ class Binder
      *
      * @param   string   $propertiesFile  file where properties are stored
      * @param   string   $environment     name of current environment
-     * @return  \stubbles\lang\Properties
+     * @return  \stubbles\Properties
      * @since   4.0.0
      */
     public function bindPropertiesFromFile($propertiesFile, $environment)
@@ -117,9 +117,9 @@ class Binder
     /**
      * binds properties
      *
-     * @param   \stubbles\lang\Properties  $properties
-     * @param   string                     $environment  name of current environment
-     * @return  \stubbles\lang\Properties
+     * @param   \stubbles\Properties  $properties
+     * @param   string                $environment  name of current environment
+     * @return  \stubbles\Properties
      * @since   3.4.0
      */
     public function bindProperties(Properties $properties, $environment)

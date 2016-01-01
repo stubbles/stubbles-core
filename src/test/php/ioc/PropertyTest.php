@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\lang\Properties;
+use stubbles\Properties;
 use stubbles\test\ioc\PropertyReceiver;
 
 use function bovigo\assert\assert;
