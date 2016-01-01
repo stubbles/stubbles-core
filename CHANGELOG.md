@@ -27,6 +27,7 @@
   * deprecated `stubbles\lang\exception\ConfigurationException` will be removed with 8.0.0
   * `stubbles\lang\Properties::fromFile()` now throws a `\UnexpectedValueException` instead of `stubbles\lang\exception\IOException`
   * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
+  * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
 
 
 ### Other changes

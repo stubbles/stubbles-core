@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use stubbles\lang\exception\IOException;
+use function stubbles\lastErrorMessage;
 /**
  * Class for resource based output streams.
  *
@@ -46,7 +46,7 @@ abstract class ResourceOutputStream implements OutputStream
      * @param   string  $bytes
      * @return  int     amount of written bytes
      * @throws  \LogicException
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\streams\StreamException
      */
     public function write($bytes)
     {
@@ -56,7 +56,10 @@ abstract class ResourceOutputStream implements OutputStream
 
         $length = @fwrite($this->handle, $bytes);
         if (false === $length) {
-            throw new IOException('Can not write to output stream.');
+            throw new StreamException(
+                    'Can not write to output stream:'
+                    . lastErrorMessage()->whenEmpty('unknown error')->value()
+            );
         }
 
         return $length;

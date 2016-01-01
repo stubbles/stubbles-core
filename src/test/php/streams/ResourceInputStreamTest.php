@@ -181,7 +181,7 @@ jjj')
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  stubbles\streams\StreamException
      */
     public function readAfterCloseFromOutsite()
     {
@@ -191,7 +191,7 @@ jjj')
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  stubbles\streams\StreamException
      */
     public function readLineAfterCloseFromOutsite()
     {

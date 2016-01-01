@@ -94,7 +94,7 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  stubbles\streams\StreamException
      */
     public function writeToExternalClosedStreamThrowsIOException()
     {
@@ -104,7 +104,7 @@ class ResourceOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  stubbles\streams\StreamException
      */
     public function writeLineToExternalClosedStreamThrowsIOException()
     {

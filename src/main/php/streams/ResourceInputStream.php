@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use stubbles\lang\exception\IOException;
+use function stubbles\lastErrorMessage;
 /**
  * Class for resource based input streams.
  *
@@ -46,7 +46,7 @@ abstract class ResourceInputStream implements InputStream
      * @param   int  $length  max amount of bytes to read
      * @return  string
      * @throws  \LogicException
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\streams\StreamException
      */
     public function read($length = 8192)
     {
@@ -54,16 +54,7 @@ abstract class ResourceInputStream implements InputStream
             throw new \LogicException('Can not read from closed input stream.');
         }
 
-        $data = @fread($this->handle, $length);
-        if (false === $data) {
-            if (!@feof($this->handle)) {
-                throw new IOException('Can not read from input stream.');
-            }
-
-            return '';
-        }
-
-        return $data;
+        return $this->doRead('fread', $length);
     }
 
     /**
@@ -72,7 +63,7 @@ abstract class ResourceInputStream implements InputStream
      * @param   int  $length  max amount of bytes to read
      * @return  string
      * @throws  \LogicException
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\streams\StreamException
      */
     public function readLine($length = 8192)
     {
@@ -80,16 +71,32 @@ abstract class ResourceInputStream implements InputStream
             throw new \LogicException('Can not read from closed input stream.');
         }
 
-        $data = @fgets($this->handle, $length);
+        return rtrim($this->doRead('fgets', $length), "\n\r");
+    }
+
+    /**
+     * do actual read
+     *
+     * @param   string  $read    function to use for reading from handle
+     * @param   int     $length  max amount of bytes to read
+     * @return  string
+     * @throws  \stubbles\streams\StreamException
+     */
+    private function doRead($read, $length)
+    {
+        $data = @$read($this->handle, $length);
         if (false === $data) {
+            $error = lastErrorMessage()->whenEmpty('unknown error');
             if (!@feof($this->handle)) {
-                throw new IOException('Can not read from input stream.');
+                throw new StreamException(
+                        'Can not read from input stream: ' . $error->value()
+                );
             }
 
             return '';
         }
 
-        return rtrim($data, "\r\n");
+        return $data;
     }
 
     /**

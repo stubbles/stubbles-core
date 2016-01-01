@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use stubbles\lang\exception\IOException;
 /**
  * Input stream for reading from php://input.
  *
@@ -45,7 +44,7 @@ class StandardInputStream extends ResourceInputStream implements Seekable
      *
      * @return  int
      * @throws  \LogicException  in case the stream was already closed
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\streams\StreamException
      */
     public function tell()
     {
@@ -55,7 +54,7 @@ class StandardInputStream extends ResourceInputStream implements Seekable
 
         $position = ftell($this->handle);
         if (false === $position) {
-            throw new IOException('Can not read current position in php://input');
+            throw new StreamException('Can not read current position in php://input');
         }
 
         return $position;

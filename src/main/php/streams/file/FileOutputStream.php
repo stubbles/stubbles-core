@@ -8,8 +8,10 @@
  * @package  stubbles
  */
 namespace stubbles\streams\file;
-use stubbles\lang\exception\IOException;
 use stubbles\streams\ResourceOutputStream;
+use stubbles\streams\StreamException;
+
+use function stubbles\lastErrorMessage;
 /**
  * Class for file based output streams.
  *
@@ -100,13 +102,22 @@ class FileOutputStream extends ResourceOutputStream
      * @param   string   $file
      * @param   string   $mode
      * @return  resource
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\streams\StreamException
      */
     protected function openFile($file, $mode)
     {
         $fp = @fopen($file, $mode);
         if (false === $fp) {
-            throw new IOException('Can not open file ' . $file . ' with mode ' . $mode);
+            throw new StreamException(
+                    'Can not open file ' . $file . ' with mode ' . $mode . ': '
+                    .
+                    lastErrorMessage()->map(
+                                function($message) use ($file)
+                                {
+                                    return str_replace('fopen(' . $file . '): ', '', $message);
+                                }
+                        )->value()
+            );
         }
 
         return $fp;

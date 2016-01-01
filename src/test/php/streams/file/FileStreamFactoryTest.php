@@ -126,7 +126,7 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  stubbles\streams\StreamException
      */
     public function createOutputStreamWithDirectoryOptionNotSetThrowsExceptionIfDirectoryDoesNotExist()
     {
@@ -136,7 +136,7 @@ class FileStreamFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  stubbles\streams\StreamException
      */
     public function createOutputStreamWithDirectoryOptionSetToFalseThrowsExceptionIfDirectoryDoesNotExist()
     {

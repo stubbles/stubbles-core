@@ -82,7 +82,8 @@ class FileOutputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  stubbles\streams\StreamException
+     * @expectedExceptionMessage  Can not open file vfs://home/test.txt with mode r: failed to open stream: "org\bovigo\vfs\vfsStreamWrapper::stream_open" call failed
      */
     public function constructWithStringFailsAndThrowsIOException()
     {

@@ -8,10 +8,12 @@
  * @package  stubbles
  */
 namespace stubbles\streams\file;
-use stubbles\lang\exception\IOException;
 use stubbles\streams\InputStream;
 use stubbles\streams\ResourceInputStream;
 use stubbles\streams\Seekable;
+use stubbles\streams\StreamException;
+
+use function stubbles\lastErrorMessage;
 /**
  * Class for file based input streams.
  *
@@ -31,7 +33,7 @@ class FileInputStream extends ResourceInputStream implements Seekable
      *
      * @param   string|resource  $file
      * @param   string           $mode  opening mode if $file is a filename
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\streams\StreamException
      * @throws  \InvalidArgumentException
      */
     public function __construct($file, $mode = 'rb')
@@ -39,7 +41,16 @@ class FileInputStream extends ResourceInputStream implements Seekable
         if (is_string($file)) {
             $fp = @fopen($file, $mode);
             if (false === $fp) {
-                throw new IOException('Can not open file ' . $file . ' with mode ' . $mode);
+                throw new StreamException(
+                        'Can not open file ' . $file . ' with mode ' . $mode. ': '
+                        .
+                        lastErrorMessage()->map(
+                                function($message) use ($file)
+                                {
+                                    return str_replace('fopen(' . $file . '): ', '', $message);
+                                }
+                        )->value()
+                );
             }
 
             $this->fileName = $file;
@@ -126,7 +137,7 @@ class FileInputStream extends ResourceInputStream implements Seekable
      *
      * @return  int
      * @throws  \LogicException
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\streams\StreamException
      */
     public function tell()
     {
@@ -136,7 +147,7 @@ class FileInputStream extends ResourceInputStream implements Seekable
 
         $position = ftell($this->handle);
         if (false === $position) {
-            throw new IOException('Can not read current position in file.');
+            throw new StreamException('Can not read current position in file.');
         }
 
         return $position;

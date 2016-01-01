@@ -40,7 +40,8 @@ class FileInputStreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\IOException
+     * @expectedException  stubbles\streams\StreamException
+     * @expectedExceptionMessage  Can not open file doesNotExist with mode r: failed to open stream: No such file or directory
      */
     public function constructWithStringFailsAndThrowsIOException()
     {
