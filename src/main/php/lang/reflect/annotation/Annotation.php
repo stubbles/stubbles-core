@@ -9,8 +9,6 @@
  */
 namespace stubbles\lang\reflect\annotation;
 use stubbles\lang\Parse;
-
-use function stubbles\lang\__toString;
 /**
  * Represents an annotation on the code.
  */
@@ -276,6 +274,23 @@ class Annotation
      */
     public function __toString()
     {
-        return __toString($this);
+        $result = '@' . $this->name;
+        if (null !== $this->type) {
+            $result .= '[' . $this->type . ']';
+        }
+
+        $result .= '(';
+        if (count($this->values) === 1 && isset($this->values['__value'])) {
+            $result .= $this->values['__value'];
+        } else {
+            $params = [];
+            foreach ($this->values as $name => $value) {
+                $params[] = $name .'=' . $value;
+            }
+
+            $result .= join(', ', $params);
+        }
+
+        return $result . ')';
     }
 }

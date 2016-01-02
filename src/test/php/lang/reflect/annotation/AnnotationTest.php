@@ -15,7 +15,6 @@ use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isOfType;
 /**
  * Helper class for the test.
  */
@@ -374,8 +373,8 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     public function canBeCastedToString()
     {
         assert(
-                (string) $this->createAnnotation(['foo' => 'value']),
-                isOfType('string')
+                (string) $this->createAnnotation(['foo' => 303, 'bar' => "'value'"]),
+                equals("@Life[Example](foo=303, bar='value')")
         );
     }
 
