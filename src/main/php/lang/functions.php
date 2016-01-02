@@ -284,18 +284,11 @@ namespace stubbles\lang {
      * @param   mixed   &$value
      * @return  string
      * @since   3.1.0
+     * @deprecated  since 7.0.0, use stubbles\typeOf() instead, will be removed with 8.0.0
      */
     function getType(&$value)
     {
-        if (is_object($value)) {
-            return get_class($value);
-        }
-
-        if (is_resource($value)) {
-            return 'resource[' . get_resource_type($value) . ']';
-        }
-
-        return \gettype($value);
+        return \stubbles\typeOf($value);
     }
 
     /**

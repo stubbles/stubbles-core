@@ -40,4 +40,51 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 equals('file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory')
         );
     }
+
+    /**
+     * @test
+     * @since  7.0.0
+     */
+    public function typeOfOjectReturnsNameOfClass()
+    {
+        assert(typeOf($this), equals(__CLASS__));
+    }
+
+    /**
+     * @test
+     * @since  7.0.0
+     */
+    public function typeOfResourceReturnsResourceWithResourceType()
+    {
+        $fp = fopen(__FILE__, 'r');
+        assert(typeOf($fp), equals('resource[stream]'));
+        fclose($fp);
+    }
+
+    /**
+     * @return  array
+     */
+    public function valueTypes()
+    {
+        return [
+                [303, 'integer'],
+                [3.03, 'double'],
+                ['foo', 'string'],
+                [[], 'array'],
+                [true, 'boolean'],
+                [null, 'NULL']
+        ];
+    }
+
+    /**
+     * @param  mixed   $value
+     * @param  string  $expectedType
+     * @test
+     * @dataProvider  valueTypes
+     * @since  7.0.0
+     */
+    public function typeOfOtherValuesReturnsNativeType($value, $expectedType)
+    {
+        assert(typeOf($value), equals($expectedType));
+    }
 }

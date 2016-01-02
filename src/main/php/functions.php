@@ -21,4 +21,25 @@ namespace stubbles {
         return Result::of(error_get_last())
                 ->map(function(array $error) { return $error['message']; });
     }
+
+    /**
+     * determines the correct type of a value
+     *
+     * @param   mixed   &$value
+     * @return  string
+     * @since   3.1.0
+     */
+    function typeOf(&$value)
+    {
+        if (is_object($value)) {
+            return get_class($value);
+        }
+
+        if (is_resource($value)) {
+            return 'resource[' . get_resource_type($value) . ']';
+        }
+
+        return \gettype($value);
+    }
+
 }

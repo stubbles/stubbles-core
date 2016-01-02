@@ -23,6 +23,7 @@
     * moved `stubbles\lang\ResourceLoader` to `stubbles\ResourceLoader`
     * moved `stubbles\lang\Result` to `stubbles\Result`
     * moved `stubbles\lang\Rootpath` to `stubbles\Rootpath`
+    * moved `stubbles\lang\getType()` to `stubbles\typeOf()`
   * deprecated several classes and functions, will be removed with 8.0.0:
     * `stubbles\lang\properties()`
     * `stubbles\lang\parseProperties()`
