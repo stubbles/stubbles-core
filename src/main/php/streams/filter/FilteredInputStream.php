@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams\filter;
-use stubbles\predicate\Predicate;
 use stubbles\streams\AbstractDecoratedInputStream;
 use stubbles\streams\InputStream;
 /**
@@ -19,22 +18,22 @@ use stubbles\streams\InputStream;
 class FilteredInputStream extends AbstractDecoratedInputStream
 {
     /**
-     * stream filter to be applied
+     * predicate which decides on whether a line is acceptable
      *
-     * @type  stubbles\predicate\Predicate
+     * @type  callable
      */
     private $predicate;
 
     /**
      * constructor
      *
-     * @param   \stubbles\streams\InputStream           $inputStream   input stream to filter
-     * @param   callable|\stubbles\predicate\Predicate  $predicate     predicate to check if something should be passed
+     * @param   \stubbles\streams\InputStream  $inputStream  input stream to filter
+     * @param   callable                       $predicate    predicate to check if something should be passed
      */
-    public function __construct(InputStream $inputStream, $predicate)
+    public function __construct(InputStream $inputStream, callable $predicate)
     {
         parent::__construct($inputStream);
-        $this->predicate = Predicate::castFrom($predicate);
+        $this->predicate = $predicate;
     }
 
     /**
@@ -45,9 +44,10 @@ class FilteredInputStream extends AbstractDecoratedInputStream
      */
     public function read($length = 8192)
     {
+        $isAcceptable = $this->predicate;
         while (!$this->inputStream->eof()) {
             $data = $this->inputStream->read($length);
-            if ($this->predicate->test($data)) {
+            if ($isAcceptable($data)) {
                 return $data;
             }
         }
@@ -63,9 +63,10 @@ class FilteredInputStream extends AbstractDecoratedInputStream
      */
     public function readLine($length = 8192)
     {
+        $isAcceptable = $this->predicate;
         while (!$this->inputStream->eof()) {
             $data = $this->inputStream->readLine($length);
-            if ($this->predicate->test($data)) {
+            if ($isAcceptable($data)) {
                 return $data;
             }
         }

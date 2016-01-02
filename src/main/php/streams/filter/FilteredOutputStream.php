@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams\filter;
-use stubbles\predicate\Predicate;
 use stubbles\streams\AbstractDecoratedOutputStream;
 use stubbles\streams\OutputStream;
 /**
@@ -19,7 +18,7 @@ use stubbles\streams\OutputStream;
 class FilteredOutputStream extends AbstractDecoratedOutputStream
 {
     /**
-     * stream filter to be applied
+     * predicate which decides on whether a line is acceptable
      *
      * @type  stubbles\predicate\Predicate
      */
@@ -28,13 +27,13 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
     /**
      * constructor
      *
-     * @param   \stubbles\streams\OutputStream          $outputStream  stream to apply filter onto
-     * @param   callable|\stubbles\predicate\Predicate  $predicate     predicate to check if something should be passed
+     * @param   \stubbles\streams\OutputStream  $outputStream  stream to apply filter onto
+     * @param   callable                        $predicate     predicate to check if something should be passed
      */
-    public function __construct(OutputStream $outputStream, $predicate)
+    public function __construct(OutputStream $outputStream, callable $predicate)
     {
         parent::__construct($outputStream);
-        $this->predicate = Predicate::castFrom($predicate);
+        $this->predicate = $predicate;
     }
 
     /**
@@ -45,7 +44,8 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
      */
     public function write($bytes)
     {
-        if ($this->predicate->test($bytes)) {
+        $isAcceptable = $this->predicate;
+        if ($isAcceptable($bytes)) {
             return $this->outputStream->write($bytes);
         }
 
@@ -60,7 +60,8 @@ class FilteredOutputStream extends AbstractDecoratedOutputStream
      */
     public function writeLine($bytes)
     {
-        if ($this->predicate->test($bytes)) {
+        $isAcceptable = $this->predicate;
+        if ($isAcceptable($bytes)) {
             return $this->outputStream->writeLine($bytes);
         }
 

@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\streams\filter;
-use stubbles\predicate\Predicate;
 use stubbles\streams\memory\MemoryOutputStream;
 
 use function bovigo\assert\assert;
@@ -43,12 +42,10 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
         $this->memory = new MemoryOutputStream();
         $this->filteredOutputStream = new FilteredOutputStream(
                 $this->memory,
-                Predicate::castFrom(
-                        function($value)
-                        {
-                            return 'foo' === $value;
-                        }
-                )
+                function($value)
+                {
+                    return 'foo' === $value;
+                }
         );
     }
 
@@ -96,15 +93,5 @@ class FilteredOutputStreamTest extends \PHPUnit_Framework_TestCase
     {
         assert($this->filteredOutputStream->writeLines(['foo', 'bar']), equals(4));
         assert($this->memory->buffer(), equals("foo\n"));
-    }
-
-    /**
-     * @test
-     * @expectedException  InvalidArgumentException
-     * @since  4.0.0
-     */
-    public function createInstanceWithNoStreamFilterAndNoPredicateAndNoCallableThrowsIllegalArgumentException()
-    {
-        new FilteredOutputStream($this->memory, new \stdClass());
     }
 }
