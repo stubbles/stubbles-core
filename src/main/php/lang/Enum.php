@@ -10,6 +10,8 @@
 namespace stubbles\lang;
 /**
  * Base class for enums.
+ *
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 abstract class Enum
 {

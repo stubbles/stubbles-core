@@ -34,6 +34,7 @@
     * `stubbles\lang\errorhandler\ErrorHandler`
     * `stubbles\lang\errorhandler\ExceptionHandler`
     * `stubbles\lang\DefaultMode`
+    * `stubbles\lang\Enum`
     * everything in `stubbles\lang\exception`
   * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`

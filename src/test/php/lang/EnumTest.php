@@ -15,6 +15,8 @@ use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
 /**
  * Concrete instance of stubbles\lang\Enum.
+ *
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class TestEnumWithoutValues extends Enum
 {
@@ -43,6 +45,8 @@ class TestEnumWithoutValues extends Enum
 TestEnumWithoutValues::init();
 /**
  * Concrete instance of stubbles\lang\Enum.
+ *
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class TestEnumWithValues extends Enum
 {
@@ -74,6 +78,7 @@ TestEnumWithValues::init();
  *
  * @group  lang
  * @group  lang_core
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class EnumTest extends \PHPUnit_Framework_TestCase
 {
