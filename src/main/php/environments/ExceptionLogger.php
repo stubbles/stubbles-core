@@ -52,7 +52,7 @@ class ExceptionLogger
      * sets the mode for new log directories
      *
      * @param   int  $filemode
-     * @return  \stubbles\lang\errorhandler\ExceptionLogger
+     * @return  \stubbles\environments\exceptionhandler\ExceptionLogger
      */
     public function setFilemode($filemode)
     {

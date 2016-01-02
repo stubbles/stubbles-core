@@ -57,7 +57,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
     /**
      * disables exception logging
      *
-     * @return  \stubbles\lang\errorhandler\AbstractExceptionHandler
+     * @return  \stubbles\environments\exceptionhandler\AbstractExceptionHandler
      */
     public function disableLogging()
     {
@@ -69,7 +69,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandler
      * sets the mode for new log directories
      *
      * @param   int  $filemode
-     * @return  \stubbles\lang\errorhandler\AbstractExceptionHandler
+     * @return  \stubbles\environments\exceptionhandler\AbstractExceptionHandler
      */
     public function setFilemode($filemode)
     {
