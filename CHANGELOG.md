@@ -7,6 +7,7 @@
   * moved `stubbles\lang\Sequence` into a separate package _stubbles/sequence_
     * package is required by _stubbles/core_
     * the new full class name is `stubbles\sequence\Sequence`
+    * moved `stubbles\lang\ensureCallable()` to `stubbles\sequence\ensureCallable()`
   * changed `stubbles\ioc\module\BindingModule::configure()` to accept an optional second parameter `$projectPath`
   * deprecated `stubbles\lang\SecureString` in favor of `stubbles\lang\Secret`, will be removed in 8.0.0
   * removed `stubbles\peer\createBsdSocket()`, `stubbles\peer\BsdSocket` was already removed in 6.0.0
