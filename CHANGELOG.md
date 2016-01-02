@@ -28,6 +28,8 @@
     * `stubbles\lang\properties()`
     * `stubbles\lang\parseProperties()`
     * `stubbles\lang\parsePropertiesFile()`
+    * `stubbles\lang\__toString()`
+    * `stubbles\lang\__convertToStringRepresentation()`
     * `stubbles\lang\errorhandler\CompositeErrorHandler`
     * `stubbles\lang\errorhandler\ErrorHandler`
     * `stubbles\lang\errorhandler\ExceptionHandler`

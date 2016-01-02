@@ -251,6 +251,7 @@ namespace stubbles\lang {
      * @return  string
      * @since   3.1.0
      * @api
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     function __toString($data, array $properties = null)
     {
@@ -297,6 +298,7 @@ namespace stubbles\lang {
      * @param   mixed  $value
      * @return  string
      * @since   3.1.0
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     function convertToStringRepresentation($value)
     {
