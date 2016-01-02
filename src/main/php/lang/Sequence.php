@@ -18,6 +18,8 @@ namespace stubbles\lang;
 use stubbles\lang\iterator\Generator;
 use stubbles\lang\iterator\MappingIterator;
 use stubbles\lang\iterator\Peek;
+
+use function stubbles\typeOf;
 /**
  * Sequence is a stream of data that can be operated on.
  *
@@ -88,7 +90,7 @@ class Sequence implements \IteratorAggregate, \Countable, \JsonSerializable
         throw new \InvalidArgumentException(
                 'Given data must either be a ' . __CLASS__
                 . ', an instance of \Traversable or an array but is '
-                . getType($elements)
+                . typeOf($elements)
         );
     }
 
