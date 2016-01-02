@@ -6,7 +6,8 @@
     "description": "Provides base classes for Stubbles packages.",
     "require": {
         "php": ">=5.6.0",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "stubbles/sequence": "^7.0"
     },
     "require-dev": {
         "mikey179/vfsStream": "^1.6",

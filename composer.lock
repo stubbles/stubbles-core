@@ -4,9 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "588f4d6636a32cd4a4243057e82d9991",
-    "content-hash": "f8310d679989d3ec8e29f107b6367fd2",
-    "packages": [],
+    "hash": "326abd3d7c443d9fb8db9635bb8a99d1",
+    "content-hash": "bcd6da856102268984b92c9dcb6f3b4e",
+    "packages": [
+        {
+            "name": "stubbles/sequence",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stubbles/stubbles-sequence.git",
+                "reference": "2d6141b5c75392f346a91ba2013addddd8aa246f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stubbles/stubbles-sequence/zipball/2d6141b5c75392f346a91ba2013addddd8aa246f",
+                "reference": "2d6141b5c75392f346a91ba2013addddd8aa246f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-iconv": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "bovigo/assert": "^1.5",
+                "phpunit/phpunit": "^5.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "stubbles\\sequence\\": "src/main/php"
+                },
+                "files": [
+                    "src/main/php/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Provides base classes for Stubbles packages.",
+            "homepage": "http://stubbles.net/",
+            "time": "2016-01-02 21:57:50"
+        }
+    ],
     "packages-dev": [
         {
             "name": "bovigo/assert",

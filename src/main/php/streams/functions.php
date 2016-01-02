@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams {
-    use stubbles\lang\Sequence;
+    use stubbles\sequence\Sequence;
     use stubbles\streams\file\FileInputStream;
 
     /**
@@ -16,7 +16,7 @@ namespace stubbles\streams {
      *
      * @api
      * @param   \stubbles\streams\InputStream|string  $input
-     * @return  \stubbles\lang\Sequence
+     * @return  \stubbles\sequence\Sequence
      * @since   5.2.0
      */
     function linesOf($input)
@@ -29,7 +29,7 @@ namespace stubbles\streams {
      *
      * @api
      * @param   \stubbles\streams\InputStream|string  $input
-     * @return  \stubbles\lang\Sequence
+     * @return  \stubbles\sequence\Sequence
      * @since   6.2.0
      */
     function nonEmptyLinesOf($input)

@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect {
-    use stubbles\lang\Sequence;
+    use stubbles\sequence\Sequence;
     use stubbles\lang\reflect\annotation\AnnotationCache;
     use stubbles\lang\reflect\annotation\Annotations;
     use stubbles\lang\reflect\annotation\parser\AnnotationStateParser;
@@ -151,7 +151,7 @@ namespace stubbles\lang\reflect {
      *
      * @param   string|object|\ReflectionClass  $class   class to return methods for
      * @param   int                             $filter  optional  filter the results to include only methods with certain attributes using any combination of ReflectionMethod::IS_ constants
-     * @return  \stubbles\lang\Sequence
+     * @return  \stubbles\sequence\Sequence
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
@@ -180,7 +180,7 @@ namespace stubbles\lang\reflect {
      *
      * @param   string|object|\ReflectionClass  $class   class to return properties for
      * @param   int                             $filter  optional  filter the results to include only properties with certain attributes using any combination of ReflectionProperty::IS_ constants
-     * @return  \stubbles\lang\Sequence
+     * @return  \stubbles\sequence\Sequence
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
@@ -208,7 +208,7 @@ namespace stubbles\lang\reflect {
      *
      * @param   string|object|array|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
      * @param   string                                           $methodName       optional  name of method in case first param references a class
-     * @return  \stubbles\lang\Sequence
+     * @return  \stubbles\sequence\Sequence
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
@@ -236,7 +236,7 @@ namespace stubbles\lang\reflect {
      * returns constructor parameters for given class
      *
      * @param   string|object|\ReflectionClass  $class  something that references a function or a class
-     * @return  \stubbles\lang\Sequence
+     * @return  \stubbles\sequence\Sequence
      * @since   5.3.0
      */
     function parametersOfConstructor($class)

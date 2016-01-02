@@ -9,7 +9,7 @@
  */
 namespace stubbles\streams;
 use org\bovigo\vfs\vfsStream;
-use stubbles\lang\Sequence;
+use stubbles\sequence\Sequence;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
