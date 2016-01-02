@@ -14,7 +14,6 @@ use stubbles\lang\reflect\annotation\AnnotationCache;
 use org\bovigo\vfs\vfsStream;
 
 use function bovigo\assert\assert;
-use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
