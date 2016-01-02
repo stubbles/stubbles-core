@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
-use function stubbles\lang\__toString;
 /**
  * Class to work with all kinds of Accept* headers.
  *
@@ -225,6 +224,6 @@ class AcceptHeader implements \Countable
      */
     public function __toString()
     {
-        return __toString($this);
+        return $this->asString();
     }
 }

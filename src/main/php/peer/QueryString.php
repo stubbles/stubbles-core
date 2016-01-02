@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use function stubbles\lang\__toString;
 /**
  * Query string handling.
  *
@@ -214,6 +213,6 @@ class QueryString
      */
     public function __toString()
     {
-        return __toString($this);
+        return $this->build();
     }
 }

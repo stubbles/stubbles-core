@@ -428,4 +428,17 @@ class HeaderListTest extends \PHPUnit_Framework_TestCase
 
         assert($counter, equals(2));
     }
+
+    /**
+     * @test
+     * @since  7.0.0
+     */
+    public function headerListCanBeCastedToString()
+    {
+        $headers = "Binford: 6100\r\nX-Power: More power!";
+        assert(
+                (string) parseHeaders($headers),
+                equals($headers)
+        );
+    }
 }

@@ -14,7 +14,7 @@ use stubbles\peer\ParsedUri;
 use stubbles\peer\Socket;
 use stubbles\peer\Uri;
 
-use function stubbles\lang\getType;
+use function stubbles\typeOf;
 /**
  * Class for URIs of scheme hypertext transfer protocol.
  *
@@ -92,7 +92,7 @@ abstract class HttpUri extends Uri
 
         throw new \InvalidArgumentException(
                 $name . ' must be a string containing a HTTP URI or an instance of '
-                . get_class() . ', but was ' . getType($value)
+                . get_class() . ', but was ' . typeOf($value)
         );
     }
 

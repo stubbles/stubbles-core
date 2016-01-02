@@ -135,7 +135,7 @@ class AcceptHeaderTest extends \PHPUnit_Framework_TestCase
     public function parsedStringCanBeRecreated($parseValue, $expectedList, $expectedString)
     {
         assert(
-                AcceptHeader::parse($parseValue)->asString(),
+                (string) AcceptHeader::parse($parseValue),
                 equals($expectedString)
         );
     }

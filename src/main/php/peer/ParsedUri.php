@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use function stubbles\lang\__toString;
 /**
  * Represents a parses uri.
  *
@@ -368,6 +367,6 @@ class ParsedUri
      */
     public function __toString()
     {
-        return __toString($this);
+        return $this->asString();
     }
 }

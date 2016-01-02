@@ -32,4 +32,15 @@ class ParsedUriTest extends \PHPUnit_Framework_TestCase
                 equals('https://example.com/?foo=bar&baz=313&dummy=example')
         );
     }
+
+    /**
+     * @test
+     * @since  7.0.0
+     */
+    public function canBeCastedToString()
+    {
+        $uri = 'http://example.com/?foo=bar&baz=303';
+        $parsedUri = new ParsedUri($uri);
+        assert((string) $parsedUri, equals($uri));
+    }
 }

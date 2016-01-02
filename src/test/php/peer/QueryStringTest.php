@@ -309,4 +309,15 @@ class QueryStringTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @test
+     * @since  7.0.0
+     */
+    public function canBeCastedToString()
+    {
+        assert(
+                (string) $this->prefilledQueryString,
+                equals('foo.hm=bar&baz[dummy]=blubb&baz[]=more&empty=&set')
+        );
+    }
 }

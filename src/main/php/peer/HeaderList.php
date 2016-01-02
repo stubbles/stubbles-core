@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use function stubbles\lang\__toString;
 /**
  * Container for list of headers.
  *
@@ -302,6 +301,11 @@ class HeaderList implements \IteratorAggregate, \Countable
      */
     public function __toString()
     {
-        return __toString($this);
+        $result = [];
+        foreach ($this->headers as $name => $value) {
+          $result[] = $name . ': ' . $value;
+        }
+
+        return join("\r\n", $result);
     }
 }
