@@ -36,6 +36,7 @@
   * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
   * all methods which threw `stubbles\lang\exception\FileNotFoundException` now throw `stubbles\streams\file\FileNotFound`
+  * removed `stubbles\peer\SocketDomain`
 
 
 ### Other changes

@@ -9,7 +9,6 @@
  */
 namespace stubbles\peer {
     use \stubbles\peer\HeaderList;
-    use \stubbles\peer\SocketDomain;
     use \stubbles\peer\http\HttpUri;
 
     /**
