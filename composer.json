@@ -28,10 +28,7 @@
     "autoload-dev": {
         "psr-4": {
             "stubbles\\test\\": "src/test/helper"
-        },
-        "files": [
-            "src/test/helper/functions.php"
-        ]
+        }
     },
     "extra": {
         "branch-alias": {
