@@ -111,7 +111,6 @@ class Parse
      *      and containing at least one :                   => map   (i.e. array, see toMap())
      * string starting with [, ending with ]                => list  (i.e. array, see toList())
      * string containing ..                                 => range (i.e. array, see toRange())
-     * string containing a valid HTTP uri                   => stubbles\peer\http\HttpUri
      * <fully\qualified\Classname::class>                   => string representing an existing class name
      * <fully\qualified\Classname.class>                    => \ReflectionClass
      * <fully\qualified\Classname::$enumName>               => stubbles\lang\Enum
