@@ -8,7 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\peer\http;
-use stubbles\streams\memory\MemoryInputStream;
+use org\bovigo\vfs\vfsStream;
+use stubbles\peer\Stream;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertEmpty;
@@ -30,7 +31,10 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
      */
     private function createResponse($response)
     {
-        return HttpResponse::create(new MemoryInputStream($response));
+        $file = vfsStream::newFile('response')
+                ->withContent($response)
+                ->at(vfsStream::setup());
+        return HttpResponse::create(new Stream(fopen($file->url(), 'rb+')));
     }
 
     /**
@@ -48,7 +52,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase
                         "foo\r\n",
                         dechex(3) . "\r\n",
                         "bar\r\n",
-                        dechex(0) . "\r\n"
+                        dechex(0)
                 )
         );
         assert($httpResponse->body(), equals('foobar'));

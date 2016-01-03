@@ -9,7 +9,7 @@
  */
 namespace stubbles\peer\http;
 use stubbles\peer\HeaderList;
-use stubbles\streams\InputStream;
+use stubbles\peer\Stream;
 /**
  * Class for reading a HTTP response.
  */
@@ -18,9 +18,9 @@ class HttpResponse
     /**
      * the socket we read the response from
      *
-     * @type  \stubbles\streams\InputStream
+     * @type  \stubbles\peer\Stream
      */
-    protected $inputStream;
+    protected $socket;
     /**
      * status line of response
      *
@@ -61,24 +61,24 @@ class HttpResponse
     /**
      * constructor
      *
-     * @param  \stubbles\streams\InputStream  $inputStream  stream to read response from
+     * @param  \stubbles\peer\Stream  $socket  stream to read response from
      */
-    public function __construct(InputStream $inputStream)
+    public function __construct(Stream $socket)
     {
-        $this->inputStream = $inputStream;
-        $this->headers     = new HeaderList();
+        $this->socket  = $socket;
+        $this->headers = new HeaderList();
     }
 
     /**
      * static constructor
      *
-     * @param   \stubbles\streams\InputStream  $inputStream  stream to read response from
+     * @param   \stubbles\peer\Stream  $socket  stream to read response from
      * @return  \stubbles\peer\http\HttpResponse
      * @since   2.0.0
      */
-    public static function create(InputStream $inputStream)
+    public static function create(Stream $socket)
     {
-        return new self($inputStream);
+        return new self($socket);
     }
 
     /**
@@ -180,11 +180,11 @@ class HttpResponse
         }
 
         do {
-            $this->parseStatusLine($this->inputStream->readLine());
+            $this->parseStatusLine($this->socket->readLine());
             $headers = '';
             $line    = '';
-            while (!$this->inputStream->eof() && Http::END_OF_LINE !== $line) {
-                $line     = $this->inputStream->readLine() . Http::END_OF_LINE;
+            while (!$this->socket->eof() && Http::END_OF_LINE !== $line) {
+                $line     = $this->socket->readLine() . Http::END_OF_LINE;
                 $headers .= $line;
             }
 
@@ -257,12 +257,12 @@ class HttpResponse
         $chunksize  = null;
         $extension  = null;
         $body       = '';
-        sscanf($this->inputStream->readLine(1024), "%x%s\r", $chunksize, $extension);
+        sscanf($this->socket->readLine(), '%x%s', $chunksize, $extension);
         while (0 < $chunksize) {
-            $data        = $this->inputStream->read($chunksize + 2);
+            $data        = $this->socket->read($chunksize + 4);
             $body       .= rtrim($data);
             $readLength += $chunksize;
-            sscanf($this->inputStream->readLine(1024), "%x\r", $chunksize);
+            sscanf($this->socket->readLine(), '%x', $chunksize);
         }
 
         $this->headers->put('Content-Length', $readLength);
@@ -280,8 +280,8 @@ class HttpResponse
     {
         $body = $buffer = '';
         $read = 0;
-        while ($read < $readLength && !$this->inputStream->eof()) {
-            $buffer  = $this->inputStream->read($readLength);
+        while ($read < $readLength && !$this->socket->eof()) {
+            $buffer  = $this->socket->read($readLength);
             $read   += strlen($buffer);
             $body   .= $buffer;
         }

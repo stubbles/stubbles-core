@@ -13,6 +13,7 @@ use stubbles\streams\OutputStream;
  * Output stream for writing to sockets.
  *
  * @api
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class SocketOutputStream implements OutputStream
 {

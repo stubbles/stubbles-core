@@ -38,6 +38,10 @@
     * `stubbles\lang\DefaultMode`
     * `stubbles\lang\Enum`
     * `stubbles\predicate`
+    * `stubbles\peer\SocketInputStream`
+    * `stubbles\peer\SocketOutputStream`
+    * `stubbles\peer\Stream::in()`
+    * `stubbles\peer\Stream::out()`
     * everything in `stubbles\lang\exception`
   * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`

@@ -96,14 +96,15 @@ class Stream
     /**
      * read from socket
      *
-     * @param   int  $length  length of data to read
+     * @param   int  $length  optional  length of data to read
      * @return  string  data read from socket
      * @throws  \stubbles\peer\ConnectionException
      * @throws  \stubbles\peer\Timeout
      */
-    public function read($length = 4096)
+    public function read($length = null)
     {
-        $data = fgets($this->resource, $length);
+        // can not call fgets with null when not specified
+        $data = null === $length ? fgets($this->resource) : fgets($this->resource, $length);
         if (false === $data) {
             // fgets() returns false on eof while feof() returned false before
             // but will now return true
@@ -129,12 +130,11 @@ class Stream
     /**
      * read a whole line from socket
      *
-     * @param   int  $length  length of data to read
      * @return  string  data read from socket
      */
-    public function readLine($length = 4096)
+    public function readLine()
     {
-        return rtrim($this->read($length));
+        return rtrim($this->read());
     }
 
     /**
@@ -205,6 +205,7 @@ class Stream
      * returns input stream to read from socket
      *
      * @return  \stubbles\streams\InputStream
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     public function in()
     {
@@ -219,6 +220,7 @@ class Stream
      * returns output stream to write to socket
      *
      * @return  \stubbles\streams\OutputStream
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     public function out()
     {

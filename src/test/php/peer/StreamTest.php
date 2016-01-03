@@ -113,6 +113,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     public function canBeUsedAsInputStream()
     {
@@ -121,6 +122,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     public function alwaysReturnsSameInputStream()
     {
@@ -129,6 +131,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     public function canBeUsedAsOutputStream()
     {
@@ -137,6 +140,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @deprecated  since 7.0.0, will be removed with 8.0.0
      */
     public function alwaysReturnsSameOutputStream()
     {

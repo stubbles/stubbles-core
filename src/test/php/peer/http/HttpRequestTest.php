@@ -12,8 +12,6 @@ use bovigo\callmap\NewInstance;
 use stubbles\peer\HeaderList;
 use stubbles\peer\Stream;
 use stubbles\peer\http\HttpUri;
-use stubbles\streams\InputStream;
-use stubbles\streams\memory\MemoryOutputStream;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
@@ -26,18 +24,18 @@ use function bovigo\assert\predicate\equals;
 class HttpRequestTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * memory stream to write http request to
+     * memory to write http request to
      *
-     * @type  MemoryOutputStream
+     * @type  string
      */
-    private $memoryOutputStream;
+    private $memory;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->memoryOutputStream = new MemoryOutputStream();
+        $this->memory = '';
     }
 
     /**
@@ -48,13 +46,12 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
      */
     private function createHttpRequest($queryString = null)
     {
-        $stream  = NewInstance::stub(Stream::class)->mapCalls([
-                'in'  => NewInstance::of(InputStream::class),
-                'out' => $this->memoryOutputStream
+        $socket   = NewInstance::stub(Stream::class)->mapCalls([
+                'write' => function($line) { $this->memory .= $line;}
         ]);
 
         $uriCalls = [
-            'openSocket' => $stream,
+            'openSocket' => $socket,
             'path'       => '/foo/resource',
             'hostname'   => 'example.com'
         ];
@@ -78,7 +75,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->get();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'GET /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -96,7 +93,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest('foo=bar&baz=1')->get();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'GET /foo/resource?foo=bar&baz=1 HTTP/1.1',
                         'Host: example.com',
@@ -113,7 +110,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->get(5, HttpVersion::HTTP_1_0);
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'GET /foo/resource HTTP/1.0',
                         'Host: example.com',
@@ -139,7 +136,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->head();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'HEAD /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -158,7 +155,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest('foo=bar&baz=1')->head();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'HEAD /foo/resource?foo=bar&baz=1 HTTP/1.1',
                         'Host: example.com',
@@ -176,7 +173,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->head(5, HttpVersion::HTTP_1_0);
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'HEAD /foo/resource HTTP/1.0',
                         'Host: example.com',
@@ -203,7 +200,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->post('foobar');
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'POST /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -223,7 +220,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest('foo=bar&baz=1')->post('foobar');
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'POST /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -242,7 +239,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->post('foobar', 5, HttpVersion::HTTP_1_0);
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'POST /foo/resource HTTP/1.0',
                         'Host: example.com',
@@ -261,7 +258,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->post([]);
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'POST /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -280,7 +277,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->post(['foo' => 'bar', 'ba z' => 'dum my']);
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'POST /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -304,7 +301,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
                 HttpVersion::HTTP_1_0
         );
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'POST /foo/resource HTTP/1.0',
                         'Host: example.com',
@@ -334,7 +331,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->put('foobar');
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'PUT /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -354,7 +351,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest('foo=bar&baz=1')->put('foobar');
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'PUT /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -374,7 +371,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->put('foobar', 5, HttpVersion::HTTP_1_0);
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'PUT /foo/resource HTTP/1.0',
                         'Host: example.com',
@@ -404,7 +401,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->delete();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'DELETE /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -422,7 +419,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest('foo=bar&baz=1')->delete();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'DELETE /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -440,7 +437,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->createHttpRequest()->delete(5, HttpVersion::HTTP_1_0);
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'DELETE /foo/resource HTTP/1.0',
                         'Host: example.com',

@@ -13,8 +13,6 @@ use stubbles\peer\Stream;
 use stubbles\peer\http\HttpConnection;
 use stubbles\peer\http\HttpUri;
 use stubbles\peer\http\HttpResponse;
-use stubbles\streams\InputStream;
-use stubbles\streams\memory\MemoryOutputStream;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
@@ -34,32 +32,27 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
      */
     private $httpConnection;
     /**
-     * @type  \stubbles\streams\memory\MemoryOutputStream
+     * @type  string
      */
-    private $memoryOutputStream;
+    private $memory;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->memoryOutputStream = new MemoryOutputStream();
-        $stream = NewInstance::stub(Stream::class)
-                ->mapCalls(
-                        ['in'  => NewInstance::of(InputStream::class),
-                         'out' => $this->memoryOutputStream
-                        ]
-        );
+        $this->memory = '';
+        $socket       = NewInstance::stub(Stream::class)->mapCalls([
+                'write' => function($line) { $this->memory .= $line;}
+        ]);
+        $httpUri      = NewInstance::stub(HttpUri::class)->mapCalls([
+                'openSocket'     => $socket,
+                'path'           => '/foo/resource',
+                'hostname'       => 'example.com',
+                'hasQueryString' => true,
+                'queryString'    => 'foo=bar'
 
-        $httpUri = NewInstance::stub(HttpUri::class)
-                ->mapCalls(
-                        ['openSocket'     => $stream,
-                         'path'           => '/foo/resource',
-                         'hostname'       => 'example.com',
-                         'hasQueryString' => true,
-                         'queryString'    => 'foo=bar'
-                        ]
-        );
+        ]);
         $this->httpConnection = new HttpConnection($httpUri);
     }
 
@@ -93,7 +86,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                 ->usingHeader('X-Binford', 6100)
                 ->get();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'GET /foo/resource?foo=bar HTTP/1.1',
                         'Host: example.com',
@@ -137,7 +130,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                     ->usingHeader('X-Binford', 6100)
                     ->head();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'HEAD /foo/resource?foo=bar HTTP/1.1',
                         'Host: example.com',
@@ -182,7 +175,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                 ->usingHeader('X-Binford', 6100)
                 ->post('foobar');
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'POST /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -211,7 +204,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                 ->usingHeader('X-Binford', 6100)
                 ->post(['foo' => 'bar', 'ba z' => 'dum my']);
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'POST /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -260,7 +253,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                 ->usingHeader('X-Binford', 6100)
                 ->put('foobar');
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'PUT /foo/resource HTTP/1.1',
                         'Host: example.com',
@@ -308,7 +301,7 @@ class HttpConnectionTest extends \PHPUnit_Framework_TestCase
                 ->usingHeader('X-Binford', 6100)
                 ->delete();
         assert(
-                $this->memoryOutputStream,
+                $this->memory,
                 equals(Http::lines(
                         'DELETE /foo/resource HTTP/1.1',
                         'Host: example.com',
