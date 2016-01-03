@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\peer\http\HttpUri;
-
 use function bovigo\assert\assert;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
@@ -733,7 +731,6 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [['foo', 'bar', 'baz'], '[foo|bar|baz]'],
             [[1, 2, 3, 4, 5], '1..5'],
             [['a', 'b', 'c', 'd', 'e'], 'a..e'],
-            [HttpUri::fromString('http://example.net/'), 'http://example.net/'],
             [new \ReflectionClass($this), __CLASS__ . '.class'],
             [MyEnum::$FOO, MyEnum::class . '::$FOO'],
             [MyEnum::TEST_CONSTANT, MyEnum::class . '::TEST_CONSTANT'],

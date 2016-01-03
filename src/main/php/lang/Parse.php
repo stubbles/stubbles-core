@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang;
-use stubbles\peer\http\HttpUri;
-use stubbles\peer\MalformedUriException;
 /**
  * Provides functions for parsing strings to a target type.
  *
@@ -49,20 +47,6 @@ class Parse
                 'array'
         );
         self::addRecognition(function($string) { if (strstr($string, '..') !== false) { return self::toRange($string); } }, 'range');
-        self::addRecognition(
-                function($string)
-                {
-                    if (substr($string, 0, 4) === 'http') {
-                        try {
-                            return HttpUri::fromString($string);
-                        } catch (MalformedUriException $murle) { }
-                    }
-
-                    return;
-
-                },
-                HttpUri::class
-        );
         self::addRecognition(function($string) { $classname = self::toClassname($string); if (null !== $classname) { return $classname; } }, 'string');
         self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'ReflectionClass');
         self::addRecognition(function($string) { $enum = self::toEnum($string); if (null !== $enum) { return $enum; } }, Enum::class);

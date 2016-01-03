@@ -8,11 +8,10 @@
     * package is required by _stubbles/core_
     * the new full class name is `stubbles\sequence\Sequence`
     * moved `stubbles\lang\ensureCallable()` to `stubbles\sequence\ensureCallable()`
+  * moved `stubbles\peer` into separate package _stubbles/peer_
   * changed `stubbles\ioc\module\BindingModule::configure()` to accept an optional second parameter `$projectPath`
   * deprecated `stubbles\lang\SecureString` in favor of `stubbles\lang\Secret`, will be removed in 8.0.0
-  * removed `stubbles\peer\createBsdSocket()`, `stubbles\peer\BsdSocket` was already removed in 6.0.0
   * `stubbles\peer\http\Http::lines()` no longer accepts an array, but an arbitrary amount of strings instead
-  * deprecated `stubbles\peer\HeaderList::size()`, use `stubbles\peer\HeaderList::count()` or `count($headerlist)` instead, will be removed with 8.0.0
   * deprecated `stubbles\ioc\App`, use `stubbles\App` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\Mode` use `stubbles\Environment` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\DefaultMode::prod()` use `stubbles\environments\Production` instead, will be removed with 8.0.0
@@ -38,15 +37,10 @@
     * `stubbles\lang\DefaultMode`
     * `stubbles\lang\Enum`
     * `stubbles\predicate`
-    * `stubbles\peer\SocketInputStream`
-    * `stubbles\peer\SocketOutputStream`
-    * `stubbles\peer\Stream::in()`
-    * `stubbles\peer\Stream::out()`
     * everything in `stubbles\lang\exception`
   * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
   * all methods which threw `stubbles\lang\exception\FileNotFoundException` now throw `stubbles\streams\file\FileNotFound`
-  * removed `stubbles\peer\SocketDomain`
 
 
 ### Other changes

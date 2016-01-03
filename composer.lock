@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "326abd3d7c443d9fb8db9635bb8a99d1",
+    "hash": "1f3bf3743c4d01823430a25eee3951d1",
     "content-hash": "bcd6da856102268984b92c9dcb6f3b4e",
     "packages": [
         {
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-sequence.git",
-                "reference": "2d6141b5c75392f346a91ba2013addddd8aa246f"
+                "reference": "9ab41b568fa0cde46e50bcfeb0b7f83d514e01c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-sequence/zipball/2d6141b5c75392f346a91ba2013addddd8aa246f",
-                "reference": "2d6141b5c75392f346a91ba2013addddd8aa246f",
+                "url": "https://api.github.com/repos/stubbles/stubbles-sequence/zipball/9ab41b568fa0cde46e50bcfeb0b7f83d514e01c8",
+                "reference": "9ab41b568fa0cde46e50bcfeb0b7f83d514e01c8",
                 "shasum": ""
             },
             "require": {
@@ -47,9 +47,9 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "Provides base classes for Stubbles packages.",
+            "description": "Stream your iterators.",
             "homepage": "http://stubbles.net/",
-            "time": "2016-01-02 21:57:50"
+            "time": "2016-01-03 10:54:25"
         }
     ],
     "packages-dev": [
