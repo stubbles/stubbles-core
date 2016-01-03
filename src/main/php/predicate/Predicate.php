@@ -15,6 +15,7 @@ namespace stubbles\predicate;
  * @since  4.0.0
  * @method  \stubbles\predicate\Predicate  and(\stubbles\predicate\Predicate|callable $predicate)
  * @method  \stubbles\predicate\Predicate  or(\stubbles\predicate\Predicate|callable $predicate)
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 abstract class Predicate
 {

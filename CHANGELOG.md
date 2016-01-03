@@ -13,8 +13,6 @@
   * removed `stubbles\peer\createBsdSocket()`, `stubbles\peer\BsdSocket` was already removed in 6.0.0
   * `stubbles\peer\http\Http::lines()` no longer accepts an array, but an arbitrary amount of strings instead
   * deprecated `stubbles\peer\HeaderList::size()`, use `stubbles\peer\HeaderList::count()` or `count($headerlist)` instead, will be removed with 8.0.0
-  * deprecated `stubbles\predicate\Predicate::asWellAs()` in favor of `stubbles\predicate\Predicate::and()`, will be removed with 8.0.0
-  * deprecated `stubbles\predicate\Predicate::orElse()` in favor of `stubbles\predicate\Predicate::or()`, will be removed with 8.0.0
   * deprecated `stubbles\ioc\App`, use `stubbles\App` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\Mode` use `stubbles\Environment` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\DefaultMode::prod()` use `stubbles\environments\Production` instead, will be removed with 8.0.0
@@ -39,6 +37,7 @@
     * `stubbles\lang\errorhandler\ExceptionHandler`
     * `stubbles\lang\DefaultMode`
     * `stubbles\lang\Enum`
+    * `stubbles\predicate`
     * everything in `stubbles\lang\exception`
   * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
@@ -48,8 +47,6 @@
 
 ### Other changes
 
-  * added `stubbles\predicate\Predicate::and()`
-  * added `stubbles\predicate\Predicate::or()`
   * added `stubbles\ioc\Binder::createInjector(callable ...$applyBindings)`
   * removed seeking restrictions on `stubbles\streams\StandardInputStream`
   * fixed `stubbles\lang\iterator\MappingIterator` calling value- and key-mapper when end of iteration reached

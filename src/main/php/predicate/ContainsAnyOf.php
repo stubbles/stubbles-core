@@ -13,6 +13,7 @@ namespace stubbles\predicate;
  *
  * @api
  * @since  5.3.0
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class ContainsAnyOf extends Predicate
 {

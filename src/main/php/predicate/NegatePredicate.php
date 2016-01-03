@@ -12,6 +12,7 @@ namespace stubbles\predicate;
  * Negates evaluation of wrapped predicate.
  *
  * @since  4.0.0
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 class NegatePredicate extends Predicate
 {

@@ -12,6 +12,7 @@ namespace stubbles\predicate;
  * Common instance creation for predicates combining two other predicates.
  *
  * @since  4.0.0
+ * @deprecated  since 7.0.0, will be removed with 8.0.0
  */
 trait CombinedPredicate
 {
