@@ -8,6 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles;
+use bovigo\callmap\NewInstance;
 use stubbles\streams\InputStream;
 
 use function bovigo\assert\assert;
@@ -78,7 +79,29 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
                 $this->resourceLoader->open('lang/stubbles.ini'),
                 isInstanceOf(InputStream::class)
         );
+    }
 
+    /**
+     * @test
+     * @since  7.0.0
+     */
+    public function openLocalResourceWithOtherUsesOther()
+    {
+        $myClass = NewInstance::classname(InputStream::class);
+        assert(
+                $this->resourceLoader->open('lang/stubbles.ini', $myClass),
+                isInstanceOf($myClass)
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException  InvalidArgumentException
+     * @since  7.0.0
+     */
+    public function openLocalResourceWithNonExistingClassThrowsInvalidArgumentException()
+    {
+        $this->resourceLoader->open('lang/stubbles.ini', 'DoesNotExist');
     }
 
     /**

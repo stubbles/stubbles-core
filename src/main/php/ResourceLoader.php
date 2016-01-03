@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles;
-use stubbles\streams\file\FileInputStream;
 use stubbles\streams\file\FileNotFound;
 /**
  * Class to load resources from arbitrary locations.
@@ -47,13 +46,27 @@ class ResourceLoader
      * providing a complete path, a complete path must always lead to a resource
      * located within the root path.
      *
-     * @param   string  $resource
-     * @return  \stubbles\streams\InputStream
+     * If no class to open the resource with is specified it will use
+     * stubbles\streams\file\FileInputStream. The given class must accept the
+     * full path of the resource as first constructor argument, and must not
+     * require any other argument.
+     *
+     * @param   string  $resource   name of resource to open
+     * @param   string  $withClass  optional  name of class to open resource with
+     * @return  $withClass
+     * @throws  \InvalidArgumentException  in case the given class does not exist
      * @since   4.0.0
      */
-    public function open($resource)
+    public function open($resource, $withClass = 'stubbles\streams\file\FileInputStream')
     {
-        return new FileInputStream($this->checkedPathFor($resource));
+        if (!class_exists($withClass)) {
+            throw new \InvalidArgumentException(
+                    'Can not open ' . $resource . ' with ' . $withClass
+                    . ', class does not exit.'
+            );
+        }
+
+        return new $withClass($this->checkedPathFor($resource));
     }
 
     /**
