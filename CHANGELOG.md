@@ -22,6 +22,7 @@
     * removed `stubbles\lang\properties()`
     * removed `stubbles\lang\parseProperties()`
     * removed `stubbles\lang\parsePropertiesFile()`
+  * moved `stubbles\lang\reflect` into separate package _stubbles/reflect_
   * changed `stubbles\ioc\module\BindingModule::configure()` to accept an optional second parameter `$projectPath`
   * deprecated `stubbles\ioc\App`, use `stubbles\App` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\Mode` use `stubbles\Environment` instead, will be removed with 8.0.0

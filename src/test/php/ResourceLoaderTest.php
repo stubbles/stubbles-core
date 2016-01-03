@@ -17,7 +17,7 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
-use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\reflect\annotationsOf;
 /**
  * Tests for stubbles\ResourceLoader.
  *

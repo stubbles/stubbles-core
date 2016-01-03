@@ -8,12 +8,17 @@
        {
            "type": "vcs",
            "url": "git@github.com:stubbles/stubbles-streams.git"
+       },
+       {
+           "type": "vcs",
+           "url": "git@github.com:stubbles/stubbles-reflect.git"
        }
     ],
     "require": {
         "php": ">=5.6.0",
         "stubbles/sequence": "^7.0",
-        "stubbles/values": "^7.0"
+        "stubbles/values": "^7.0",
+        "stubbles/reflect": "^7.0"
     },
     "require-dev": {
         "mikey179/vfsStream": "^1.6",
@@ -26,9 +31,7 @@
         "psr-4": {
             "stubbles\\": "src/main/php"
         },
-        "files": ["src/main/php/lang/functions.php",
-                  "src/main/php/lang/reflect/functions.php"
-                 ]
+        "files": ["src/main/php/lang/functions.php"]
     },
     "autoload-dev": {
         "psr-4": {

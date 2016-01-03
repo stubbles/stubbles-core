@@ -14,8 +14,8 @@ use stubbles\lang\exception\Exception;
 use function bovigo\assert\assert;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
-use function stubbles\lang\reflect\annotationsOf;
-use function stubbles\lang\reflect\annotationsOfConstructor;
+use function stubbles\reflect\annotationsOf;
+use function stubbles\reflect\annotationsOfConstructor;
 /**
  * Tests for stubbles\environments\ExceptionLogger.
  *

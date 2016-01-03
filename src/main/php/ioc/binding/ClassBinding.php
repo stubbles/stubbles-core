@@ -12,7 +12,8 @@ use stubbles\ioc\ClosureInjectionProvider;
 use stubbles\ioc\DefaultInjectionProvider;
 use stubbles\ioc\InjectionProvider;
 use stubbles\ioc\Injector;
-use stubbles\lang\reflect;
+
+use function stubbles\reflect\annotationsOf;
 /**
  * Binding to bind an interface to an implementation.
  *
@@ -250,7 +251,7 @@ class ClassBinding implements Binding
         }
 
         if (null === $this->scope) {
-            if (reflect\annotationsOf($this->impl)->contain('Singleton')) {
+            if (annotationsOf($this->impl)->contain('Singleton')) {
                 $this->scope = $this->scopes->singleton();
             }
         }

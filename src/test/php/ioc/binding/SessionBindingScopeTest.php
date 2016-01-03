@@ -14,7 +14,7 @@ use stubbles\ioc\InjectionProvider;
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\callmap\verify;
-use function stubbles\lang\reflect;
+use function stubbles\reflect\reflect;
 /**
  * Tests for stubbles\ioc\binding\SessionBindingScope.
  *

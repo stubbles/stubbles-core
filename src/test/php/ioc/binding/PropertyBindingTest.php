@@ -19,7 +19,7 @@ use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
-use function stubbles\lang\reflect;
+use function stubbles\reflect\reflect;
 /**
  * Class used for tests.
  *

@@ -16,9 +16,9 @@ use stubbles\ioc\binding\ListBinding;
 use stubbles\ioc\binding\MapBinding;
 use stubbles\ioc\binding\PropertyBinding;
 use stubbles\ioc\binding\Session;
-use stubbles\lang\reflect\annotation\Annotations;
+use stubbles\reflect\annotation\Annotations;
 
-use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\reflect\annotationsOf;
 /**
  * Injector for the IoC functionality.
  *
@@ -300,7 +300,7 @@ class Injector
     /**
      * finds implementation to be used from list of @ImplementedBy annotations
      *
-     * @param   \stubbles\lang\reflect\annotation\Annotations  $annotations
+     * @param   \stubbles\reflect\annotation\Annotations  $annotations
      * @param   string                                         $type
      * @return  \ReflectionClass
      * @throws  \stubbles\ioc\binding\BindingException
@@ -309,7 +309,7 @@ class Injector
     {
         $implementation = null;
         foreach ($annotations->named('ImplementedBy') as $annotation) {
-            /* @var $annotation \stubbles\lang\reflect\annotation\Annotation */
+            /* @var $annotation \stubbles\reflect\annotation\Annotation */
             if (null !== $this->environment && $annotation->hasValueByName('mode') && strtoupper($annotation->getMode()) === $this->environment) {
                 $implementation = $annotation->getClass();
             } elseif (!$annotation->hasValueByName('mode') && null == $implementation) {
