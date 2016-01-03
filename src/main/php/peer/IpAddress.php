@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\peer;
-use stubbles\predicate\IsIpAddress;
 /**
  * Represents an ip address and possible operations on an ip address.
  *
@@ -17,11 +16,71 @@ use stubbles\predicate\IsIpAddress;
 class IpAddress
 {
     /**
+     * type IPv4
+     */
+    const V4 = 'IPv4';
+    /**
+     * type IPv6
+     */
+    const V6 = 'IPv6';
+    /**
      * actual ip address
      *
      * @type  string
      */
     private $ip;
+    /**
+     * stores whether it is a IPv4 or IPv6 address
+     *
+     * @type  string
+     */
+    private $type;
+
+    /**
+     * checks if given value is a syntactical correct IPv4 address
+     *
+     * @param   string  $value
+     * @return  bool
+     * @since   7.0.0
+     */
+    public static function isValidV4($value)
+    {
+        return (bool) preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/', $value);
+    }
+
+    /**
+     * checks if given value is a syntactical correct IPv6 address
+     *
+     * @param   string  $value
+     * @return  bool
+     * @since   7.0.0
+     */
+    public static function isValidV6($value)
+    {
+        $hexquads = explode(':', $value);
+        // Shortest address is ::1, this results in 3 parts
+        if (sizeof($hexquads) < 3) {
+            return false;
+        }
+
+        if ('' == $hexquads[0]) {
+            array_shift($hexquads);
+        }
+
+        foreach ($hexquads as $hq) {
+            // Catch cases like ::ffaadd00::
+            if (strlen($hq) > 4) {
+                return false;
+            }
+
+            // Not hex
+            if (strspn($hq, '0123456789abcdefABCDEF') < strlen($hq)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * constructor
@@ -43,7 +102,11 @@ class IpAddress
             $this->ip = $ip;
         }
 
-        if (!IsIpAddress::instance()->test($this->ip)) {
+        if (self::isValidV4($this->ip)) {
+            $this->type = self::V4;
+        } elseif (self::isValidV6($this->ip)) {
+            $this->type = self::V6;
+        } else {
             throw new \InvalidArgumentException(
                     'Given ip address ' . $this->ip
                     . ' does not denote a valid IP address'
@@ -64,6 +127,39 @@ class IpAddress
         }
 
         return new self($ip);
+    }
+
+    /**
+     * returns type of IP address: either IPv4 or IPv6
+     *
+     * @return  string
+     * @since   7.0.0
+     */
+    public function type()
+    {
+        return $this->type;
+    }
+
+    /**
+     * checks whether this is an IPv4 address
+     *
+     * @return  bool
+     * @since   7.0.0
+     */
+    public function isV4()
+    {
+        return self::V4 === $this->type;
+    }
+
+    /**
+     * checks whether this is an IPv6 address
+     *
+     * @return  bool
+     * @since   7.0.0
+     */
+    public function isV6()
+    {
+        return self::V6 === $this->type;
     }
 
     /**

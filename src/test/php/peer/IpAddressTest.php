@@ -23,6 +23,248 @@ use function bovigo\assert\predicate\isSameAs;
 class IpAddressTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @test
+     */
+    public function stringIsNoIpV4AndEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV4('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function nullIsNoIpV4AndEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV4(null));
+    }
+
+    /**
+     * @test
+     */
+    public function emptyStringIsNoIpV4AndEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV4(''));
+    }
+
+    /**
+     * @test
+     */
+    public function booleansAreNoIpV4AndResultInFalse()
+    {
+        assertFalse(IpAddress::isValidV4(true));
+        assertFalse(IpAddress::isValidV4(false));
+    }
+
+    /**
+     * @test
+     */
+    public function singleNumbersAreNoIpV4AndResultInFalse()
+    {
+        assertFalse(IpAddress::isValidV4(4));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV4WithMissingPartEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV4('255.55.55'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV4WithSuperflousPartEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV4('111.222.333.444.555'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV4WithMissingNumberEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV4('1..3.4'));
+    }
+
+    /**
+     * @test
+     */
+    public function greatestIpV4EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV4('255.255.255.255'));
+    }
+
+    /**
+     * @test
+     */
+    public function lowestIpV4EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV4('0.0.0.0'));
+    }
+
+    /**
+     * @test
+     */
+    public function correctIpV4EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV4('1.2.3.4'));
+    }
+
+    /**
+     * @test
+     */
+    public function stringIsNoIpV6AndEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function nullIsNoIpV6AndEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6(null));
+    }
+
+    /**
+     * @test
+     */
+    public function emptyStringIsNoIpV6AndEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6(''));
+    }
+
+    /**
+     * @test
+     */
+    public function booleansAreNoIpV6AndResultInFalse()
+    {
+        assertFalse(IpAddress::isValidV6(true));
+        assertFalse(IpAddress::isValidV6(false));
+    }
+
+    /**
+     * @test
+     */
+    public function singleNumbersAreNoIpV6AndResultInFalse()
+    {
+        assertFalse(IpAddress::isValidV6(4));
+    }
+
+    /**
+     * @test
+     */
+    public function ipv4EvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6('1.2.3.4'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV6WithMissingPartEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6(':1'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV6EvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6('::ffffff:::::a'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV6WithHexquadAtStartEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6('XXXX::a574:382b:23c1:aa49:4592:4efe:9982'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV6WithHexquadAtEndEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6('9982::a574:382b:23c1:aa49:4592:4efe:XXXX'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV6WithHexquadEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6('a574::XXXX:382b:23c1:aa49:4592:4efe:9982'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidIpV6WithHexDigitEvaluatesToFalse()
+    {
+        assertFalse(IpAddress::isValidV6('a574::382X:382b:23c1:aa49:4592:4efe:9982'));
+    }
+
+    /**
+     * @test
+     */
+    public function correctIpV6EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV6('febc:a574:382b:23c1:aa49:4592:4efe:9982'));
+    }
+
+    /**
+     * @test
+     */
+    public function localhostIpV6EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV6('::1'));
+    }
+
+    /**
+     * @test
+     */
+    public function shortenedIpV6EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV6('febc:a574:382b::4592:4efe:9982'));
+    }
+
+    /**
+     * @test
+     */
+    public function evenMoreShortenedIpV6EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV6('febc::23c1:aa49:0:0:9982'));
+    }
+
+    /**
+     * @test
+     */
+    public function singleShortenedIpV6EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV6('febc:a574:2b:23c1:aa49:4592:4efe:9982'));
+    }
+
+    /**
+     * @test
+     */
+    public function shortenedPrefixIpV6EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV6('::382b:23c1:aa49:4592:4efe:9982'));
+    }
+
+    /**
+     * @test
+     */
+    public function shortenedPostfixIpV6EvaluatesToTrue()
+    {
+        assertTrue(IpAddress::isValidV6('febc:a574:382b:23c1:aa49::'));
+    }
+
+    /**
      * @return  array
      */
     public function invalidValues()
@@ -53,16 +295,73 @@ class IpAddressTest extends \PHPUnit_Framework_TestCase
      */
     public function validValues()
     {
-        return [[2130706433], ['127.0.0.1']];
+        return [
+                [2130706433, IpAddress::V4],
+                ['127.0.0.1', IpAddress::V4],
+                ['febc:a574:382b:23c1:aa49::', IpAddress::V6],
+                ['::382b:23c1:aa49:4592:4efe:9982', IpAddress::V6],
+                ['::1', IpAddress::V6]
+        ];
+    }
+
+    /**
+     * @param  string  $value
+     * @param  string  $expectedType
+     * @test
+     * @dataProvider  validValues
+     * @since  7.0.0
+     */
+    public function typeReturnsInfoBasedOnValue($value, $expectedType)
+    {
+        assert(IpAddress::castFrom($value)->type(), equals($expectedType));
+    }
+
+    /**
+     * @param  string  $value
+     * @param  string  $expectedType
+     * @test
+     * @dataProvider  validValues
+     * @since  7.0.0
+     */
+    public function isVxReturnsTrueBasedOnType($value, $expectedType)
+    {
+        if (IpAddress::V4 === $expectedType) {
+            assertTrue(IpAddress::castFrom($value)->isV4());
+        } else {
+            assertTrue(IpAddress::castFrom($value)->isV6());
+        }
+    }
+
+    /**
+     * @param  string  $value
+     * @param  string  $expectedType
+     * @test
+     * @dataProvider  validValues
+     * @since  7.0.0
+     */
+    public function isVxReturnsFalseBasedOnType($value, $expectedType)
+    {
+        if (IpAddress::V4 === $expectedType) {
+            assertFalse(IpAddress::castFrom($value)->isV6());
+        } else {
+            assertFalse(IpAddress::castFrom($value)->isV4());
+        }
     }
 
     /**
      * @test
-     * @dataProvider  validValues
      */
-    public function castFromCreatesIpAddress($value)
+    public function longNotationIsTransformedIntoStringNotation()
     {
-        assert(IpAddress::castFrom($value), equals('127.0.0.1'));
+        assert(IpAddress::castFrom(2130706433), equals('127.0.0.1'));
+    }
+
+    /**
+     * @test
+     */
+    public function castFromCreatesIpAddress()
+    {
+        assert(IpAddress::castFrom('127.0.0.1'), equals('127.0.0.1'));
     }
 
     /**
