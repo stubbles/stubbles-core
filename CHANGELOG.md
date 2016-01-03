@@ -10,6 +10,7 @@
     * moved `stubbles\lang\castToArray()` to `stubbles\sequence\castToArray()`
     * moved `stubbles\lang\ensureCallable()` to `stubbles\sequence\ensureCallable()`
   * moved `stubbles\peer` into separate package _stubbles/peer_
+  * moved `stubbles\streams` into separate package _stubbles/streams_
   * moved several classes and functions to _stubbles/values_
     * `stubbles\lang\ModifiableProperties` is now `stubbles\value\ModifiableProperties`
     * `stubbles\lang\Properties` is now `stubbles\value\Properties`
@@ -22,7 +23,6 @@
     * removed `stubbles\lang\parseProperties()`
     * removed `stubbles\lang\parsePropertiesFile()`
   * changed `stubbles\ioc\module\BindingModule::configure()` to accept an optional second parameter `$projectPath`
-  * `stubbles\peer\http\Http::lines()` no longer accepts an array, but an arbitrary amount of strings instead
   * deprecated `stubbles\ioc\App`, use `stubbles\App` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\Mode` use `stubbles\Environment` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\DefaultMode::prod()` use `stubbles\environments\Production` instead, will be removed with 8.0.0
@@ -42,14 +42,11 @@
     * `stubbles\lang\Enum` - parsing enums in properties and annotations is not supported any more as of this release
     * `stubbles\predicate`
     * everything in `stubbles\lang\exception`
-  * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
-  * all methods which threw `stubbles\lang\exception\FileNotFoundException` now throw `stubbles\streams\file\FileNotFound`
 
 
 ### Other changes
 
   * added `stubbles\ioc\Binder::createInjector(callable ...$applyBindings)`
-  * removed seeking restrictions on `stubbles\streams\StandardInputStream`
   * fixed `stubbles\lang\iterator\MappingIterator` calling value- and key-mapper when end of iteration reached
 
 

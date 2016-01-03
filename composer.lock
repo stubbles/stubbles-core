@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "73720cc9e26060df731e044c95af2ac1",
-    "content-hash": "fb7ee4b0e1cec843c9fa47264e6fb6b1",
+    "hash": "559fb2abfb80eb69d28338d02f0edc66",
+    "content-hash": "a8fce60dbf68db6b0ebf6fc01bd57c0b",
     "packages": [
         {
             "name": "stubbles/sequence",
@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-values.git",
-                "reference": "dd12651e8357c71f031870e67cf0da3c43129844"
+                "reference": "e09f6eb42414502faff5df696a540975d32e4bba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-values/zipball/dd12651e8357c71f031870e67cf0da3c43129844",
-                "reference": "dd12651e8357c71f031870e67cf0da3c43129844",
+                "url": "https://api.github.com/repos/stubbles/stubbles-values/zipball/e09f6eb42414502faff5df696a540975d32e4bba",
+                "reference": "e09f6eb42414502faff5df696a540975d32e4bba",
                 "shasum": ""
             },
             "require": {
@@ -93,7 +93,7 @@
             ],
             "description": "Useful classes to ease the work with values.",
             "homepage": "http://stubbles.net/",
-            "time": "2016-01-03 13:49:03"
+            "time": "2016-01-03 16:01:46"
         }
     ],
     "packages-dev": [
@@ -1224,6 +1224,60 @@
             "time": "2015-06-21 13:59:46"
         },
         {
+            "name": "stubbles/streams",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stubbles/stubbles-streams.git",
+                "reference": "0341ec6902a396af4fe992fbff47a03057769364"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stubbles/stubbles-streams/zipball/0341ec6902a396af4fe992fbff47a03057769364",
+                "reference": "0341ec6902a396af4fe992fbff47a03057769364",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "bovigo/assert": "^1.5",
+                "bovigo/callmap": "2.0",
+                "ext-iconv": "*",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^5.1",
+                "stubbles/sequence": "^7.0"
+            },
+            "suggest": {
+                "ext-iconv": "For use in decoding and encoding stream decorators.",
+                "stubbles/sequence": "Easer iteration of input streams with lines() function."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "stubbles\\streams\\": "src/main/php"
+                },
+                "files": [
+                    "src/main/php/functions.php"
+                ]
+            },
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Input- and OutputStreams.",
+            "homepage": "http://stubbles.net/",
+            "support": {
+                "source": "https://github.com/stubbles/stubbles-streams/tree/master",
+                "issues": "https://github.com/stubbles/stubbles-streams/issues"
+            },
+            "time": "2016-01-03 16:37:13"
+        },
+        {
             "name": "symfony/yaml",
             "version": "v3.0.1",
             "source": {
@@ -1279,8 +1333,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.0",
-        "ext-iconv": "*"
+        "php": ">=5.6.0"
     },
     "platform-dev": []
 }

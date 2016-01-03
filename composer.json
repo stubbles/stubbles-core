@@ -4,9 +4,14 @@
     "homepage": "http://stubbles.net/",
     "license": "BSD-3-Clause",
     "description": "Provides base classes for Stubbles packages.",
+    "repositories": [
+       {
+           "type": "vcs",
+           "url": "git@github.com:stubbles/stubbles-streams.git"
+       }
+    ],
     "require": {
         "php": ">=5.6.0",
-        "ext-iconv": "*",
         "stubbles/sequence": "^7.0",
         "stubbles/values": "^7.0"
     },
@@ -14,15 +19,15 @@
         "mikey179/vfsStream": "^1.6",
         "phpunit/phpunit": "^5.1",
         "bovigo/callmap": "^2.0",
-        "bovigo/assert": "^1.5"
+        "bovigo/assert": "^1.5",
+        "stubbles/streams": "^7.0"
     },
     "autoload": {
         "psr-4": {
             "stubbles\\": "src/main/php"
         },
         "files": ["src/main/php/lang/functions.php",
-                  "src/main/php/lang/reflect/functions.php",
-                  "src/main/php/streams/functions.php"
+                  "src/main/php/lang/reflect/functions.php"
                  ]
     },
     "autoload-dev": {
