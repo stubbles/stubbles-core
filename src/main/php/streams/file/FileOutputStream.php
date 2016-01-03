@@ -11,7 +11,7 @@ namespace stubbles\streams\file;
 use stubbles\streams\ResourceOutputStream;
 use stubbles\streams\StreamException;
 
-use function stubbles\lastErrorMessage;
+use function stubbles\values\lastErrorMessage;
 /**
  * Class for file based output streams.
  *

@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
-use stubbles\lang\Parse;
+use stubbles\values\Parse;
 /**
  * Represents an annotation on the code.
  */
@@ -134,7 +134,7 @@ class Annotation
      *
      * @api
      * @param   string  $name
-     * @return  \stubbles\lang\Parse
+     * @return  \stubbles\values\Parse
      * @since   5.0.0
      */
     public function parse($name)

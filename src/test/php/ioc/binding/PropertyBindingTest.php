@@ -9,10 +9,10 @@
  */
 namespace stubbles\ioc\binding;
 use bovigo\callmap\NewInstance;
-use stubbles\Properties;
 use stubbles\ioc\Binder;
 use stubbles\ioc\Injector;
-use stubbles\lang\Secret;
+use stubbles\values\Properties;
+use stubbles\values\Secret;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
@@ -31,7 +31,7 @@ class Example
     /**
      * constructor
      *
-     * @param  \stubbles\lang\Secret  $password
+     * @param  \stubbles\values\Secret  $password
      * @Property('example.password')
      */
     public function __construct(Secret $password)

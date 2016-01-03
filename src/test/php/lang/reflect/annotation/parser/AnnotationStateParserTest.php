@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation\parser;
-use stubbles\lang\Enum;
 use stubbles\lang\reflect\annotation\Annotation;
 
 use function bovigo\assert\assert;
@@ -23,23 +22,15 @@ use function bovigo\assert\predicate\equals;
  * @TwoParams(foo='bar', test=42)
  * @InvalidChars(foo='ba@r=,')
  * @Constant(foo=stubbles\lang\reflect\annotation\parser\MyTestClass::TEST_CONSTANT)
- * @Enum(foo=stubbles\lang\reflect\annotation\parser\MyTestClass::$FOO)
  * @WithEscaped(foo='This string contains \' and \\, which is possible using escaping...')
  * @Multiline(one=1,
  *            two=2)
  * @Class(stubbles\lang\reflect\annotation\parser\MyTestClass.class)
  */
-class MyTestClass extends Enum
+class MyTestClass
 {
     const TEST_CONSTANT = 'baz';
-    public static $FOO;
-
-    public static function __static()
-    {
-        self::$FOO = new self('FOO');
-    }
 }
-MyTestClass::__static();
 class MyTestClass2
 {
     /**
@@ -185,20 +176,6 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
                 equals($this->expectedClassAnnotation(
                         'Constant',
                         ['foo' => MyTestClass::class . '::TEST_CONSTANT']
-                ))
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function parsesAnnotationWithEnumAsValue()
-    {
-        assert(
-                $this->parseMyTestClassAnnotation('Enum'),
-                equals($this->expectedClassAnnotation(
-                        'Enum',
-                        ['foo' => MyTestClass::class . '::$FOO']
                 ))
         );
     }

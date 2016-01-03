@@ -8,7 +8,7 @@
  * @package  stubbles
  */
 namespace stubbles\streams;
-use function stubbles\lastErrorMessage;
+use function stubbles\values\lastErrorMessage;
 /**
  * Class for resource based output streams.
  *

@@ -10,8 +10,18 @@
     * moved `stubbles\lang\castToArray()` to `stubbles\sequence\castToArray()`
     * moved `stubbles\lang\ensureCallable()` to `stubbles\sequence\ensureCallable()`
   * moved `stubbles\peer` into separate package _stubbles/peer_
+  * moved several classes and functions to _stubbles/values_
+    * `stubbles\lang\ModifiableProperties` is now `stubbles\value\ModifiableProperties`
+    * `stubbles\lang\Properties` is now `stubbles\value\Properties`
+    * `stubbles\lang\Parse` is now `stubbles\value\Parse`
+    * `stubbles\lang\Result` is now `stubbles\value\Result`
+    * `stubbles\lang\SecureString` is now `stubbles\value\Secret`
+    * `stubbles\lang\getType()` is now `stubbles\values\typeOf()`
+    * `stubbles\lang\exception\lastErrorMessage()` is now `stubbles\values\lastErrorMessage()`
+    * removed `stubbles\lang\properties()`
+    * removed `stubbles\lang\parseProperties()`
+    * removed `stubbles\lang\parsePropertiesFile()`
   * changed `stubbles\ioc\module\BindingModule::configure()` to accept an optional second parameter `$projectPath`
-  * deprecated `stubbles\lang\SecureString` in favor of `stubbles\lang\Secret`, will be removed in 8.0.0
   * `stubbles\peer\http\Http::lines()` no longer accepts an array, but an arbitrary amount of strings instead
   * deprecated `stubbles\ioc\App`, use `stubbles\App` instead, will be removed with 8.0.0
   * deprecated `stubbles\lang\Mode` use `stubbles\Environment` instead, will be removed with 8.0.0
@@ -20,16 +30,9 @@
   * moved `stubbles\ioc\modules\Runtime` to `stubbles\Runtime`
   * deprecated `stubbles\lang\errorhandler\ExceptionLogger`, use `stubbles\environments\ExceptionLogger` instead, will be removed with 8.0.0
   * moved classes and functions from `stubbles\lang` to `stubbles`, old class definition will be removed with 8.0.0
-    * moved `stubbles\lang\Properties` to `stubbles\Properties`
-      * `stubbles\Properties::fromFile()` now throws a `\UnexpectedValueException` instead of `stubbles\lang\exception\IOException`
     * moved `stubbles\lang\ResourceLoader` to `stubbles\ResourceLoader`
-    * moved `stubbles\lang\Result` to `stubbles\Result`
     * moved `stubbles\lang\Rootpath` to `stubbles\Rootpath`
-    * moved `stubbles\lang\getType()` to `stubbles\typeOf()`
   * deprecated several classes and functions, will be removed with 8.0.0:
-    * `stubbles\lang\properties()`
-    * `stubbles\lang\parseProperties()`
-    * `stubbles\lang\parsePropertiesFile()`
     * `stubbles\lang\__toString()`
     * `stubbles\lang\__convertToStringRepresentation()`
     * `stubbles\lang\errorhandler\CompositeErrorHandler`
@@ -39,7 +42,6 @@
     * `stubbles\lang\Enum`
     * `stubbles\predicate`
     * everything in `stubbles\lang\exception`
-  * deprecated `stubbles\lang\exception\lastErrorMessage(), use `stubbles\lastErrorMessage()` instead
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
   * all methods which threw `stubbles\lang\exception\FileNotFoundException` now throw `stubbles\streams\file\FileNotFound`
 

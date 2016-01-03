@@ -8,8 +8,8 @@
  * @package  stubbles
  */
 namespace stubbles\ioc;
-use stubbles\Properties;
 use stubbles\test\ioc\PropertyReceiver;
+use stubbles\values\Properties;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\equals;
@@ -25,7 +25,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
     /**
      * properties to be bound
      *
-     * @type  \stubbles\Properties
+     * @type  \stubbles\values\Properties
      */
     private $properties;
 

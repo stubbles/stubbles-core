@@ -13,7 +13,7 @@ use stubbles\streams\ResourceInputStream;
 use stubbles\streams\Seekable;
 use stubbles\streams\StreamException;
 
-use function stubbles\lastErrorMessage;
+use function stubbles\values\lastErrorMessage;
 /**
  * Class for file based input streams.
  *

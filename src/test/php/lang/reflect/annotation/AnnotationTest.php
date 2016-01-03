@@ -8,8 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles\lang\reflect\annotation;
-use stubbles\lang\Enum;
-
 use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
@@ -18,17 +16,10 @@ use function bovigo\assert\predicate\equals;
 /**
  * Helper class for the test.
  */
-class MyTestClass extends Enum
+class MyTestClass
 {
     const TEST_CONSTANT = 'baz';
-    public static $FOO;
-
-    public static function __static()
-    {
-        self::$FOO = new self('FOO');
-    }
 }
-MyTestClass::__static();
 /**
  * Test for stubbles\lang\reflect\annotation\Annotation.
  *
@@ -297,8 +288,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
             [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
             ['true', "'true'"],
             ['null', '"null"'],
-            [MyTestClass::TEST_CONSTANT, MyTestClass::class . '::TEST_CONSTANT'],
-            [MyTestClass::$FOO, MyTestClass::class . '::$FOO']
+            [MyTestClass::TEST_CONSTANT, MyTestClass::class . '::TEST_CONSTANT']
         ];
     }
 

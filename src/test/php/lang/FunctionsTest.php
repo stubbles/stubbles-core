@@ -15,9 +15,7 @@ use org\bovigo\vfs\vfsStream;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertTrue;
-use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
-use function bovigo\assert\predicate\isSameAs;
 /**
  * Tests for stubbles\lang\*().
  *

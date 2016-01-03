@@ -8,51 +8,9 @@
  * @package  stubbles
  */
 namespace stubbles\lang {
-    use stubbles\lang\Properties;
     use stubbles\lang\reflect\annotation\AnnotationCache;
 
-    /**
-     * creates new properties instance from given property data
-     *
-     * @param   array  $propertyData
-     * @return  \stubbles\lang\Properties
-     * @since   3.1.0
-     * @api
-     * @deprecated  since 7.0.0, will be removed with 8.0.0
-     */
-    function properties(array $propertyData = [])
-    {
-        return new Properties($propertyData);
-    }
-
-    /**
-     * parses given property string and returns properties instance
-     *
-     * @param   string  $propertyString
-     * @return  \stubbles\lang\Properties
-     * @since   3.1.0
-     * @api
-     * @deprecated  since 7.0.0, will be removed with 8.0.0
-     */
-    function parseProperties($propertyString)
-    {
-        return Properties::fromString($propertyString);
-    }
-
-    /**
-     * parses properties from given file and returns properties instance
-     *
-     * @param   string  $propertiesFile
-     * @return  \stubbles\lang\Properties
-     * @since   3.1.0
-     * @api
-     * @deprecated  since 7.0.0, will be removed with 8.0.0
-     */
-    function parsePropertiesFile($propertiesFile)
-    {
-        return Properties::fromFile($propertiesFile);
-    }
-
+    use function stubbles\values\typeOf;
     /**
      * shortcut for reflect($class, '__construct')
      *
@@ -111,7 +69,7 @@ namespace stubbles\lang {
 
         throw new \InvalidArgumentException(
                 'Given class must either be a function name,'
-                . ' class name or class instance, ' . gettype($class) . ' given'
+                . ' class name or class instance, ' . typeOf($class) . ' given'
         );
     }
 
@@ -223,7 +181,7 @@ namespace stubbles\lang {
     function __toString($data, array $properties = null)
     {
         if (!is_object($data)) {
-            return "{\n    (" . getType($data) . '): '. convertToStringRepresentation($data) . "}\n";
+            return "{\n    (" . typeOf($data) . '): '. convertToStringRepresentation($data) . "}\n";
         }
 
         if (null === $properties) {
@@ -232,7 +190,7 @@ namespace stubbles\lang {
 
         $string = get_class($data) . " {\n";
         foreach ($properties as $name => $value) {
-            $string .= '    ' . $name . '(' . getType($value) . '): ';
+            $string .= '    ' . $name . '(' . typeOf($value) . '): ';
             if (is_resource($value)) {
                 $string .= "resource\n";
             } elseif (is_array($value)) {
@@ -244,19 +202,6 @@ namespace stubbles\lang {
 
         $string .= "}\n";
         return $string;
-    }
-
-    /**
-     * determines the correct type of a value
-     *
-     * @param   mixed   &$value
-     * @return  string
-     * @since   3.1.0
-     * @deprecated  since 7.0.0, use stubbles\typeOf() instead, will be removed with 8.0.0
-     */
-    function getType(&$value)
-    {
-        return \stubbles\typeOf($value);
     }
 
     /**
@@ -284,23 +229,5 @@ namespace stubbles\lang {
         }
 
         return $string;
-    }
-}
-namespace stubbles\lang\exception {
-    /**
-     * returns error message from last error that occurred
-     *
-     * @return  string
-     * @since   3.4.2
-     * @deprecated  since 7.0.0, use stubbles\lastErrorMessage() instead
-     */
-    function lastErrorMessage()
-    {
-        $error = error_get_last();
-        if (null === $error) {
-            return null;
-        }
-
-        return $error['message'];
     }
 }
