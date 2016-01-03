@@ -8,7 +8,6 @@
  * @package  stubbles
  */
 namespace stubbles;
-use stubbles\streams\file\FileNotFound;
 /**
  * Class to load resources from arbitrary locations.
  *
@@ -105,18 +104,18 @@ class ResourceLoader
      *
      * @param   string  $resource
      * @return  string
-     * @throws  \stubbles\streams\file\FileNotFound
-     * @throws  \InvalidArgumentException
+     * @throws  \DomainException  in case the given resource does not exist
+     * @throws  \OutOfBoundsException  in case the resource is not within rootpath
      */
     private function checkedPathFor($resource)
     {
         $completePath = $this->completePath($resource);
         if (!file_exists($completePath)) {
-            throw new FileNotFound('Resource ' . $completePath . ' not found');
+            throw new \DomainException('Resource ' . $completePath . ' not found');
         }
 
         if (!$this->rootpath->contains($completePath)) {
-            throw new \InvalidArgumentException(
+            throw new \OutOfBoundsException(
                     'Given resource "' . $resource
                     . '" located at "' . $completePath
                     . '" is not inside root path ' . $this->rootpath

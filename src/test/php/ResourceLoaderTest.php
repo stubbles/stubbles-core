@@ -51,20 +51,20 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\streams\file\FileNotFound
+     * @expectedException  DomainException
      * @since  4.0.0
      */
-    public function openNonExistingResourceThrowsFileNotFoundException()
+    public function openNonExistingResourceThrowsDomainException()
     {
         $this->resourceLoader->open('lang/doesNotExist.ini');
     }
 
     /**
      * @test
-     * @expectedException  stubbles\streams\file\FileNotFound
+     * @expectedException  DomainException
      * @since  4.0.0
      */
-    public function loadNonExistingResourceThrowsFileNotFoundException()
+    public function loadNonExistingResourceThrowsDomainException()
     {
         $this->resourceLoader->load('lang/doesNotExist.ini');
     }
@@ -188,44 +188,44 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\streams\file\FileNotFound
+     * @expectedException  DomainException
      * @since  4.0.0
      */
-    public function openResourceWithCompletePathOutsideRootThrowsFileNotFoundException()
+    public function openResourceWithCompletePathOutsideRootThrowsDomainException()
     {
         $this->resourceLoader->open(tempnam(sys_get_temp_dir(), 'test.txt'));
     }
 
     /**
      * @test
-     * @expectedException  stubbles\streams\file\FileNotFound
+     * @expectedException  DomainException
      * @since  4.0.0
      */
-    public function loadResourceWithCompletePathOutsideRootThrowsFileNotFoundExceptionException()
+    public function loadResourceWithCompletePathOutsideRootThrowsDomainException()
     {
         $this->resourceLoader->load(tempnam(sys_get_temp_dir(), 'test.txt'));
     }
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
+     * @expectedException  OutOfBoundsException
      * @since  4.0.0
      */
-    public function openResourceWithCompleteRealpathOutsideRootThrowsIllegalArgumentException()
+    public function openResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException()
     {
-        $resourceLoader = new ResourceLoader(__DIR__ . '/exception');
-        $resourceLoader->open(__DIR__ . '/exception/../ResourceLoaderTest.php');
+        $resourceLoader = new ResourceLoader(__DIR__ . '/environments');
+        $resourceLoader->open(__DIR__ . '/environments/../ResourceLoaderTest.php');
     }
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
+     * @expectedException  OutOfBoundsException
      * @since  4.0.0
      */
-    public function loadResourceWithCompleteRealpathOutsideRootThrowsIllegalArgumentException()
+    public function loadResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException()
     {
-        $resourceLoader = new ResourceLoader(__DIR__ . '/exception');
-        $resourceLoader->load(__DIR__ . '/exception/../ResourceLoaderTest.php');
+        $resourceLoader = new ResourceLoader(__DIR__ . '/environments');
+        $resourceLoader->load(__DIR__ . '/environments/../ResourceLoaderTest.php');
     }
 
     /**
