@@ -10,7 +10,6 @@
 namespace stubbles\environments\errorhandler;
 use function bovigo\assert\assert;
 use function bovigo\assert\predicate\isInstanceOf;
-use function stubbles\lang\extractObjectProperties;
 /**
  * Tests for stubbles\environments\errorhandler\DefaultErrorHandler.
  *
@@ -35,13 +34,25 @@ class DefaultErrorHandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * retrieves error handler from inside of collection
+     *
+     * @param   int  $position
+     * @return  \stubbles\environments\errorhandler\ErrorHandlers
+     */
+    private function retrieveHandler($position)
+    {
+        $handlers = new \ReflectionProperty(ErrorHandlers::class, 'errorHandlers');
+        $handlers->setAccessible(true);
+        return $handlers->getValue($this->defaultErrorHandler)[$position];
+    }
+
+    /**
      * @test
      */
     public function addsIllegalArgumentErrorHandler()
     {
-        $properties = extractObjectProperties($this->defaultErrorHandler);
         assert(
-                $properties['errorHandlers'][0],
+                $this->retrieveHandler(0),
                 isInstanceOf(InvalidArgument::class)
         );
     }
@@ -51,9 +62,8 @@ class DefaultErrorHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function addsLogErrorHandler()
     {
-        $properties = extractObjectProperties($this->defaultErrorHandler);
         assert(
-                $properties['errorHandlers'][1],
+                $this->retrieveHandler(1),
                 isInstanceOf(LogErrorHandler::class)
         );
     }

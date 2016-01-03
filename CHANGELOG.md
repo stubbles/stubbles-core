@@ -7,6 +7,7 @@
   * moved `stubbles\lang\Sequence` into a separate package _stubbles/sequence_
     * package is required by _stubbles/core_
     * the new full class name is `stubbles\sequence\Sequence`
+    * moved `stubbles\lang\castToArray()` to `stubbles\sequence\castToArray()`
     * moved `stubbles\lang\ensureCallable()` to `stubbles\sequence\ensureCallable()`
   * moved `stubbles\peer` into separate package _stubbles/peer_
   * changed `stubbles\ioc\module\BindingModule::configure()` to accept an optional second parameter `$projectPath`
