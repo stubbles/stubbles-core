@@ -39,7 +39,7 @@
     * `stubbles\lang\errorhandler\ErrorHandler`
     * `stubbles\lang\errorhandler\ExceptionHandler`
     * `stubbles\lang\DefaultMode`
-    * `stubbles\lang\Enum`
+    * `stubbles\lang\Enum` - parsing enums in properties and annotations is not supported any more as of this release
     * `stubbles\predicate`
     * everything in `stubbles\lang\exception`
   * all methods in `stubbles\streams\*` which threw `stubbles\lang\exception\IOException` now throw `stubbles\streams\StreamException`
